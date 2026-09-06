@@ -49,3 +49,6 @@ Den tidigare helt täckande `ebba-radio-v2.png` bevaras som föregående variant
 
 
 `art/pikeman-walk-v1.png` och `art/gunner-walk-v1.png`: provisoriska gångark, 1254 × 1254, fyra riktningar/fyra nyckelbilder, inbyggd bildgenerering med `serious-specialists-v1.png` som identitetsreferens. Pikenerarens UV-rader och kroppshöjd korrigeras för den stående piken; skyttens två bakåtrader mappas om. Promptar och SHA-256 i `source/journey/danish-walks.json`. Befintliga sabelatlaser är oförändrade på disk; granskade källrektanglar förhindrar klippta och överförda värjspetsar i spelets rendering.
+# Rörelseunderlag · 3D-gångrigg
+
+`source/animation/karl-walk-reference.blend` är egen procedurbyggd geometri och armatur från `tools/build_walk_reference.py`, utan externa modeller eller motion-capture-data. Rörelseunderlag med fasta benlängder och markkontakt; inte produktionsgrafik. `source/animation/walk-reference.json` anger parametrar och uppmätta kontrollfel. Två avvisade 2D-riggförsök är borttagna ur spelkoden; godkända målningar har inte ändrats.

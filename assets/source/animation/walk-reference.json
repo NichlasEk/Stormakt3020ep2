@@ -1,0 +1,14 @@
+{
+  "status": "motion reference only; not approved production Karl art",
+  "frames": 30,
+  "fps": 30,
+  "cycle_distance_m": 1.0,
+  "support_fraction": 0.62,
+  "thigh_m": 0.41,
+  "shin_m": 0.41,
+  "max_segment_length_error_m": 5.3795337462414494e-08,
+  "max_support_slide_error_m": 5.551115123125783e-17,
+  "max_blender_joint_error_m": 6.08975017938423e-06,
+  "source": "tools/build_walk_reference.py",
+  "next": "Review motion before building the full textured and skinned Karl model. Reject 2D deformation and cut-apart atlas trials."
+}

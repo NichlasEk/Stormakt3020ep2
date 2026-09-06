@@ -1,6 +1,10 @@
 # Checkpoint · Vägen under vattnet · 2026-09-06
 
-## Senast · danska gångark och värjspets
+## Senast · animationens omtag
+
+Användaren avvisade två 2D-försök: deformerade målningar gav ”gummiben”, stela bilddelar såg ut som brutna ben. Båda är borttagna från spelkoden. Ny riktning: rörelsen byggs i 3D före målning och atlasrendering. Första riktiga armaturen och en animerad provfigur finns i `assets/source/animation/karl-walk-reference.blend`, genererad och geometriskt verifierad av `tools/build_walk_reference.py`. Fram-/bakvy är renderad; lokalt videoprov `artifacts/karl-walk-reference.mp4`. Detta är rörelseunderlag, inte färdig Karl-grafik eller en ny spelanimation. Se `ANIMATION.md` för reproduktion, begränsningar och fortsatt produktion. Spelet behåller gången från föregående checkpoint.
+
+## Föregående · danska gångark och värjspets
 
 Pikeneraren och skytten har nu egna provisoriska gångark i fyra riktningar. Sabelvakten hade redan ett. Alla fiender markerar nu verklig förflyttning, även skyttens reträtt; stegrytm beror på gångsträcka och gångbilden följer förflyttningsriktningen. Gång stoppar vid siktning/anfall. Pikenerarens kroppsskala mäts från hjälmen, inte från pikspetsen. Skyttens felordnade bakåtrader mappas om. Det samlade riggade omtaget av gång är fortfarande nästa större animationsarbete.
 
