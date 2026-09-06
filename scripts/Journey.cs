@@ -19,8 +19,8 @@ public sealed partial class Combat
     public float RiposteTime;
     public Vector2 MoveDirection=Vector2.UnitY;
     [JsonIgnore] private static readonly Vector2[] Crate=Navigation.Expand(JourneyLayout.WarehouseObstacle,22);
-    [JsonIgnore] public Vector2[] Walkable=>Region==Region.Quay?Ground:Region==Region.Warehouse?JourneyLayout.WarehouseGround:JourneyLayout.Ground;
-    [JsonIgnore] public Vector2[] Obstacles=>Region==Region.Warehouse?Crate:Array.Empty<Vector2>();
+    [JsonIgnore] public Vector2[] Walkable=>CampaignStage==0?PortLayout.Ground:Region==Region.Quay?Ground:Region==Region.Warehouse?JourneyLayout.WarehouseGround:JourneyLayout.Ground;
+    [JsonIgnore] public Vector2[] Obstacles=>CampaignStage==0?PortLayout.Collision:Region==Region.Warehouse?Crate:Array.Empty<Vector2>();
     public bool OnWalkable(Vector2 p)=>Navigation.Contains(Walkable,p)&&!Navigation.Contains(Obstacles,p);
     public Vector2 Bound(Vector2 p)=>Region==Region.Quay?ClampToGround(p):Navigation.Clamp(Walkable,Obstacles,p);
     public bool ClearPath(Vector2 a,Vector2 b)=>Region==Region.Quay||Navigation.Clear(Walkable,Obstacles,a,b);

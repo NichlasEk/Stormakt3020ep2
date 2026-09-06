@@ -60,3 +60,7 @@ Den tidigare helt täckande `ebba-radio-v2.png` bevaras som föregående variant
 `art/world-{atland,roots,forge,uppsala}-v1.png`: fyra nya miljömålningar från inbyggd bildgenerering, en gemensam grund per två banor. Fullständiga promptar och originalvägar finns i `source/campaign/world-*.provenance.json`. Inga nya röstinspelningar ingår i detta breddpass; nya berättelsetexter är originalskrivna anteckningar. Musik och stridsfigurer återanvänds från tidigare delar.
 
 `art/karl-baked-walk-v1-*.png`: 120 offline-renderade transparenta kroppsbilder från egen rigg och kostymmodell. Ett gemensamt AI-målat underlag med godkända Karl som referens projiceras på modellen. Underlag, prompt och Blender-källor i `source/animation/karl-*`; produktionsskript i `tools/`. Ansiktet återanvänds separat från godkända `karl-attack-v1.png` och följer riggens huvudcentrum. Gångprovet är separat från kampanjen.
+
+## Modulär port 0.4.1
+
+`art/port-stone-v1.png` är en ny direktgenererad platt målad stenstruktur, inbyggt bildverktyg. `PortPresentation.cs` använder den inuti egna 2D-polygoner med exakt projektion från `PortLayout.cs`; inga renderade modeller. `art/port-props-v1.png` är en identisk kopia av det första transparenta 2D-kitet: endast plint, lykta, kista och runsten från sista raden används. Full prompt, källa och avgränsning: `source/campaign/port-modules-v1.provenance.json`.

@@ -26,6 +26,7 @@ public partial class Main
             layers.Add((666,()=>PaintForeground(_background,new Vector2[]{new(1169,647),new(1171,617),new(1180,603),new(1190,589),new(1198,607),new(1209,615),new(1209,650),new(1200,662),new(1180,666)})));
             layers.Add((404,()=>PaintForeground(_background,new Vector2[]{new(949,389),new(951,363),new(959,353),new(961,345),new(968,358),new(976,365),new(977,391),new(970,402),new(952,401)})));
         }
+        if(_game.CampaignStage==0)AddPortLayers(layers);
         foreach(var layer in layers.OrderBy(l=>l.Depth))layer.Draw();
         if(_game.Region==Region.Warehouse)
         {

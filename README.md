@@ -2,6 +2,10 @@
 
 Episod II. Ett nytt, fristående actionrollspel i Stormakts värld: nordisk barock, karoliner, mytologi och Rudbecks Atland.
 
+## Nytt · Atlands port 0.4.1
+
+`./start.sh -- --port` eller **Spela Atlands port** i menyn: en spelbar bana med modulärt 2D-golv, murar med kollision/skymning, portmekanism och en sidoväg med gömma. E/B undersöker, R visar ledtråden. Provets sparning ligger separat. [Mått, produktion och kvarvarande arbete](docs/PORT-MODULES.md).
+
 ## Spela 0.4
 
 Välj **Spela nästa del · åtta banor** för att hoppa direkt till den nya expeditionen genom Atland, rotmarkerna, Bergslagens underjord och det felvända Uppsala. Den har en egen sparfil och fortsätter där du slutade. En ny landstigning leder också vidare genom alla åtta banor. Äldre avslutade 0.3-sparningar kan fortsätta in i Atland.

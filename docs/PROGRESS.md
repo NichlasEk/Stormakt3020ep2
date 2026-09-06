@@ -1,5 +1,12 @@
 # Checkpoint · Vägen under vattnet · 2026-09-06
 
+## Senaste checkpoint · modulär Atlands port 0.4.1
+
+Portbanan använder nu direkt ritade 2D-moduler på ett fast 128:64-rutnät och en ny målad stenstruktur. Skiljemuren har kollision, stoppar kulor och hugg och skymmer figurer utifrån fotpunkter. Bakom den finns en sidoväg med en sparad engångsbelöning och ledtråd. Fyra småföremål återanvänds från det tidigare transparenta 2D-arket; inga av dess avvisade golv- eller murbilder används. Ingen Blender-produktion har gjorts.
+
+Start: `./start.sh -- --port` eller **Spela Atlands port**, separat `port-save.json`. Ny native-export: `dist/AtlandsArv-0.4.1/AtlandsArv.x86_64`. Regeltester: 29 222 assertions. Full native-kampanj till avslut med 96 liv, 38 besegrade och 19 parader. Golv och sex murtyper cachas efter första 2D-ritningen; inget 3D-innehåll används. Visuellt granskad skymning, entré, gömma och portstatus. Se `PORT-MODULES.md` för exakta mått, verifiering och begränsningar. Konstnärlig rikedom, brutna kanter, omgivning, nya röster och gång återstår; detta är en spelbar grund, inte färdig slutgrafik.
+
+
 ## Gällande assetriktning · användarens senaste instruktion
 
 Äkta 2D-isometriska spelassets med fast projektion, rena silhuetter, läsbara former, återhållen palett, diskret målad textur och återanvändbara moduler. Ingen fortsatt Blender-/3D-produktion. Det tidigare renderade gångprovet är arkiverat experiment och ska inte ersätta kampanjens figurer. Nedanstående Blender-anvisningar beskriver historiken, inte nästa produktionssteg.

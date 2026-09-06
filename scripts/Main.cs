@@ -47,9 +47,9 @@ public partial class Main : Node2D
     private float _choiceDelay;
     private bool _capturePending;
     private int _testTicks;
-    private bool _atlandSlot;
-    private string SavePath=>ProjectSettings.GlobalizePath(_atlandSlot?"user://atland-save.json":"user://quay-save.json");
-    private string ManualPath=>ProjectSettings.GlobalizePath(_atlandSlot?"user://atland-manual-save.json":"user://manual-save.json");
+    private bool _atlandSlot,_portSlot,_portChecks;
+    private string SavePath=>ProjectSettings.GlobalizePath(_portSlot?"user://port-save.json":_atlandSlot?"user://atland-save.json":"user://quay-save.json");
+    private string ManualPath=>ProjectSettings.GlobalizePath(_portSlot?"user://port-manual-save.json":_atlandSlot?"user://atland-manual-save.json":"user://manual-save.json");
     private const float Zoom=1.12f;
     private static readonly Color Gold=new("b99a64"), Pale=new("ddd6c5"), Muted=new("9b9a8d"), Teal=new("93aaa0"), Red=new("c57761");
     private static readonly Dictionary<string,(string Speaker,string Text)> Radio=new()
@@ -77,7 +77,7 @@ public partial class Main : Node2D
     private static NVec N(Vector2 v)=>new(v.X,v.Y);
     public override void _Ready()
     {
-        var args=OS.GetCmdlineUserArgs();_sceneChecks=args.Contains("--scene-check");_uiChecks=args.Contains("--ui-check");
+        var args=OS.GetCmdlineUserArgs();_portChecks=args.Contains("--port-check");_sceneChecks=args.Contains("--scene-check")||_portChecks;_uiChecks=args.Contains("--ui-check");
         _serif=GD.Load<Font>("res://assets/fonts/NotoSerif-Regular.ttf");_sans=GD.Load<Font>("res://assets/fonts/NotoSans-Regular.ttf");
         _background=GD.Load<Texture2D>("res://assets/art/likvarvet-scale-v5.png");
         _radioPortraits=GD.Load<Texture2D>("res://assets/art/radio-cast-v1.png");
@@ -90,9 +90,10 @@ public partial class Main : Node2D
         if(_integration)Engine.TimeScale=3;
         if(_testMode)StartNew();
         if(args.Contains("--duel"))StartDuel();
-        if(args.Contains("--atland")||_campaignCheck)StartAtland();
+        if(args.Contains("--port")||_portChecks){_portSlot=true;StartAtland();}
+        else if(args.Contains("--atland")||_campaignCheck)StartAtland();
         if(args.Contains("--capture-title"))_smokeCapture=true;
-        if(_sceneChecks)RunSceneChecks();
+        if(_portChecks)RunPortChecks();else if(_sceneChecks)RunSceneChecks();
     }
     public override void _Input(InputEvent ev)
     {
@@ -177,9 +178,10 @@ public partial class Main : Node2D
         {
             case "duel":StartDuel();break;
             case "journey":if(_game.ContinueJourney()){ChangeScreen(Screen.Game);foreach(var cue in _game.Events)HandleCue(cue);Save();}break;
-            case "atland":StartAtland();break;
+            case "port":_portSlot=true;StartAtland();break;
+            case "atland":_portSlot=false;StartAtland();break;
             case "new":ChangeScreen(Screen.Briefing);break;
-            case "continue":_atlandSlot=false;ResumeSave();break;
+            case "continue":_portSlot=false;_atlandSlot=false;ResumeSave();break;
             case "artillery":_order=Order.Artillery;break;
             case "medicine":_order=Order.Medicine;break;
             case "land":StartNew();break;
@@ -196,7 +198,7 @@ public partial class Main : Node2D
             case "shake":_cameraShake=!_cameraShake;SaveSettings();break;
             case "fullscreen":DisplayServer.WindowSetMode(DisplayServer.WindowGetMode()==DisplayServer.WindowMode.Fullscreen?DisplayServer.WindowMode.Windowed:DisplayServer.WindowMode.Fullscreen);break;
             case "back":Back();break;
-            case "title":_atlandSlot=false;_sound.StopVoice();_radioQueue.Clear();_radio="";ChangeScreen(Screen.Title);break;
+            case "title":_portSlot=false;_atlandSlot=false;_sound.StopVoice();_radioQueue.Clear();_radio="";ChangeScreen(Screen.Title);break;
             case "retry":if(_game.Duel){StartDuel();break;}if(System.IO.File.Exists(SavePath))ResumeSave();else StartNew();break;
             case "quit":GetTree().Quit();break;
         }
@@ -211,7 +213,7 @@ public partial class Main : Node2D
     }
     private void StartNew()
     {
-        _atlandSlot=false;_game=Combat.New(_order,true);_game.AtlandCampaign=!_integration;ApplyDeveloperSettings();_camera=G(_game.Player)+new Vector2(85,-80);_particles.Clear();_floating.Clear();_radioQueue.Clear();_radio="";_sound.StopVoice();
+        _portSlot=false;_atlandSlot=false;_game=Combat.New(_order,true);_game.AtlandCampaign=!_integration;ApplyDeveloperSettings();_camera=G(_game.Player)+new Vector2(85,-80);_particles.Clear();_floating.Clear();_radioQueue.Clear();_radio="";_sound.StopVoice();
         ChangeScreen(Screen.Game);_banner="BLEKINGES LIKVARV";_bannerTime=5;Save();
     }
     private void Save(bool manual=false)
@@ -472,7 +474,8 @@ public partial class Main : Node2D
     private void DrawWorld()
     {
         DrawSetTransform(Offset,0,Vector2.One*Zoom);
-        if(_game.Region==Region.Quay)DrawTextureRectRegion(_background,new Rect2(18,30,1500,946),new Rect2(18,30,1500,946),Colors.White);
+        if(_game.CampaignStage==0){DrawCachedPortFloor();DrawCampaignMarkers();}
+        else if(_game.Region==Region.Quay)DrawTextureRectRegion(_background,new Rect2(18,30,1500,946),new Rect2(18,30,1500,946),Colors.White);
         else {DrawTextureRect(_game.InCampaign?_campaignWorlds[_game.Stage.World]:_game.Region==Region.Warehouse?_warehouse:_game.AtlandRevealed?_shoreRevealed:_shore,new Rect2(0,0,1536,1024),false);if(_game.InCampaign)DrawCampaignMarkers();else DrawJourneyMarkers();}
         foreach(var seal in _game.Seals)
         {
@@ -651,7 +654,7 @@ public partial class Main : Node2D
         Button(new Rect2(80,hasSave?544:490,171,43),"Inställningar","settings");Button(new Rect2(264,hasSave?544:490,171,43),"Avsluta","quit");
         Button(new Rect2(80,600,355,43),"Öva sabelduell","duel");
         Button(new Rect2(842,614,350,43),"Spela nästa del · åtta banor","atland");
-        Text("BLEKINGES LIKVARV",new Vector2(842,533),19,Gold,true);Wrapped("En förlorad kaj. Två sigill.\nEtt fynd som ingen karta tillåter.",new Vector2(842,564),350,16,Pale,26);
+        Text("VÄGEN TILL ATLAND",new Vector2(842,533),19,Gold,true);Button(new Rect2(842,554,350,43),"Spela Atlands port","port");
         Text("VÄGEN UNDER VATTNET  ·  SPELPROV 0.4",new Vector2(80,673),12,Muted);Text("WASD + mus  /  Handkontroll",new Vector2(970,673),12,Muted);
     }
     private void DrawBriefing()
@@ -770,6 +773,7 @@ public partial class Main : Node2D
     {
         foreach(var texture in _campaignWorlds)texture?.Dispose();
         _cast?.Dispose();_animated?.Dispose();_warehouse?.Dispose();if(_shoreRevealed!=_shore)_shoreRevealed?.Dispose();_shore?.Dispose();
+        _portFloorCache?.Dispose();_portWallCache?.Dispose();_portStone?.Dispose();_portProps?.Dispose();
         _background?.Dispose();_radioPortraits?.Dispose();_ebbaPortrait?.Dispose();_serif?.Dispose();_sans?.Dispose();
     }
 }

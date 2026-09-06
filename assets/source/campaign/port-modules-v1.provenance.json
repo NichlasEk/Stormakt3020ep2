@@ -1,0 +1,13 @@
+{
+  "tool": "built-in image_gen",
+  "prompt": "Production 2D game texture, square 1024x1024. A seamless repeating flat swatch of worn charcoal-grey Nordic limestone, subtle matte hand-painted texture, restrained grey-brown palette, scattered faint desaturated olive mineral stains. Entire image is a flat material sample evenly filled edge to edge. Very low contrast fine painterly mottling and shallow wear; no big cracks, no objects, no paving joints, no masonry blocks, no perspective, no bevels, no cast shadows, no light gradients, no vignette, no 3D rendering or photographic look. This texture will be used inside clean hand-authored 2D isometric game tile and wall silhouettes; do not draw those shapes, only supply their quiet painted stone surface. Seamlessly repeating opposite edges.",
+  "source": "/home/nichlas/.codex/generated_images/01a07608-36a4-7850-ba4d-824cc60ab5aa/exec-2dfe9ffb-59fd-438e-a31a-4022f931f83e.png",
+  "selected": "assets/art/port-stone-v1.png",
+  "usage": "Flat painted swatch inside hand-authored 2D polygons. All floor and wall silhouettes use PortLayout.At fixed 128:64 projection. No Blender, 3D geometry, lighting, rendered models or whole-scene illustration.",
+  "props": {
+    "file": "assets/art/port-props-v1.png",
+    "copied_from": "assets/source/campaign/atland-modular-2d-candidate-v1.png",
+    "prompt_provenance": "assets/source/campaign/atland-modular-2d.provenance.json",
+    "usage": "Only the four isolated last-row props, with original RGBA and reviewed source rectangles. Rejected floor and wall candidates are not used."
+  }
+}

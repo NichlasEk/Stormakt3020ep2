@@ -27,7 +27,7 @@ public static class Expedition
 
 public sealed partial class Combat
 {
-    public bool AtlandCampaign,CampaignFinished;
+    public bool AtlandCampaign,CampaignFinished,PortCacheTaken;
     public int CampaignStage=-1,CampaignProgress,CampaignMask,CampaignWave,ArchiveChoice;
     public float CampaignChannel,CampaignClock,CampaignCooldown;
     [JsonIgnore] public bool InCampaign=>CampaignStage>=0;
@@ -79,7 +79,7 @@ public sealed partial class Combat
         CampaignClock+=dt;CampaignCooldown=Math.Max(0,CampaignCooldown-dt);
         bool peaceful=Enemies.All(e=>e.Dead);
         bool use=input.Interact&&!Moving&&AttackTime<=0&&DodgeTime<=0&&!Guarding&&Hurt<=0&&CampaignCooldown<=0;
-        bool Near(Vector2 p)=>Vector2.Distance(Player,p)<72;
+        bool Near(Vector2 p)=>Vector2.Distance(Player,p)<72&&ClearPath(Player,p);
         if(Stage.Task==ExpeditionTask.Siege&&peaceful&&CampaignWave<3){SpawnCampaignWave();return;}
         if(Stage.Task==ExpeditionTask.Tribunal&&!peaceful&&CampaignWave==0&&Enemies.Any(e=>e.Kind==EnemyKind.Collector&&e.Health<e.MaxHealth*.5f))
         {CampaignWave=1;SpawnExpedition(EnemyKind.Guard,Expedition.Spawns[0]);if(ArchiveChoice!=2)SpawnExpedition(EnemyKind.Gunner,Expedition.Spawns[3]);Emit("campaign",Player,"Kollegiet kallar sitt sista vittne. Håll vägen till bordet fri.");Emit("checkpoint",Player);}
@@ -93,6 +93,12 @@ public sealed partial class Combat
             return;
         }
         if(!peaceful){CampaignChannel=0;return;}
+        if(CampaignStage==0&&!PortCacheTaken&&Near(PortLayout.Cache))
+        {
+            PortCacheTaken=true;Potions+=2;Health=Math.Min(100,Health+20);
+            Emit("campaign",Player,"I murarens gömma ligger två tinkturer och ett avtryck: landet bär vattnet, vattnet bär minnet. Någon har försökt slipa bort det sista ordet.");
+            Emit("inscription",Player,"MURARENS GÖMMA · +2 TINKTURER");Emit("checkpoint",Player);return;
+        }
         if(Stage.Task==ExpeditionTask.Archive&&CampaignProgress>=3&&ArchiveChoice==0)
         {
             if(Near(Expedition.Preserve))ArchiveChoice=1;else if(Near(Expedition.Forge))ArchiveChoice=2;else return;

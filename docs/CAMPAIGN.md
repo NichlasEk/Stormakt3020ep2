@@ -42,6 +42,6 @@ xvfb-run -a -s '-screen 0 1280x720x24' godot-mono --display-driver x11 --path "$
 
 ## Eget detaljpass senare
 
-Banorna har ännu gemensam öppen spelgolvsgeometri. Nästa pass bör ge varje bana egna landmärken, avgränsningar och interaktionsföremål: arkivsigill, rotlyktor, mönstringsklocka, ventiler, gjutform och stjärninstrument. Kontrollera alltid vuxenskala, passage och skymning framför/bakom figurerna.
+Bana 1 har nu modulärt golv, en kolliderande skiljemur och en sidoväg med sparat fynd; se `PORT-MODULES.md`. Banorna 2–8 har ännu gemensam öppen spelgolvsgeometri. Nästa pass bör ge varje bana egna landmärken, avgränsningar och interaktionsföremål: arkivsigill, rotlyktor, mönstringsklocka, ventiler, gjutform och stjärninstrument. Kontrollera alltid vuxenskala, passage och skymning framför/bakom figurerna.
 
 Kronfogden och kollegiets väktare återanvänder indrivarens grafik; nya vakter använder befintliga stridsroller. Nya berättelser visas som anteckningar. Egna porträtt, röster, musikvariationer och slutlig riggad gång hör till det senare assetpasset. Det målade gångprovet körs separat med `./start-walk-study.sh`.

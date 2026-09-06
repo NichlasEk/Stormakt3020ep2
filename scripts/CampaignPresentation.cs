@@ -11,6 +11,7 @@ public partial class Main
     private float _campaignTextTime;
     private void LoadCampaignWorlds()
     {
+        LoadPort();
         var names=new[]{"atland","roots","forge","uppsala"};
         for(int i=0;i<4;i++)_campaignWorlds[i]=GD.Load<Texture2D>($"res://assets/art/world-{names[i]}-v1.png");
     }
@@ -42,10 +43,12 @@ public partial class Main
         bool nearby=NVec.Distance(_game.Player,_game.CampaignObjective)<90;
         if(_game.Stage.Task==ExpeditionTask.Archive&&_game.CampaignProgress==3&&_game.ArchiveChoice==0)
             nearby|=NVec.Distance(_game.Player,Expedition.Forge)<90;
-        if(!nearby)return;
+        bool cache=_game.CampaignStage==0&&!_game.PortCacheTaken&&NVec.Distance(_game.Player,PortLayout.Cache)<72&&_game.ClearPath(_game.Player,PortLayout.Cache);
+        if(!nearby&&!cache)return;
         string message=foes>0?"Slå tillbaka väktarna":_game.CampaignReady?"E / B · Följ vägen vidare":"Håll E / B · Undersök";
         if(foes==0&&_game.Stage.Task==ExpeditionTask.Archive&&_game.CampaignProgress==3&&_game.ArchiveChoice==0)
             message=NVec.Distance(_game.Player,Expedition.Forge)<90?"E / B · Förfalska passet · färre vakter":"E / B · Bevara arkivet · extra förråd";
+        if(cache)message=foes>0?"Skapa arbetsro vid gömman":"E / B · Undersök murarens gömma";
         Panel(new Rect2(390,412,500,59),.94f);Centered(message,640,442,17,Gold);
         if(_game.CampaignChannel>0)WorldBar(new Vector2(410,455),460,_game.CampaignChannel/(_game.Stage.Task is ExpeditionTask.Beacons or ExpeditionTask.Vents?2.4f:.65f),Teal,4);
     }
@@ -63,6 +66,7 @@ public partial class Main
         Wrapped(_game.Stage.Intro,new Vector2(95,205),1040,22,Pale,34);
         Text("LEDTRÅD",new Vector2(95,333),13,Gold);Wrapped(_game.Stage.Clue,new Vector2(95,373),1040,22,Gold,34);
         Wrapped(_game.ArchiveChoice==0?"Arkivets öde är ännu inte avgjort.":_game.ArchiveChoice==1?"Arkivet är bevarat. Expeditionen fick extra förråd; kollegiet skickar fler väktare.":"Det förfalskade passet avleder patruller. Färre förstärkningar väntar längs färden.",new Vector2(95,487),1040,19,Muted,30);
+        if(_game.CampaignStage==0)Wrapped(_game.PortCacheTaken?"Murarens gömma: avtrycket och två tinkturer är säkrade.":"En lykta står vid murens södra ände. Det finns spår av en smal väg bakom den.",new Vector2(95,566),1040,16,Gold,24);
         Button(new Rect2(830,614,340,49),"Tillbaka","back",true);
     }
     private void DrawCampaignEnding()
