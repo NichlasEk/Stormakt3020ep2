@@ -1,56 +1,54 @@
-# Checkpoint · De strukna namnen · 2026-09-06
+# Checkpoint · Vägen under vattnet · 2026-09-06
 
 ## Spelbart nu
 
-Godot 4.7.2 .NET, separat från originalet. Spelprov 0.2 utökar Blekinges likvarv: krigsråd med artilleri/fältvård, två kajsigill, fyra vakter, indrivaren, bronskartan, tre inskrifter med två vakter per avläsning, ett konkret vägval och återtåg till båten.
+Spelprov 0.3 i Godot 4.7.2 .NET. Separat från originalet. Hela kajuppdraget fortsätter nu genom kronans magasin till De tre vittnenas strand och det första spelbara Atland-avslöjandet.
 
-Håll E/B stillastående nära en inskrift. Patrullen kommer endast första gången stenen störs. Fiender inom 160 världspixlar hindrar arbetet; påbörjat arbete bevaras när spelaren avbryter. Tre avlästa stenar och besegrade patruller öppnar vägvalet. R/Back öppnar fynden med stenens vittnesmål jämfört med Ebbas liggare. Olästa fynd avslöjas inte där.
+- Kaj: två sigill, fyra vakter, indrivaren, karta, tre inskrifter med patruller, öppen sändning eller krypterad rapport och förföljare.
+- Magasin: tre vakter, förrådskista med brynstål/tinktur, mätorder, vinsch och två nya vakter. Lasten blockerar närstrid och kulor; fiender går runt den.
+- Strand: två vakter, tre ostörda mätningar, tre förföljare och kartinpassning vid mittstenen. Ny målad bakgrund och en kort kamerapanorering visar vägen och porten i gryningen. Kollegiets färska mätband och order ger berättelsens vändning.
+- Sabelduell från huvudmenyn: en vakt, fristående från kampanjens sparfiler.
+- Brynstålet gör nästa sabelhugg 60 % starkare inom 2,6 sekunder efter en perfekt parad. Öppen sändning behåller sin paradläkning; krypterad rapport ger färre förföljare och förråd.
+- Fältdagboken har en fjärde sida för mätorder, uppgradering och expeditionens upptäckt.
 
-- **Öppen sändning:** tre förföljare, +30 liv, perfekta parader återger 4 liv under återtåget.
-- **Krypterad rapport:** två förföljare, +15 liv, extra tinktur, understöd redo direkt.
-- Alla förföljare måste besegras före ombordstigning. Namn, framsteg och vägval sparas.
+Kontrollpunkter vid områdesbyten, fynd och mätningar. Delvis avläst inskrift och delvis mätt riktning överlever manuell sparning/laddning. Checksummade atomiska sparfiler med föregående backup. Äldre enumvärden är bevarade. Ett avslutat 0.2-läge med tre lästa namn kan fortsätta genom magasinet från slutmenyn; 0.1-lägen förblir avslutade. Normal ny kampanj använder den långa rutten.
 
-Sabel/hammare, tunga attacker, undanmanöver, gard, projektilparad, understöd och handkontroll finns sedan tidigare. F5/F9 och automatiska kontrollpunkter är separata; checksummade atomiska sparfiler har föregående backup. Enumvärdena för 0.1 är bevarade, och äldre avslutade sparningar förblir avslutade. Starta en ny landstigning för att spela hela 0.2.
+## Grafik, rörelse och användarens senaste återkoppling
 
-## Aktuell bildriktning
+Allvarliga, vuxna figurer i mörk sliten oljemålningsstil. Absurd humor ligger i berättelsen och radion. Ebbas godkända `ebba-radio-v3.png` är kvar.
 
-Användaren godkände den seriösa figurstilen och därefter den nya spelbilden: ”ser rätt bra ut”, ”såg ju riktigt coolt ut! jag älskart!”. Humorn hör till berättelsen och radion, aldrig till töntig anatomi eller karikatyrer.
+Karl/sabel och sabelvakten använder sex nya atlaser med fyra riktningar, gång- och attacknyckelbilder samt gard, träffreaktion, undanmanöver och liggande dödspose. Specialistroller och hammare använder fortsatt tidigare tre poser. `AnimatedCast.cs` kompletterar `PaintedCast.cs`; båda utgår från 150 världspixlars ståhöjd. Magenta friläggs och kantfärg rensas före mipmaps.
 
-Runtime använder nu `serious-cast-v6.png` för Karl/sabel och vakter samt `serious-specialists-v1.png` för Karl/hammare, pikenerare, skytt och indrivare. De tidigare Blender-figurerna används inte längre i spelet. `PaintedCast.cs` används även av bildstudien och normaliserar ståhöjden till cirka 150 världspixlar. `SpriteCutout.cs` frilägger magenta och rensar kantfärg innan mipmaps/filtrering.
+Användaren såg ryckig gång. Gångförankringen följer nu bäckenets mitt, rytmen beror på faktiskt tillryggalagd sträcka, rörelsebilderna följer gångriktningen och renderpositioner interpoleras mellan fysiksteg. De målade stegnycklarna är fortfarande ojämna och vissa för lika. Ett åttabildsförsök avvisades efter granskning. Presentera inte detta som färdig mjuk åttariktad animation. Nästa förbättring bör utgå från en riggad rörelsereferens.
 
-**Begränsning:** tre stridsposer och speglad sidriktning. Fullständiga gångcykler, åtta riktningar, riktiga dödsanimationer och mellanbilder är ännu inte byggda. Presentera inte detta som färdig animation.
+Användaren påpekade också att murar måste ritas framför figurer bakom dem. `SceneryDepth.cs` innehåller nu granskade förgrundskonturer för kajens och magasinets främre murar samt strandens främsta sten. Last, förrådskista, vinsch och lyktor sorteras med figurerna efter markdjup. Bildprov finns i `artifacts/depth-*.png`.
 
-`likvarvet-scale-v5.png` ersätter v4: mindre lyktor, tunnare förtöjningar, finare stenläggning och tre plana minneshällar. Spelpunkterna har justerats till de målade hällarna. Kroppsskalan är nu gemensam, i stället för att förstora figurer mot överstora props. Bildgeneratorn följde inte alla exakta pixelmått; detta är en visuellt granskad förbättring, inte en fullständig metrisk 3D-miljö. G i bildstudien visar ståhöjdsreferensen 1,78 m / 150 px.
+Nya miljöer utgår från två måttsatta Blender-blockouter. Bildverktyget flyttade flera props; gångyta och spelpunkter har därefter kalibrerats mot de faktiska målningarna. Projektion, korrigeringar, fulla promptar och ursprung ligger i `assets/source/journey/`. Se `docs/JOURNEY-PRODUCTION.md` för detaljer och reproduktion.
 
 ## Radio och ljud
 
-`radio-cast-v1.png` innehåller tre nya målade porträtt: Ebba Grip, Hedvig Rålamb och indrivaren. Ebbas blonda flätade hår, blå ögon och blå officersidentitet utgår från originalets porträtt; ytan är ommålad i episodens allvarliga stil. Indrivaren matchar sin stridsfigur. Ebbas separata `ebba-radio-v3.png` återger därefter originalets fylligare byst och måttliga urringning på uttrycklig begäran, med samma vuxna ansikte och seriösa stil. Hedvig är en ny, cirka 55-årig antikvarie med egen identitet, äldre låg röst och eftertänksam replikföring.
+30 svenska repliker totalt, varav 14 nya i 0.3. Ebba och Hedvig använder samma egna syntetiska röstidentiteter och godkända porträtt. `assets/story/journey-radio.json` är gemensam textkälla för spelet och produktionen. Lokal VoxCPM2 för rollreferenser, Dots MF för repliker; inga verkliga personers röstprov.
 
-16 svenska repliker totalt, varav 10 nya i detta steg. Tre egna syntetiska rollreferenser via VoxCPM2, repliker via Dots MF på lokal EutherLink. Referenser, manusbegäranden, råljud och jobbmanifest ligger i `assets/source/voices/`. Inga verkliga personers röstprov används. Porträtt och undertext följer talaren. Föråldrade stridsrepliker rensas vid fyndövergången.
+Lokal CPU-Whisper granskade nya repliker. Den första mätordern tappade slutet och ersattes med kortare text/tagning; även brynstålsrepliken kortades. Egennamn och enskilda uttal förblir osäkra i automatisk transkribering. Råljud, begäranden och jobbmanifest sparas; avvisade tagningar ligger under `assets/source/voices/rejected/`.
 
-Tre lokala ACE-Step-musikstycken. Nya `names-score.ogg` är en 40-sekunders kammarmusikloop för inskrifterna, med bevarad 48-sekunders råmaster och dokumenterad överlappning. Musik tonas mellan kaj, fynd och strid och dämpas under tal. Nya författade effekter: borste mot sten, inskriftsfynd och pappersvändning. Ingen AI-tjänst behövs när spelet körs.
+Tre befintliga ACE-Step-spår används med övergångar och dämpning under tal. Nytt egenproducerat fotstegsljud. Ingen AI-tjänst behövs vid spel. Standardvolym 25 %, dragreglage, M tyst/återställ, +/− femprocentsteg och sparad ljudnivå. Automatiska tester är tysta och skriver inga användarsparningar.
 
-Användaren tyckte ljudet var för högt. Standardvolymen är sänkt från 75 till 25 procent. Synligt dragreglage i spelbilden och menyerna; M växlar tyst/ljud, +/− ändrar i femprocentsteg. Regleringen sparas, och klick på reglaget utlöser inte attacker. Automatiska testkörningar är tysta. UI-testet använder separat settingsfil i artifacts.
+## Verifiering
 
-## Rudbeck och berättelse
+- 28 852 regelassertions: fyra kompletta långa genomspelningar, båda understöden × båda berättelsevalen. 23–24 besegrade, 70–100 liv kvar, cirka 124–152 logiska sekunder. Detta är botkörningar, inte mänsklig speltid.
+- Kort originalrutt, gränser, ammunition/parad, sparåterhämtning, fortsatt 0.2-läge, delvis sparad mätning, sikthinder, projektilstopp och brynstålets engångsripost provas.
+- Godot/OpenGL-integration når slutet via vanliga kontroller och fångar kaj, boss, namn, val, magasin, strand, avslöjande och slut.
+- UI-testet klarar mute/återställning, tangent, musdrag/clamp, ingen attack vid reglageklick, sparad ljudnivå, dagbok och tre porträtt/röstpar.
+- `--scene-check` visar överlappning bakom last, vid vinsch/mur, bakom sten och vid kajens kant. Bilderna är visuellt granskade.
+- Linux-exporten i `dist/AtlandsArv/` är ombyggd; JSON-manuset ingår uttryckligen i paketet. Native bildprov laddar nya assets och avslutar med kod 0. Ett första exportprov gav en resursvarning vid avslut; omprovet med verbose-logg avslutades utan varningen.
+- Fysisk handkontroll har inte provats. Full inventariehantering, större kampanj, Varvsänkan, Uppsala och filmsekvenser återstår.
 
-Läs `docs/ATLANTICA-NOTES.md` för primärhänvisningar. Minne, tal och skrift (tryckt s. 543–544) bär det första fyndet. Ingrid Jonsdotter, Mats Eriksson och Siri Nilsdotter och deras inskrifter är originalskriven fiktion, inte citat ur Atlantica. Hedvig kopplar kartans linjer till landskapet. Underjordiskt Atland är vår fiktion; Rudbeck läser vissa underjordsresor geografiskt.
+## Körning och nästa steg
 
-Användarens två PDF-filer i roten är lokalt researchmaterial. De har inte lagts till i Git. De större framtidsspåren — Ymers geologi, Gläsisvall, landskapskalendern och Uppsala — är konceptunderlag, inte färdiga banor.
+`./start.sh` startar spelet; **Öva sabelduell** går direkt till stridsträningen. Färdig 0.2-sparning kan fortsätta från slutmenyn. `dotnet run --project tests/Atland.Tests.csproj` kör regeltest. `./start.sh --fullscreen -- --integration`, `--ui-check` eller `--scene-check` ger tysta prov. `--duel` startar övningen direkt. Bildstudien visar nu samma nya atlaser: mellanslag växlar rörelse/pose, vänster/höger riktning, G måttreferens.
 
-## Verifiering och fortsatt arbete
+Låt användaren bedöma gång, murarnas överlappning och den längre banan. Förfina stridskänslan och animationerna från verkliga spelintryck före nästa stora kampanjutbyggnad. Bevara godkänd seriös anatomi och Ebba.
 
-- Regeltest: 16 031 assertions. Hela artilleri/öppen-rutten: 14 besegrade, 12 parader, 99 liv kvar, cirka 91 logiska sekunder. Hela fältvård/krypterade rutten: 13 besegrade, 100 liv kvar, cirka 96 sekunder. Detta är botkörning, inte uppskattad mänsklig speltid.
-- Sparprov omfattar delvis läst inskrift, utebliven dubbel patrull/belöning, väntan på sista fienden, sparat vägval, återtåg och en äldre sparfil utan de nya fälten.
-- Godot/OpenGL-integration når slutet via samma regler. Bilder: gameplay, boss, names, testimony, ending i artifacts.
-- UI-kontroll provar mute/återställning, tangent, musdrag/clamp, ingen attack vid reglageklick, settings-reload och fältdagbok. Separata radiobilder för de tre talarna.
-- Lokal Whisper-kontroll finns i artifacts. Egennamn och vissa ord får osäkra transkriberingar; det är en uttalskontroll, inte ett påstående om slutlig mänsklig castinggranskning.
-- Fysisk handkontroll har inte provats. Den längre Blekinge-missionen, loot/inventory, Varvsänkan, vidare kampanj och filmsekvenser återstår.
+Rudbeck: `docs/ATLANTICA-NOTES.md` innehåller primärläsning med tryckta sidnummer. Mätordern, mätbanden och denna expedition är originalskriven fiktion. Användarens två PDF-filer i roten är lokalt researchmaterial och ligger utanför Git.
 
-Nästa produktionssteg: rörelser och riktningsanimationer från den godkända målade identiteten, därefter nästa sammanhängande miljö med måttsatt grundlayout. Bevara den allvarliga figurstilen, läsbara attacker och den nya radiobesättningen. Utöka inte hela kampanjen på en gång.
-
-## Körning
-
-`./start.sh` startar spelet. `./start-art-study.sh --fullscreen` visar samma bildsystem. Tester: `dotnet run --project tests/Atland.Tests.csproj`, `./start.sh -- --integration`, `./start.sh -- --ui-check`. `--smoke` ger ett kort bildprov. Loggar och fångster ligger i artifacts.
-
-Origin: https://github.com/NichlasEk/Stormakt3020ep2 . Commit/push efter fungerande milstolpar är uttryckligen önskat. Grafik, råljud och runtime-ljud använder Git LFS. Originalet i /home/nichlas/WaylandForge berörs inte.
+Origin: https://github.com/NichlasEk/Stormakt3020ep2 . Commit/push efter fungerande milstolpar är önskat. Assets använder Git LFS. Originalet i /home/nichlas/WaylandForge berörs inte.

@@ -136,3 +136,61 @@ try
 }
 finally{Directory.Delete(notesFolder,true);}
 Console.WriteLine($"PASS · {checks} assertions · combat, orders, boundaries, save recovery, full encounter");
+
+// End-to-end extended journey: real combat, cover navigation and all interactions.
+foreach(var order in new[]{Order.Artillery,Order.Medicine})foreach(var choice in new[]{TestimonyChoice.Broadcast,TestimonyChoice.Cipher})
+{
+ var journey=Combat.New(order,true);var visited=new HashSet<Region>();
+ for(int i=0;i<36000&&!journey.Dead&&journey.Phase!=Phase.Complete;i++)
+ {
+  visited.Add(journey.Region);
+  if(journey.Phase==Phase.Testimony)journey.ChooseTestimony(choice);
+  var target=journey.Enemies.Where(e=>!e.Dead).OrderBy(e=>Vector2.DistanceSquared(e.Position,journey.Player)).FirstOrDefault();
+  Vector2 goal=target?.Position??journey.Seals.FirstOrDefault(s=>s.Health>0)?.Position??journey.ObjectivePosition;
+  var delta=goal-journey.Player;float distance=delta.Length();var next=journey.NextWaypoint(journey.Player,goal)-journey.Player;
+  bool guard=target!=null&&target.State==1&&target.Timer<.16f&&distance<150;
+  var move=distance>60||!journey.ClearPath(journey.Player,goal)?Combat.Normal(next,Vector2.UnitX):Vector2.Zero;
+  bool fighting=target!=null||journey.Seals.Any(s=>s.Health>0);
+  journey.Step(Input(move,delta,attack:fighting&&distance<95&&!guard,heavy:fighting&&distance<105&&i%47==0&&!guard,guard:guard,heal:journey.Health<48,support:target!=null,interact:true));
+  if(journey.Region!=Region.Quay)Check(journey.OnWalkable(journey.Player),$"Journey player stays on floor outside cover {journey.Player}");
+ }
+ Console.WriteLine($"JOURNEY {order}/{choice}: phase={journey.Phase} region={journey.Region} hp={journey.Health} kills={journey.Kills} elapsed={journey.Elapsed} position={journey.Player} goal={journey.ObjectivePosition}");
+ Check(journey.Phase==Phase.Complete&&!journey.Dead&&journey.AtlandRevealed,"Extended journey completes through ordinary controls");
+ Check(visited.Count==3&&journey.WhetstoneTaken&&journey.ManifestTaken&&journey.WinchOpened&&journey.Surveyed.All(s=>s),"All regions, useful finds and survey participate in the journey");
+ string path=Path.Combine(Path.GetTempPath(),"atland-journey-"+Guid.NewGuid()+".json");
+ try{SaveStore.Write(path,journey);var copy=SaveStore.Read(path);Check(copy.AtlandRevealed&&copy.Testimony==choice&&copy.Region==Region.Shore,"Extended ending survives reload");}finally{File.Delete(path);}
+}
+var cover=Combat.New(Order.Medicine,true);cover.Region=Region.Warehouse;cover.Phase=Phase.Warehouse;cover.Enemies.Clear();cover.Player=new(768,475);
+Check(!cover.ClearPath(cover.Player,new(768,700)),"Crates obstruct sight and attacks");
+var waypoint=cover.NextWaypoint(cover.Player,new(768,700));
+Check(waypoint!=cover.Player&&cover.ClearPath(cover.Player,waypoint),"Navigation returns reachable way around crates");
+cover.Shots.Add(new(){Position=new(768,490),Velocity=new(0,350)});
+for(int i=0;i<30;i++)cover.Step(Input());
+Check(cover.Shots.Count==0,"Projectiles stop at actual cover");
+var duel=Combat.NewDuel();duel.Enemies[0].Health=0;duel.Step(Input());Check(duel.Phase==Phase.Complete&&duel.Duel,"Standalone duel ends without campaign gates");
+
+var riposte=Combat.New(Order.Medicine);riposte.Enemies.Clear();riposte.Seals.Clear();riposte.Phase=Phase.Duel;riposte.Player=new(740,740);riposte.WhetstoneTaken=true;
+riposte.Shots.Add(new(){Position=new(760,740),Velocity=new(-200,0)});
+riposte.Step(Input(aim:Vector2.UnitX,guard:true));
+Check(riposte.RiposteTime>2.5f,"Brynsteel charges a riposte after a real projectile parry");
+riposte.Shots.Clear();while(riposte.HitStop>0)riposte.Step(Input());
+riposte.Spawn(EnemyKind.Guard,new(795,740));var victim=riposte.Enemies[0];victim.Cooldown=10;float beforeHit=victim.Health;
+for(int i=0;i<30&&!riposte.AttackContact;i++)riposte.Step(Input(aim:Vector2.UnitX,attack:true));
+Check(Math.Abs(beforeHit-victim.Health-25*1.6f)<.01f&&riposte.RiposteTime==0,"Riposte increases the next saber contact once by sixty percent");
+var legacyRoute=Combat.New(Order.Medicine);legacyRoute.Phase=Phase.Complete;legacyRoute.Testimony=TestimonyChoice.Cipher;
+foreach(var stone in legacyRoute.Inscriptions){stone.Read=true;stone.Progress=Combat.ReadingDuration;}
+Check(legacyRoute.ContinueJourney()&&legacyRoute.Region==Region.Warehouse,"Completed 0.2 testimony continues into the new mission without replaying the quay");
+var partialSurvey=legacyRoute;partialSurvey.Region=Region.Shore;partialSurvey.Phase=Phase.Shore;partialSurvey.Enemies.Clear();partialSurvey.Player=JourneyLayout.Survey[1];
+for(int i=0;i<40;i++)partialSurvey.Step(Input(interact:true));
+Check(partialSurvey.SurveyProgress>0&&partialSurvey.SurveyProgress<2&&!partialSurvey.Surveyed[1],"Survey requires a sustained reading");
+string partialPath=Path.Combine(Path.GetTempPath(),"atland-survey-"+Guid.NewGuid()+".json");
+try
+{
+ SaveStore.Write(partialPath,partialSurvey);var resumed=SaveStore.Read(partialPath);
+ for(int i=0;i<160;i++){partialSurvey.Step(Input(interact:true));resumed.Step(Input(interact:true));}
+ var options=new JsonSerializerOptions{IncludeFields=true};
+ Check(JsonSerializer.Serialize(partialSurvey,options)==JsonSerializer.Serialize(resumed,options)&&resumed.Surveyed[1],"Partial survey resumes deterministically and finishes exactly once");
+ Check(resumed.Surveyed.Count(s=>s)==1,"Holding interact never surveys a distant plate");
+}
+finally{File.Delete(partialPath);}
+Console.WriteLine($"PASS EXTENDED · {checks} assertions");

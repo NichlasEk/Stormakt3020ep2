@@ -73,19 +73,21 @@ public partial class Main : Node2D
     private static NVec N(Vector2 v)=>new(v.X,v.Y);
     public override void _Ready()
     {
-        var args=OS.GetCmdlineUserArgs();_uiChecks=args.Contains("--ui-check");
+        var args=OS.GetCmdlineUserArgs();_sceneChecks=args.Contains("--scene-check");_uiChecks=args.Contains("--ui-check");
         _serif=GD.Load<Font>("res://assets/fonts/NotoSerif-Regular.ttf");_sans=GD.Load<Font>("res://assets/fonts/NotoSans-Regular.ttf");
         _background=GD.Load<Texture2D>("res://assets/art/likvarvet-scale-v5.png");
         _radioPortraits=GD.Load<Texture2D>("res://assets/art/radio-cast-v1.png");
         _ebbaPortrait=GD.Load<Texture2D>("res://assets/art/ebba-radio-v3.png");
-        _cast=new PaintedCast();
+        _cast=new PaintedCast();LoadJourney();
         _sound=new Soundscape();AddChild(_sound);LoadSettings();
         GetWindow().MinSize=new Vector2I(960,540);
-        _integration=args.Contains("--integration");_testMode=args.Contains("--smoke")||_integration||_uiChecks;
+        _integration=args.Contains("--integration");_testMode=args.Contains("--smoke")||_integration||_uiChecks||_sceneChecks;
         if(_testMode||args.Contains("--capture-title"))_sound.Volume=0;
         if(_integration)Engine.TimeScale=3;
         if(_testMode)StartNew();
+        if(args.Contains("--duel"))StartDuel();
         if(args.Contains("--capture-title"))_smokeCapture=true;
+        if(_sceneChecks)RunSceneChecks();
     }
     public override void _Input(InputEvent ev)
     {
@@ -168,6 +170,8 @@ public partial class Main : Node2D
     {
         switch(id)
         {
+            case "duel":StartDuel();break;
+            case "journey":if(_game.ContinueJourney()){ChangeScreen(Screen.Game);foreach(var cue in _game.Events)HandleCue(cue);Save();}break;
             case "new":ChangeScreen(Screen.Briefing);break;
             case "continue":ResumeSave();break;
             case "artillery":_order=Order.Artillery;break;
@@ -175,8 +179,8 @@ public partial class Main : Node2D
             case "land":StartNew();break;
             case "broadcast":ChooseTestimony(TestimonyChoice.Broadcast);break;
             case "cipher":ChooseTestimony(TestimonyChoice.Cipher);break;
-            case "journal-next":_journalPage=(_journalPage+1)%3;_sound.Play("paper");break;
-            case "journal-prev":_journalPage=(_journalPage+2)%3;_sound.Play("paper");break;
+            case "journal-next":_journalPage=(_journalPage+1)%4;_sound.Play("paper");break;
+            case "journal-prev":_journalPage=(_journalPage+3)%4;_sound.Play("paper");break;
             case "resume":ChangeScreen(_game.Phase==Phase.Testimony?Screen.Testimony:Screen.Game);break;
             case "save":Save(true);break;
             case "settings":_settingsReturn=_screen;ChangeScreen(Screen.Settings);break;
@@ -186,7 +190,7 @@ public partial class Main : Node2D
             case "fullscreen":DisplayServer.WindowSetMode(DisplayServer.WindowGetMode()==DisplayServer.WindowMode.Fullscreen?DisplayServer.WindowMode.Windowed:DisplayServer.WindowMode.Fullscreen);break;
             case "back":Back();break;
             case "title":_sound.StopVoice();_radioQueue.Clear();_radio="";ChangeScreen(Screen.Title);break;
-            case "retry":if(System.IO.File.Exists(SavePath))ResumeSave();else StartNew();break;
+            case "retry":if(_game.Duel){StartDuel();break;}if(System.IO.File.Exists(SavePath))ResumeSave();else StartNew();break;
             case "quit":GetTree().Quit();break;
         }
     }
@@ -196,16 +200,16 @@ public partial class Main : Node2D
         if(!_game.ChooseTestimony(choice))return;
         _radioQueue.Clear();_sound.StopVoice();_radioTime=0;
         foreach(var cue in _game.Events)HandleCue(cue);
-        ChangeScreen(Screen.Game);_banner="TILLBAKA TILL BÅTEN";_bannerTime=5;
+        ChangeScreen(Screen.Game);_banner=_game.ExtendedJourney?"GENOM KRONANS MAGASIN":"TILLBAKA TILL BÅTEN";_bannerTime=5;
     }
     private void StartNew()
     {
-        _game=Combat.New(_order);_camera=G(_game.Player)+new Vector2(85,-80);_particles.Clear();_floating.Clear();_radioQueue.Clear();_radio="";_sound.StopVoice();
+        _game=Combat.New(_order,true);_camera=G(_game.Player)+new Vector2(85,-80);_particles.Clear();_floating.Clear();_radioQueue.Clear();_radio="";_sound.StopVoice();
         ChangeScreen(Screen.Game);_banner="BLEKINGES LIKVARV";_bannerTime=5;Save();
     }
     private void Save(bool manual=false)
     {
-        if(_testMode)return;
+        if(_testMode||_game.Duel)return;
         try{SaveStore.Write(manual?ManualPath:SavePath,_game);Notice(manual?"Manuellt läge sparat  ·  F9 laddar":"Kontrollpunkt sparad");}catch(Exception e){GD.PushError(e.Message);Notice("Kunde inte spara fältdagboken");}
     }
     private void ResumeSave(bool manual=false)
@@ -223,7 +227,7 @@ public partial class Main : Node2D
         var config=new ConfigFile();if(config.Load(SettingsPath)==Error.Ok){_volume=Math.Clamp((float)config.GetValue("audio","volume",.25f),0,1);_unmutedVolume=Math.Clamp((float)config.GetValue("audio","unmuted_volume",.25f),.001f,1);_cameraShake=(bool)config.GetValue("display","shake",true);}_sound.Volume=_volume;
         if(_volume>0)_unmutedVolume=_volume;
     }
-    private Rect2 VolumePanel=>new(_screen==Screen.Game?new Vector2(20,88):new Vector2(1020,18),new Vector2(240,36));
+    private Rect2 VolumePanel=>new(_screen==Screen.Game&&_revealTime<=0?new Vector2(20,88):new Vector2(1020,18),new Vector2(240,36));
     private void SetVolume(float volume)
     { _volume=Math.Clamp(volume,0,1);if(_volume>0)_unmutedVolume=_volume;SaveSettings(); }
     private void ToggleMute()=>SetVolume(_volume>0?0:_unmutedVolume);
@@ -233,7 +237,8 @@ public partial class Main : Node2D
     private void ClearPresses(){_attack=_heavy=_dodge=_swap=_heal=_support=_interact=false;}
     public override void _PhysicsProcess(double delta)
     {
-        if(_screen!=Screen.Game)return;
+        if(_screen!=Screen.Game||_sceneChecks)return;
+        if(_revealTime>5){ClearPresses();return;}
         var move=new Vector2((Input.IsPhysicalKeyPressed(Key.D)||Input.IsPhysicalKeyPressed(Key.Right)?1:0)-(Input.IsPhysicalKeyPressed(Key.A)||Input.IsPhysicalKeyPressed(Key.Left)?1:0),(Input.IsPhysicalKeyPressed(Key.S)||Input.IsPhysicalKeyPressed(Key.Down)?1:0)-(Input.IsPhysicalKeyPressed(Key.W)||Input.IsPhysicalKeyPressed(Key.Up)?1:0));
         var aim=ScreenToWorld(GetGlobalMousePosition())-G(_game.Player);
         bool guard=Input.IsPhysicalKeyPressed(Key.Shift);
@@ -249,15 +254,16 @@ public partial class Main : Node2D
         {
             var target=_game.Enemies.Where(e=>!e.Dead).OrderBy(e=>NVec.DistanceSquared(e.Position,_game.Player)).FirstOrDefault();
             NVec goal=target?.Position??_game.Seals.FirstOrDefault(s=>s.Health>0)?.Position??_game.ObjectivePosition;
-            var d=goal-_game.Player;float distance=d.Length();
+            var d=goal-_game.Player;float distance=d.Length();var navigation=_game.NextWaypoint(_game.Player,goal)-_game.Player;
             guard=target!=null&&target.State==1&&target.Timer<.16f&&distance<150;
-            move=distance>60?G(Combat.Normal(d,NVec.UnitX)):Vector2.Zero;aim=G(d);
+            move=(distance>60||!_game.ClearPath(_game.Player,goal))?G(Combat.Normal(navigation,NVec.UnitX)):Vector2.Zero;aim=G(d);
             bool fighting=target!=null||_game.Seals.Any(s=>s.Health>0);
             _attack=fighting&&distance<95&&!guard;_heavy=fighting&&distance<105&&(_testTicks-1)%47==0&&!guard;
             _heal=_game.Health<48;_support=target!=null;_interact=true;
         }
         bool reading=_interact||Input.IsPhysicalKeyPressed(Key.E)||(_controller&&Input.IsJoyButtonPressed(0,JoyButton.B));
         var controls=new Controls(N(move),N(aim),_attack||(!_controller&&!_adjustingVolume&&!VolumePanel.HasPoint(GetGlobalMousePosition())&&Input.IsMouseButtonPressed(MouseButton.Left)),_heavy,_dodge,guard,_swap,_heal,_support,reading);
+        RememberRenderPositions();
         _game.Step(controls);ClearPresses();
         foreach(var cue in _game.Events)HandleCue(cue);
         if(_game.Dead)ChangeScreen(Screen.Death);
@@ -270,6 +276,8 @@ public partial class Main : Node2D
         switch(cue.Kind)
         {
             case "radio":QueueRadio(cue.Text);break;
+            case "region":_camera=G(_game.Player)+new Vector2(0,-30);_particles.Clear();_floating.Clear();_radioQueue.Clear();_sound.StopVoice();_radioTime=0;_banner=cue.Text.ToUpperInvariant();_bannerTime=5;break;
+            case "reveal":_radioQueue.Clear();_sound.StopVoice();_radioTime=0;_revealTime=9;_banner="VÄGEN LIGGER KVAR";_bannerTime=5;_sound.Play("seal",.65f);break;
             case "checkpoint":Save();break;
             case "hit":Burst(p,Gold,12,100);_floating.Add(new(){P=p+new Vector2(0,-70),Text=cue.Text,C=Gold});_sound.Play("hit",.94f+(float)(_game.Tick%6)*.025f);_shake=3;break;
             case "hurt":Burst(p,Red,13,100);_sound.Play("hit",.65f);_shake=7;break;
@@ -277,6 +285,7 @@ public partial class Main : Node2D
             case "swing":_sound.Play(cue.Value>0?"hammer":"swing");break;
             case "shot":_sound.Play("shot");Burst(p,Gold,7,90);break;
             case "seal":Burst(p,Teal,45,210);_sound.Play("seal");_floating.Add(new(){P=p-new Vector2(0,60),Text=cue.Text,C=Teal});break;
+            case "step":_sound.Play("footstep",.93f+(_game.Tick%7)*.025f);break;
             case "scrape":_sound.Play("scrape",.96f+(float)(_game.Tick%5)*.02f);break;
             case "inscription":Burst(p,Gold,18,65);_sound.Play("inscription");_floating.Add(new(){P=p-new Vector2(0,70),Text=cue.Text,C=Gold});break;
             case "sealhit":Burst(p,Teal,12,100);_sound.Play("hit");break;
@@ -308,13 +317,16 @@ public partial class Main : Node2D
     {
         float dt=(float)delta;_clock+=dt;_noticeTime=Math.Max(0,_noticeTime-dt);
         _sound.Boss=(_game.Phase==Phase.Collector||(_game.Phase==Phase.Extraction&&_game.Enemies.Any(e=>!e.Dead))) && _screen is Screen.Game or Screen.Pause;
-        _sound.Discovery=_game.Phase is Phase.Names or Phase.Testimony;
+        _sound.Discovery=_game.Phase is Phase.Names or Phase.Testimony || _game.Region==Region.Shore;
         if(_screen is Screen.Game or Screen.Ending or Screen.Testimony)
         {
-            _bannerTime=Math.Max(0,_bannerTime-dt);_shake=Math.Max(0,_shake-dt*22);
+            _revealTime=Math.Max(0,_revealTime-dt);_bannerTime=Math.Max(0,_bannerTime-dt);_shake=Math.Max(0,_shake-dt*22);
             if(_screen==Screen.Game)
             {
                 var target=G(_game.Player)+new Vector2(70,-70);target.X=Math.Clamp(target.X,610,990);target.Y=Math.Clamp(target.Y,535,740);
+                if(_game.Region!=Region.Quay){target=G(_game.Player)+new Vector2(0,-60);target.X=Math.Clamp(target.X,580,956);target.Y=Math.Clamp(target.Y,415,730);}
+                if(_revealTime<=5&&_game.Moving)_revealTime=0;
+                if(_revealTime>0)target=new Vector2(600,320);
                 _camera=_camera.Lerp(target,1-Mathf.Exp(-dt*5));
             }
             if(_radioTime>0)_radioTime-=dt;
@@ -327,6 +339,8 @@ public partial class Main : Node2D
         if(_uiChecks&&!_uiChecked&&_testTicks>90){_uiChecked=true;RunUiChecks();return;}
         if(_integration)
         {
+            if(_game.Region!=Region.Quay&&_capturedRegions.Add(_game.Region))CaptureFrame(_game.Region.ToString().ToLowerInvariant()+".png",false);
+            if(_game.AtlandRevealed&&!_revealCaptured&&_revealTime<7){_revealCaptured=true;CaptureFrame("reveal.png",false);}
             if(_game.Phase==Phase.Collector&&!_bossCaptured){_bossCaptured=true;CaptureFrame("boss.png",false);}
             if(_game.Phase==Phase.Names&&!_namesCaptured){_namesCaptured=true;CaptureFrame("names.png",false);}
             if(_screen==Screen.Testimony)
@@ -335,9 +349,9 @@ public partial class Main : Node2D
                 _choiceDelay+=dt;if(_choiceDelay>2)ChooseTestimony(TestimonyChoice.Broadcast);
             }
             if(_game.Phase==Phase.Complete&&!_capturePending){_capturePending=true;GD.Print($"INTEGRATION COMPLETE health={_game.Health} kills={_game.Kills} parries={_game.Parries}");CaptureFrame("ending.png",true);}
-            if(_game.Dead||_game.Elapsed>300){GD.PushError("Integration encounter failed");GetTree().Quit(1);}
+            if(_game.Dead||_game.Elapsed>600){GD.PushError("Integration encounter failed");GetTree().Quit(1);}
         }
-        else if((_testMode && _testTicks>125)||(_smokeCapture && _clock>1.5f))CaptureAndQuit();
+        else if(!_sceneChecks&&((_testMode && _testTicks>125)||(_smokeCapture && _clock>1.5f)))CaptureAndQuit();
     }
     private async void RunUiChecks()
     {
@@ -412,9 +426,9 @@ public partial class Main : Node2D
             DrawRect(new Rect2(0,0,1280,720),new Color(.015f,.03f,.043f,.88f));
             if(_screen==Screen.Pause)DrawPause();else if(_screen==Screen.Settings)DrawSettings();else DrawDeath();
         }
-        if(_noticeTime>0){Panel(new Rect2(350,16,580,40),.96f);Text(_notice,new Vector2(370,43),16,Teal);}
+        if(_noticeTime>0&&_revealTime<=0){Panel(new Rect2(350,16,580,40),.96f);Text(_notice,new Vector2(370,43),16,Teal);}
         DrawVolume();
-        if(_screen==Screen.Game && !_controller)
+        if(_screen==Screen.Game && !_controller&&_revealTime<=0)
         {var p=GetGlobalMousePosition();DrawArc(p,7,0,Mathf.Tau,20,new Color(1,.87f,.61f,.7f),1,true);DrawLine(p-new Vector2(11,0),p-new Vector2(5,0),Gold,1,true);DrawLine(p+new Vector2(5,0),p+new Vector2(11,0),Gold,1,true);}
     }
     private void DrawVolume()
@@ -432,7 +446,8 @@ public partial class Main : Node2D
     private void DrawWorld()
     {
         DrawSetTransform(Offset,0,Vector2.One*Zoom);
-        DrawTextureRectRegion(_background,new Rect2(18,30,1500,946),new Rect2(18,30,1500,946),Colors.White);
+        if(_game.Region==Region.Quay)DrawTextureRectRegion(_background,new Rect2(18,30,1500,946),new Rect2(18,30,1500,946),Colors.White);
+        else {DrawTextureRect(_game.Region==Region.Warehouse?_warehouse:_game.AtlandRevealed?_shoreRevealed:_shore,new Rect2(0,0,1536,1024),false);DrawJourneyMarkers();}
         foreach(var seal in _game.Seals)
         {
             var p=G(seal.Position);bool alive=seal.Health>0;var c=alive?Teal:Muted;
@@ -442,9 +457,7 @@ public partial class Main : Node2D
         foreach(var h in _game.Hazards)
         {var c=h.Friendly?Gold:Red;DrawCircle(G(h.Position),h.Radius,new Color(c,.10f));DrawArc(G(h.Position),h.Radius,0,Mathf.Tau,70,c,2,true);DrawArc(G(h.Position),h.Radius*Math.Clamp(1-h.Timer/1.5f,0,1),0,Mathf.Tau,60,new Color(c,.5f),2,true);}
         foreach(var e in _game.Enemies.Where(e=>!e.Dead && e.State==1))DrawTelegraph(e);
-        foreach(var e in _game.Enemies.Where(e=>e.Dead))Actor(e,true);
-        var sorted=_game.Enemies.Where(e=>!e.Dead).OrderBy(e=>e.Position.Y).ToList();bool playerDrawn=false;
-        foreach(var e in sorted){if(!playerDrawn && _game.Player.Y<e.Position.Y){DrawPlayer();playerDrawn=true;}Actor(e,false);}if(!playerDrawn)DrawPlayer();
+        DrawDepthSortedActors();
         foreach(var shot in _game.Shots){var p=G(shot.Position);var v=G(shot.Velocity).Normalized();DrawLine(p-v*17,p,shot.Reflected?Teal:Gold,3,true);DrawCircle(p,3,Pale);}
         if(_game.Phase==Phase.Discovery)
         {var p=G(Combat.ChartPosition);DrawCircle(p,30,new Color(Gold,.13f));DrawArc(p,25,0,Mathf.Tau,40,Gold,1.5f,true);DrawRect(new Rect2(p-new Vector2(14,18),new Vector2(28,24)),Gold);DrawLine(p-new Vector2(10,4),p+new Vector2(10,-10),new Color(.15f,.23f,.24f),2,true);}
@@ -459,7 +472,7 @@ public partial class Main : Node2D
             }
         }
         if(_game.Phase==Phase.Extraction)
-        {var p=G(Combat.LandingPosition);DrawArc(p,40,0,Mathf.Tau,48,Gold,2,true);Text("BÅTEN",p+new Vector2(-22,58),12,Gold);}
+        {var p=G(_game.ObjectivePosition);DrawArc(p,40,0,Mathf.Tau,48,Gold,2,true);Text(_game.ExtendedJourney?"MAGASINET":"BÅTEN",p+new Vector2(-22,58),12,Gold);}
         foreach(var p in _particles)DrawCircle(p.P,p.Size,new Color(p.C,Math.Clamp(p.Life/p.Max,0,1)));
         foreach(var f in _floating)Text(f.Text,f.P,15,new Color(f.C,Math.Clamp(f.Life*2,0,1)));
         DrawSetTransform(Vector2.Zero);
@@ -482,43 +495,63 @@ public partial class Main : Node2D
         string kind=e.Kind.ToString().ToLowerInvariant();if(kind=="guard")kind="guard";
         int pose=e.State==1?3:e.State==2?4:e.State==3?5:(int)e.Walk%2+1;
         if(dead)pose=6;
-        DrawActor(kind,G(e.Position),G(e.Facing),pose,e.Hurt,dead);
+        DrawActor(kind,RenderPosition(e),G(e.Facing),pose,e.Hurt,dead,false,e.Moving,e.Walk,e.State==2&&e.Timer>.37f&&e.Timer<=.5f);
         if(!dead && e.Health<e.MaxHealth)WorldBar(G(e.Position)+new Vector2(-24,-160),48,e.Health/e.MaxHealth,e.Kind==EnemyKind.Collector?Gold:Red);
     }
     private void DrawPlayer()
     {
         int pose=_game.Guarding?5:_game.AttackTime>0?(_game.AttackContact?4:3):_game.Moving?(int)_game.Walk%2+1:0;
-        DrawActor(_game.Weapon==Weapon.Saber?"karl-saber":"karl-hammer",G(_game.Player),G(_game.Facing),pose,_game.Hurt,false,true);
+        DrawActor(_game.Weapon==Weapon.Saber?"karl-saber":"karl-hammer",RenderPlayer,G(_game.Facing),pose,_game.Hurt,_game.Dead,true,_game.Moving,_game.Walk,_game.AttackContact&&_game.AttackTime<.22f);
         if(_game.AttackTime>0 && _game.AttackContact)
         {
             float a=G(_game.Facing).Angle();float r=_game.Weapon==Weapon.Hammer?97:89;
-            DrawArc(G(_game.Player)+new Vector2(0,-25),r,a-1.1f,a+1.1f,25,new Color(_game.HeavyAttack?Gold:Pale,.55f),_game.Weapon==Weapon.Hammer?5:3,true);
+            DrawArc(RenderPlayer+new Vector2(0,-25),r,a-1.1f,a+1.1f,25,new Color(_game.HeavyAttack?Gold:Pale,.55f),_game.Weapon==Weapon.Hammer?5:3,true);
         }
-        if(_game.Guarding)DrawArc(G(_game.Player)+new Vector2(0,-34),39,G(_game.Facing).Angle()-.9f,G(_game.Facing).Angle()+.9f,24,_game.GuardTime<.22f?Teal:Muted,3,true);
+        if(_game.Guarding)DrawArc(RenderPlayer+new Vector2(0,-34),39,G(_game.Facing).Angle()-.9f,G(_game.Facing).Angle()+.9f,24,_game.GuardTime<.22f?Teal:Muted,3,true);
     }
-    private void DrawActor(string kind,Vector2 p,Vector2 facing,int pose,float hurt,bool dead,bool player=false)
+    private void DrawActor(string kind,Vector2 p,Vector2 facing,int pose,float hurt,bool dead,bool player=false,bool moving=false,float walk=0,bool contact=false)
     {
         var shadow=new Vector2[24];for(int i=0;i<24;i++)shadow[i]=p+new Vector2(Mathf.Cos(i*Mathf.Tau/24)*25,Mathf.Sin(i*Mathf.Tau/24)*10);
         DrawColoredPolygon(shadow,new Color(.01f,.02f,.025f,dead?.2f:.42f));
         if(player)DrawArc(p,23,0,Mathf.Tau,40,new Color(Teal,.5f),1.5f,true);
-        _cast.Draw(this,kind,p,facing,pose,hurt,dead,Offset,Zoom);
+        if(kind is "karl-saber" or "guard")
+        {
+            string action="attack";int frame=pose==3?1:pose==4?(contact?2:3):0;
+            if(moving&&pose<3){action="walk";frame=(int)walk%4;if(player)facing=G(_game.MoveDirection);}
+            if(pose==5){action="react";frame=player?0:1;}
+            if(hurt>0){action="react";frame=1;}
+            if(player&&_game.DodgeTime>0){action="react";frame=2;facing=G(_game.DodgeDirection);}
+            if(dead){action="react";frame=3;}
+            _animated.Draw(this,player?"karl":"guard",p,facing,action,frame,hurt,dead,Offset,Zoom);
+        }
+        else _cast.Draw(this,kind,p,facing,pose,hurt,dead,Offset,Zoom);
     }
     private void DrawHud()
     {
-        Panel(new Rect2(20,18,294,60),.87f);Text("STORMAKT 3020",new Vector2(38,41),12,Gold);Text("Blekinges likvarv",new Vector2(38,65),20,Pale,true);
-        Panel(new Rect2(928,18,332,102),.91f);Text("LANDSTIGNING  /  01",new Vector2(946,42),12,Gold);
+        if(_revealTime>0)
+        {
+            Centered("VÄGEN UNDER VATTNET",730,74,27,Pale,true);
+            Centered("Kartan följer landskapet.",730,103,16,Gold);
+            if((_radioTime>0||_sound.Speaking)&&Radio.ContainsKey(_radio))DrawRadio();
+            return;
+        }
+        Panel(new Rect2(20,18,294,60),.87f);Text("STORMAKT 3020",new Vector2(38,41),12,Gold);Text(_game.RegionName,new Vector2(38,65),20,Pale,true);
+        Panel(new Rect2(928,18,332,102),.91f);Text(_game.Duel?"ÖVNING  /  SABEL":$"EXPEDITION  /  {(int)_game.Region+1:00}",new Vector2(946,42),12,Gold);
         string objective=_game.Phase switch
         {
             Phase.Quay=>$"Bryt kajens sigill  ·  {_game.Seals.Count(s=>s.Health<=0)}/2",
             Phase.Collector=>"Besegra varvets indrivare",
             Phase.Names=>$"Frilägg namnen  ·  {_game.Inscriptions.Count(i=>i.Read)}/3",
-            Phase.Extraction=>"Ta vittnesmålen till båten",
+            Phase.Extraction=>_game.ExtendedJourney?"Följ kartan genom magasinet":"Ta vittnesmålen till båten",
+            Phase.Warehouse or Phase.Shore or Phase.Reveal=>JourneyGoal,
+            Phase.Duel=>"Besegra sabelvakten",
             _=>"Undersök bronskartan vid porten"
         };
         Text(objective,new Vector2(946,69),17,Pale);
         int foes=_game.Enemies.Count(e=>!e.Dead);
         Text(foes>0?$"Vakter kvar: {foes}":_game.Phase==Phase.Names?"Håll E vid en sten  ·  R Fynd":"E Undersök  ·  R Fynd",new Vector2(946,96),14,Muted);
-        if(_game.Phase is Phase.Names or Phase.Extraction)DrawObjectiveDirection();
+        if(_game.Phase is Phase.Names or Phase.Extraction || _game.Region!=Region.Quay)DrawObjectiveDirection();
+        DrawJourneyPrompt(foes);
         var boss=_game.Enemies.FirstOrDefault(e=>e.Kind==EnemyKind.Collector&&!e.Dead);
         if(boss!=null){Panel(new Rect2(354,20,542,59),.91f);Centered("VARVETS INDRIVARE",625,42,14,Gold);WorldBar(new Vector2(378,56),490,boss.Health/boss.MaxHealth,Red);}
         Panel(new Rect2(20,623,381,77),.96f);Text("KARL CCLV",new Vector2(38,646),13,Gold);Text($"{Math.Ceiling(_game.Health)} / 100",new Vector2(302,646),13,Pale);
@@ -528,7 +561,7 @@ public partial class Main : Node2D
         Panel(new Rect2(903,623,357,77),.96f);Text(_game.Order==Order.Artillery?"ÖRLOGSBATTERI":"FÄLTSJUKVÅRD",new Vector2(921,647),14,Gold);
         Text(_game.SupportCooldown<=0?(_controller?"↓  Understöd redo":"F  Understöd redo"):$"Redo om {Math.Ceiling(_game.SupportCooldown)} s",new Vector2(921,674),16,_game.SupportCooldown<=0?Teal:Muted);
         if(_bannerTime>0)
-        {float alpha=Math.Clamp(Math.Min(_bannerTime,5-_bannerTime),0,1);Centered(_banner,640,180,32,new Color(Pale,alpha),true);Centered("En kust som inte längre räknar sina döda.",640,211,16,new Color(Muted,alpha));}
+        {float alpha=Math.Clamp(Math.Min(_bannerTime,5-_bannerTime),0,1);Centered(_banner,640,180,32,new Color(Pale,alpha),true);Centered(_game.AtlandRevealed?"Kartan följer landskapet.":_game.Region==Region.Warehouse?"Kollegiets förråd. Kollegiets hemligheter.":_game.Region==Region.Shore?"Gravhögen · vadstället · farleden":"En kust som inte längre räknar sina döda.",640,211,16,new Color(Muted,alpha));}
         if(_game.Phase==Phase.Names)
         {
             int index=_game.Inscriptions.FindIndex(i=>!i.Read&&NVec.Distance(_game.Player,i.Position)<Combat.ReadingRange);
@@ -540,8 +573,8 @@ public partial class Main : Node2D
                 WorldBar(new Vector2(439,454),402,stone.Progress/Combat.ReadingDuration,Teal,5);
             }
         }
-        if(_game.Phase==Phase.Extraction&&NVec.Distance(_game.Player,Combat.LandingPosition)<100)
-        {Panel(new Rect2(430,425,420,42),.95f);Centered(foes>0?"Slå tillbaka förföljarna":(_controller?"B":"E")+"  Gå ombord",640,453,17,Gold);}
+        if(_game.Phase==Phase.Extraction&&NVec.Distance(_game.Player,_game.ObjectivePosition)<100)
+        {Panel(new Rect2(430,425,420,42),.95f);Centered(foes>0?"Slå tillbaka förföljarna":(_controller?"B":"E")+(_game.ExtendedJourney?"  Gå in i magasinet":"  Gå ombord"),640,453,17,Gold);}
         if((_radioTime>0 || _sound.Speaking) && Radio.ContainsKey(_radio))DrawRadio();
         else
         {
@@ -560,7 +593,7 @@ public partial class Main : Node2D
         DrawLine(pin-direction*6,pin+direction*7,Gold,2,true);
         DrawLine(pin+direction*7,pin-direction.Rotated(.65f)*4,Gold,2,true);
         DrawLine(pin+direction*7,pin-direction.Rotated(-.65f)*4,Gold,2,true);
-        Text(_game.Phase==Phase.Extraction?"BÅTEN":"INSKRIFT",pin+new Vector2(-25,33),10,Gold);
+        Text(_game.Region!=Region.Quay?"NÄSTA FYND":_game.Phase==Phase.Extraction?(_game.ExtendedJourney?"MAGASINET":"BÅTEN"):"INSKRIFT",pin+new Vector2(-25,33),10,Gold);
     }
     private void DrawRadio()
     {
@@ -585,8 +618,9 @@ public partial class Main : Node2D
         Button(new Rect2(80,430,355,49),hasSave?"Återuppta fältdagboken":"Gå i land",hasSave?"continue":"new",true);
         if(hasSave)Button(new Rect2(80,490,355,43),"Ny landstigning","new");
         Button(new Rect2(80,hasSave?544:490,171,43),"Inställningar","settings");Button(new Rect2(264,hasSave?544:490,171,43),"Avsluta","quit");
+        Button(new Rect2(80,600,355,43),"Öva sabelduell","duel");
         Text("BLEKINGES LIKVARV",new Vector2(842,533),19,Gold,true);Wrapped("En förlorad kaj. Två sigill.\nEtt fynd som ingen karta tillåter.",new Vector2(842,564),350,16,Pale,26);
-        Text("DE STRUKNA NAMNEN  ·  SPELPROV 0.2",new Vector2(80,673),12,Muted);Text("WASD + mus  /  Handkontroll",new Vector2(970,673),12,Muted);
+        Text("VÄGEN UNDER VATTNET  ·  SPELPROV 0.3",new Vector2(80,673),12,Muted);Text("WASD + mus  /  Handkontroll",new Vector2(970,673),12,Muted);
     }
     private void DrawBriefing()
     {
@@ -624,16 +658,17 @@ public partial class Main : Node2D
     private void DrawEnding()
     {
         DrawRect(new Rect2(0,0,1280,720),new Color(.012f,.032f,.044f,.86f));
-        Text("FÄLTDAGBOK  /  FÖRSTA FYNDET",new Vector2(100,113),14,Gold);Text("ATLAND",new Vector2(94,200),64,Pale,true);
+        Text(_game.Duel?"ÖVNING  /  SABEL":"FÄLTDAGBOK  /  FÖRSTA FYNDET",new Vector2(100,113),14,Gold);Text(_game.Duel?"DUELLEN VUNNEN":"ATLAND",new Vector2(94,200),64,Pale,true);
         bool found=_game.Testimony!=TestimonyChoice.None;
         string consequence=_game.Testimony==TestimonyChoice.Broadcast
             ?"Namnen hördes över hela redden. Nu bär fler deras berättelse."
             :"Avtrycken ligger förseglade ombord. Vittnena kom levande tillbaka.";
-        Wrapped(found?$"Ingrid Jonsdotter. Mats Eriksson. Siri Nilsdotter.\n{consequence}\n\nBronskartan följer Sveriges kust. Nästa märke ligger vid Uppsala.":"Kartan visar en kust som inte finns.\nI bronsen står ett namn som borde ha stannat i böckerna.\n\nLångt under kölen svarar något med tre långsamma slag.",new Vector2(100,254),1030,21,Muted,35);
+        Wrapped(_game.Duel?"Sabelvakten är besegrad. Öva paraden, välj avstånd och hugg i luckan efter hans anfall.":_game.AtlandRevealed?"Kartan och landskapet stämmer. En väg leder under vattnet mot en gammal port.\n\nKollegiets färska mätband sitter redan längs stranden. Någon skickade oss för att upptäcka en plats de redan kände till.":found?$"Ingrid Jonsdotter. Mats Eriksson. Siri Nilsdotter.\n{consequence}\n\nBronskartan följer Sveriges kust. Nästa märke ligger vid Uppsala.":"Kartan visar en kust som inte finns.\nI bronsen står ett namn som borde ha stannat i böckerna.\n\nLångt under kölen svarar något med tre långsamma slag.",new Vector2(100,254),1030,21,Muted,35);
         Text($"Vakter fällda  {_game.Kills}     Parader  {_game.Parries}     Tid  {(int)_game.Elapsed/60}:{(int)_game.Elapsed%60:00}",new Vector2(100,443),16,Gold);
         if(_radioTime>0 || _sound.Speaking)DrawRadio();
         Button(new Rect2(100,624,360,49),"Till huvudmenyn","title",true);
-        Text("Landstigningen avslutad. Uppsala väntar.",new Vector2(510,655),17,Muted);
+        if(!_game.Duel&&!_game.AtlandRevealed&&_game.Inscriptions.All(i=>i.Read))Button(new Rect2(510,563,440,49),"Fortsätt genom magasinet","journey");
+        Text(_game.Duel?"Övningen avslutad.":_game.AtlandRevealed?"Vägen är funnen. Expeditionen fortsätter.":"Landstigningen avslutad. Uppsala väntar.",new Vector2(510,655),17,Muted);
     }
     private void DrawTestimony()
     {
@@ -650,16 +685,17 @@ public partial class Main : Node2D
         Choice(new Rect2(70,373,555,115),"Sänd namnen öppet","Starkare förföljare. +30 liv nu.\nPerfekta parader återger 4 liv under återtåget.","broadcast",false);
         Choice(new Rect2(650,373,555,115),"Säkra en krypterad rapport","Färre förföljare. +15 liv och en tinktur.\nUnderstödet blir redo direkt.","cipher",false);
         if((_radioTime>0||_sound.Speaking)&&Radio.ContainsKey(_radio))DrawRadio();
-        Wrapped("Namnen finns kvar i fältdagboken oavsett väg. Båten ligger vid landstigningsplatsen.",new Vector2(70,632),1100,16,Muted,24);
+        Wrapped("Namnen finns kvar i fältdagboken oavsett väg. Kartans nästa spår finns bortom magasinets port.",new Vector2(70,632),1100,16,Muted,24);
         Text("ESC Paus",new Vector2(70,682),12,Muted);
     }
     private void DrawJournal()
     {
         DrawRect(new Rect2(0,0,1280,720),new Color(.025f,.023f,.019f,.96f));
         Text("FÄLTDAGBOK  /  VITTNESMÅL",new Vector2(95,78),13,Gold);
+        if(_journalPage==3){DrawExpeditionJournal();return;}
         var stone=_game.Inscriptions[_journalPage];
         Text(stone.Read?FieldNotes.Names[_journalPage]:"En oläst inskrift",new Vector2(90,155),36,Pale,true);
-        Text($"{_journalPage+1} / 3",new Vector2(1100,78),14,Gold);
+        Text($"{_journalPage+1} / 4",new Vector2(1100,78),14,Gold);
         Text("STENENS VITTNESMÅL",new Vector2(95,216),13,Gold);
         Wrapped(stone.Read?FieldNotes.Stones[_journalPage]:"Skrift syns under kajens beslag. Frilägg inskriften för att läsa den.",new Vector2(95,255),1040,23,Pale,36);
         DrawLine(new Vector2(95,359),new Vector2(1170,359),new Color(Gold,.4f),1);
@@ -668,7 +704,7 @@ public partial class Main : Node2D
         Text("Minne · tal · skrift",new Vector2(95,560),18,Gold,true);
         Button(new Rect2(95,614,210,49),"Föregående","journal-prev");
         Button(new Rect2(320,614,210,49),"Nästa","journal-next");
-        Button(new Rect2(830,614,340,49),"Tillbaka till kajen","back",true);
+        Button(new Rect2(830,614,340,49),"Tillbaka","back",true);
     }
     private void Panel(Rect2 r,float alpha){DrawRect(r,new Color(.027f,.055f,.068f,alpha));DrawRect(r,new Color(.57f,.51f,.34f,.30f),false,1);}
     private void Button(Rect2 r,string label,string id,bool primary=false)
@@ -695,7 +731,7 @@ public partial class Main : Node2D
     private void WorldBar(Vector2 p,float width,float amount,Color color,float height=4){DrawRect(new Rect2(p,new Vector2(width,height)),new Color(.015f,.028f,.034f,.9f));DrawRect(new Rect2(p,new Vector2(width*Math.Clamp(amount,0,1),height)),color);}
     public override void _ExitTree()
     {
-        _cast?.Dispose();
+        _cast?.Dispose();_animated?.Dispose();_warehouse?.Dispose();if(_shoreRevealed!=_shore)_shoreRevealed?.Dispose();_shore?.Dispose();
         _background?.Dispose();_radioPortraits?.Dispose();_ebbaPortrait?.Dispose();_serif?.Dispose();_sans?.Dispose();
     }
 }

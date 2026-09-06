@@ -1,0 +1,11 @@
+{
+  "text": "Mätordern anger tre riktningar. Gravhögen, vadstället, farleden. Datumet är struket. Sigillet är färskt.",
+  "voice_instruction": "A mature Swedish female historian around fifty-five, thoughtful low alto, slightly grainy warm voice, precise calm Swedish pronunciation, contemplative pacing, quiet wonder and resolve, distinctly older than the naval commander, no theatrical acting.",
+  "language": "sv",
+  "model_backend": "dots.tts-mf",
+  "output_format": "wav",
+  "normalize": false,
+  "seed": 30220706,
+  "prompt_text": "Jag heter Hedvig Rålamb. Mitt arbete är att läsa det som andra har slutat se. En sten kan bära ett namn i tusen år. Men någon måste stanna och lyssna till berättelsen.",
+  "dots_num_steps": 4
+}

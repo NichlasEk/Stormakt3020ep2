@@ -9,7 +9,7 @@ namespace Atland;
 public enum Weapon { Saber, Hammer }
 public enum EnemyKind { Guard, Pikeman, Gunner, Collector }
 // Keep the first four values stable for existing saves.
-public enum Phase { Quay, Collector, Discovery, Complete, Names, Testimony, Extraction }
+public enum Phase { Quay, Collector, Discovery, Complete, Names, Testimony, Extraction, Warehouse, Shore, Reveal, Duel }
 public enum TestimonyChoice { None, Broadcast, Cipher }
 public enum Order { Artillery, Medicine }
 public readonly record struct Controls(Vector2 Move, Vector2 Aim, bool Attack, bool Heavy, bool Dodge, bool Guard, bool Swap, bool Heal, bool Support, bool Interact);
@@ -28,6 +28,7 @@ public sealed class Fighter
     public float Cooldown;
     public float Hurt;
     public float Walk;
+    [JsonIgnore] public bool Moving;
     public int State; // 0 approach, 1 telegraph, 2 recovery, 3 stagger
     public int Pattern;
     public bool Dead => Health <= 0;
@@ -60,7 +61,7 @@ public sealed class Inscription
 }
 
 /// <summary>Fixed-tick encounter rules. No renderer, scene tree or external service dependencies.</summary>
-public sealed class Combat
+public sealed partial class Combat
 {
     public int Schema = 1;
     public long Tick;
@@ -124,9 +125,9 @@ public sealed class Combat
     public bool ReadingBlocked(int index)=>Enemies.Any(e=>!e.Dead && Vector2.Distance(e.Position,Inscriptions[index].Position)<ReadingSafety);
 
     // Returns a useful destination for the UI and the integration player.
-    [JsonIgnore] public Vector2 ObjectivePosition=>Phase==Phase.Names
+    [JsonIgnore] public Vector2 ObjectivePosition=>Region!=Region.Quay?JourneyObjective:Phase==Phase.Names
         ? Inscriptions.Where(i=>!i.Read).OrderBy(i=>Vector2.DistanceSquared(i.Position,Player)).FirstOrDefault()?.Position??ChartPosition
-        : Phase==Phase.Extraction?LandingPosition:ChartPosition;
+        : Phase==Phase.Extraction&&!ExtendedJourney?LandingPosition:ChartPosition;
 
     public bool ChooseTestimony(TestimonyChoice choice)
     {
@@ -138,13 +139,13 @@ public sealed class Combat
         if(choice==TestimonyChoice.Cipher) { Potions++;SupportCooldown=0; }
         Spawn(EnemyKind.Guard,new(640,720));Spawn(EnemyKind.Pikeman,new(790,657));
         if(choice==TestimonyChoice.Broadcast)Spawn(EnemyKind.Gunner,new(1008,635));
-        Emit("radio",Player,choice==TestimonyChoice.Broadcast?"broadcast":"cipher");
+        Emit("radio",Player,choice==TestimonyChoice.Broadcast?(ExtendedJourney?"broadcast-route":"broadcast"):(ExtendedJourney?"cipher-route":"cipher"));
         Emit("checkpoint",Player);return true;
     }
 
-    public static Combat New(Order order)
+    public static Combat New(Order order,bool extendedJourney=false)
     {
-        var game = new Combat { Order = order, Potions = order == Order.Medicine ? 4 : 2 };
+        var game = new Combat { ExtendedJourney=extendedJourney, Order = order, Potions = order == Order.Medicine ? 4 : 2 };
         game.Spawn(EnemyKind.Guard, new(640, 720));
         game.Spawn(EnemyKind.Pikeman, new(790, 657));
         game.Spawn(EnemyKind.Gunner, new(1008, 635));
@@ -167,6 +168,8 @@ public sealed class Combat
         Invulnerable = Math.Max(0, Invulnerable - dt); Hurt = Math.Max(0, Hurt - dt);
         SupportCooldown = Math.Max(0, SupportCooldown - dt);
         ComboWindow = Math.Max(0, ComboWindow - dt);
+        RiposteTime=Math.Max(0,RiposteTime-dt);
+        if(input.Guard&&AttackContact&&AttackTime>ContactTime+.08f)AttackTime=0;
         if (ComboWindow == 0 && AttackTime == 0) Combo = 0;
         if (input.Swap && AttackTime <= 0 && DodgeTime <= 0) { Weapon = Weapon == Weapon.Saber ? Weapon.Hammer : Weapon.Saber; Emit("swap",Player); }
         if (input.Heal && Potions > 0 && Health < 100) { Potions--; Health = Math.Min(100, Health + 55); Emit("heal",Player,"+55",55); }
@@ -175,7 +178,7 @@ public sealed class Combat
             if (Order == Order.Artillery)
             {
                 var target = Player + Normal(input.Aim, Facing) * 145;
-                Hazards.Add(new Hazard { Position = ClampToGround(target), Timer = 1.15f, Radius = 115, Friendly = true });
+                Hazards.Add(new Hazard { Position = Bound(target), Timer = 1.15f, Radius = 115, Friendly = true });
                 SupportCooldown = 18; Emit("radio",Player,"cannon");
             }
             else if (Health < 100) { Health = Math.Min(100,Health + 30); SupportCooldown = 22; Emit("heal",Player,"FÄLTFÖRBAND",30); }
@@ -197,8 +200,8 @@ public sealed class Combat
         else if (AttackTime <= 0)
         {
             var move = input.Move.LengthSquared() > 1 ? Vector2.Normalize(input.Move) : input.Move;
-            MovePlayer(move*(Guarding?85:195)*dt); Moving=move.LengthSquared()>.05f;
-            if (Moving) Walk += dt*11;
+            var before=Player;MovePlayer(move*(Guarding?85:195)*dt);float travelled=Vector2.Distance(before,Player);Moving=travelled>.001f;
+            if(Moving){MoveDirection=Normal(move,Facing);float previousWalk=Walk;Walk+=travelled*7/195; if((int)(Walk/2)!=(int)(previousWalk/2))Emit("step",Player);}
         }
         Stamina = Math.Min(100,Stamina+dt*(Guarding?5:AttackTime>0?10:29));
         if (AttackTime > 0)
@@ -211,7 +214,8 @@ public sealed class Combat
         SeparateEnemies();
         foreach (var shot in Shots)
         {
-            shot.Life -= dt; shot.Position += shot.Velocity*dt;
+            shot.Life -= dt; var before=shot.Position;shot.Position += shot.Velocity*dt;
+            if(!ClearPath(before,shot.Position)){shot.Life=0;continue;}
             if (!shot.Reflected && Vector2.DistanceSquared(shot.Position,Player)<22*22)
             {
                 if (Guarding && GuardTime < .22f && Vector2.Dot(Facing,-Normal(shot.Velocity,Facing))>.1f)
@@ -255,8 +259,9 @@ public sealed class Combat
         if(Phase==Phase.Names)ReadInscription(input,dt);
         if(Phase==Phase.Names && Inscriptions.All(i=>i.Read) && Enemies.All(e=>e.Dead))
         {Phase=Phase.Testimony;Shots.Clear();Hazards.Clear();Emit("checkpoint",Player);}
-        if(Phase==Phase.Extraction && Enemies.All(e=>e.Dead) && input.Interact && Vector2.Distance(Player,LandingPosition)<100)
-        { Phase=Phase.Complete;Emit("radio",Player,"homebound");Emit("checkpoint",Player); }
+        if(Phase==Phase.Extraction && Enemies.All(e=>e.Dead) && input.Interact && Vector2.Distance(Player,ExtendedJourney?ChartPosition:LandingPosition)<100)
+        { if(ExtendedJourney){EnterWarehouse();return;} Phase=Phase.Complete;Emit("radio",Player,"homebound");Emit("checkpoint",Player); }
+        StepJourney(input,dt);
     }
     private void ReadInscription(Controls input,float dt)
     {
@@ -271,7 +276,7 @@ public sealed class Combat
             // gives the player time to release the inscription and turn.
             Vector2 entry=Player.X>800?new(570,790):new(1130,520);
             Spawn(EnemyKind.Guard,entry);
-            Spawn(index==1?EnemyKind.Gunner:EnemyKind.Pikeman,ClampToGround(entry+new Vector2(85,-10)));
+            Spawn(index==1?EnemyKind.Gunner:EnemyKind.Pikeman,Bound(entry+new Vector2(85,-10)));
             foreach(var e in Enemies.Where(e=>!e.Dead)){e.State=2;e.Timer=1.5f;}
             Emit("radio",Player,"names-warning");Emit("checkpoint",Player);return;
         }
@@ -285,6 +290,7 @@ public sealed class Combat
     }
     private void RememberedParry()
     {
+        if(WhetstoneTaken){RiposteTime=2.6f;Emit("inscription",Player,"RIPOST KLAR");}
         if(Testimony==TestimonyChoice.Broadcast){Health=Math.Min(100,Health+4);Emit("heal",Player,"MINNET BÄR  +4",4);}
     }
     private void StartAttack(bool heavy)
@@ -302,12 +308,13 @@ public sealed class Combat
         float range=Weapon==Weapon.Hammer?100:91;
         if(HeavyAttack)range+=15;
         float damage=(Weapon==Weapon.Hammer?40:25)*(HeavyAttack?1.8f:1)*(Combo==3?1.25f:1);
+        if(RiposteTime>0&&Weapon==Weapon.Saber){damage*=1.6f;RiposteTime=0;}
         float arc=HeavyAttack?-.1f:.05f;
         Emit("slash",Player,"",range);
         foreach(var e in Enemies.Where(e=>!e.Dead))
         {
             var delta=e.Position-Player;
-            if(delta.Length()<range && Vector2.Dot(Normal(delta,Facing),Facing)>arc)
+            if(delta.Length()<range && Vector2.Dot(Normal(delta,Facing),Facing)>arc && ClearPath(Player,e.Position))
                 DamageEnemy(e,damage,Player,HeavyAttack || Weapon==Weapon.Hammer || Combo==3);
         }
         foreach(var seal in Seals.Where(s=>s.Health>0))
@@ -322,6 +329,7 @@ public sealed class Combat
     }
     private void StepEnemy(Fighter e,float dt)
     {
+        e.Moving=false;
         if(e.Dead)return;
         e.Hurt=Math.Max(0,e.Hurt-dt);e.Cooldown=Math.Max(0,e.Cooldown-dt);
         var to=Player-e.Position;float distance=to.Length();
@@ -330,9 +338,9 @@ public sealed class Combat
             e.Facing=Normal(to,e.Facing);
             float reach=e.Kind==EnemyKind.Gunner?290:e.Kind==EnemyKind.Pikeman?128:e.Kind==EnemyKind.Collector?142:78;
             float speed=e.Kind==EnemyKind.Collector?76:e.Kind==EnemyKind.Gunner?65:e.Kind==EnemyKind.Pikeman?83:106;
-            if(distance>reach*.82f){e.Position=ClampToGround(e.Position+e.Facing*speed*dt);e.Walk+=dt*9;}
-            else if(e.Kind==EnemyKind.Gunner && distance<170)e.Position=ClampToGround(e.Position-e.Facing*speed*dt);
-            if(distance<reach && e.Cooldown<=0)
+            if(distance>reach*.82f||!ClearPath(e.Position,Player)){var before=e.Position;var direction=Normal(NextWaypoint(e.Position,Player)-e.Position,e.Facing);e.Position=Bound(e.Position+direction*speed*dt);e.Moving=Vector2.DistanceSquared(before,e.Position)>.01f;if(e.Moving)e.Walk+=dt*6;}
+            else if(e.Kind==EnemyKind.Gunner && distance<170)e.Position=Bound(e.Position-e.Facing*speed*dt);
+            if(distance<reach && e.Cooldown<=0 && ClearPath(e.Position,Player))
             {
                 e.State=1;e.LockedAim=Player;e.Timer=e.Kind==EnemyKind.Gunner?1.1f:e.Kind==EnemyKind.Collector?1.0f:e.Kind==EnemyKind.Pikeman?.75f:.55f;
                 Emit("warning",e.Position);
@@ -359,7 +367,7 @@ public sealed class Combat
                     {
                         float range=e.Kind==EnemyKind.Collector?145:e.Kind==EnemyKind.Pikeman?135:88;
                         Emit("enemystrike",e.Position,"",range);
-                        if(distance<range && Vector2.Dot(Normal(to,e.Facing),e.Facing)>.25f)
+                        if(distance<range && Vector2.Dot(Normal(to,e.Facing),e.Facing)>.25f && ClearPath(e.Position,Player))
                         {
                             bool parry=Guarding && GuardTime<.22f && Vector2.Dot(Facing,-e.Facing)>.0f;
                             if(parry){Parries++;RememberedParry();Stamina=Math.Min(100,Stamina+22);e.State=3;e.Timer=1.2f;e.Cooldown=1.3f;Emit("parry",Player,"PERFEKT PARAD");HitStop=.07f;return;}
@@ -380,7 +388,7 @@ public sealed class Combat
         if(e.Kind==EnemyKind.Pikeman && e.State==0 && !stagger && Vector2.Dot(e.Facing,Normal(source-e.Position,e.Facing))>.4f)
         {damage*=.3f;Emit("block",e.Position,"BRYT GARDEN");}
         e.Health=Math.Max(0,e.Health-damage);e.Hurt=.16f;
-        if(stagger && e.Kind!=EnemyKind.Collector){e.State=3;e.Timer=.5f;e.Position=ClampToGround(e.Position+Normal(e.Position-source,Vector2.UnitX)*12);}
+        if(stagger && e.Kind!=EnemyKind.Collector){e.State=3;e.Timer=.5f;e.Position=Bound(e.Position+Normal(e.Position-source,Vector2.UnitX)*12);}
         HitStop=Weapon==Weapon.Hammer?.055f:.035f;Emit("hit",e.Position,((int)damage).ToString(),damage);
         if(e.Dead){Kills++;Stamina=Math.Min(100,Stamina+10);Emit("death",e.Position);}
     }
@@ -394,15 +402,15 @@ public sealed class Combat
     }
     private void MovePlayer(Vector2 delta)
     {
-        var target=ClampToGround(Player+delta);
+        var target=Bound(Player+delta);
         foreach(var e in Enemies.Where(e=>!e.Dead))
         {var d=target-e.Position;float l=d.Length();if(l<29 && l>.01f)target=e.Position+d/l*29;}
-        Player=ClampToGround(target);
+        Player=Bound(target);
     }
     private void SeparateEnemies()
     {
         for(int i=0;i<Enemies.Count;i++)for(int j=i+1;j<Enemies.Count;j++)
-        {var a=Enemies[i];var b=Enemies[j];if(a.Dead||b.Dead)continue;var d=b.Position-a.Position;float l=d.Length();if(l<37){var n=Normal(d,Vector2.UnitX);float push=(37-l)*.5f;a.Position=ClampToGround(a.Position-n*push);b.Position=ClampToGround(b.Position+n*push);}}
+        {var a=Enemies[i];var b=Enemies[j];if(a.Dead||b.Dead)continue;var d=b.Position-a.Position;float l=d.Length();if(l<37){var n=Normal(d,Vector2.UnitX);float push=(37-l)*.5f;a.Position=Bound(a.Position-n*push);b.Position=Bound(b.Position+n*push);}}
     }
     public static Vector2 Normal(Vector2 v,Vector2 fallback)=>v.LengthSquared()>.0001f?Vector2.Normalize(v):fallback;
     public static bool OnGround(Vector2 p)

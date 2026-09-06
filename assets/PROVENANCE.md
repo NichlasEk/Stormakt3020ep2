@@ -15,7 +15,7 @@ Ovanstående bilder använder det inbyggda bildverktyget. Produktionsbriefar, re
 
 ## Röster, musik och effekter
 
-- `audio/voice-*.ogg`: 16 svenska repliker, tre helt syntetiska rollreferenser (Ebba, Hedvig, indrivaren) via lokal VoxCPM2. Replikerna produceras med Dots MF via EutherLink. Manusbegäran, rå-WAV, jobb-ID och hash ligger i `source/voices/`. Inga verkliga personers röstprov används. Hedvigs första längre tagningar finns under `source/voices/rejected/`; runtime använder kortare repliker för tydligare leverans.
+- `audio/voice-*.ogg`: 30 svenska repliker, tre helt syntetiska rollreferenser (Ebba, Hedvig, indrivaren) via lokal VoxCPM2. Replikerna produceras med Dots MF via EutherLink. Manusbegäran, rå-WAV, jobb-ID och hash ligger i `source/voices/`. Inga verkliga personers röstprov används. Hedvigs första längre tagningar finns under `source/voices/rejected/`; runtime använder kortare repliker för tydligare leverans.
 - `audio/score.ogg`, `boss-score.ogg`, `names-score.ogg`: lokala ACE-Step 1.5 Turbo-generationer. Råmastrar, begäranden, resultat och looprecept finns i `source/`. Den nya fyndmusiken har 48 sekunders råmaster och 40 sekunders runtime-loop med överlappad skarv. Slutets tystnad i råmastern används inte.
 - `audio/scrape.ogg`, `inscription.ogg`, `paper.ogg`: egen deterministisk ljuddesign i `tools/build_discovery_sfx.py`, rå-WAV i `source/`.
 - Övriga stridseffekter och hamnatmosfär: egen deterministisk syntes i `tools/build_sfx.py`.
@@ -34,3 +34,12 @@ AI-källor bevarar begäran och utfall; identisk prompt garanterar inte identisk
 Godot, .NET, Blender, ComfyUI och modeller har egna licenser; träningsmodeller distribueras inte med spelet. Godots motorlicens: https://godotengine.org/license/
 
 Den tidigare helt täckande `ebba-radio-v2.png` bevaras som föregående variant. V3 använder v2 för ansiktet och originalets radioporträtt för uniformsutformningen.
+
+
+## Spelprov 0.3 · Vägen under vattnet
+
+- `art/karl-{walk,attack,react}-v1.png` och motsvarande `guard-*`: sex nya 1254 × 1254-ark, 4 × 4 celler, via inbyggd bildgenerering med den godkända `serious-cast-v6.png` som referens. Runtime i `AnimatedCast.cs`; begränsningarna dokumenteras i `docs/JOURNEY-PRODUCTION.md`.
+- `art/warehouse-v1.png`, `shore-v1.png`: målningar utifrån egna Blender-blockouter. `shore-revealed-v1.png` är en redigering av strandmålningen som frilägger vägen och porten i bakgrunden. Alla tre 1536 × 1024. Fulla promptar och genererade originalvägar i `source/journey/generation.json`; originalprojektion och målningskalibrering bevaras separat.
+- `story/journey-radio.json`: fjorton originalskrivna repliker, gemensam källa för spelets text och röstproduktion. Samma syntetiska Ebba/Hedvig-referenser som tidigare. Första mätorder-tagningen tappade slutet i lokal transkriberingskontroll; manus och tagning kortades. Avvisade tagningar ligger i `source/voices/rejected/`.
+- `audio/footstep.ogg`: egen lågmäld deterministisk sula mot sten via `tools/build_footsteps.py`, med rå-WAV.
+- Ett åttabildsförsök för Karl används inte: riktningar och steg följde inte briefen. Avvisningsskäl och prompt i `source/journey/rejected-walk-v2.json`; bilden finns endast bland lokala artifacts/originalgenerationer.

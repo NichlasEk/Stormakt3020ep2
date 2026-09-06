@@ -1,0 +1,108 @@
+[
+  {
+    "path": "assets/audio/voice-broadcast-route.ogg",
+    "sha256": "fa7531ee37a9397558163d95715eb38a23a8b9c3bc4756e5b2bd0eff4cd16b57",
+    "seconds": 7.9
+  },
+  {
+    "path": "assets/audio/voice-cipher-route.ogg",
+    "sha256": "d7aa9dd6c38baaeb3d1e820032e94225714eed0b878e1f1043041e020c6d52b0",
+    "seconds": 5.8
+  },
+  {
+    "path": "assets/audio/voice-warehouse-entry.ogg",
+    "sha256": "1445941179f562fd119e026ad46bf8af1fdd8a80d3346b83198cd91bcf9e2f26",
+    "seconds": 7.4
+  },
+  {
+    "path": "assets/audio/voice-whetstone.ogg",
+    "sha256": "b02a5554a07449aba585c659e90f2e05940b8db71e317d67a0a5796d27029541",
+    "seconds": 6.9
+  },
+  {
+    "path": "assets/audio/voice-manifest.ogg",
+    "sha256": "aaf6f9df74be3a4775409fe2ce6a8c146df8291683fc249e922e1814ca0e307c",
+    "seconds": 8.2
+  },
+  {
+    "path": "assets/audio/voice-winch.ogg",
+    "sha256": "7d9288796dc1508a3977297742b44732f9662a9565b086669a003c0883d8e5fc",
+    "seconds": 6.0
+  },
+  {
+    "path": "assets/audio/voice-shore-entry.ogg",
+    "sha256": "f6e6c5f4b774a7f685de38b4b4b5f289d6fd5e5d31669f324f04238663f1d44d",
+    "seconds": 8.2
+  },
+  {
+    "path": "assets/audio/voice-survey-0.ogg",
+    "sha256": "775909e80622df7fb619072839fc8522a4861c3887d5ca56259fedcfe6e6f718",
+    "seconds": 7.1
+  },
+  {
+    "path": "assets/audio/voice-survey-1.ogg",
+    "sha256": "1b73223dfa0ddeb5765edb9e4d59d3fcfecf9feb9ec07198339ba2f24fe74ce3",
+    "seconds": 7.1
+  },
+  {
+    "path": "assets/audio/voice-survey-2.ogg",
+    "sha256": "af8929d02e07cd4c109f97ec84ad41cc7c5238f5445bf376138953bc7ec0dcf0",
+    "seconds": 7.1
+  },
+  {
+    "path": "assets/audio/voice-survey-ambush.ogg",
+    "sha256": "1b5abcc33dab61f4e083c5af4b813ad714ffb34cb6e47087466e9d86024724cf",
+    "seconds": 5.3
+  },
+  {
+    "path": "assets/audio/voice-atland-reveal.ogg",
+    "sha256": "27766ec7cd6c1fbe1be7dd78929b23a394302b6c1bbf740d39cc2edffc5da59e",
+    "seconds": 8.2
+  },
+  {
+    "path": "assets/audio/voice-already-here.ogg",
+    "sha256": "b0c9c7c435f023c29fec73dff10ce50c1884f024e693a66bc05fb57c28d93fc6",
+    "seconds": 8.5
+  },
+  {
+    "path": "assets/audio/voice-journey-end.ogg",
+    "sha256": "e1d6472c87acc7e8c6c44242afd14fefab84e7318967e84ae5779155a16ce426",
+    "seconds": 8.8
+  },
+  {
+    "path": "assets/art/karl-walk-v1.png",
+    "sha256": "88e98f77e4d9de84c6aea649d6f451cfca454c93b0908a029589531773bad317"
+  },
+  {
+    "path": "assets/art/karl-attack-v1.png",
+    "sha256": "e3c65dfaa9dd94025d2e10e91ea135b807f39cf608f672cc3f79a605637bdc0e"
+  },
+  {
+    "path": "assets/art/karl-react-v1.png",
+    "sha256": "1027d09cde3e98dcbce65a47466e030530595293f8842e6fba47e96d879b8af3"
+  },
+  {
+    "path": "assets/art/guard-walk-v1.png",
+    "sha256": "4c6d498d185bec6b713bb942ce3505e31803ef9efe79777d9416df2c9d919299"
+  },
+  {
+    "path": "assets/art/guard-attack-v1.png",
+    "sha256": "df1d0d0b0b9f621e66605897a484001862b02fb1607b9af145311a507530ca0a"
+  },
+  {
+    "path": "assets/art/guard-react-v1.png",
+    "sha256": "6063e8d2ed651576507b02058f2130b1b60c4a26426128cd9347cd3ffedb0ad7"
+  },
+  {
+    "path": "assets/art/warehouse-v1.png",
+    "sha256": "2cde6b72f5bc38a5e399b18d2288a0ce3df5de5fa961f9ba3c200b721b6f2b25"
+  },
+  {
+    "path": "assets/art/shore-v1.png",
+    "sha256": "3f7c1575e67589f2884e8f04cee4a16e0abc5821304de7012d1db29473c67370"
+  },
+  {
+    "path": "assets/art/shore-revealed-v1.png",
+    "sha256": "554af07ee673bb7ac18bad87628e29a236009e7517d7a0e84cd3e7bb3414ec81"
+  }
+]

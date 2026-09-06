@@ -29,7 +29,9 @@ public partial class Soundscape : Node
             if(ResourceLoader.Exists($"res://assets/audio/{name}.ogg"))_clips[name]=GD.Load<AudioStream>($"res://assets/audio/{name}.ogg");
         foreach(var name in new[]{"names-intro","names-warning","name-0","name-1","name-2","broadcast","cipher","homebound","hedvig-karta","hedvig-minne"})
             if(ResourceLoader.Exists($"res://assets/audio/voice-{name}.ogg"))_clips["voice-"+name]=GD.Load<AudioStream>($"res://assets/audio/voice-{name}.ogg");
-        foreach(var name in new[]{"scrape","inscription","paper"})_clips[name]=GD.Load<AudioStream>($"res://assets/audio/{name}.ogg");
+        foreach(var id in JourneyDialogue.Load().Keys)
+            if(ResourceLoader.Exists($"res://assets/audio/voice-{id}.ogg"))_clips["voice-"+id]=GD.Load<AudioStream>($"res://assets/audio/voice-{id}.ogg");
+        foreach(var name in new[]{"scrape","inscription","paper","footstep"})_clips[name]=GD.Load<AudioStream>($"res://assets/audio/{name}.ogg");
         if(ResourceLoader.Exists("res://assets/audio/names-score.ogg"))_clips["names-score"]=GD.Load<AudioStream>("res://assets/audio/names-score.ogg");
         Loop(_music,"score");Loop(_bossMusic,"boss-score");Loop(_namesMusic,"names-score");Loop(_ambience,"ambience");
     }

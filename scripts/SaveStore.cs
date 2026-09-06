@@ -41,6 +41,13 @@ public static class SaveStore
             throw new InvalidDataException("Ogiltiga vittnesmål");
         if(game.Phase is Phase.Testimony or Phase.Extraction && !game.Inscriptions.All(i=>i.Read))throw new InvalidDataException("Saknade vittnesmål");
         if(game.Phase==Phase.Extraction && game.Testimony==TestimonyChoice.None)throw new InvalidDataException("Saknat vägval");
+        if(!Enum.IsDefined(game.Region)||game.Surveyed is null||game.Surveyed.Length!=3
+            ||!float.IsFinite(game.SurveyProgress)||game.SurveyProgress<0||game.SurveyProgress>2
+            ||game.SurveyIndex < -1||game.SurveyIndex>2||!float.IsFinite(game.RiposteTime)||game.RiposteTime<0||game.RiposteTime>2.6f)
+            throw new InvalidDataException("Ogiltig expedition");
+        if(game.Region!=Region.Quay&&(!game.ExtendedJourney||!game.Inscriptions.All(i=>i.Read)||game.Testimony==TestimonyChoice.None))
+            throw new InvalidDataException("Saknat underlag för expeditionen");
+        if(game.AtlandRevealed&&(game.Region!=Region.Shore||!game.Surveyed.All(s=>s)))throw new InvalidDataException("Ofullständig mätning");
         return game;
     }
 }

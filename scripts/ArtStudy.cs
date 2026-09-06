@@ -6,9 +6,9 @@ using System.Linq;
 public partial class ArtStudy : Node2D
 {
     private Texture2D _quay=null!;
-    private PaintedCast _cast=null!;
+    private AnimatedCast _cast=null!;
     private Font _font=null!;
-    private int _pose;
+    private int _pose,_direction;
     private bool _capture,_capturing,_ruler;
     private double _elapsed;
     private const float Zoom=1.12f;
@@ -16,7 +16,7 @@ public partial class ArtStudy : Node2D
     public override void _Ready()
     {
         _quay=GD.Load<Texture2D>("res://assets/art/likvarvet-scale-v5.png");
-        _cast=new PaintedCast();
+        _cast=new AnimatedCast();
         _capture=OS.GetCmdlineUserArgs().Contains("--capture-study");
         _ruler=OS.GetCmdlineUserArgs().Contains("--scale-guide");
         _font=GD.Load<Font>("res://assets/fonts/NotoSans-Regular.ttf");
@@ -25,20 +25,22 @@ public partial class ArtStudy : Node2D
     {
         if(ev is not InputEventKey {Pressed:true,Echo:false} k)return;
         if(k.PhysicalKeycode==Key.Escape){GetTree().Quit();return;}
-        if(k.PhysicalKeycode==Key.Space)_pose=(_pose+1)%3;
+        if(k.PhysicalKeycode==Key.Space)_pose=(_pose+1)%7;
+        if(k.PhysicalKeycode==Key.Right)_direction=(_direction+1)%4;
+        if(k.PhysicalKeycode==Key.Left)_direction=(_direction+3)%4;
         if(k.PhysicalKeycode==Key.G)_ruler=!_ruler;
         if(k.PhysicalKeycode==Key.F11)DisplayServer.WindowSetMode(DisplayServer.WindowGetMode()==DisplayServer.WindowMode.Fullscreen?DisplayServer.WindowMode.Windowed:DisplayServer.WindowMode.Fullscreen);
         QueueRedraw();
     }
     public override void _Process(double delta)
     {
-        _elapsed+=delta;
+        _elapsed+=delta;QueueRedraw();
         if(_capture&&!_capturing&&_elapsed>1.5){_capturing=true;Capture();}
     }
     private async void Capture()
     {
         var folder=ProjectSettings.GlobalizePath("res://artifacts");DirAccess.MakeDirRecursiveAbsolute(folder);
-        for(int i=0;i<3;i++)
+        for(int i=0;i<7;i++)
         {
             _pose=i;QueueRedraw();
             await ToSignal(RenderingServer.Singleton,RenderingServer.SignalName.FramePostDraw);
@@ -59,8 +61,11 @@ public partial class ArtStudy : Node2D
             var points=new Vector2[24];for(int i=0;i<24;i++)points[i]=feet+new Vector2(Mathf.Cos(i*Mathf.Tau/24)*25,Mathf.Sin(i*Mathf.Tau/24)*10);
             DrawColoredPolygon(points,new Color(.015f,.012f,.01f,.45f));
         }
-        _cast.Draw(this,"guard",new Vector2(925,666),Vector2.Right,new[]{0,3,4}[_pose],0,false,Offset,Zoom);
-        _cast.Draw(this,"karl-saber",new Vector2(720,755),Vector2.Right,new[]{0,3,4}[_pose],0,false,Offset,Zoom);
+        var facing=new[]{new Vector2(1,1),new Vector2(1,-1),new Vector2(-1,-1),new Vector2(-1,1)}[_direction];
+        string action=_pose==1?"walk":_pose<3?"attack":"react";
+        int frame=_pose==0?0:_pose==1?(int)(_elapsed*7)%4:_pose==2?(int)(_elapsed*5)%4:_pose-3;
+        _cast.Draw(this,"guard",new Vector2(925,666),facing,action,frame,0,_pose==6,Offset,Zoom);
+        _cast.Draw(this,"karl",new Vector2(720,755),facing,action,frame,0,_pose==6,Offset,Zoom);
         if(_ruler)
         {
             var feet=new Vector2(675,755);var head=feet-new Vector2(0,PaintedCast.BodyHeight);
@@ -74,8 +79,8 @@ public partial class ArtStudy : Node2D
         DrawString(_font,new Vector2(38,44),"ATLANDS ARV  ·  BILDPROV",fontSize:18,modulate:new Color("c1ad88"));
         DrawString(_font,new Vector2(38,65),"Gemensam kroppsskala · mindre kajföremål · G måttreferens",fontSize:14,modulate:new Color("b1ada5"));
         DrawRect(new Rect2(20,646,840,54),new Color(.035f,.028f,.022f,.94f));
-        DrawString(_font,new Vector2(38,670),$"Mellanslag: byt pose ({new[]{"beredskap","upptakt","hugg"}[_pose]})   ·   F11: helskärm   ·   Esc: avsluta",fontSize:16,modulate:new Color("d1c8b9"));
-        DrawString(_font,new Vector2(38,690),"Samma figurer används i spelet. Tre stridsposer; fulla gång- och riktningsanimationer återstår.",fontSize:13,modulate:new Color("a19b90"));
+        DrawString(_font,new Vector2(38,670),$"Mellanslag: byt pose ({new[]{"beredskap","gång","anfall","gard","träff","undan","fallen"}[_pose]})   ·   F11: helskärm   ·   Esc: avsluta",fontSize:16,modulate:new Color("d1c8b9"));
+        DrawString(_font,new Vector2(38,690),"Vänster/höger: riktning. Samma nyckelbilder som i spelet; gångens mellanbilder behöver mer arbete.",fontSize:13,modulate:new Color("a19b90"));
     }
     public override void _ExitTree(){_quay?.Dispose();_cast?.Dispose();_font?.Dispose();}
 }

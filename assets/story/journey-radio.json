@@ -1,0 +1,58 @@
+{
+  "broadcast-route": [
+    "ebba",
+    "Namnen är ute. Nu kan de inte stryka dem allihop. Porten till magasinet är öppen, Karl. Följ kartans nästa märke."
+  ],
+  "cipher-route": [
+    "ebba",
+    "Rapporten är säkrad. Vi tar oss vidare genom magasinet. Jag håller förbanden redo."
+  ],
+  "warehouse-entry": [
+    "ebba",
+    "Kronans magasin. Här ligger proviant för en expedition som enligt liggaren aldrig blev av. Se om de lämnade något användbart."
+  ],
+  "whetstone": [
+    "ebba",
+    "Brynstål från Ronneby. Bra. Parera rent och svara med ett starkare hugg. Ta tinkturen också."
+  ],
+  "manifest": [
+    "hedvig",
+    "Mätordern anger tre riktningar. Gravhögen, vadstället, farleden. Datumet är struket. Sigillet är färskt."
+  ],
+  "winch": [
+    "ebba",
+    "Där gick grinden upp. Och där kom bevakningen. Märkligt välbemannat för ett nedlagt magasin."
+  ],
+  "shore-entry": [
+    "hedvig",
+    "Stanna ett ögonblick, Karl. Höjderna där borta finns på bronskartan. Lägg kompassen mot de tre märkta plattorna. Vi måste pröva riktningarna."
+  ],
+  "survey-0": [
+    "hedvig",
+    "Gravhögen ligger rätt. Första riktningen stämmer. Det här är inte en avbildning av någon främmande kust."
+  ],
+  "survey-1": [
+    "hedvig",
+    "Vadstället också. Vattnet har stigit, men berget ligger kvar. Kartan visar hur man tar sig fram."
+  ],
+  "survey-2": [
+    "hedvig",
+    "Alla tre. Vrid nu bronskartan vid mittstenen, Karl. Låt de gamla linjerna följa landskapet."
+  ],
+  "survey-ambush": [
+    "ebba",
+    "Karl, bakom dig! De följde våra signaler. Håll dem borta från mätningen."
+  ],
+  "atland-reveal": [
+    "hedvig",
+    "Där. Vägen under vattnet. Rudbeck letade efter Atland i Sverige. Jag trodde att kartan föreställde hans dröm. Men någon har gått den här vägen."
+  ],
+  "already-here": [
+    "ebba",
+    "De röda mätbanden är nya. Kollegiet var här före oss. Och ändå skickade de oss för att upptäcka platsen. Jag ska formulera en mycket artig fråga."
+  ],
+  "journey-end": [
+    "ebba",
+    "Vi har vägen, mätordern och tre namn de inte lyckades begrava. Kom ombord, Karl. Nästa gång väljer vi själva vart expeditionen går."
+  ]
+}

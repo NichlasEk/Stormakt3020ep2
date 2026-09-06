@@ -46,7 +46,8 @@ roles['hedvig']={'seed':30220606,'instruction':'A mature Swedish female historia
 hedvig_lines={
  'hedvig-karta':('hedvig','Hedvig Rålamb här. Kartans linjer följer gamla vadställen och gravhögar. Karl, vi behöver avtryck av inskrifterna.'),
  'hedvig-minne':('hedvig','Rudbecks äpplen är minne, tal och skrift. Stenarna bevarar gärningar som kronan har strukit. Ta med avtrycken.')}
-if '--hedvig-only' in sys.argv: lines=hedvig_lines
+if '--journey-only' in sys.argv: lines=json.loads((ROOT/'assets/story/journey-radio.json').read_text())
+elif '--hedvig-only' in sys.argv: lines=hedvig_lines
 elif '--names-only' in sys.argv: lines=name_lines
 else: lines.update(name_lines);lines.update(hedvig_lines)
 for role,v in roles.items():

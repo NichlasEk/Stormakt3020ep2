@@ -12,7 +12,9 @@ Från projektmappen:
 
 `F11` växlar helskärm. Välj **Gå i land**, välj artilleri eller fältvård och börja landstigningen.
 
-Spelprov 0.2, **De strukna namnen**: bryt kajens sigill, besegra indrivaren och undersök bronskartan. Frilägg därefter tre inskrifter medan nya patruller försöker stoppa dig. Jämför stenarna med kronans liggare, välj öppen sändning eller krypterad rapport och kämpa tillbaka till båten. Vägarna ger olika motstånd och fördelar under återtåget. Ebba Grip och antikvarien Hedvig Rålamb följer fynden över radion, med egna röster och målade porträtt. Detta är fortfarande ett kompakt spelprov som sätter grunden för den längre Blekinge-banan. Den fullständiga kampanjen, inventarie/loot-systemet, Varvsänkan och Atland byggs vidare senare.
+Spelprov 0.3, **Vägen under vattnet**: kajens sigill, indrivare, bronskarta och tre strukna namn följs nu av kronans magasin och en övervuxen strand. Hitta brynstålet, läs kollegiets mätorder, öppna grinden och pröva kartan mot tre riktningar i landskapet. Ebba och Hedvig följer upptäckten över radion. Slutet avslöjar en väg under vattnet — och att någon var här före expeditionen.
+
+Välj **Öva sabelduell** i huvudmenyn för att prova sabel, parad och undanmanöver mot en vakt. Övningen skriver inte över kampanjens sparningar. Det är fortfarande ett kompakt spelprov; den fullständiga kampanjen återstår.
 
 | Handling | Tangentbord/mus | Handkontroll |
 |---|---|---|
@@ -35,11 +37,11 @@ En tajmad parad skickar tillbaka skyttens kula. Hammaren och tunga attacker bryt
 
 Startvolymen är 25 %. Reglaget går att dra direkt under platsnamnet; M återställer tidigare ljudnivå efter tyst läge. Volymen sparas mellan starter.
 
-Kontrollpunkter sparas också vid inskrifter, vägval och ombordstigning. Delvis frilagda inskrifter behåller arbetet när du släpper knappen eller sparar manuellt. Befintliga avslutade 0.1-sparningar förblir avslutade; välj **Ny landstigning** för det nya uppdraget. F5 skriver ett separat manuellt läge, F9 laddar det. Dödsmenyn återgår till kontrollpunkten. Varje sparfil har checksumma, atomisk skrivning och en föregående säkerhetskopia. Sparfiler ligger i Godots användarkatalog för spelet, helt separat från originalet.
+Kontrollpunkter sparas vid inskrifter, vägval, nya områden, fynd och mätningar. Delvis frilagda inskrifter behåller arbetet när du släpper knappen eller sparar manuellt. Befintliga avslutade 0.1-sparningar förblir avslutade; välj **Ny landstigning** för det nya uppdraget. Ett avslutat 0.2-läge med tre lästa namn kan fortsätta via **Fortsätt genom magasinet** i slutmenyn. F5 skriver ett separat manuellt läge, F9 laddar det. Dödsmenyn återgår till kontrollpunkten. Varje sparfil har checksumma, atomisk skrivning och en föregående säkerhetskopia. Sparfiler ligger i Godots användarkatalog för spelet, helt separat från originalet.
 
 ## Utveckling
 
-Den godkända seriösa figurstilen används nu i spelet för samtliga stridsroller. `./start-art-study.sh --fullscreen` visar samma figurer och kaj; mellanslag växlar poser, G visar måttreferensen. Alla vuxna använder cirka 150 världspixlars ståhöjd. Kajföremålen har målats om i mindre skala. Figurerna har tre stridsposer och speglad sidriktning; fulla gångcykler och åtta riktningar är ännu inte klara.
+Den godkända seriösa figurstilen används nu i spelet för samtliga stridsroller. `./start-art-study.sh --fullscreen` visar samma figurer och kaj; mellanslag växlar poser, G visar måttreferensen. Alla vuxna använder cirka 150 världspixlars ståhöjd. Kajföremålen har målats om i mindre skala. Karl med sabel och sabelvakten har nya gång- och anfallsnyckelbilder i fyra riktningar, samt försvars- och dödsposer. Gången har fortfarande ojämna mellanbilder; specialistrollerna har kvar tre poser och speglad sidriktning. Murar och props skymmer figurer som befinner sig bakom dem. Produktionsmått, korrigeringar och begränsningar finns i `docs/JOURNEY-PRODUCTION.md`.
 
 Godot **4.7.2 .NET**, .NET 8 SDK eller senare, Linux x64. På Arch: `godot-mono`, `dotnet-sdk`. Versionerna är låsta i projektet och exportmallarna ska matcha.
 
@@ -47,10 +49,12 @@ Godot **4.7.2 .NET**, .NET 8 SDK eller senare, Linux x64. På Arch: `godot-mono`
 dotnet run --project tests/Atland.Tests.csproj
 ./start.sh -- --smoke
 ./start.sh --fullscreen -- --integration
-./start.sh -- --ui-check
+./start.sh --fullscreen -- --ui-check
+./start.sh --fullscreen -- --scene-check
+./start.sh -- --duel
 ```
 
-`--smoke` sparar en bild efter två sekunders provkörning. `--integration` kör hela mötet med en testspelare genom vanliga stridsregler och fångar boss/slutbilder. Testkörningarna är tysta och skriver inga användarsparfiler. `--ui-check` provar volym, mute, sparad ljudnivå, klick utan hugg och fältdagboken samt fångar radioporträtten; dess inställningar ligger separat i `artifacts/`. Bilder/loggar hamnar i `artifacts/`.
+`--smoke` sparar en bild efter två sekunders provkörning. `--integration` kör hela mötet med en testspelare genom vanliga stridsregler och fångar kaj, magasin, strand och slutbilder. Testkörningarna är tysta och skriver inga användarsparfiler. `--ui-check` provar volym, mute, sparad ljudnivå, klick utan hugg och fältdagboken samt fångar radioporträtten; dess inställningar ligger separat i `artifacts/`. `--scene-check` fångar överlappning bakom last, murar och sten samt avslöjandets kamerabild. Bilder/loggar hamnar i `artifacts/`.
 
 - `scripts/Combat.cs`: stridsregler utan Godot-beroende.
 - `scripts/Main.cs`: presentation, kontroller, menyer och radiokort.
