@@ -24,7 +24,7 @@ Runtime använder nu `serious-cast-v6.png` för Karl/sabel och vakter samt `seri
 
 ## Radio och ljud
 
-`radio-cast-v1.png` innehåller tre nya målade porträtt: Ebba Grip, Hedvig Rålamb och indrivaren. Ebbas blonda flätade hår, blå ögon och blå officersidentitet utgår från originalets porträtt; ytan är ommålad i episodens allvarliga stil. Indrivaren matchar sin stridsfigur. Ebbas separata `ebba-radio-v2.png` återger därefter originalets fylligare byst i helt täckande uniform på uttrycklig begäran, med samma vuxna ansikte och seriösa stil. Hedvig är en ny, cirka 55-årig antikvarie med egen identitet, äldre låg röst och eftertänksam replikföring.
+`radio-cast-v1.png` innehåller tre nya målade porträtt: Ebba Grip, Hedvig Rålamb och indrivaren. Ebbas blonda flätade hår, blå ögon och blå officersidentitet utgår från originalets porträtt; ytan är ommålad i episodens allvarliga stil. Indrivaren matchar sin stridsfigur. Ebbas separata `ebba-radio-v3.png` återger därefter originalets fylligare byst och måttliga urringning på uttrycklig begäran, med samma vuxna ansikte och seriösa stil. Hedvig är en ny, cirka 55-årig antikvarie med egen identitet, äldre låg röst och eftertänksam replikföring.
 
 16 svenska repliker totalt, varav 10 nya i detta steg. Tre egna syntetiska rollreferenser via VoxCPM2, repliker via Dots MF på lokal EutherLink. Referenser, manusbegäranden, råljud och jobbmanifest ligger i `assets/source/voices/`. Inga verkliga personers röstprov används. Porträtt och undertext följer talaren. Föråldrade stridsrepliker rensas vid fyndövergången.
 

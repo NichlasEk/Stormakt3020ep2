@@ -11,7 +11,7 @@ Alla episodens figurer, scener, repliker och musik är nya produktioner. Origina
 
 Ovanstående bilder använder det inbyggda bildverktyget. Produktionsbriefar, referenser och SHA-256 finns i `source/names-pass/`. `SpriteCutout.cs` bygger riktig alpha för magenta figurark, rensar kantfärg och skapar mipmaps. `PaintedCast.cs` normaliserar ståhöjd och placerar fötter; tre poser och horisontell spegling är inte fullständig gång-/riktningsanimation.
 
-`art/ebba-radio-v2.png` är en separat revision av Ebba efter användarens önskemål om att återge originalets fylligare byst. Ansikte, hår och seriös målad stil utgår från det nya porträttet; fylligare silhuett inspirerad av originalets vuxna Ebba, i helt täckande uniform. Den används för Ebba i runtime; Hedvig och indrivaren läses fortsatt från atlasen.
+`art/ebba-radio-v3.png` är en separat revision av Ebba efter användarens önskemål om att återge originalets fylligare byst. Ansikte, hår och seriös målad stil utgår från det nya porträttet; fylligare silhuett och måttlig uniformsurringning inspirerad av originalets vuxna Ebba. Den används för Ebba i runtime; Hedvig och indrivaren läses fortsatt från atlasen.
 
 ## Röster, musik och effekter
 
@@ -32,3 +32,5 @@ AI-källor bevarar begäran och utfall; identisk prompt garanterar inte identisk
 `karl-combat-matte-v5.png`, `guard-combat-matte-v5.png` och `source/concepts/karl-oil-study-v3.png` är tidigare figurstudier. Den gamla shaderbaserade ljushetsmasken används inte längre. Äldre och avvisade bildpass har sina produktionsfiler under `source/rough-pass/`.
 
 Godot, .NET, Blender, ComfyUI och modeller har egna licenser; träningsmodeller distribueras inte med spelet. Godots motorlicens: https://godotengine.org/license/
+
+Den tidigare helt täckande `ebba-radio-v2.png` bevaras som föregående variant. V3 använder v2 för ansiktet och originalets radioporträtt för uniformsutformningen.

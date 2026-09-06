@@ -77,7 +77,7 @@ public partial class Main : Node2D
         _serif=GD.Load<Font>("res://assets/fonts/NotoSerif-Regular.ttf");_sans=GD.Load<Font>("res://assets/fonts/NotoSans-Regular.ttf");
         _background=GD.Load<Texture2D>("res://assets/art/likvarvet-scale-v5.png");
         _radioPortraits=GD.Load<Texture2D>("res://assets/art/radio-cast-v1.png");
-        _ebbaPortrait=GD.Load<Texture2D>("res://assets/art/ebba-radio-v2.png");
+        _ebbaPortrait=GD.Load<Texture2D>("res://assets/art/ebba-radio-v3.png");
         _cast=new PaintedCast();
         _sound=new Soundscape();AddChild(_sound);LoadSettings();
         GetWindow().MinSize=new Vector2I(960,540);

@@ -1,0 +1,12 @@
+{
+  "tool": "built-in image_gen",
+  "date": "2026-09-06",
+  "output": "assets/art/ebba-radio-v3.png",
+  "sha256": "2c06625d01dd5e92904a54ae14a5a1d3cdb69df0eea88728a7e50478310cc4b8",
+  "references": [
+    "assets/art/ebba-radio-v2.png",
+    "/home/nichlas/WaylandForge/assets/stormakt3020/stormakt-radio-portraits-v1.png"
+  ],
+  "prompt": "Create one square oil-painted game character portrait of the adult female admiral Ebba Grip. Use image 1 for her exact face, blonde braid, confident expression, dark painterly style and navy-and-gold uniform. Restore her fuller bust and the moderately open V neckline of the adult blonde admiral in the TOP ROW of image 2. A modest amount of natural cleavage is visible above the tailored coat, as in a conventional historical fantasy character portrait. Head and upper torso composition, upright commanding posture, worn blue wool, tarnished gold trim and a small three-crowns gorget at her throat. Serious, dignified military character art with ordinary adult proportions. Keep the beautiful face from image 1 and its dark umber background. One person, no text, no UI.",
+  "runtime_generation_required": false
+}
