@@ -1,5 +1,13 @@
 # Checkpoint · Vägen under vattnet · 2026-09-06
 
+## Senaste justering · överlevnad och provisorisk specialistgång
+
+Användaren tycker indrivaren är svår och vill kunna fortsätta spela trots skador. Inställningar har nu **Utvecklarläge: överlevnad**. Standard AV. PÅ behåller skada, skadeblink, ljud, gard och ordinarie träffimmunitet, men livet stannar vid 1. Synlig DEV-markering. Preferensen sparas i settings.cfg och tillämpas på aktuell kampanj, ny kampanj, duell och laddning. Den lagras inte i kampanjens JSON; nuvarande inställning styr. Automatiska stridstester kör utan skydd.
+
+Gruvhammar-Karl och indrivaren har två nya provisoriska fyrariktningsark för gång. Hammar-Karls bakåtvända rader kom i omvänd ordning och mappas rätt i `AnimatedCast.cs`. Övriga stridsposer är kvar. Användaren har uttryckligen pekat ut att **hela gången behöver ett nytag**. Nästa animationsarbete ska därför utgå från en sammanhängande riggad gångcykel med fotkontakt, gemensamt rotläge och kroppsbalans före ommålning, inte fler fristående poser. Det omtaget är ännu inte genomfört.
+
+28 857 regelassertions passerar, inklusive skydd mot dödlig kula/områdesskada, bibehållen skadefeedback och återställd dödlighet vid avstängning. UI-kontroll provar omkopplare, settings-reload samt ny kampanj/duell. Specialistark och inställningslayout har fångats i bildprov. Native-versionen `dist/AtlandsArv-0.3.1/AtlandsArv.x86_64` är exporterad separat så den äldre spelprocessen kan fortsätta vara öppen. Samma UI-kontroller passerar även i den exporterade versionen.
+
 ## Spelbart nu
 
 Spelprov 0.3 i Godot 4.7.2 .NET. Separat från originalet. Hela kajuppdraget fortsätter nu genom kronans magasin till De tre vittnenas strand och det första spelbara Atland-avslöjandet.

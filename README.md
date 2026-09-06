@@ -35,13 +35,15 @@ Välj **Öva sabelduell** i huvudmenyn för att prova sabel, parad och undanman�
 
 En tajmad parad skickar tillbaka skyttens kula. Hammaren och tunga attacker bryter pikenerarens gard. Artilleriet träffar framför Karl i siktriktningen. Fältvård ger två extra tinkturer och återkommande läkning.
 
+**Utvecklarläge:** ESC → Inställningar → **Utvecklarläge: överlevnad PÅ**. Karl tappar liv och reagerar på träffar, men stannar på minst 1 liv. Läget är av från början, sparas i inställningarna och gäller även efter laddning. Stäng av det för vanlig dödlig skada. En DEV-markering syns under volymreglaget när skyddet är aktivt.
+
 Startvolymen är 25 %. Reglaget går att dra direkt under platsnamnet; M återställer tidigare ljudnivå efter tyst läge. Volymen sparas mellan starter.
 
 Kontrollpunkter sparas vid inskrifter, vägval, nya områden, fynd och mätningar. Delvis frilagda inskrifter behåller arbetet när du släpper knappen eller sparar manuellt. Befintliga avslutade 0.1-sparningar förblir avslutade; välj **Ny landstigning** för det nya uppdraget. Ett avslutat 0.2-läge med tre lästa namn kan fortsätta via **Fortsätt genom magasinet** i slutmenyn. F5 skriver ett separat manuellt läge, F9 laddar det. Dödsmenyn återgår till kontrollpunkten. Varje sparfil har checksumma, atomisk skrivning och en föregående säkerhetskopia. Sparfiler ligger i Godots användarkatalog för spelet, helt separat från originalet.
 
 ## Utveckling
 
-Den godkända seriösa figurstilen används nu i spelet för samtliga stridsroller. `./start-art-study.sh --fullscreen` visar samma figurer och kaj; mellanslag växlar poser, G visar måttreferensen. Alla vuxna använder cirka 150 världspixlars ståhöjd. Kajföremålen har målats om i mindre skala. Karl med sabel och sabelvakten har nya gång- och anfallsnyckelbilder i fyra riktningar, samt försvars- och dödsposer. Gången har fortfarande ojämna mellanbilder; specialistrollerna har kvar tre poser och speglad sidriktning. Murar och props skymmer figurer som befinner sig bakom dem. Produktionsmått, korrigeringar och begränsningar finns i `docs/JOURNEY-PRODUCTION.md`.
+Den godkända seriösa figurstilen används nu i spelet för samtliga stridsroller. `./start-art-study.sh --fullscreen` visar samma figurer och kaj; mellanslag växlar poser, G visar måttreferensen. Alla vuxna använder cirka 150 världspixlars ståhöjd. Kajföremålen har målats om i mindre skala. Karl med sabel och sabelvakten har nya gång- och anfallsnyckelbilder i fyra riktningar, samt försvars- och dödsposer. Gången har fortfarande ojämna mellanbilder; gruvhammar-Karl och indrivaren har nu provisoriska gångark, men deras stridsposer och övriga specialistroller använder fortfarande den enklare presentationen. Alla gångcykler behöver ett samlat omtag med riggad rörelsereferens. Murar och props skymmer figurer som befinner sig bakom dem. Produktionsmått, korrigeringar och begränsningar finns i `docs/JOURNEY-PRODUCTION.md`.
 
 Godot **4.7.2 .NET**, .NET 8 SDK eller senare, Linux x64. På Arch: `godot-mono`, `dotnet-sdk`. Versionerna är låsta i projektet och exportmallarna ska matcha.
 

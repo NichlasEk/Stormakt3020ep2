@@ -21,7 +21,7 @@ public partial class Main
     }
     private void StartDuel()
     {
-        _game=Combat.NewDuel();_camera=G(_game.Player)+new Vector2(70,-70);
+        _game=Combat.NewDuel();ApplyDeveloperSettings();_camera=G(_game.Player)+new Vector2(70,-70);
         _particles.Clear();_floating.Clear();_radioQueue.Clear();_radio="";_sound.StopVoice();
         ChangeScreen(Screen.Game);_banner="SABELDUELL";_bannerTime=5;
     }

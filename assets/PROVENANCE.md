@@ -43,3 +43,6 @@ Den tidigare helt täckande `ebba-radio-v2.png` bevaras som föregående variant
 - `story/journey-radio.json`: fjorton originalskrivna repliker, gemensam källa för spelets text och röstproduktion. Samma syntetiska Ebba/Hedvig-referenser som tidigare. Första mätorder-tagningen tappade slutet i lokal transkriberingskontroll; manus och tagning kortades. Avvisade tagningar ligger i `source/voices/rejected/`.
 - `audio/footstep.ogg`: egen lågmäld deterministisk sula mot sten via `tools/build_footsteps.py`, med rå-WAV.
 - Ett åttabildsförsök för Karl används inte: riktningar och steg följde inte briefen. Avvisningsskäl och prompt i `source/journey/rejected-walk-v2.json`; bilden finns endast bland lokala artifacts/originalgenerationer.
+
+
+`art/karl-hammer-walk-v1.png` och `art/collector-walk-v1.png`: två provisoriska gångark (1254 × 1254, fyra riktningar × fyra nyckelbilder) från inbyggd bildgenerering. `serious-specialists-v1.png` är identitetsreferens. Fulla promptar och originalvägar i `source/journey/specialist-walks.json`. Hammar-Karls bakåtrader mappas i omvänd ordning. Bilderna fyller luckorna men ersätter inte det planerade omtaget av samtliga gångcykler.

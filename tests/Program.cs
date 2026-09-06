@@ -194,3 +194,19 @@ try
 }
 finally{File.Delete(partialPath);}
 Console.WriteLine($"PASS EXTENDED · {checks} assertions");
+
+// Development survival preserves actual feedback and has no effect when disabled.
+var protectedKarl=Combat.New(Order.Medicine);protectedKarl.DeveloperSurvival=true;protectedKarl.Health=40;
+protectedKarl.Shots.Add(new(){Position=protectedKarl.Player+new Vector2(10,0),Velocity=new(-200,0)});
+protectedKarl.Step(Input());
+Check(protectedKarl.Health==25&&protectedKarl.Hurt>0&&protectedKarl.Events.Any(e=>e.Kind=="hurt"),"Dev protection still loses health and emits damage feedback");
+protectedKarl.Health=3;protectedKarl.Invulnerable=0;
+protectedKarl.Shots.Add(new(){Position=protectedKarl.Player+new Vector2(10,0),Velocity=new(-200,0)});protectedKarl.Step(Input());
+Check(protectedKarl.Health==1&&!protectedKarl.Dead&&protectedKarl.Events.All(e=>e.Kind!="playerdeath"),"Dev protection prevents a lethal bullet without a death event");
+protectedKarl.Invulnerable=0;protectedKarl.Hazards.Add(new(){Position=protectedKarl.Player,Radius=100,Timer=0});protectedKarl.Step(Input());
+Check(protectedKarl.Health==1&&protectedKarl.Hurt>0,"Boss-style area damage also preserves one life and feedback");
+Check(!JsonSerializer.Serialize(protectedKarl,new JsonSerializerOptions{IncludeFields=true}).Contains("DeveloperSurvival"),"Developer toggle is a setting, never smuggled into campaign saves");
+protectedKarl.DeveloperSurvival=false;protectedKarl.Invulnerable=0;
+protectedKarl.Shots.Add(new(){Position=protectedKarl.Player+new Vector2(10,0),Velocity=new(-200,0)});protectedKarl.Step(Input());
+Check(protectedKarl.Dead&&protectedKarl.Events.Any(e=>e.Kind=="playerdeath"),"Turning off development protection restores lethal damage immediately");
+Console.WriteLine($"PASS DEV SURVIVAL · {checks} assertions");

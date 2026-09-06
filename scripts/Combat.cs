@@ -68,6 +68,7 @@ public sealed partial class Combat
     public Vector2 Player = new(470, 855);
     public Vector2 Facing = new(0.7f, -0.7f);
     public float Health = 100;
+    [JsonIgnore] public bool DeveloperSurvival;
     public float Stamina = 100;
     public int Potions = 2;
     public Weapon Weapon;
@@ -397,7 +398,7 @@ public sealed partial class Combat
         if(Invulnerable>0 || Dead)return;
         if(Guarding && Vector2.Dot(Facing,Normal(source-Player,Facing))>.1f && Stamina>=18)
         {Stamina-=18;damage*=.22f;Emit("block",Player);}
-        Health=Math.Max(0,Health-damage);Invulnerable=.55f;Hurt=.22f;Emit("hurt",Player,"",damage);
+        Health=Math.Max(DeveloperSurvival?1:0,Health-damage);Invulnerable=.55f;Hurt=.22f;Emit("hurt",Player,"",damage);
         if(Dead)Emit("playerdeath",Player);
     }
     private void MovePlayer(Vector2 delta)

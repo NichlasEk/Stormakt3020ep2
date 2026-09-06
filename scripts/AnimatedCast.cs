@@ -9,7 +9,7 @@ public sealed class AnimatedCast : IDisposable
     private readonly Dictionary<string,Sheet> _sheets=new();
     public AnimatedCast()
     {
-        foreach(string role in new[]{"karl","guard"})foreach(string action in new[]{"walk","attack","react"})
+        foreach(string role in new[]{"karl","guard","karl-hammer","collector"})foreach(string action in (role is "karl" or "guard"?new[]{"walk","attack","react"}:new[]{"walk"}))
         {
             var texture=SpriteCutout.Load($"res://assets/art/{role}-{action}-v1.png",chromaKey:new Color(1,0,1));
             using var image=texture.GetImage();int width=image.GetWidth(),height=image.GetHeight();var data=image.GetData();
@@ -48,6 +48,7 @@ public sealed class AnimatedCast : IDisposable
     public void Draw(Node2D canvas,string role,Vector2 position,Vector2 facing,string action,int frame,float hurt,bool dead,Vector2 offset,float zoom)
     {
         int row=facing.Y>=0?(facing.X>=0?0:3):(facing.X>=0?1:2);bool flip=false;
+        if(role=="karl-hammer"&&action=="walk"){if(row==1)row=2;else if(row==2)row=1;} // Generated back-view rows are reversed.
         // Karl's NW contact was painted facing forward; mirror the correct back view.
         if(role=="karl"&&action=="attack"&&row==2&&frame==2){row=1;flip=true;}
         var sheet=_sheets[role+"-"+action];int index=row*4+Math.Clamp(frame,0,3);float scale=sheet.Scale[row];

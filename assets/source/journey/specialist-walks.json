@@ -1,0 +1,18 @@
+[
+  {
+    "role": "karl-hammer",
+    "prompt": "Production WALK-CYCLE sprite atlas. ONLY the young brown-haired officer in the TOP ROW of reference, navy coat with brass buttons, forehead lamp, yellow-brown gloves, carrying his compact two-handed mining hammer LOW across his body. Preserve exact identity, costume and weapon from reference. Serious realistic adult proportions, dark matte oil painting, no cartoon or toy shapes. Square image strict FOUR columns and FOUR rows, sixteen isolated full-body sprites on uniform pure magenta #ff00ff, no text, no shadows, no grid. Every cell has the same camera, scale and fixed hip center; all weapons and feet entirely inside cell. Camera elevated 35 degrees. Each row is a distinct facing direction: row1 front southeast, row2 BACK northeast, row3 BACK northwest, row4 front southwest. Four columns are four consecutive grounded walking phases, NOT standing poses: column1 LEFT foot planted forward, right boot back; column2 right knee passes forward alongside planted left leg; column3 RIGHT foot planted forward, left boot back, opposite of column1; column4 left knee passes forward alongside planted right leg. Alternate leading legs visibly. Calm purposeful brisk walk; hammer weight steady, no attack poses. Head and pelvis registered consistently across cells, subtle natural coat motion, feet baseline fixed, natural leg length. Reference includes several characters; draw only the specified character, sixteen times.",
+    "source": "/home/nichlas/.codex/generated_images/01a07608-36a4-7850-ba4d-824cc60ab5aa/exec-4f8479ae-ca39-481d-9580-d3dba6752cd5.png",
+    "status": "provisional; four keyframes, full gait rebuild remains planned",
+    "runtime_asset": "assets/art/karl-hammer-walk-v1.png",
+    "sha256": "6c2be7232a885ea8debc2bec49bc62fcab265819bb0f7d7157299adad1ddc1f8"
+  },
+  {
+    "role": "collector",
+    "prompt": "Production WALK-CYCLE sprite atlas. ONLY the older broad weathered dock collector in the BOTTOM ROW of reference, black broad-brim hat, worn black leather long coat with iron shoulder plates and ledger chain, carrying his heavy rectangular hammer LOW. Preserve exact identity, costume and weapon from reference. Serious realistic adult proportions, dark matte oil painting, no cartoon or toy shapes. Square image strict FOUR columns and FOUR rows, sixteen isolated full-body sprites on uniform pure magenta #ff00ff, no text, no shadows, no grid. Every cell has the same camera, scale and fixed hip center; all weapons and feet entirely inside cell. Camera elevated 35 degrees. Each row is a distinct facing direction: row1 front southeast, row2 BACK northeast, row3 BACK northwest, row4 front southwest. Four columns are four consecutive grounded walking phases, NOT standing poses: column1 LEFT foot planted forward, right boot back; column2 right knee passes forward alongside planted left leg; column3 RIGHT foot planted forward, left boot back, opposite of column1; column4 left knee passes forward alongside planted right leg. Alternate leading legs visibly. Calm purposeful heavy deliberate walk; hammer weight steady, no attack poses. Head and pelvis registered consistently across cells, subtle natural coat motion, feet baseline fixed, natural leg length. Reference includes several characters; draw only the specified character, sixteen times.",
+    "source": "/home/nichlas/.codex/generated_images/01a07608-36a4-7850-ba4d-824cc60ab5aa/exec-8c1cf768-4ed5-410e-bfdd-b7d3bb37a6c1.png",
+    "status": "provisional; four keyframes, full gait rebuild remains planned",
+    "runtime_asset": "assets/art/collector-walk-v1.png",
+    "sha256": "04e6226959d655eee038f6a2c4fd20c10c4a9db04092e74738e5891f56daac44"
+  }
+]

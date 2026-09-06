@@ -35,6 +35,7 @@ public partial class Main : Node2D
     private bool _uiChecks,_uiChecked;
     private string SettingsPath=>_uiChecks?"res://artifacts/ui-settings.cfg":"user://settings.cfg";
     private bool _cameraShake=true;
+    private bool _developerSurvival;
     private bool _testMode;
     private bool _smokeCapture;
     private bool _integration;
@@ -186,6 +187,7 @@ public partial class Main : Node2D
             case "settings":_settingsReturn=_screen;ChangeScreen(Screen.Settings);break;
             case "volume-":SetVolume(_volume-.05f);break;
             case "volume+":SetVolume(_volume+.05f);break;
+            case "dev-survival":_developerSurvival=!_developerSurvival;ApplyDeveloperSettings();SaveSettings();break;
             case "shake":_cameraShake=!_cameraShake;SaveSettings();break;
             case "fullscreen":DisplayServer.WindowSetMode(DisplayServer.WindowGetMode()==DisplayServer.WindowMode.Fullscreen?DisplayServer.WindowMode.Windowed:DisplayServer.WindowMode.Fullscreen);break;
             case "back":Back();break;
@@ -204,7 +206,7 @@ public partial class Main : Node2D
     }
     private void StartNew()
     {
-        _game=Combat.New(_order,true);_camera=G(_game.Player)+new Vector2(85,-80);_particles.Clear();_floating.Clear();_radioQueue.Clear();_radio="";_sound.StopVoice();
+        _game=Combat.New(_order,true);ApplyDeveloperSettings();_camera=G(_game.Player)+new Vector2(85,-80);_particles.Clear();_floating.Clear();_radioQueue.Clear();_radio="";_sound.StopVoice();
         ChangeScreen(Screen.Game);_banner="BLEKINGES LIKVARV";_bannerTime=5;Save();
     }
     private void Save(bool manual=false)
@@ -216,7 +218,7 @@ public partial class Main : Node2D
     {
         try
         {
-            _game=SaveStore.Read(manual?ManualPath:SavePath);_camera=G(_game.Player)+new Vector2(85,-80);_particles.Clear();_floating.Clear();_radioQueue.Clear();_radio="";_sound.StopVoice();
+            _game=SaveStore.Read(manual?ManualPath:SavePath);ApplyDeveloperSettings();_camera=G(_game.Player)+new Vector2(85,-80);_particles.Clear();_floating.Clear();_radioQueue.Clear();_radio="";_sound.StopVoice();
             ChangeScreen(_game.Dead?Screen.Death:_game.Phase==Phase.Complete?Screen.Ending:_game.Phase==Phase.Testimony?Screen.Testimony:Screen.Game);Notice("Fältdagboken återupptagen");
         }
         catch(Exception e){GD.PushWarning(e.Message);Notice("Sparfilen kunde inte läsas. Du kan starta en ny landstigning.");}
@@ -224,8 +226,13 @@ public partial class Main : Node2D
     private void Notice(string text){_notice=text;_noticeTime=4;}
     private void LoadSettings()
     {
-        var config=new ConfigFile();if(config.Load(SettingsPath)==Error.Ok){_volume=Math.Clamp((float)config.GetValue("audio","volume",.25f),0,1);_unmutedVolume=Math.Clamp((float)config.GetValue("audio","unmuted_volume",.25f),.001f,1);_cameraShake=(bool)config.GetValue("display","shake",true);}_sound.Volume=_volume;
-        if(_volume>0)_unmutedVolume=_volume;
+        var config=new ConfigFile();if(config.Load(SettingsPath)==Error.Ok){_volume=Math.Clamp((float)config.GetValue("audio","volume",.25f),0,1);_unmutedVolume=Math.Clamp((float)config.GetValue("audio","unmuted_volume",.25f),.001f,1);_cameraShake=(bool)config.GetValue("display","shake",true);_developerSurvival=(bool)config.GetValue("developer","survival",false);}_sound.Volume=_volume;
+        if(_volume>0)_unmutedVolume=_volume;ApplyDeveloperSettings();
+    }
+    private void ApplyDeveloperSettings()
+    {
+        _game.DeveloperSurvival=_developerSurvival&&(!_testMode||_uiChecks);
+        if(_game.DeveloperSurvival)_game.Health=Math.Max(1,_game.Health);
     }
     private Rect2 VolumePanel=>new(_screen==Screen.Game&&_revealTime<=0?new Vector2(20,88):new Vector2(1020,18),new Vector2(240,36));
     private void SetVolume(float volume)
@@ -233,7 +240,7 @@ public partial class Main : Node2D
     private void ToggleMute()=>SetVolume(_volume>0?0:_unmutedVolume);
     private void SetVolumeFromPointer(Vector2 pointer)
     { _volume=Math.Clamp((pointer.X-VolumePanel.Position.X-49)/137,0,1);if(_volume>0)_unmutedVolume=_volume;_sound.Volume=_testMode?0:_volume; }
-    private void SaveSettings(){_sound.Volume=_testMode?0:_volume;var c=new ConfigFile();c.SetValue("audio","volume",_volume);c.SetValue("audio","unmuted_volume",_unmutedVolume);c.SetValue("display","shake",_cameraShake);c.Save(SettingsPath);}
+    private void SaveSettings(){_sound.Volume=_testMode?0:_volume;var c=new ConfigFile();c.SetValue("audio","volume",_volume);c.SetValue("audio","unmuted_volume",_unmutedVolume);c.SetValue("display","shake",_cameraShake);c.SetValue("developer","survival",_developerSurvival);c.Save(SettingsPath);}
     private void ClearPresses(){_attack=_heavy=_dodge=_swap=_heal=_support=_interact=false;}
     public override void _PhysicsProcess(double delta)
     {
@@ -374,6 +381,16 @@ public partial class Main : Node2D
             _sound.Volume=0;
             _Input(new InputEventKey{PhysicalKeycode=Key.R,Pressed=true});Check(_screen==Screen.Journal,"R opens field notes");
             Back();Check(_screen==Screen.Game,"Escape returns from field notes");
+            Activate("dev-survival");Check(_developerSurvival&&_game.DeveloperSurvival,"Settings toggle applies survival immediately");
+            _developerSurvival=false;LoadSettings();Check(_developerSurvival&&_game.DeveloperSurvival,"Developer preference survives settings reload");
+            StartDuel();Check(_game.DeveloperSurvival,"New duel inherits developer preference");
+            StartNew();Check(_game.DeveloperSurvival,"New campaign inherits developer preference");
+            Activate("dev-survival");Check(!_game.DeveloperSurvival,"Toggle off restores normal damage");
+            _settingsReturn=Screen.Game;ChangeScreen(Screen.Settings);QueueRedraw();
+            await ToSignal(RenderingServer.Singleton,RenderingServer.SignalName.FramePostDraw);
+            using(var settingsImage=GetViewport().GetTexture().GetImage())settingsImage.SavePng("res://artifacts/developer-settings.png");
+            Back();
+            GD.Print("DEV SETTINGS CHECK PASS: toggle, reload, new campaign and duel");
             GD.Print("UI CHECK PASS: mute, restore, shortcut, slider, clamp, no attack, persistence, journal");
             QueueRedraw();await ToSignal(RenderingServer.Singleton,RenderingServer.SignalName.FramePostDraw);
             GetViewport().GetTexture().GetImage().SavePng(ProjectSettings.GlobalizePath("res://artifacts/volume-controls.png"));
@@ -524,6 +541,8 @@ public partial class Main : Node2D
             if(dead){action="react";frame=3;}
             _animated.Draw(this,player?"karl":"guard",p,facing,action,frame,hurt,dead,Offset,Zoom);
         }
+        else if(kind is "karl-hammer" or "collector" && moving&&pose<3&&hurt<=0&&!dead)
+            _animated.Draw(this,kind,p,player?G(_game.MoveDirection):facing,"walk",(int)walk%4,0,false,Offset,Zoom);
         else _cast.Draw(this,kind,p,facing,pose,hurt,dead,Offset,Zoom);
     }
     private void DrawHud()
@@ -535,6 +554,7 @@ public partial class Main : Node2D
             if((_radioTime>0||_sound.Speaking)&&Radio.ContainsKey(_radio))DrawRadio();
             return;
         }
+        if(_game.DeveloperSurvival){Panel(new Rect2(20,132,240,29),.9f);Text("DEV · Karl överlever på 1 liv",new Vector2(30,152),12,Gold);}
         Panel(new Rect2(20,18,294,60),.87f);Text("STORMAKT 3020",new Vector2(38,41),12,Gold);Text(_game.RegionName,new Vector2(38,65),20,Pale,true);
         Panel(new Rect2(928,18,332,102),.91f);Text(_game.Duel?"ÖVNING  /  SABEL":$"EXPEDITION  /  {(int)_game.Region+1:00}",new Vector2(946,42),12,Gold);
         string objective=_game.Phase switch
@@ -646,9 +666,11 @@ public partial class Main : Node2D
         Centered("Inställningar",640,165,40,Pale,true);Centered($"Ljudvolym  {Math.Round(_volume*100)} %",640,239,20,Gold);
         Button(new Rect2(455,264,177,45),"Sänk","volume-");Button(new Rect2(648,264,177,45),"Höj","volume+");
         Button(new Rect2(455,329,370,49),"Kameraskakning: "+(_cameraShake?"på":"av"),"shake");
-        Button(new Rect2(455,394,370,49),"Växla helskärm  ·  F11","fullscreen");Button(new Rect2(455,475,370,49),"Tillbaka","back",true);
-        Centered("M tyst/ljud · +/− volym · dra reglaget uppe till höger",640,562,15,Gold);
-        Centered("Undertexter visas alltid. Inställningarna sparas automatiskt.",640,593,15,Muted);
+        Button(new Rect2(455,394,370,49),"Växla helskärm  ·  F11","fullscreen");Button(new Rect2(420,459,440,49),"Utvecklarläge: överlevnad "+(_developerSurvival?"PÅ":"AV"),"dev-survival");
+        Centered("Karl tar skada men överlever på minst 1 liv.",640,534,15,Muted);
+        Button(new Rect2(455,567,370,49),"Tillbaka","back",true);
+        Centered("M tyst/ljud · +/− volym · dra reglaget uppe till höger",640,653,15,Gold);
+        Centered("Undertexter visas alltid. Inställningarna sparas automatiskt.",640,684,15,Muted);
     }
     private void DrawDeath()
     {

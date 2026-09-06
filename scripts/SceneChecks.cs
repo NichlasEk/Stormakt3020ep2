@@ -21,6 +21,11 @@ public partial class Main
                 await ToSignal(RenderingServer.Singleton,RenderingServer.SignalName.FramePostDraw);
                 using var image=GetViewport().GetTexture().GetImage();image.SavePng($"res://artifacts/{name}.png");GD.Print("SCENE CHECK "+name);
             }
+            await Show("specialist-walks",Region.Quay,new(720,755));
+            _game.Weapon=Weapon.Hammer;_game.Moving=true;_game.MoveDirection=new(1,-1);_game.Walk=2;
+            _game.Spawn(EnemyKind.Collector,new(925,666));var collector=_game.Enemies[0];collector.Moving=true;collector.Facing=new(-1,1);collector.Walk=2;
+            RememberRenderPositions();QueueRedraw();await ToSignal(RenderingServer.Singleton,RenderingServer.SignalName.FramePostDraw);
+            using(var walkImage=GetViewport().GetTexture().GetImage())walkImage.SavePng("res://artifacts/specialist-walks.png");
             await Show("depth-crate-behind",Region.Warehouse,new(760,480));
             await Show("depth-crate-front",Region.Warehouse,new(790,660));
             await Show("depth-wall",Region.Warehouse,new(1070,696));
