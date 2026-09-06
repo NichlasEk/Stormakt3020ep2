@@ -35,6 +35,8 @@ Kontrollpunkter sparas vid landstigning, före indrivaren och efter segern. F5 s
 
 ## Utveckling
 
+Det senaste figur- och materialprovet öppnas med `./start-art-study.sh --fullscreen`. Mellanslag växlar mellan beredskap, upptakt och hugg; Esc avslutar. Det visar nya figurer med originalets identitet i spelets kameraskala. Detta är ett bildprov, inte färdiga riktningsanimationer. Den mattare kajen används även i den vanliga spelprototypen; dess tidigare figuranimationer är fortsatt provisoriska.
+
 Godot **4.7.2 .NET**, .NET 8 SDK eller senare, Linux x64. På Arch: `godot-mono`, `dotnet-sdk`. Versionerna är låsta i projektet och exportmallarna ska matcha.
 
 ```bash

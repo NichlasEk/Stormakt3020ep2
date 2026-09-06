@@ -1,0 +1,123 @@
+{
+  "1": {
+    "class_type": "UNETLoader",
+    "inputs": {
+      "unet_name": "Krea-2-Turbo/krea2_turbo_fp8_scaled.safetensors",
+      "weight_dtype": "default"
+    }
+  },
+  "2": {
+    "class_type": "CLIPLoader",
+    "inputs": {
+      "clip_name": "Krea-2/qwen3vl_4b_fp8_scaled.safetensors",
+      "type": "krea2",
+      "device": "default"
+    }
+  },
+  "3": {
+    "class_type": "VAELoader",
+    "inputs": {
+      "vae_name": "Krea-2/qwen_image_vae.safetensors"
+    }
+  },
+  "4": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        0
+      ],
+      "text": "Repaint this exact harbour composition as gritty matte pre-rendered dark action RPG scenery, with the material realism and oppressive atmosphere of Diablo II and an austere seventeenth century Nordic military oil painting. Keep every quay edge, gate, ship, rope, lantern and pavement seal at exactly the same location, same camera and clear walkable floor. All surfaces are coarse, exhausted and unvarnished: splintered dry black timber, cracked granular granite, ash and ingrained charcoal dirt in stone joints, pitted rusty iron and oxidised dull bronze. Remove polished reflections from the paving, carved lion and hull. Cold murky grey Baltic water with barely visible diffuse ripples. Cloudy cold light with small dim amber lantern cores, no pools of glossy orange reflections. Dry scumbled thin oil paint and dense fine material detail, subdued soot grey, dirty umber and desaturated navy. Serious ruined military dock, sharp fractured shapes, convincing weight. Preserve scene readability and midtone separation. No people, no text, no canvas border."
+    }
+  },
+  "5": {
+    "class_type": "ConditioningKrea2Rebalance",
+    "inputs": {
+      "conditioning": [
+        "4",
+        0
+      ],
+      "multiplier": 2.5,
+      "per_layer_weights": "1.0,1.0,1.0,1.0,1.0,1.0,1.0,2.5,5.0,1.1,4.0,1.0"
+    }
+  },
+  "6": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        0
+      ],
+      "text": "cute, chibi, toy, round plastic, glossy, polished, wax, varnish, wet shiny stones, bloom, smooth gradient, airbrush, miniature, wooden puppet, simplified geometry, low poly, oversized head, cartoon, bright saturated colours, text, labels, watermark, changed composition"
+    }
+  },
+  "7": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "11",
+        0
+      ],
+      "vae": [
+        "3",
+        0
+      ]
+    }
+  },
+  "8": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "5",
+        0
+      ],
+      "negative": [
+        "6",
+        0
+      ],
+      "latent_image": [
+        "7",
+        0
+      ],
+      "seed": 30220640,
+      "steps": 16,
+      "cfg": 2.2,
+      "sampler_name": "euler",
+      "scheduler": "simple",
+      "denoise": 0.48
+    }
+  },
+  "9": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "8",
+        0
+      ],
+      "vae": [
+        "3",
+        0
+      ]
+    }
+  },
+  "10": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "9",
+        0
+      ],
+      "filename_prefix": "AtlandsArv/likvarvet-rough-v3"
+    }
+  },
+  "11": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "likvarvet-rough-v3-reference.png"
+    }
+  }
+}

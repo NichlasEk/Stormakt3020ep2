@@ -1,0 +1,8 @@
+{
+  "prompt_id": "4537ab2b-df34-4178-94bd-c5dab490dfc0",
+  "seed": 30220641,
+  "reference": "/home/nichlas/WaylandForge/assets/stormakt3020/dungeon-karl-combat-v1-source.png",
+  "reference_sha256": "3f3d2a10cfd62b5cbfd5a549ee837f5024ded38cf05be76f91f9dd9d4d462ae0",
+  "sha256": "342f74b5054c21506e20b177e194d46bfdc477b2947a7495d000ce86062eafe0",
+  "purpose": "Reference-based sprite study; not a complete directional animation set"
+}

@@ -1,0 +1,8 @@
+{
+  "prompt_id": "cf9dda2f-d813-4062-b8fb-e80df985cd77",
+  "seed": 30220640,
+  "reference": "/home/nichlas/Stormakt3020ep2/assets/art/likvarvet-oil-v2.png",
+  "reference_sha256": "8fcafd2d99b75379e46f40e4c8a20d9af72029e5a72d0efa4c0ed06227f74581",
+  "sha256": "4b02ef8ee19dbd5f3771124bb7ce7a004d284f8760d34dc9cb6844404282cb76",
+  "purpose": "Matte environment revision"
+}

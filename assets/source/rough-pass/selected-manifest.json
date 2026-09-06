@@ -1,0 +1,20 @@
+[
+  {
+    "path": "assets/art/likvarvet-matte-v4.png",
+    "sha256": "aa0c74e957cc2a787a9c20dce40935dce5b53b9970c087a37f0d04fec2501b67",
+    "backend": "built-in image generation",
+    "prompts": "assets/source/rough-pass/selected-prompts.md"
+  },
+  {
+    "path": "assets/art/karl-combat-matte-v5.png",
+    "sha256": "ba9aee5afdc83a5521a2895f3037bf9e2ef5f4b7c7cfbacd88369a3fa81a8c82",
+    "backend": "built-in image generation",
+    "prompts": "assets/source/rough-pass/selected-prompts.md"
+  },
+  {
+    "path": "assets/art/guard-combat-matte-v5.png",
+    "sha256": "61adb24fbe2e0e94131b45bed4b41503c85eedc00df1c5997f7854c58f4e3da6",
+    "backend": "built-in image generation",
+    "prompts": "assets/source/rough-pass/selected-prompts.md"
+  }
+]

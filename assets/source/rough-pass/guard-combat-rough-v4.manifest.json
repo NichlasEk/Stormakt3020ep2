@@ -1,0 +1,8 @@
+{
+  "prompt_id": "c861f605-553f-4c42-a26c-76fdb03f4177",
+  "seed": 30220642,
+  "reference": "/home/nichlas/WaylandForge/assets/stormakt3020/dungeon-danish-enemies-v1-source.png",
+  "reference_sha256": "7468847542ec1d85eaf51d2cefffc6433e38fd66f287993a14f1a10ba24e9dec",
+  "sha256": "a5d7ea6147c3b0ce38049665d6e0340571bc857a20d5cbb73cd915b96201d312",
+  "purpose": "Reference-based sprite study; not a complete directional animation set"
+}

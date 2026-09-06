@@ -14,4 +14,12 @@ Godot, .NET, Blender, ComfyUI och respektive modell är externa verktyg med egna
 Bildproduktionen använde lokala ComfyUI enligt projektets val, inte OpenAI:s inbyggda bildverktyg. AI-tjänster behövs enbart vid produktion, aldrig vid spelstart.
 # Fristående figurstudie
 
+## Matt miljö och originalbaserade figurprov
+
+`assets/art/likvarvet-matte-v4.png` är den valda miljörevisionen, genererad med inbyggd bildgenerering som redigering av `likvarvet-oil-v2.png`. Den används i spelprototypen. Lokala Krea-försök fick för mycket glans och ändrade detaljer; dessa ligger under `assets/source/rough-pass/rejected/` med sina ursprungliga grafer och manifest i överordnad mapp.
+
+`karl-combat-matte-v5.png` och `guard-combat-matte-v5.png` är nya referensredigeringar med inbyggd bildgenerering av originalets `dungeon-karl-combat-v1-source.png` respektive `dungeon-danish-enemies-v1-source.png`. Originalfilerna ändrades inte. Bilderna används i separat `ArtStudy` med tre valbara stridsposer vid spelets kameraskala. De är inte kompletta riktningsanimationer och ersätter ännu inte de animerade spelprovisorierna. Generatorn gav RGB med ljusrutig bakgrund trots begärd transparens; bildprovet använder en tillfällig ljushetsmask i shadern. Slutliga animationssprites behöver riktig alpha med kontrollerade vapenkanter.
+
+Fullständiga slutprompter: `assets/source/rough-pass/selected-prompts.md`. Lokalt produktionsförsök: `tools/paint_rough_pass.py`. Ingen bildgenerering krävs vid körning.
+
 `assets/source/concepts/karl-oil-study-v3.png` genererades lokalt via ComfyUI/Krea med `tools/paint_karl_study.py`; exakt graf och manifest finns bredvid bilden. Detta är en fristående oljemålningsstudie, inte en runtime-sprite. Efter granskning är den inte vald som identitetsreferens: nästa figurpass ska utgå från originalspelets dungeon-Karl och användarens Diablo 2-riktning.

@@ -55,7 +55,7 @@ public partial class Main : Node2D
     public override void _Ready()
     {
         _serif=GD.Load<Font>("res://assets/fonts/NotoSerif-Regular.ttf");_sans=GD.Load<Font>("res://assets/fonts/NotoSans-Regular.ttf");
-        _background=GD.Load<Texture2D>("res://assets/art/likvarvet-oil-v2.png");
+        _background=GD.Load<Texture2D>("res://assets/art/likvarvet-matte-v4.png");
         foreach(string kind in new[]{"karl-saber","karl-hammer","guard","pikeman","gunner","collector"})_actors[kind]=GD.Load<Texture2D>($"res://assets/art/{kind}.png");
         _sound=new Soundscape();AddChild(_sound);LoadSettings();
         GetWindow().MinSize=new Vector2I(960,540);
@@ -291,10 +291,7 @@ public partial class Main : Node2D
     private void DrawWorld()
     {
         DrawSetTransform(Offset,0,Vector2.One*Zoom);
-        DrawTextureRectRegion(_background,new Rect2(18,30,1500,946),new Rect2(18,30,1500,946),new Color(.87f,.85f,.80f));
-        // Sea glints and drifting motes remain decorative and never obscure attack warnings.
-        for(int i=0;i<25;i++)
-        {float x=50+(i*19)%240;float y=330+(i*17)%200;var p=new Vector2(x+Mathf.Sin(_clock*.23f+i)*5,y);if(!Combat.OnGround(N(p)))DrawLine(p,p+new Vector2(12+Mathf.Sin(_clock+i)*4,-2),new Color(.54f,.58f,.52f,.07f),1.4f,true);}
+        DrawTextureRectRegion(_background,new Rect2(18,30,1500,946),new Rect2(18,30,1500,946),Colors.White);
         foreach(var seal in _game.Seals)
         {
             var p=G(seal.Position);bool alive=seal.Health>0;var c=alive?Teal:Muted;

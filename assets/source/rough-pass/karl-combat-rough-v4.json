@@ -1,0 +1,123 @@
+{
+  "1": {
+    "class_type": "UNETLoader",
+    "inputs": {
+      "unet_name": "Krea-2-Turbo/krea2_turbo_fp8_scaled.safetensors",
+      "weight_dtype": "default"
+    }
+  },
+  "2": {
+    "class_type": "CLIPLoader",
+    "inputs": {
+      "clip_name": "Krea-2/qwen3vl_4b_fp8_scaled.safetensors",
+      "type": "krea2",
+      "device": "default"
+    }
+  },
+  "3": {
+    "class_type": "VAELoader",
+    "inputs": {
+      "vae_name": "Krea-2/qwen_image_vae.safetensors"
+    }
+  },
+  "4": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        0
+      ],
+      "text": "Precisely preserve this four-column two-row eight-cell character combat sprite sheet, all eight poses, exact weapons, cell locations, scale, three-quarter overhead camera and body silhouettes. The SAME young adult Swedish Carolean in every cell: short brown hair, small brass forehead lamp, deep blue knee length wool coat, dark steel cuirass, muted ochre gloves and cuffs, tall worn boots. Keep his identity. Repaint clothing with battle wear, torn muddy hems, grime, sharp weighted fabric folds; paint realistic tired angular young adult face and natural human anatomy. Small pitted steel highlights, tarnished brass buttons, matte cloth and worn leather. Rich finely detailed gritty pre-rendered Diablo II dark action RPG sprite aesthetic mixed with sober historic oil-painted material texture. Strong readable silhouette, restrained colour, no simplification. Preserve exact flat solid bright magenta #ff00ff background between and around all figures, no floor or shadows. First row sword ready, sword swing, sword follow through, sword guard. Second row side ready, side sword strike, two handed mining hammer strike, stagger. Nothing added, no writing."
+    }
+  },
+  "5": {
+    "class_type": "ConditioningKrea2Rebalance",
+    "inputs": {
+      "conditioning": [
+        "4",
+        0
+      ],
+      "multiplier": 2.5,
+      "per_layer_weights": "1.0,1.0,1.0,1.0,1.0,1.0,1.0,2.5,5.0,1.1,4.0,1.0"
+    }
+  },
+  "6": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        0
+      ],
+      "text": "cute, chibi, toy, round plastic, glossy, polished, wax, varnish, wet shiny stones, bloom, smooth gradient, airbrush, miniature, wooden puppet, simplified geometry, low poly, oversized head, cartoon, bright saturated colours, text, labels, watermark, changed composition"
+    }
+  },
+  "7": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "11",
+        0
+      ],
+      "vae": [
+        "3",
+        0
+      ]
+    }
+  },
+  "8": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "5",
+        0
+      ],
+      "negative": [
+        "6",
+        0
+      ],
+      "latent_image": [
+        "7",
+        0
+      ],
+      "seed": 30220641,
+      "steps": 16,
+      "cfg": 2.2,
+      "sampler_name": "euler",
+      "scheduler": "simple",
+      "denoise": 0.43
+    }
+  },
+  "9": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "8",
+        0
+      ],
+      "vae": [
+        "3",
+        0
+      ]
+    }
+  },
+  "10": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "9",
+        0
+      ],
+      "filename_prefix": "AtlandsArv/karl-combat-rough-v4"
+    }
+  },
+  "11": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "karl-combat-rough-v4-reference.png"
+    }
+  }
+}

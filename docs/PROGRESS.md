@@ -10,6 +10,16 @@ Lokalt genererade nya tillgångar: hamnmålning, två syntetiska röstreferenser
 
 ## Senaste styrning från användaren
 
+### Genomfört matt bildpass
+
+Användaren bad uttryckligen att också göra miljön ruffare och mindre glansig. `likvarvet-matte-v4.png` är nu spelprototypens bakgrund; gångpolygon, sigill och kartfynd behölls. Dekorativa vattenglimtar är borttagna, och den redan mörkt målade miljön ritas utan ytterligare färgdämpning. Den nya bilden har grov sten, sotigt trä, matt metall och små återhållna lyktsken.
+
+`./start-art-study.sh --fullscreen` visar nytillverkade referensbaserade Karl- och soldatbilder på kajen i spelets kameraskala. Mellanslag växlar tre poser. Detta är den utlovade avgränsade bildgranskningen: den fulla spelprototypen använder ännu föregående animerade figurer. Nästa steg är att bedöma bilden tillsammans med användaren och därefter bygga en sammanhängande riktnings- och animationsuppsättning. Inget motorbyte genomfört.
+
+Lokala Krea-pass kasserades som bildriktning eftersom de gav mer glans och ändrade detaljer. Valda bilder är skapade med inbyggd bildgenerering; prompter, referenser, avvisade studier och manifest finns i `assets/source/rough-pass/`. Bildprovet använder en tillfällig ljushetsmask för generatorns ljusrutiga RGB-bakgrund; riktiga alphakanter krävs vid slutproduktion. Vissa höga metallglanspunkter påverkas av denna mask.
+
+Validering av bildpasset: C# bygger utan varningar/fel. Verklig Godot/OpenGL-körning med den matta kajen sparade gameplay-bild och avslutade utan motorfel. Figurprovet sparar tre poser med `./start-art-study.sh --fullscreen -- --capture-study` till `artifacts/rough-art-study*.png`. Stridsreglerna är oförändrade i detta pass.
+
 Även andra figurpasset upplevdes för gulligt. Användarens senaste, överordnade referens är **Diablo 2 och originalspelets gamla assets**. Granskade originalbilder: `dungeon-karl-combat-v1.png`, `dungeon-danish-enemies-v1.png`, `dungeon-gruva1-environment-v1.png` under `/home/nichlas/WaylandForge/assets/stormakt3020/`. De visar målade material, vuxen anatomi, sammanhängande dräkter och läsbara stridsposer. Originalets Karl har ungt ansikte, pannlampa, blå karolinerrock, bröstharnesk och gula handskar: bevara identiteten när uttrycket görs mörkare och mer slitet.
 
 Nuvarande Blender-figurer är tekniska provisorier, inte godkänd slutstil. Studien `assets/source/concepts/karl-oil-study-v3.png` visar oljebehandling men avviker i ålder, identitet och kameravinkel; den är inte en runtime-sprite och ska inte bli figurförlaga. Nästa avgränsade bildprov ska visa Karl och en fiende i spelets faktiska perspektiv och storlek, med originalets dungeon-bilder som referenser. Bedöm silhuett, tyg/metall, ansikte och attackläsbarhet i miljön innan fler figurer produceras. Motorfrågan är diskuterad, inget byte till WaylandForge beslutat.
