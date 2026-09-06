@@ -1,0 +1,18 @@
+{
+  "prompt": "Instrumental Nordic national romantic chamber music for discovering erased names carved into an ancient Swedish quay. Grave intimate viola da gamba and low cello melody, sparse bowed folk strings reminiscent of nyckelharpa, breathy wooden flute answers, quiet plucked lute, distant soft bronze resonance. Slow D minor at 72 BPM, restrained tragic dignity, an old oil painting of a ruined harbor at dawn. Beautiful memorable descending four-note melody, warm human grief and mysterious hopeful light, acoustic dry tactile instruments. Quiet even volume, begin with the music immediately, continuous repeated phrases suitable for looping. No vocals, no speech, no choir, no drums, no action percussion, no electronic beat, no jump scares, no huge cinematic climax, no silence or fadeout.",
+  "lyrics": "[Instrumental]",
+  "vocal_language": "unknown",
+  "audio_duration": 48,
+  "audio_format": "wav",
+  "task_type": "text2music",
+  "batch_size": 1,
+  "thinking": false,
+  "use_format": false,
+  "bpm": 72,
+  "key_scale": "D minor",
+  "time_signature": "4/4",
+  "inference_steps": 8,
+  "guidance_scale": 7,
+  "use_random_seed": false,
+  "seed": 30220605
+}

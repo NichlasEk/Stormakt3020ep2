@@ -7,14 +7,16 @@ using NVec=System.Numerics.Vector2;
 
 public partial class Main : Node2D
 {
-    private enum Screen { Title, Briefing, Game, Pause, Settings, Death, Ending }
+    private enum Screen { Title, Briefing, Game, Pause, Settings, Death, Ending, Testimony, Journal }
     private Screen _screen=Screen.Title;
     private Screen _settingsReturn=Screen.Title;
     private Combat _game=Combat.New(Order.Artillery);
     private Order _order;
     private Font _serif=null!,_sans=null!;
     private Texture2D _background=null!;
-    private readonly Dictionary<string,Texture2D> _actors=new();
+    private Texture2D _radioPortraits=null!;
+    private Texture2D _ebbaPortrait=null!;
+    private PaintedCast _cast=null!;
     private Soundscape _sound=null!;
     private readonly List<(Rect2 Rect,string Id)> _buttons=new();
     private readonly List<Particle> _particles=new();
@@ -27,12 +29,19 @@ public partial class Main : Node2D
     private bool _controller;
     private int _menuSelection;
     private bool _menuKeyboard;
-    private float _volume=.75f;
+    private float _volume=.25f;
+    private float _unmutedVolume=.25f;
+    private bool _adjustingVolume;
+    private bool _uiChecks,_uiChecked;
+    private string SettingsPath=>_uiChecks?"res://artifacts/ui-settings.cfg":"user://settings.cfg";
     private bool _cameraShake=true;
     private bool _testMode;
     private bool _smokeCapture;
     private bool _integration;
     private bool _bossCaptured;
+    private bool _namesCaptured,_choiceCaptured;
+    private int _journalPage;
+    private float _choiceDelay;
     private bool _capturePending;
     private int _testTicks;
     private string SavePath=>ProjectSettings.GlobalizePath("user://quay-save.json");
@@ -46,7 +55,17 @@ public partial class Main : Node2D
         ["collector"]=("VARVETS INDRIVARE","Fyra män. Två brutna sigill. Er skuld växer, Karl. Jag tar betalningen personligen."),
         ["rage"]=("VARVETS INDRIVARE","Även havet står i skuld till kronan."),
         ["fallen"]=("RIKSAMIRAL EBBA GRIP","Vänta. Det ligger något vid porten. En karta, gjuten i brons. Den hör inte hemma här."),
-        ["atland"]=("RIKSAMIRAL EBBA GRIP","Atland. Det är vad Rudbeck kallade det. Karl, ta kartan ombord. Vi måste tala ostört.")
+        ["atland"]=("RIKSAMIRAL EBBA GRIP","Atland. Det är vad Rudbeck kallade det. Karl, ta kartan ombord. Vi måste tala ostört."),
+        ["names-intro"]=("RIKSAMIRAL EBBA GRIP","Kartan följer vår egen kust. Men namnen är andra. Karl, det finns skrift under kajens sigill. Frilägg den. Jag tar fram liggaren."),
+        ["names-warning"]=("RIKSAMIRAL EBBA GRIP","Rörelse vid porten. De kommer för stenarna. Lägg undan avtrycket och möt dem."),
+        ["name-0"]=("RIKSAMIRAL EBBA GRIP",FieldNotes.Radio[0]),
+        ["name-1"]=("RIKSAMIRAL EBBA GRIP",FieldNotes.Radio[1]),
+        ["name-2"]=("RIKSAMIRAL EBBA GRIP",FieldNotes.Radio[2]),
+        ["broadcast"]=("RIKSAMIRAL EBBA GRIP","Jag sänder namnen på öppen frekvens. Nu finns de hos fler än oss. Hela hamnen hörde det, Karl. Ta dig tillbaka till båten."),
+        ["cipher"]=("RIKSAMIRAL EBBA GRIP","Avtrycken är säkrade. Jag skickar dem krypterat och håller båten redo med förband. Kom tillbaka, Karl. Vi behöver ett levande vittne också."),
+        ["homebound"]=("RIKSAMIRAL EBBA GRIP","Alla tre namnen är ombord. På bronskartan står Uppsala där våra sjökort visar inland. Vi följer spåret i gryningen."),
+        ["hedvig-karta"]=("ANTIKVARIE HEDVIG RÅLAMB","Hedvig Rålamb här. Kartans linjer följer gamla vadställen och gravhögar. Karl, vi behöver avtryck av inskrifterna."),
+        ["hedvig-minne"]=("ANTIKVARIE HEDVIG RÅLAMB","Rudbecks äpplen är minne, tal och skrift. Stenarna bevarar gärningar som kronan har strukit. Ta med avtrycken.")
     };
     private sealed class Particle {public Vector2 P,V;public float Life,Max;public Color C;public float Size;}
     private sealed class Floating {public Vector2 P;public string Text="";public float Life=1;public Color C;}
@@ -54,22 +73,43 @@ public partial class Main : Node2D
     private static NVec N(Vector2 v)=>new(v.X,v.Y);
     public override void _Ready()
     {
+        var args=OS.GetCmdlineUserArgs();_uiChecks=args.Contains("--ui-check");
         _serif=GD.Load<Font>("res://assets/fonts/NotoSerif-Regular.ttf");_sans=GD.Load<Font>("res://assets/fonts/NotoSans-Regular.ttf");
-        _background=GD.Load<Texture2D>("res://assets/art/likvarvet-matte-v4.png");
-        foreach(string kind in new[]{"karl-saber","karl-hammer","guard","pikeman","gunner","collector"})_actors[kind]=GD.Load<Texture2D>($"res://assets/art/{kind}.png");
+        _background=GD.Load<Texture2D>("res://assets/art/likvarvet-scale-v5.png");
+        _radioPortraits=GD.Load<Texture2D>("res://assets/art/radio-cast-v1.png");
+        _ebbaPortrait=GD.Load<Texture2D>("res://assets/art/ebba-radio-v2.png");
+        _cast=new PaintedCast();
         _sound=new Soundscape();AddChild(_sound);LoadSettings();
         GetWindow().MinSize=new Vector2I(960,540);
-        var args=OS.GetCmdlineUserArgs();_integration=args.Contains("--integration");_testMode=args.Contains("--smoke")||_integration;
+        _integration=args.Contains("--integration");_testMode=args.Contains("--smoke")||_integration||_uiChecks;
+        if(_testMode||args.Contains("--capture-title"))_sound.Volume=0;
         if(_integration)Engine.TimeScale=3;
         if(_testMode)StartNew();
         if(args.Contains("--capture-title"))_smokeCapture=true;
     }
     public override void _Input(InputEvent ev)
     {
+        // Handle the volume strip before combat or menus, so dragging it never attacks.
+        if(ev is InputEventMouseMotion volumeMotion && _adjustingVolume){SetVolumeFromPointer(volumeMotion.Position);return;}
+        if(ev is InputEventMouseButton {ButtonIndex:MouseButton.Left} volumeMouse)
+        {
+            if(!volumeMouse.Pressed&&_adjustingVolume){_adjustingVolume=false;SaveSettings();return;}
+            var p=volumeMouse.Position;
+            if(volumeMouse.Pressed&&VolumePanel.HasPoint(p))
+            {
+                ClearPresses();
+                if(p.X<VolumePanel.Position.X+38)ToggleMute();
+                else{_adjustingVolume=true;SetVolumeFromPointer(p);}
+                return;
+            }
+        }
         if(ev is InputEventMouseMotion){_controller=false;_menuKeyboard=false;}
         if(ev is InputEventJoypadMotion motion && Math.Abs(motion.AxisValue)>.25f)_controller=true;
         if(ev is InputEventKey key && key.Pressed && !key.Echo)
         {
+            if(key.PhysicalKeycode==Key.M){ToggleMute();return;}
+            if(key.PhysicalKeycode is Key.Minus or Key.KpSubtract){SetVolume(_volume-.05f);return;}
+            if(key.PhysicalKeycode is Key.Equal or Key.KpAdd || key.Keycode==Key.Plus){SetVolume(_volume+.05f);return;}
             if(key.PhysicalKeycode==Key.F11){DisplayServer.WindowSetMode(DisplayServer.WindowGetMode()==DisplayServer.WindowMode.Fullscreen?DisplayServer.WindowMode.Windowed:DisplayServer.WindowMode.Fullscreen);return;}
             if(key.PhysicalKeycode==Key.Escape){Back();return;}
             if(_screen!=Screen.Game)
@@ -84,6 +124,7 @@ public partial class Main : Node2D
                 case Key.J:_attack=true;break;case Key.K:_heavy=true;break;
                 case Key.Space:_dodge=true;break;case Key.Tab:_swap=true;break;
                 case Key.Q:_heal=true;break;case Key.F:_support=true;break;case Key.E:_interact=true;break;
+                case Key.R:_journalPage=0;_sound.Play("paper");ChangeScreen(Screen.Journal);break;
                 case Key.F5:Save(true);break;case Key.F9:ResumeSave(true);break;
             }
         }
@@ -105,19 +146,22 @@ public partial class Main : Node2D
                 if(jb.ButtonIndex==JoyButton.A)ActivateSelected();
                 if(jb.ButtonIndex==JoyButton.B)Back();return;
             }
+            if(jb.ButtonIndex==JoyButton.Back){_journalPage=0;_sound.Play("paper");ChangeScreen(Screen.Journal);return;}
             switch(jb.ButtonIndex)
             {case JoyButton.X:_attack=true;break;case JoyButton.Y:_heavy=true;break;case JoyButton.A:_dodge=true;break;case JoyButton.B:_interact=true;break;case JoyButton.RightShoulder:_swap=true;break;case JoyButton.DpadUp:_heal=true;break;case JoyButton.DpadDown:_support=true;break;}
         }
     }
     private void SelectMenu(int step){_menuKeyboard=true;_menuSelection=(_menuSelection+step+Math.Max(1,_buttons.Count))%Math.Max(1,_buttons.Count);}
     private void ActivateSelected(){if(_buttons.Count>0)Activate(_buttons[Math.Clamp(_menuSelection,0,_buttons.Count-1)].Id);}
-    private void ChangeScreen(Screen screen){_screen=screen;_menuSelection=0;ClearPresses();_sound.PauseVoice(screen!=Screen.Game && screen!=Screen.Ending);}
+    private void ChangeScreen(Screen screen){_screen=screen;_menuSelection=0;ClearPresses();_sound.PauseVoice(screen is not (Screen.Game or Screen.Ending or Screen.Testimony));}
     private void Back()
     {
         if(_screen==Screen.Game)ChangeScreen(Screen.Pause);
-        else if(_screen==Screen.Pause)ChangeScreen(Screen.Game);
+        else if(_screen==Screen.Pause)ChangeScreen(_game.Phase==Phase.Testimony?Screen.Testimony:Screen.Game);
         else if(_screen==Screen.Settings)ChangeScreen(_settingsReturn);
         else if(_screen==Screen.Briefing)ChangeScreen(Screen.Title);
+        else if(_screen==Screen.Journal)ChangeScreen(Screen.Game);
+        else if(_screen==Screen.Testimony)ChangeScreen(Screen.Pause);
         else if(_screen==Screen.Title)GetTree().Quit();
     }
     private void Activate(string id)
@@ -129,11 +173,15 @@ public partial class Main : Node2D
             case "artillery":_order=Order.Artillery;break;
             case "medicine":_order=Order.Medicine;break;
             case "land":StartNew();break;
-            case "resume":ChangeScreen(Screen.Game);break;
+            case "broadcast":ChooseTestimony(TestimonyChoice.Broadcast);break;
+            case "cipher":ChooseTestimony(TestimonyChoice.Cipher);break;
+            case "journal-next":_journalPage=(_journalPage+1)%3;_sound.Play("paper");break;
+            case "journal-prev":_journalPage=(_journalPage+2)%3;_sound.Play("paper");break;
+            case "resume":ChangeScreen(_game.Phase==Phase.Testimony?Screen.Testimony:Screen.Game);break;
             case "save":Save(true);break;
             case "settings":_settingsReturn=_screen;ChangeScreen(Screen.Settings);break;
-            case "volume-":_volume=Math.Max(0,_volume-.1f);SaveSettings();break;
-            case "volume+":_volume=Math.Min(1,_volume+.1f);SaveSettings();break;
+            case "volume-":SetVolume(_volume-.05f);break;
+            case "volume+":SetVolume(_volume+.05f);break;
             case "shake":_cameraShake=!_cameraShake;SaveSettings();break;
             case "fullscreen":DisplayServer.WindowSetMode(DisplayServer.WindowGetMode()==DisplayServer.WindowMode.Fullscreen?DisplayServer.WindowMode.Windowed:DisplayServer.WindowMode.Fullscreen);break;
             case "back":Back();break;
@@ -141,6 +189,14 @@ public partial class Main : Node2D
             case "retry":if(System.IO.File.Exists(SavePath))ResumeSave();else StartNew();break;
             case "quit":GetTree().Quit();break;
         }
+    }
+    private void ChooseTestimony(TestimonyChoice choice)
+    {
+        _game.Events.Clear();
+        if(!_game.ChooseTestimony(choice))return;
+        _radioQueue.Clear();_sound.StopVoice();_radioTime=0;
+        foreach(var cue in _game.Events)HandleCue(cue);
+        ChangeScreen(Screen.Game);_banner="TILLBAKA TILL BÅTEN";_bannerTime=5;
     }
     private void StartNew()
     {
@@ -157,16 +213,23 @@ public partial class Main : Node2D
         try
         {
             _game=SaveStore.Read(manual?ManualPath:SavePath);_camera=G(_game.Player)+new Vector2(85,-80);_particles.Clear();_floating.Clear();_radioQueue.Clear();_radio="";_sound.StopVoice();
-            ChangeScreen(_game.Dead?Screen.Death:_game.Phase==Phase.Complete?Screen.Ending:Screen.Game);Notice("Fältdagboken återupptagen");
+            ChangeScreen(_game.Dead?Screen.Death:_game.Phase==Phase.Complete?Screen.Ending:_game.Phase==Phase.Testimony?Screen.Testimony:Screen.Game);Notice("Fältdagboken återupptagen");
         }
         catch(Exception e){GD.PushWarning(e.Message);Notice("Sparfilen kunde inte läsas. Du kan starta en ny landstigning.");}
     }
     private void Notice(string text){_notice=text;_noticeTime=4;}
     private void LoadSettings()
     {
-        var config=new ConfigFile();if(config.Load("user://settings.cfg")==Error.Ok){_volume=Math.Clamp((float)config.GetValue("audio","volume",.75f),0,1);_cameraShake=(bool)config.GetValue("display","shake",true);}_sound.Volume=_volume;
+        var config=new ConfigFile();if(config.Load(SettingsPath)==Error.Ok){_volume=Math.Clamp((float)config.GetValue("audio","volume",.25f),0,1);_unmutedVolume=Math.Clamp((float)config.GetValue("audio","unmuted_volume",.25f),.001f,1);_cameraShake=(bool)config.GetValue("display","shake",true);}_sound.Volume=_volume;
+        if(_volume>0)_unmutedVolume=_volume;
     }
-    private void SaveSettings(){_sound.Volume=_volume;var c=new ConfigFile();c.SetValue("audio","volume",_volume);c.SetValue("display","shake",_cameraShake);c.Save("user://settings.cfg");}
+    private Rect2 VolumePanel=>new(_screen==Screen.Game?new Vector2(20,88):new Vector2(1020,18),new Vector2(240,36));
+    private void SetVolume(float volume)
+    { _volume=Math.Clamp(volume,0,1);if(_volume>0)_unmutedVolume=_volume;SaveSettings(); }
+    private void ToggleMute()=>SetVolume(_volume>0?0:_unmutedVolume);
+    private void SetVolumeFromPointer(Vector2 pointer)
+    { _volume=Math.Clamp((pointer.X-VolumePanel.Position.X-49)/137,0,1);if(_volume>0)_unmutedVolume=_volume;_sound.Volume=_testMode?0:_volume; }
+    private void SaveSettings(){_sound.Volume=_testMode?0:_volume;var c=new ConfigFile();c.SetValue("audio","volume",_volume);c.SetValue("audio","unmuted_volume",_unmutedVolume);c.SetValue("display","shake",_cameraShake);c.Save(SettingsPath);}
     private void ClearPresses(){_attack=_heavy=_dodge=_swap=_heal=_support=_interact=false;}
     public override void _PhysicsProcess(double delta)
     {
@@ -185,25 +248,28 @@ public partial class Main : Node2D
         if(_integration)
         {
             var target=_game.Enemies.Where(e=>!e.Dead).OrderBy(e=>NVec.DistanceSquared(e.Position,_game.Player)).FirstOrDefault();
-            NVec goal=target?.Position??_game.Seals.FirstOrDefault(s=>s.Health>0)?.Position??Combat.ChartPosition;
+            NVec goal=target?.Position??_game.Seals.FirstOrDefault(s=>s.Health>0)?.Position??_game.ObjectivePosition;
             var d=goal-_game.Player;float distance=d.Length();
             guard=target!=null&&target.State==1&&target.Timer<.16f&&distance<150;
             move=distance>60?G(Combat.Normal(d,NVec.UnitX)):Vector2.Zero;aim=G(d);
-            _attack=distance<95&&!guard;_heavy=distance<105&&(_testTicks-1)%47==0&&!guard;
+            bool fighting=target!=null||_game.Seals.Any(s=>s.Health>0);
+            _attack=fighting&&distance<95&&!guard;_heavy=fighting&&distance<105&&(_testTicks-1)%47==0&&!guard;
             _heal=_game.Health<48;_support=target!=null;_interact=true;
         }
-        var controls=new Controls(N(move),N(aim),_attack||(!_controller && Input.IsMouseButtonPressed(MouseButton.Left)),_heavy,_dodge,guard,_swap,_heal,_support,_interact);
+        bool reading=_interact||Input.IsPhysicalKeyPressed(Key.E)||(_controller&&Input.IsJoyButtonPressed(0,JoyButton.B));
+        var controls=new Controls(N(move),N(aim),_attack||(!_controller&&!_adjustingVolume&&!VolumePanel.HasPoint(GetGlobalMousePosition())&&Input.IsMouseButtonPressed(MouseButton.Left)),_heavy,_dodge,guard,_swap,_heal,_support,reading);
         _game.Step(controls);ClearPresses();
         foreach(var cue in _game.Events)HandleCue(cue);
         if(_game.Dead)ChangeScreen(Screen.Death);
         if(_game.Phase==Phase.Complete)ChangeScreen(Screen.Ending);
+        if(_game.Phase==Phase.Testimony){ChangeScreen(Screen.Testimony);_choiceDelay=0;}
     }
     private void HandleCue(Cue cue)
     {
         var p=G(cue.Position);
         switch(cue.Kind)
         {
-            case "radio":if(!_radioQueue.Contains(cue.Text))_radioQueue.Enqueue(cue.Text);break;
+            case "radio":QueueRadio(cue.Text);break;
             case "checkpoint":Save();break;
             case "hit":Burst(p,Gold,12,100);_floating.Add(new(){P=p+new Vector2(0,-70),Text=cue.Text,C=Gold});_sound.Play("hit",.94f+(float)(_game.Tick%6)*.025f);_shake=3;break;
             case "hurt":Burst(p,Red,13,100);_sound.Play("hit",.65f);_shake=7;break;
@@ -211,6 +277,8 @@ public partial class Main : Node2D
             case "swing":_sound.Play(cue.Value>0?"hammer":"swing");break;
             case "shot":_sound.Play("shot");Burst(p,Gold,7,90);break;
             case "seal":Burst(p,Teal,45,210);_sound.Play("seal");_floating.Add(new(){P=p-new Vector2(0,60),Text=cue.Text,C=Teal});break;
+            case "scrape":_sound.Play("scrape",.96f+(float)(_game.Tick%5)*.02f);break;
+            case "inscription":Burst(p,Gold,18,65);_sound.Play("inscription");_floating.Add(new(){P=p-new Vector2(0,70),Text=cue.Text,C=Gold});break;
             case "sealhit":Burst(p,Teal,12,100);_sound.Play("hit");break;
             case "heal":Burst(p,Teal,24,70);_sound.Play("heal");_floating.Add(new(){P=p-new Vector2(0,80),Text=cue.Text,C=Teal});break;
             case "cannon":case "slam":Burst(p,Gold,60,260);_sound.Play("cannon");_shake=12;break;
@@ -219,6 +287,19 @@ public partial class Main : Node2D
             case "block":_sound.Play("parry",.7f);if(cue.Text!="")_floating.Add(new(){P=p-new Vector2(0,80),Text=cue.Text,C=Muted});break;
         }
     }
+    private void QueueRadio(string id)
+    {
+        // Clear obsolete combat orders at the scene change. A slain enemy
+        // should not continue threatening Karl over a new discovery.
+        if(id is "fallen" or "names-intro")
+        {
+            var retained=_radioQueue.Where(key=>key.StartsWith("name-")||key.StartsWith("hedvig-")).ToArray();
+            _radioQueue.Clear();foreach(var key in retained)_radioQueue.Enqueue(key);
+            _sound.StopVoice();_radioTime=0;_radio="";
+        }
+        if(id=="names-warning"&&(_radio==id&&(_radioTime>0||_sound.Speaking)))return;
+        if(!_radioQueue.Contains(id))_radioQueue.Enqueue(id);
+    }
     private void Burst(Vector2 p,Color c,int count,float speed)
     {
         for(int i=0;i<count;i++){float a=i*2.39996f+_clock;float life=.25f+(i%7)*.07f;_particles.Add(new(){P=p+new Vector2(0,-25),V=new Vector2(Mathf.Cos(a),Mathf.Sin(a))*speed*(.3f+(i%5)*.17f),Life=life,Max=life,C=c,Size=1+(i%3)});}
@@ -226,8 +307,9 @@ public partial class Main : Node2D
     public override void _Process(double delta)
     {
         float dt=(float)delta;_clock+=dt;_noticeTime=Math.Max(0,_noticeTime-dt);
-        _sound.Boss=_game.Phase==Phase.Collector && _screen is Screen.Game or Screen.Pause;
-        if(_screen is Screen.Game or Screen.Ending)
+        _sound.Boss=(_game.Phase==Phase.Collector||(_game.Phase==Phase.Extraction&&_game.Enemies.Any(e=>!e.Dead))) && _screen is Screen.Game or Screen.Pause;
+        _sound.Discovery=_game.Phase is Phase.Names or Phase.Testimony;
+        if(_screen is Screen.Game or Screen.Ending or Screen.Testimony)
         {
             _bannerTime=Math.Max(0,_bannerTime-dt);_shake=Math.Max(0,_shake-dt*22);
             if(_screen==Screen.Game)
@@ -236,19 +318,63 @@ public partial class Main : Node2D
                 _camera=_camera.Lerp(target,1-Mathf.Exp(-dt*5));
             }
             if(_radioTime>0)_radioTime-=dt;
-            if(_radioTime<=0 && !_sound.Speaking && _radioQueue.Count>0){_radio=_radioQueue.Dequeue();_radioTime=_radio=="atland"?11:8;_sound.Speak(_radio);}
+            if(_radioTime<=0 && !_sound.Speaking && _radioQueue.Count>0){_radio=_radioQueue.Dequeue();_radioTime=Radio.TryGetValue(_radio,out var line)?Math.Max(8,line.Text.Length/15f):8;_sound.Speak(_radio);}
             foreach(var p in _particles){p.P+=p.V*dt;p.V*=Mathf.Exp(-dt*3);p.Life-=dt;}
             _particles.RemoveAll(p=>p.Life<=0);
             foreach(var f in _floating){f.P.Y-=dt*25;f.Life-=dt;}_floating.RemoveAll(f=>f.Life<=0);
         }
         QueueRedraw();
+        if(_uiChecks&&!_uiChecked&&_testTicks>90){_uiChecked=true;RunUiChecks();return;}
         if(_integration)
         {
             if(_game.Phase==Phase.Collector&&!_bossCaptured){_bossCaptured=true;CaptureFrame("boss.png",false);}
+            if(_game.Phase==Phase.Names&&!_namesCaptured){_namesCaptured=true;CaptureFrame("names.png",false);}
+            if(_screen==Screen.Testimony)
+            {
+                if(!_choiceCaptured){_choiceCaptured=true;CaptureFrame("testimony.png",false);}
+                _choiceDelay+=dt;if(_choiceDelay>2)ChooseTestimony(TestimonyChoice.Broadcast);
+            }
             if(_game.Phase==Phase.Complete&&!_capturePending){_capturePending=true;GD.Print($"INTEGRATION COMPLETE health={_game.Health} kills={_game.Kills} parries={_game.Parries}");CaptureFrame("ending.png",true);}
             if(_game.Dead||_game.Elapsed>300){GD.PushError("Integration encounter failed");GetTree().Quit(1);}
         }
         else if((_testMode && _testTicks>125)||(_smokeCapture && _clock>1.5f))CaptureAndQuit();
+    }
+    private async void RunUiChecks()
+    {
+        try
+        {
+            void Check(bool condition,string message){if(!condition)throw new InvalidOperationException(message);}
+            SetVolume(.25f);
+            _Input(new InputEventKey{PhysicalKeycode=Key.M,Pressed=true});Check(_volume==0,"M must mute");
+            _Input(new InputEventKey{PhysicalKeycode=Key.M,Pressed=true});Check(Math.Abs(_volume-.25f)<.001f,"M must restore previous level");
+            _Input(new InputEventKey{PhysicalKeycode=Key.Minus,Pressed=true});Check(Math.Abs(_volume-.20f)<.001f,"Minus must lower volume");
+            var p=VolumePanel.Position+new Vector2(49+137*.4f,18);
+            _Input(new InputEventMouseButton{ButtonIndex=MouseButton.Left,Pressed=true,Position=p});
+            Check(_adjustingVolume&&!_attack&&Math.Abs(_volume-.4f)<.001f,"Volume click must adjust without attacking");
+            _Input(new InputEventMouseMotion{Position=p+new Vector2(500,0)});Check(_volume==1&&!_attack,"Dragging outside clamps without combat input");
+            _Input(new InputEventMouseMotion{Position=p-new Vector2(500,0)});Check(_volume==0,"Dragging left clamps to silence");
+            _Input(new InputEventMouseButton{ButtonIndex=MouseButton.Left,Pressed=false,Position=p});Check(!_adjustingVolume,"Release must end drag");
+            SetVolume(.25f);_volume=.9f;LoadSettings();Check(Math.Abs(_volume-.25f)<.001f,"Volume must survive settings reload");
+            SetVolume(.4f);ToggleMute();_unmutedVolume=.1f;LoadSettings();ToggleMute();
+            Check(Math.Abs(_volume-.4f)<.001f,"Muted settings must preserve the restoration level across reload");SetVolume(.25f);
+            _sound.Volume=0;
+            _Input(new InputEventKey{PhysicalKeycode=Key.R,Pressed=true});Check(_screen==Screen.Journal,"R opens field notes");
+            Back();Check(_screen==Screen.Game,"Escape returns from field notes");
+            GD.Print("UI CHECK PASS: mute, restore, shortcut, slider, clamp, no attack, persistence, journal");
+            QueueRedraw();await ToSignal(RenderingServer.Singleton,RenderingServer.SignalName.FramePostDraw);
+            GetViewport().GetTexture().GetImage().SavePng(ProjectSettings.GlobalizePath("res://artifacts/volume-controls.png"));
+            // Inspect every speaker at the actual radio-card size.
+            foreach(var key in new[]{"arrival","hedvig-karta","collector"})
+            {
+                Check(ResourceLoader.Exists($"res://assets/audio/voice-{key}.ogg"),$"Missing voice asset: {key}");
+                _radio=key;_radioTime=30;_radioQueue.Clear();QueueRedraw();
+                await ToSignal(RenderingServer.Singleton,RenderingServer.SignalName.FramePostDraw);
+                using var frame=GetViewport().GetTexture().GetImage();
+                frame.SavePng(ProjectSettings.GlobalizePath($"res://artifacts/radio-{key}.png"));
+            }
+            GD.Print("RADIO CHECK PASS: all three portrait/voice pairs");GetTree().Quit();
+        }
+        catch(Exception error){GD.PushError(error.ToString());GetTree().Quit(1);}
     }
     private async void CaptureFrame(string name,bool quit)
     {
@@ -279,14 +405,29 @@ public partial class Main : Node2D
         else if(_screen==Screen.Title)DrawTitle();
         else if(_screen==Screen.Briefing)DrawBriefing();
         else if(_screen==Screen.Ending)DrawEnding();
+        else if(_screen==Screen.Testimony)DrawTestimony();
+        else if(_screen==Screen.Journal)DrawJournal();
         else
         {
             DrawRect(new Rect2(0,0,1280,720),new Color(.015f,.03f,.043f,.88f));
             if(_screen==Screen.Pause)DrawPause();else if(_screen==Screen.Settings)DrawSettings();else DrawDeath();
         }
         if(_noticeTime>0){Panel(new Rect2(350,16,580,40),.96f);Text(_notice,new Vector2(370,43),16,Teal);}
+        DrawVolume();
         if(_screen==Screen.Game && !_controller)
         {var p=GetGlobalMousePosition();DrawArc(p,7,0,Mathf.Tau,20,new Color(1,.87f,.61f,.7f),1,true);DrawLine(p-new Vector2(11,0),p-new Vector2(5,0),Gold,1,true);DrawLine(p+new Vector2(5,0),p+new Vector2(11,0),Gold,1,true);}
+    }
+    private void DrawVolume()
+    {
+        var r=VolumePanel;Panel(r,.97f);var p=r.Position;
+        Text(_volume<=0?"AV":"M",p+new Vector2(11,24),13,_volume<=0?Red:Gold);
+        var start=p+new Vector2(49,18);var end=start+new Vector2(137,0);
+        DrawLine(start,end,new Color(.25f,.27f,.25f),4,true);
+        DrawLine(start,start+new Vector2(137*_volume,0),Gold,4,true);
+        DrawCircle(start+new Vector2(137*_volume,0),5,Pale);
+        Text($"{Math.Round(_volume*100)}%",p+new Vector2(197,24),12,Pale);
+        if(r.HasPoint(GetGlobalMousePosition()))
+        {Panel(new Rect2(p+new Vector2(0,39),new Vector2(240,26)),.96f);Text("Ljud · dra reglaget · M tyst · +/−",p+new Vector2(8,57),11,Muted);}
     }
     private void DrawWorld()
     {
@@ -305,8 +446,20 @@ public partial class Main : Node2D
         var sorted=_game.Enemies.Where(e=>!e.Dead).OrderBy(e=>e.Position.Y).ToList();bool playerDrawn=false;
         foreach(var e in sorted){if(!playerDrawn && _game.Player.Y<e.Position.Y){DrawPlayer();playerDrawn=true;}Actor(e,false);}if(!playerDrawn)DrawPlayer();
         foreach(var shot in _game.Shots){var p=G(shot.Position);var v=G(shot.Velocity).Normalized();DrawLine(p-v*17,p,shot.Reflected?Teal:Gold,3,true);DrawCircle(p,3,Pale);}
-        if(_game.Phase>=Phase.Discovery)
+        if(_game.Phase==Phase.Discovery)
         {var p=G(Combat.ChartPosition);DrawCircle(p,30,new Color(Gold,.13f));DrawArc(p,25,0,Mathf.Tau,40,Gold,1.5f,true);DrawRect(new Rect2(p-new Vector2(14,18),new Vector2(28,24)),Gold);DrawLine(p-new Vector2(10,4),p+new Vector2(10,-10),new Color(.15f,.23f,.24f),2,true);}
+        if(_game.Phase is Phase.Names or Phase.Testimony or Phase.Extraction)
+        {
+            for(int i=0;i<_game.Inscriptions.Count;i++)
+            {
+                var stone=_game.Inscriptions[i];var p=G(stone.Position);
+                DrawArc(p,33,0,Mathf.Tau,48,new Color(stone.Read?Gold:Teal,.65f),1.3f,true);
+                if(stone.Progress>0&&!stone.Read)DrawArc(p,38,-Mathf.Pi/2,-Mathf.Pi/2+Mathf.Tau*stone.Progress/Combat.ReadingDuration,48,Gold,3,true);
+                Text(stone.Read?FieldNotes.Names[i]:(i+1).ToString(),p+new Vector2(stone.Read?-65:-4,29),11,stone.Read?Gold:Muted);
+            }
+        }
+        if(_game.Phase==Phase.Extraction)
+        {var p=G(Combat.LandingPosition);DrawArc(p,40,0,Mathf.Tau,48,Gold,2,true);Text("BÅTEN",p+new Vector2(-22,58),12,Gold);}
         foreach(var p in _particles)DrawCircle(p.P,p.Size,new Color(p.C,Math.Clamp(p.Life/p.Max,0,1)));
         foreach(var f in _floating)Text(f.Text,f.P,15,new Color(f.C,Math.Clamp(f.Life*2,0,1)));
         DrawSetTransform(Vector2.Zero);
@@ -330,7 +483,7 @@ public partial class Main : Node2D
         int pose=e.State==1?3:e.State==2?4:e.State==3?5:(int)e.Walk%2+1;
         if(dead)pose=6;
         DrawActor(kind,G(e.Position),G(e.Facing),pose,e.Hurt,dead);
-        if(!dead && e.Health<e.MaxHealth)WorldBar(G(e.Position)+new Vector2(-24,-111),48,e.Health/e.MaxHealth,e.Kind==EnemyKind.Collector?Gold:Red);
+        if(!dead && e.Health<e.MaxHealth)WorldBar(G(e.Position)+new Vector2(-24,-160),48,e.Health/e.MaxHealth,e.Kind==EnemyKind.Collector?Gold:Red);
     }
     private void DrawPlayer()
     {
@@ -345,20 +498,27 @@ public partial class Main : Node2D
     }
     private void DrawActor(string kind,Vector2 p,Vector2 facing,int pose,float hurt,bool dead,bool player=false)
     {
-        int direction=((int)Mathf.Round(Mathf.Atan2(facing.X,facing.Y)/(Mathf.Pi/4))+8)%8;
         var shadow=new Vector2[24];for(int i=0;i<24;i++)shadow[i]=p+new Vector2(Mathf.Cos(i*Mathf.Tau/24)*25,Mathf.Sin(i*Mathf.Tau/24)*10);
         DrawColoredPolygon(shadow,new Color(.01f,.02f,.025f,dead?.2f:.42f));
         if(player)DrawArc(p,23,0,Mathf.Tau,40,new Color(Teal,.5f),1.5f,true);
-        var rect=new Rect2(p-new Vector2(83,151),new Vector2(166,208));
-        var tint=dead?new Color(.5f,.55f,.57f,.8f):hurt>0?new Color(1.8f,1.6f,1.3f):Colors.White;
-        DrawTextureRectRegion(_actors[kind],rect,new Rect2(direction*256,pose*320,256,320),tint);
+        _cast.Draw(this,kind,p,facing,pose,hurt,dead,Offset,Zoom);
     }
     private void DrawHud()
     {
         Panel(new Rect2(20,18,294,60),.87f);Text("STORMAKT 3020",new Vector2(38,41),12,Gold);Text("Blekinges likvarv",new Vector2(38,65),20,Pale,true);
         Panel(new Rect2(928,18,332,102),.91f);Text("LANDSTIGNING  /  01",new Vector2(946,42),12,Gold);
-        string objective=_game.Phase==Phase.Quay?$"Bryt kajens sigill  ·  {_game.Seals.Count(s=>s.Health<=0)}/2":_game.Phase==Phase.Collector?"Besegra varvets indrivare":"Undersök bronskartan vid porten";
-        Text(objective,new Vector2(946,69),17,Pale);Text(_game.Phase==Phase.Quay?$"Vakter kvar: {_game.Enemies.Count(e=>!e.Dead)}":"Håll dig i rörelse. Läs upptakterna.",new Vector2(946,96),14,Muted);
+        string objective=_game.Phase switch
+        {
+            Phase.Quay=>$"Bryt kajens sigill  ·  {_game.Seals.Count(s=>s.Health<=0)}/2",
+            Phase.Collector=>"Besegra varvets indrivare",
+            Phase.Names=>$"Frilägg namnen  ·  {_game.Inscriptions.Count(i=>i.Read)}/3",
+            Phase.Extraction=>"Ta vittnesmålen till båten",
+            _=>"Undersök bronskartan vid porten"
+        };
+        Text(objective,new Vector2(946,69),17,Pale);
+        int foes=_game.Enemies.Count(e=>!e.Dead);
+        Text(foes>0?$"Vakter kvar: {foes}":_game.Phase==Phase.Names?"Håll E vid en sten  ·  R Fynd":"E Undersök  ·  R Fynd",new Vector2(946,96),14,Muted);
+        if(_game.Phase is Phase.Names or Phase.Extraction)DrawObjectiveDirection();
         var boss=_game.Enemies.FirstOrDefault(e=>e.Kind==EnemyKind.Collector&&!e.Dead);
         if(boss!=null){Panel(new Rect2(354,20,542,59),.91f);Centered("VARVETS INDRIVARE",625,42,14,Gold);WorldBar(new Vector2(378,56),490,boss.Health/boss.MaxHealth,Red);}
         Panel(new Rect2(20,623,381,77),.96f);Text("KARL CCLV",new Vector2(38,646),13,Gold);Text($"{Math.Ceiling(_game.Health)} / 100",new Vector2(302,646),13,Pale);
@@ -369,20 +529,51 @@ public partial class Main : Node2D
         Text(_game.SupportCooldown<=0?(_controller?"↓  Understöd redo":"F  Understöd redo"):$"Redo om {Math.Ceiling(_game.SupportCooldown)} s",new Vector2(921,674),16,_game.SupportCooldown<=0?Teal:Muted);
         if(_bannerTime>0)
         {float alpha=Math.Clamp(Math.Min(_bannerTime,5-_bannerTime),0,1);Centered(_banner,640,180,32,new Color(Pale,alpha),true);Centered("En kust som inte längre räknar sina döda.",640,211,16,new Color(Muted,alpha));}
+        if(_game.Phase==Phase.Names)
+        {
+            int index=_game.Inscriptions.FindIndex(i=>!i.Read&&NVec.Distance(_game.Player,i.Position)<Combat.ReadingRange);
+            if(index>=0)
+            {
+                var stone=_game.Inscriptions[index];
+                string prompt=_game.ReadingBlocked(index)?"Skapa arbetsro kring stenen":_game.ReadingIndex==index?"Frilägger inskriften…":(_controller?"Håll B":"Håll E")+"  Frilägg inskriften";
+                Panel(new Rect2(415,413,450,62),.94f);Centered(prompt,640,440,16,Gold);
+                WorldBar(new Vector2(439,454),402,stone.Progress/Combat.ReadingDuration,Teal,5);
+            }
+        }
+        if(_game.Phase==Phase.Extraction&&NVec.Distance(_game.Player,Combat.LandingPosition)<100)
+        {Panel(new Rect2(430,425,420,42),.95f);Centered(foes>0?"Slå tillbaka förföljarna":(_controller?"B":"E")+"  Gå ombord",640,453,17,Gold);}
         if((_radioTime>0 || _sound.Speaking) && Radio.ContainsKey(_radio))DrawRadio();
         else
         {
             if(_game.Phase==Phase.Discovery && NVec.Distance(_game.Player,Combat.ChartPosition)<100){Panel(new Rect2(430,526,420,52),.94f);Centered(_controller?"B  Undersök bronskartan":"E  Undersök bronskartan",640,558,19,Gold);}
             else if(_game.Elapsed<35){Panel(new Rect2(282,552,716,43),.85f);Centered(_controller?"X Hugg · Y Tungt · A Undanmanöver · LB Parad":"WASD Gå · Mus Sikta · Vänster Hugg · Höger Tungt · Space Undan · Shift Parad",640,578,14,Muted);}
         }
-        Text(_controller?"START  Paus":"ESC  Paus",new Vector2(24,608),12,Muted);
+        Text(_controller?"START Paus · BACK Fynd":"ESC Paus · R Fynd",new Vector2(24,608),12,Muted);
+    }
+    private void DrawObjectiveDirection()
+    {
+        var world=G(_game.ObjectivePosition);var p=world*Zoom+Offset;
+        if(new Rect2(130,150,1020,295).HasPoint(p))return;
+        var pin=new Vector2(Math.Clamp(p.X,58,1222),Math.Clamp(p.Y,150,390));
+        var direction=(p-new Vector2(640,360)).Normalized();
+        DrawCircle(pin,17,new Color(.025f,.025f,.02f,.85f));
+        DrawLine(pin-direction*6,pin+direction*7,Gold,2,true);
+        DrawLine(pin+direction*7,pin-direction.Rotated(.65f)*4,Gold,2,true);
+        DrawLine(pin+direction*7,pin-direction.Rotated(-.65f)*4,Gold,2,true);
+        Text(_game.Phase==Phase.Extraction?"BÅTEN":"INSKRIFT",pin+new Vector2(-25,33),10,Gold);
     }
     private void DrawRadio()
     {
-        var (speaker,text)=Radio[_radio];Panel(new Rect2(246,492,788,102),.95f);
-        DrawLine(new Vector2(246,492),new Vector2(246,594),Gold,3);
-        for(int i=0;i<13;i++){float height=5+Mathf.Abs(Mathf.Sin(_clock*5+i*.9f))*18;DrawLine(new Vector2(269+i*3,549-height/2),new Vector2(269+i*3,549+height/2),new Color(Teal,.7f),1.5f);}
-        Text(speaker,new Vector2(324,517),12,Gold);Wrapped(text,new Vector2(324,544),674,16,Pale,23);
+        var (speaker,text)=Radio[_radio];Panel(new Rect2(186,492,908,110),.97f);
+        int portrait=speaker.StartsWith("RIKSAMIRAL")?0:speaker.StartsWith("ANTIKVARIE")?1:2;
+        float cell=_radioPortraits.GetWidth()/3f;
+        var portraitRect=new Rect2(195,501,92,92);
+        if(portrait==0)DrawTextureRect(_ebbaPortrait,portraitRect,false);
+        else DrawTextureRectRegion(_radioPortraits,portraitRect,new Rect2(portrait*cell,0,cell,_radioPortraits.GetHeight()));
+        DrawRect(portraitRect,new Color(Gold,.65f),false,1);
+        DrawLine(new Vector2(186,492),new Vector2(186,602),portrait==1?Teal:Gold,3);
+        for(int i=0;i<7;i++){float height=_sound.Speaking?3+Mathf.Abs(Mathf.Sin(_clock*5+i*.9f))*9:2;DrawLine(new Vector2(1048+i*3,512-height/2),new Vector2(1048+i*3,512+height/2),new Color(Teal,.7f),1.5f);}
+        Text(speaker,new Vector2(304,517),12,Gold);Wrapped(text,new Vector2(304,544),770,16,Pale,23);
     }
     private void DrawTitle()
     {
@@ -395,7 +586,7 @@ public partial class Main : Node2D
         if(hasSave)Button(new Rect2(80,490,355,43),"Ny landstigning","new");
         Button(new Rect2(80,hasSave?544:490,171,43),"Inställningar","settings");Button(new Rect2(264,hasSave?544:490,171,43),"Avsluta","quit");
         Text("BLEKINGES LIKVARV",new Vector2(842,533),19,Gold,true);Wrapped("En förlorad kaj. Två sigill.\nEtt fynd som ingen karta tillåter.",new Vector2(842,564),350,16,Pale,26);
-        Text("FÖRSTA LANDSTIGNINGEN  ·  SPELPROV 0.1",new Vector2(80,673),12,Muted);Text("WASD + mus  /  Handkontroll",new Vector2(970,673),12,Muted);
+        Text("DE STRUKNA NAMNEN  ·  SPELPROV 0.2",new Vector2(80,673),12,Muted);Text("WASD + mus  /  Handkontroll",new Vector2(970,673),12,Muted);
     }
     private void DrawBriefing()
     {
@@ -422,7 +613,8 @@ public partial class Main : Node2D
         Button(new Rect2(455,264,177,45),"Sänk","volume-");Button(new Rect2(648,264,177,45),"Höj","volume+");
         Button(new Rect2(455,329,370,49),"Kameraskakning: "+(_cameraShake?"på":"av"),"shake");
         Button(new Rect2(455,394,370,49),"Växla helskärm  ·  F11","fullscreen");Button(new Rect2(455,475,370,49),"Tillbaka","back",true);
-        Centered("Undertexter visas alltid. Inställningarna sparas automatiskt.",640,575,15,Muted);
+        Centered("M tyst/ljud · +/− volym · dra reglaget uppe till höger",640,562,15,Gold);
+        Centered("Undertexter visas alltid. Inställningarna sparas automatiskt.",640,593,15,Muted);
     }
     private void DrawDeath()
     {
@@ -433,11 +625,50 @@ public partial class Main : Node2D
     {
         DrawRect(new Rect2(0,0,1280,720),new Color(.012f,.032f,.044f,.86f));
         Text("FÄLTDAGBOK  /  FÖRSTA FYNDET",new Vector2(100,113),14,Gold);Text("ATLAND",new Vector2(94,200),64,Pale,true);
-        Wrapped("Kartan visar en kust som inte finns.\nI bronsen står ett namn som borde ha stannat i böckerna.\n\nLångt under kölen svarar något med tre långsamma slag.",new Vector2(100,254),880,22,Muted,35);
+        bool found=_game.Testimony!=TestimonyChoice.None;
+        string consequence=_game.Testimony==TestimonyChoice.Broadcast
+            ?"Namnen hördes över hela redden. Nu bär fler deras berättelse."
+            :"Avtrycken ligger förseglade ombord. Vittnena kom levande tillbaka.";
+        Wrapped(found?$"Ingrid Jonsdotter. Mats Eriksson. Siri Nilsdotter.\n{consequence}\n\nBronskartan följer Sveriges kust. Nästa märke ligger vid Uppsala.":"Kartan visar en kust som inte finns.\nI bronsen står ett namn som borde ha stannat i böckerna.\n\nLångt under kölen svarar något med tre långsamma slag.",new Vector2(100,254),1030,21,Muted,35);
         Text($"Vakter fällda  {_game.Kills}     Parader  {_game.Parries}     Tid  {(int)_game.Elapsed/60}:{(int)_game.Elapsed%60:00}",new Vector2(100,443),16,Gold);
         if(_radioTime>0 || _sound.Speaking)DrawRadio();
-        Button(new Rect2(100,624,360,49),"Tillbaka till expeditionen","title",true);
-        Text("Fortsättningen börjar vid nästa kust.",new Vector2(510,655),17,Muted);
+        Button(new Rect2(100,624,360,49),"Till huvudmenyn","title",true);
+        Text("Landstigningen avslutad. Uppsala väntar.",new Vector2(510,655),17,Muted);
+    }
+    private void DrawTestimony()
+    {
+        DrawRect(new Rect2(0,0,1280,720),new Color(.025f,.023f,.019f,.95f));
+        Text("FÄLTDAGBOK  /  DE STRUKNA NAMNEN",new Vector2(70,53),13,Gold);
+        Text("Vilka ska få höra?",new Vector2(66,107),40,Pale,true);
+        Wrapped("Tre inskrifter. Tre människor som saknas i kronans berättelse. Ebba väntar vid radion.",new Vector2(70,143),1100,18,Muted,26);
+        for(int i=0;i<3;i++)
+        {
+            float x=70+i*390;Panel(new Rect2(x,171,365,181),.92f);
+            Text(FieldNotes.Names[i],new Vector2(x+18,202),15,Gold);
+            Wrapped(FieldNotes.Stones[i],new Vector2(x+18,235),328,16,Pale,25);
+        }
+        Choice(new Rect2(70,373,555,115),"Sänd namnen öppet","Starkare förföljare. +30 liv nu.\nPerfekta parader återger 4 liv under återtåget.","broadcast",false);
+        Choice(new Rect2(650,373,555,115),"Säkra en krypterad rapport","Färre förföljare. +15 liv och en tinktur.\nUnderstödet blir redo direkt.","cipher",false);
+        if((_radioTime>0||_sound.Speaking)&&Radio.ContainsKey(_radio))DrawRadio();
+        Wrapped("Namnen finns kvar i fältdagboken oavsett väg. Båten ligger vid landstigningsplatsen.",new Vector2(70,632),1100,16,Muted,24);
+        Text("ESC Paus",new Vector2(70,682),12,Muted);
+    }
+    private void DrawJournal()
+    {
+        DrawRect(new Rect2(0,0,1280,720),new Color(.025f,.023f,.019f,.96f));
+        Text("FÄLTDAGBOK  /  VITTNESMÅL",new Vector2(95,78),13,Gold);
+        var stone=_game.Inscriptions[_journalPage];
+        Text(stone.Read?FieldNotes.Names[_journalPage]:"En oläst inskrift",new Vector2(90,155),36,Pale,true);
+        Text($"{_journalPage+1} / 3",new Vector2(1100,78),14,Gold);
+        Text("STENENS VITTNESMÅL",new Vector2(95,216),13,Gold);
+        Wrapped(stone.Read?FieldNotes.Stones[_journalPage]:"Skrift syns under kajens beslag. Frilägg inskriften för att läsa den.",new Vector2(95,255),1040,23,Pale,36);
+        DrawLine(new Vector2(95,359),new Vector2(1170,359),new Color(Gold,.4f),1);
+        Text("EBBAS JÄMFÖRELSE",new Vector2(95,399),13,Gold);
+        Wrapped(stone.Read?FieldNotes.Ledger[_journalPage]:"Ingen jämförelse antecknad ännu.",new Vector2(95,440),1040,21,Muted,33);
+        Text("Minne · tal · skrift",new Vector2(95,560),18,Gold,true);
+        Button(new Rect2(95,614,210,49),"Föregående","journal-prev");
+        Button(new Rect2(320,614,210,49),"Nästa","journal-next");
+        Button(new Rect2(830,614,340,49),"Tillbaka till kajen","back",true);
     }
     private void Panel(Rect2 r,float alpha){DrawRect(r,new Color(.027f,.055f,.068f,alpha));DrawRect(r,new Color(.57f,.51f,.34f,.30f),false,1);}
     private void Button(Rect2 r,string label,string id,bool primary=false)
@@ -464,7 +695,7 @@ public partial class Main : Node2D
     private void WorldBar(Vector2 p,float width,float amount,Color color,float height=4){DrawRect(new Rect2(p,new Vector2(width,height)),new Color(.015f,.028f,.034f,.9f));DrawRect(new Rect2(p,new Vector2(width*Math.Clamp(amount,0,1),height)),color);}
     public override void _ExitTree()
     {
-        foreach(var texture in _actors.Values)texture.Dispose();_actors.Clear();
-        _background?.Dispose();_serif?.Dispose();_sans?.Dispose();
+        _cast?.Dispose();
+        _background?.Dispose();_radioPortraits?.Dispose();_ebbaPortrait?.Dispose();_serif?.Dispose();_sans?.Dispose();
     }
 }

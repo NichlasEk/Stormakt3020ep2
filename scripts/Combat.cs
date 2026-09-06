@@ -8,7 +8,9 @@ namespace Atland;
 
 public enum Weapon { Saber, Hammer }
 public enum EnemyKind { Guard, Pikeman, Gunner, Collector }
-public enum Phase { Quay, Collector, Discovery, Complete }
+// Keep the first four values stable for existing saves.
+public enum Phase { Quay, Collector, Discovery, Complete, Names, Testimony, Extraction }
+public enum TestimonyChoice { None, Broadcast, Cipher }
 public enum Order { Artillery, Medicine }
 public readonly record struct Controls(Vector2 Move, Vector2 Aim, bool Attack, bool Heavy, bool Dodge, bool Guard, bool Swap, bool Heal, bool Support, bool Interact);
 public readonly record struct Cue(string Kind, Vector2 Position, string Text = "", float Value = 0);
@@ -49,6 +51,13 @@ public sealed class Seal
     public Vector2 Position;
     public float Health = 80;
 }
+public sealed class Inscription
+{
+    public Vector2 Position;
+    public float Progress;
+    public bool Disturbed;
+    public bool Read;
+}
 
 /// <summary>Fixed-tick encounter rules. No renderer, scene tree or external service dependencies.</summary>
 public sealed class Combat
@@ -66,7 +75,7 @@ public sealed class Combat
     public List<Fighter> Enemies = new();
     public List<Shot> Shots = new();
     public List<Hazard> Hazards = new();
-    public List<Seal> Seals = new() { new() { Position = new(340, 775) }, new() { Position = new(800, 550) } };
+    public List<Seal> Seals = new() { new() { Position = new(395, 775) }, new() { Position = new(825, 545) } };
     public float AttackTime;
     public float AttackLength;
     public float ContactTime;
@@ -89,6 +98,14 @@ public sealed class Combat
     public int Parries;
     public bool IntroPlayed;
     public bool BossEnraged;
+    public List<Inscription> Inscriptions = new()
+    {
+        new() { Position = new(395,775) },
+        new() { Position = new(825,545) },
+        new() { Position = new(1135,490) }
+    };
+    public TestimonyChoice Testimony;
+    [JsonIgnore] public int ReadingIndex = -1;
     public int NextId = 1;
     [JsonIgnore] public List<Cue> Events = new();
     [JsonIgnore] public bool Dead => Health <= 0;
@@ -99,6 +116,31 @@ public sealed class Combat
         new(985,771), new(765,953), new(470,959)
     };
     public static readonly Vector2 ChartPosition=new(1210,470);
+    public static readonly Vector2 LandingPosition=new(470,855);
+    public const float ReadingDuration=2.8f;
+    public const float ReadingRange=78;
+    public const float ReadingSafety=160;
+
+    public bool ReadingBlocked(int index)=>Enemies.Any(e=>!e.Dead && Vector2.Distance(e.Position,Inscriptions[index].Position)<ReadingSafety);
+
+    // Returns a useful destination for the UI and the integration player.
+    [JsonIgnore] public Vector2 ObjectivePosition=>Phase==Phase.Names
+        ? Inscriptions.Where(i=>!i.Read).OrderBy(i=>Vector2.DistanceSquared(i.Position,Player)).FirstOrDefault()?.Position??ChartPosition
+        : Phase==Phase.Extraction?LandingPosition:ChartPosition;
+
+    public bool ChooseTestimony(TestimonyChoice choice)
+    {
+        if(Dead || Phase!=Phase.Testimony || Testimony!=TestimonyChoice.None || !Inscriptions.All(i=>i.Read)
+            || choice is not (TestimonyChoice.Broadcast or TestimonyChoice.Cipher))return false;
+        Testimony=choice;Phase=Phase.Extraction;Stamina=100;
+        // Both routes have an immediate, inspectable combat consequence.
+        Health=Math.Min(100,Health+(choice==TestimonyChoice.Broadcast?30:15));
+        if(choice==TestimonyChoice.Cipher) { Potions++;SupportCooldown=0; }
+        Spawn(EnemyKind.Guard,new(640,720));Spawn(EnemyKind.Pikeman,new(790,657));
+        if(choice==TestimonyChoice.Broadcast)Spawn(EnemyKind.Gunner,new(1008,635));
+        Emit("radio",Player,choice==TestimonyChoice.Broadcast?"broadcast":"cipher");
+        Emit("checkpoint",Player);return true;
+    }
 
     public static Combat New(Order order)
     {
@@ -117,8 +159,8 @@ public sealed class Combat
     public void Emit(string kind, Vector2 at, string text = "", float value = 0) => Events.Add(new(kind, at, text, value));
     public void Step(Controls input, float dt = 1f / 60)
     {
-        Events.Clear(); Tick++;
-        if (Dead || Phase == Phase.Complete) return;
+        Events.Clear(); ReadingIndex=-1; Tick++;
+        if (Dead || Phase is Phase.Complete or Phase.Testimony) return;
         Elapsed += dt;
         if (!IntroPlayed) { IntroPlayed = true; Emit("radio", Player, "arrival"); }
         if (HitStop > 0) { HitStop -= dt; return; }
@@ -174,7 +216,7 @@ public sealed class Combat
             {
                 if (Guarding && GuardTime < .22f && Vector2.Dot(Facing,-Normal(shot.Velocity,Facing))>.1f)
                 {
-                    shot.Reflected=true;shot.Velocity=-shot.Velocity*1.4f;Parries++;Stamina=Math.Min(100,Stamina+15);Emit("parry",Player,"ÅTER TILL AVSÄNDAREN");
+                    shot.Reflected=true;shot.Velocity=-shot.Velocity*1.4f;Parries++;RememberedParry();Stamina=Math.Min(100,Stamina+15);Emit("parry",Player,"ÅTER TILL AVSÄNDAREN");
                 }
                 else { DamagePlayer(15,shot.Position); shot.Life=0; }
             }
@@ -195,6 +237,7 @@ public sealed class Combat
             }
         }
         Hazards.RemoveAll(h=>h.Timer<=0);
+        if(Dead)return;
         if (Phase==Phase.Quay && Seals.All(s=>s.Health<=0) && Enemies.All(e=>e.Dead))
         {
             Phase=Phase.Collector;Health=Math.Max(Health,75);Stamina=100;Shots.Clear();
@@ -205,7 +248,44 @@ public sealed class Combat
             Phase=Phase.Discovery;Hazards.Clear();Shots.Clear();Emit("checkpoint",Player);Emit("radio",Player,"fallen");
         }
         if(Phase==Phase.Discovery && input.Interact && Vector2.Distance(Player,ChartPosition)<100)
-        { Phase=Phase.Complete;Emit("radio",Player,"atland");Emit("checkpoint",Player); }
+        {
+            Phase=Phase.Names;Health=Math.Max(Health,75);Stamina=100;Potions++;
+            Emit("radio",Player,"names-intro");Emit("radio",Player,"hedvig-karta");Emit("checkpoint",Player);return;
+        }
+        if(Phase==Phase.Names)ReadInscription(input,dt);
+        if(Phase==Phase.Names && Inscriptions.All(i=>i.Read) && Enemies.All(e=>e.Dead))
+        {Phase=Phase.Testimony;Shots.Clear();Hazards.Clear();Emit("checkpoint",Player);}
+        if(Phase==Phase.Extraction && Enemies.All(e=>e.Dead) && input.Interact && Vector2.Distance(Player,LandingPosition)<100)
+        { Phase=Phase.Complete;Emit("radio",Player,"homebound");Emit("checkpoint",Player); }
+    }
+    private void ReadInscription(Controls input,float dt)
+    {
+        if(!input.Interact || Moving || AttackTime>0 || DodgeTime>0 || Guarding || Hurt>0)return;
+        int index=Inscriptions.FindIndex(i=>!i.Read && Vector2.Distance(Player,i.Position)<ReadingRange);
+        if(index<0)return;
+        var stone=Inscriptions[index];
+        if(!stone.Disturbed)
+        {
+            stone.Disturbed=true;
+            // The patrol enters well away from Karl. A readable arrival delay
+            // gives the player time to release the inscription and turn.
+            Vector2 entry=Player.X>800?new(570,790):new(1130,520);
+            Spawn(EnemyKind.Guard,entry);
+            Spawn(index==1?EnemyKind.Gunner:EnemyKind.Pikeman,ClampToGround(entry+new Vector2(85,-10)));
+            foreach(var e in Enemies.Where(e=>!e.Dead)){e.State=2;e.Timer=1.5f;}
+            Emit("radio",Player,"names-warning");Emit("checkpoint",Player);return;
+        }
+        if(ReadingBlocked(index))return;
+        ReadingIndex=index;stone.Progress=Math.Min(ReadingDuration,stone.Progress+dt);
+        if(Tick%18==0)Emit("scrape",stone.Position);
+        if(stone.Progress<ReadingDuration)return;
+        stone.Read=true;ReadingIndex=-1;
+        Emit("inscription",stone.Position,"NAMN ÅTERFUNNET");Emit("radio",Player,$"name-{index}");Emit("checkpoint",Player);
+        if(Inscriptions.Count(i=>i.Read)==1)Emit("radio",Player,"hedvig-minne");
+    }
+    private void RememberedParry()
+    {
+        if(Testimony==TestimonyChoice.Broadcast){Health=Math.Min(100,Health+4);Emit("heal",Player,"MINNET BÄR  +4",4);}
     }
     private void StartAttack(bool heavy)
     {
@@ -282,7 +362,7 @@ public sealed class Combat
                         if(distance<range && Vector2.Dot(Normal(to,e.Facing),e.Facing)>.25f)
                         {
                             bool parry=Guarding && GuardTime<.22f && Vector2.Dot(Facing,-e.Facing)>.0f;
-                            if(parry){Parries++;Stamina=Math.Min(100,Stamina+22);e.State=3;e.Timer=1.2f;e.Cooldown=1.3f;Emit("parry",Player,"PERFEKT PARAD");HitStop=.07f;return;}
+                            if(parry){Parries++;RememberedParry();Stamina=Math.Min(100,Stamina+22);e.State=3;e.Timer=1.2f;e.Cooldown=1.3f;Emit("parry",Player,"PERFEKT PARAD");HitStop=.07f;return;}
                             DamagePlayer(e.Kind==EnemyKind.Collector?27:e.Kind==EnemyKind.Pikeman?19:14,e.Position);
                         }
                     }

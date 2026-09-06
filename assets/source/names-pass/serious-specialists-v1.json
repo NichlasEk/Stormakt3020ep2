@@ -1,0 +1,13 @@
+{
+  "tool": "built-in image_gen",
+  "date": "2026-09-06",
+  "output": "assets/art/serious-specialists-v1.png",
+  "sha256": "37373d2e9b00b3d28330d65a9091239a9dac7e90d4c00bcc69ebfbaf681808c7",
+  "generated_source": "/home/nichlas/.codex/generated_images/01a07608-36a4-7850-ba4d-824cc60ab5aa/exec-20c1a2fd-d272-4ca0-b065-1d08ddecbf99.png",
+  "references": [
+    "assets/art/serious-cast-v6.png"
+  ],
+  "brief": "New isolated combat atlas, exact 3 columns and 4 rows on pure magenta. Ready, windup and follow-through columns. Rows: same Karl with practical mining hammer, Danish pikeman in faded red, Danish musketeer in faded red, older human collector in black leather and scarred breastplate with plain black hat and pole hammer. Serious believable adult anatomy, matte worn oil-painted cloth and steel, overhead three-quarter camera, all feet and weapons inside their cells, no labels. Requested 1536x2048, actual output 1086x1448; runtime reads dimensions.",
+  "brief_is_condensed": true,
+  "runtime_generation_required": false
+}

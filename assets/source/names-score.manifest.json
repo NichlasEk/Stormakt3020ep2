@@ -1,0 +1,30 @@
+{
+  "task": "231513dc-843f-491d-b95c-98bd0329998c",
+  "result": [
+    {
+      "file": "/v1/audio?path=%2Fhome%2Fnichlas%2Fai%2Feutherstudio%2FACE-Step-1.5%2F.cache%2Facestep%2Ftmp%2Fapi_audio%2Ffec0c0a9-15ef-f9f8-8634-87922005fc70.wav",
+      "wave": "",
+      "status": 1,
+      "create_time": 1788698716,
+      "env": "development",
+      "prompt": "Instrumental Nordic national romantic chamber music for discovering erased names carved into an ancient Swedish quay. Grave intimate viola da gamba and low cello melody, sparse bowed folk strings reminiscent of nyckelharpa, breathy wooden flute answers, quiet plucked lute, distant soft bronze resonance. Slow D minor at 72 BPM, restrained tragic dignity, an old oil painting of a ruined harbor at dawn. Beautiful memorable descending four-note melody, warm human grief and mysterious hopeful light, acoustic dry tactile instruments. Quiet even volume, begin with the music immediately, continuous repeated phrases suitable for looping. No vocals, no speech, no choir, no drums, no action percussion, no electronic beat, no jump scares, no huge cinematic climax, no silence or fadeout.",
+      "lyrics": "[Instrumental]",
+      "metas": {
+        "bpm": 72,
+        "duration": 48.0,
+        "genres": "N/A",
+        "keyscale": "D minor",
+        "timesignature": "4/4",
+        "prompt": "Instrumental Nordic national romantic chamber music for discovering erased names carved into an ancient Swedish quay. Grave intimate viola da gamba and low cello melody, sparse bowed folk strings reminiscent of nyckelharpa, breathy wooden flute answers, quiet plucked lute, distant soft bronze resonance. Slow D minor at 72 BPM, restrained tragic dignity, an old oil painting of a ruined harbor at dawn. Beautiful memorable descending four-note melody, warm human grief and mysterious hopeful light, acoustic dry tactile instruments. Quiet even volume, begin with the music immediately, continuous repeated phrases suitable for looping. No vocals, no speech, no choir, no drums, no action percussion, no electronic beat, no jump scares, no huge cinematic climax, no silence or fadeout.",
+        "lyrics": "[Instrumental]"
+      },
+      "generation_info": "**\ud83c\udfb5 Total generation time (1 song): 2.36s**\n- 2.36s per song\n- DiT phase (1 song): 2.36s",
+      "seed_value": "30220605",
+      "lm_model": "acestep-5Hz-lm-1.7B",
+      "dit_model": "acestep-v15-turbo",
+      "progress": 1.0,
+      "stage": "succeeded"
+    }
+  ],
+  "sha256": "5087270b78e8a6e9416b7959f325daa6efbda55e0b5629cfa078032ce06c0409"
+}

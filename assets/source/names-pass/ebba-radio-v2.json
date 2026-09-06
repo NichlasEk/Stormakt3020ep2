@@ -1,0 +1,13 @@
+{
+  "tool": "built-in image_gen",
+  "date": "2026-09-06",
+  "output": "assets/art/ebba-radio-v2.png",
+  "sha256": "654f791b353d3b85c5325df1c610da90ab5f52ab25625f71c3b5b12c4306ec2a",
+  "references": [
+    "assets/art/radio-cast-v1.png"
+  ],
+  "generated_source": "/home/nichlas/.codex/generated_images/01a07608-36a4-7850-ba4d-824cc60ab5aa/exec-b8b510de-e359-431f-b6b1-b8ee2d3c376c.png",
+  "brief": "Single square dignified oil portrait of the adult blonde admiral in the reference left third. Same face, blue eyes, crown braid and serious commanding expression; head to waist, fuller curvaceous upper-body build, entirely buttoned navy uniform with high collar and worn gold details, plain umber backdrop. No skin exposed below neck.",
+  "brief_is_condensed": true,
+  "runtime_generation_required": false
+}

@@ -1,0 +1,13 @@
+{
+  "tool": "built-in image_gen",
+  "date": "2026-09-06",
+  "output": "assets/art/likvarvet-scale-v5.png",
+  "sha256": "5ae58fbd7db1e1e98b0a344376914b283ce3c96fb0ce41c873b029af7848978f",
+  "generated_source": "/home/nichlas/.codex/generated_images/01a07608-36a4-7850-ba4d-824cc60ab5aa/exec-d60fa888-6f6c-438a-8c4f-3300986eadf1.png",
+  "references": [
+    "assets/art/likvarvet-matte-v4.png"
+  ],
+  "brief": "Correct human scale on the existing matte Swedish great-power-era quay oil painting. Keep camera, ship, gate and walkable outline. Use small practical lanterns, thin mooring rope and small cobbles; no people or UI. Replace floor medallions with traversable memorial slabs with incised serpent bands and handprints; add a third slab near the gate. No gloss, no toy forms. Request assumed a 135px adult; runtime was visually calibrated to 150px after inspecting actual output.",
+  "brief_is_condensed": true,
+  "runtime_generation_required": false
+}

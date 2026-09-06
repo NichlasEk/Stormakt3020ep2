@@ -1,0 +1,8 @@
+{
+  "master": "assets/source/names-score-master.wav",
+  "end_seconds": 43.333333,
+  "overlap_seconds": 3.333333,
+  "duration_seconds": 40.0,
+  "filter": "[0:a]asplit=3[h][b][t];[h]atrim=0:3.333333,asetpts=PTS-STARTPTS[head];[b]atrim=3.333333:40.0,asetpts=PTS-STARTPTS[body];[t]atrim=40.0:43.333333,asetpts=PTS-STARTPTS[tail];[tail][head]acrossfade=d=3.333333:c1=tri:c2=tri[join];[body][join]concat=n=2:v=0:a=1,loudnorm=I=-19:TP=-2:LRA=10[out]",
+  "sha256": "1b2e9604bd88c69cf74775898a4dbc300412fcf9135a8280bb9d396c8b83d334"
+}

@@ -1,0 +1,14 @@
+{
+  "tool": "built-in image_gen",
+  "date": "2026-09-06",
+  "output": "assets/art/radio-cast-v1.png",
+  "sha256": "0f34605dc58eed4eea7d5647b572dee04efb9d99eaecbf698e895ff621155770",
+  "generated_source": "/home/nichlas/.codex/generated_images/01a07608-36a4-7850-ba4d-824cc60ab5aa/exec-a23dbc78-9a44-4f51-8c48-ec99f9fb82c4.png",
+  "references": [
+    "/home/nichlas/WaylandForge/assets/stormakt3020/stormakt-radio-portraits-v1.png",
+    "assets/art/serious-specialists-v1.png"
+  ],
+  "brief": "Exactly three square head-and-shoulders radio portraits side by side on separate near-black umber backdrops. Dark serious Swedish 17th-century oil portrait chiaroscuro. Left: Ebba Grip from original top row, blonde crown braid, blue eyes, navy buttoned naval coat, tarnished gold and three-crowns gorget. Center: original Hedvig Rålamb, 55-year-old antiquarian, grey-brown pinned hair, weathered thoughtful face, wire spectacles on forehead, cream collar and bottle-green wool. Right: collector matching the specialist sheet bottom row, grey stubble, plain black broad-brim hat, black leather and steel. Large readable faces at 92px runtime, no text, borders, caricatures or glossy CGI.",
+  "brief_is_condensed": true,
+  "runtime_generation_required": false
+}

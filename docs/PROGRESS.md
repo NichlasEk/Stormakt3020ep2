@@ -1,51 +1,56 @@
-# Checkpoint · 2026-09-06
+# Checkpoint · De strukna namnen · 2026-09-06
 
-## Byggt
+## Spelbart nu
 
-Godot 4.7.2 .NET-projektet är separat från originalet. Första spelprovet i Blekinges likvarv har titelmeny, krigsrådsval, en sammanhängande kajstrid, två förtöjningssigill, fyra vakter, varvets indrivare, bronskartan och avslutningskort. Sabel/hammare, tunga attacker, undanmanöver, gard, projektilparad, tinkturer och artilleri/fältvård fungerar. Tangentbord/mus och första handkontrollens knappar/axlar är kopplade. Paus, ljudvolym, kameraskakning och helskärm finns.
+Godot 4.7.2 .NET, separat från originalet. Spelprov 0.2 utökar Blekinges likvarv: krigsråd med artilleri/fältvård, två kajsigill, fyra vakter, indrivaren, bronskartan, tre inskrifter med två vakter per avläsning, ett konkret vägval och återtåg till båten.
 
-Manuell F5/F9 och automatiska kontrollpunkter är separata; filer är checksummade och skrivs atomiskt med föregående backup. Det äldre spelets sparfiler berörs inte.
+Håll E/B stillastående nära en inskrift. Patrullen kommer endast första gången stenen störs. Fiender inom 160 världspixlar hindrar arbetet; påbörjat arbete bevaras när spelaren avbryter. Tre avlästa stenar och besegrade patruller öppnar vägvalet. R/Back öppnar fynden med stenens vittnesmål jämfört med Ebbas liggare. Olästa fynd avslöjas inte där.
 
-Lokalt genererade nya tillgångar: hamnmålning, två syntetiska röstreferenser, sex svenska repliker, två orkesterspår. Egen geometri för sex figuruppsättningar, egna effektljud och hamnatmosfär. Källor och produktionsverktyg finns i repot. Ljuden för understödets radioreplik och själva kanonen har uttryckligen olika filnamn.
+- **Öppen sändning:** tre förföljare, +30 liv, perfekta parader återger 4 liv under återtåget.
+- **Krypterad rapport:** två förföljare, +15 liv, extra tinktur, understöd redo direkt.
+- Alla förföljare måste besegras före ombordstigning. Namn, framsteg och vägval sparas.
 
-## Senaste styrning från användaren
+Sabel/hammare, tunga attacker, undanmanöver, gard, projektilparad, understöd och handkontroll finns sedan tidigare. F5/F9 och automatiska kontrollpunkter är separata; checksummade atomiska sparfiler har föregående backup. Enumvärdena för 0.1 är bevarade, och äldre avslutade sparningar förblir avslutade. Starta en ny landstigning för att spela hela 0.2.
 
-### Genomfört matt bildpass
+## Aktuell bildriktning
 
-Användaren bad uttryckligen att också göra miljön ruffare och mindre glansig. `likvarvet-matte-v4.png` är nu spelprototypens bakgrund; gångpolygon, sigill och kartfynd behölls. Dekorativa vattenglimtar är borttagna, och den redan mörkt målade miljön ritas utan ytterligare färgdämpning. Den nya bilden har grov sten, sotigt trä, matt metall och små återhållna lyktsken.
+Användaren godkände den seriösa figurstilen och därefter den nya spelbilden: ”ser rätt bra ut”, ”såg ju riktigt coolt ut! jag älskart!”. Humorn hör till berättelsen och radion, aldrig till töntig anatomi eller karikatyrer.
 
-`./start-art-study.sh --fullscreen` visar nytillverkade referensbaserade Karl- och soldatbilder på kajen i spelets kameraskala. Mellanslag växlar tre poser. Detta är den utlovade avgränsade bildgranskningen: den fulla spelprototypen använder ännu föregående animerade figurer. Nästa steg är att bedöma bilden tillsammans med användaren och därefter bygga en sammanhängande riktnings- och animationsuppsättning. Inget motorbyte genomfört.
+Runtime använder nu `serious-cast-v6.png` för Karl/sabel och vakter samt `serious-specialists-v1.png` för Karl/hammare, pikenerare, skytt och indrivare. De tidigare Blender-figurerna används inte längre i spelet. `PaintedCast.cs` används även av bildstudien och normaliserar ståhöjden till cirka 150 världspixlar. `SpriteCutout.cs` frilägger magenta och rensar kantfärg innan mipmaps/filtrering.
 
-Lokala Krea-pass kasserades som bildriktning eftersom de gav mer glans och ändrade detaljer. Valda bilder är skapade med inbyggd bildgenerering; prompter, referenser, avvisade studier och manifest finns i `assets/source/rough-pass/`. Bildprovet använder en tillfällig ljushetsmask för generatorns ljusrutiga RGB-bakgrund; riktiga alphakanter krävs vid slutproduktion. Vissa höga metallglanspunkter påverkas av denna mask.
+**Begränsning:** tre stridsposer och speglad sidriktning. Fullständiga gångcykler, åtta riktningar, riktiga dödsanimationer och mellanbilder är ännu inte byggda. Presentera inte detta som färdig animation.
 
-Validering av bildpasset: C# bygger utan varningar/fel. Verklig Godot/OpenGL-körning med den matta kajen sparade gameplay-bild och avslutade utan motorfel. Figurprovet sparar tre poser med `./start-art-study.sh --fullscreen -- --capture-study` till `artifacts/rough-art-study*.png`. Stridsreglerna är oförändrade i detta pass.
+`likvarvet-scale-v5.png` ersätter v4: mindre lyktor, tunnare förtöjningar, finare stenläggning och tre plana minneshällar. Spelpunkterna har justerats till de målade hällarna. Kroppsskalan är nu gemensam, i stället för att förstora figurer mot överstora props. Bildgeneratorn följde inte alla exakta pixelmått; detta är en visuellt granskad förbättring, inte en fullständig metrisk 3D-miljö. G i bildstudien visar ståhöjdsreferensen 1,78 m / 150 px.
 
-Även andra figurpasset upplevdes för gulligt. Användarens senaste, överordnade referens är **Diablo 2 och originalspelets gamla assets**. Granskade originalbilder: `dungeon-karl-combat-v1.png`, `dungeon-danish-enemies-v1.png`, `dungeon-gruva1-environment-v1.png` under `/home/nichlas/WaylandForge/assets/stormakt3020/`. De visar målade material, vuxen anatomi, sammanhängande dräkter och läsbara stridsposer. Originalets Karl har ungt ansikte, pannlampa, blå karolinerrock, bröstharnesk och gula handskar: bevara identiteten när uttrycket görs mörkare och mer slitet.
+## Radio och ljud
 
-Nuvarande Blender-figurer är tekniska provisorier, inte godkänd slutstil. Studien `assets/source/concepts/karl-oil-study-v3.png` visar oljebehandling men avviker i ålder, identitet och kameravinkel; den är inte en runtime-sprite och ska inte bli figurförlaga. Nästa avgränsade bildprov ska visa Karl och en fiende i spelets faktiska perspektiv och storlek, med originalets dungeon-bilder som referenser. Bedöm silhuett, tyg/metall, ansikte och attackläsbarhet i miljön innan fler figurer produceras. Motorfrågan är diskuterad, inget byte till WaylandForge beslutat.
+`radio-cast-v1.png` innehåller tre nya målade porträtt: Ebba Grip, Hedvig Rålamb och indrivaren. Ebbas blonda flätade hår, blå ögon och blå officersidentitet utgår från originalets porträtt; ytan är ommålad i episodens allvarliga stil. Indrivaren matchar sin stridsfigur. Ebbas separata `ebba-radio-v2.png` återger därefter originalets fylligare byst i helt täckande uniform på uttrycklig begäran, med samma vuxna ansikte och seriösa stil. Hedvig är en ny, cirka 55-årig antikvarie med egen identitet, äldre låg röst och eftertänksam replikföring.
 
-Första bildpasset var fint men för gulligt och runt. Ny riktning: mörk sliten oljemålning från stormaktstiden. Miljön har målats om med bibehållen hamnidé, gångpolygon/sigill/kartfynd anpassats, figurer fått vuxnare proportioner och smutsigare material. Den här styrningen är viktigare än den första ljusa konceptbilden.
+16 svenska repliker totalt, varav 10 nya i detta steg. Tre egna syntetiska rollreferenser via VoxCPM2, repliker via Dots MF på lokal EutherLink. Referenser, manusbegäranden, råljud och jobbmanifest ligger i `assets/source/voices/`. Inga verkliga personers röstprov används. Porträtt och undertext följer talaren. Föråldrade stridsrepliker rensas vid fyndövergången.
 
-## Verifiering
+Tre lokala ACE-Step-musikstycken. Nya `names-score.ogg` är en 40-sekunders kammarmusikloop för inskrifterna, med bevarad 48-sekunders råmaster och dokumenterad överlappning. Musik tonas mellan kaj, fynd och strid och dämpas under tal. Nya författade effekter: borste mot sten, inskriftsfynd och pappersvändning. Ingen AI-tjänst behövs när spelet körs.
 
-- Slutlig .NET-build utan varningar/fel. Godot/OpenGL-smoke efter bildrevision och resursstädning sparade `artifacts/gameplay.png` och avslutade utan läckagevarningar eller motorfel.
-- 16 012 assertions i tester: en träff per hugg, tung attack, projektilparad, undanmanöver, understöd/cooldown, 8 000 rörelsesteg inom kajen och med begränsad stamina, deterministisk fortsättning från en sparad aktiv strid, korrupt sparfil med backup.
-- Testspelaren klarar hela mötet via vanliga kontroller, även efter ändrad gångpolygon: 5 besegrade fiender, 5 parader, 53 liv kvar, ungefär 53 logiska sekunder. Detta mäter körbarhet, inte mänsklig speltid eller upplevd stridskvalitet.
-- Verklig Godot/OpenGL-körning gav gameplay-, boss- och slutbilder och avslutade integrerat möte utan motorfel före sista bildpasset. Slutliga bilder tas efter revisionen.
-- Musik: 48 kHz stereo, 70 respektive 54 sekunders runtime-loopar, tysta slutpartier från råmastrarna utanför looparna. Bossloopens kontrollerade peak -4,4 dB efter kodning; ingen längre tystnad detekterad.
-- Lokal Whisper-kontroll återgav replikernas huvudsakliga innehåll. Egennamnet Rudbeck och ordet sigill fick osäkra transkriberingar; mänsklig lyssning behövs innan rösterna betraktas som slutcasting.
-- Handkontroll är kodad men fysisk handkontroll har inte provats under detta pass.
+Användaren tyckte ljudet var för högt. Standardvolymen är sänkt från 75 till 25 procent. Synligt dragreglage i spelbilden och menyerna; M växlar tyst/ljud, +/− ändrar i femprocentsteg. Regleringen sparas, och klick på reglaget utlöser inte attacker. Automatiska testkörningar är tysta. UI-testet använder separat settingsfil i artifacts.
 
-## Viktiga nästa steg
+## Rudbeck och berättelse
 
-1. Användaren provspelar. Först bedöms rörelsekänsla, attacktiming, kamera, målens tydlighet och den nya mörka stilen.
-2. Förbättra figurernas målade detalj och animation; nu finns sju tydliga poser per riktning men inga fullständiga mellanbilder. Spelets strid är oberoende av antalet renderade poser.
-3. Bygg den längre 20–30-minuters Blekinge-missionen: fler rum, utforskning, loot och ett riktigt första möte med Varvsänkan. Det nuvarande korta stridsprovet ska inte beskrivas som den färdiga missionen.
-4. Fördjupa strategins bestående konsekvenser och föremål som ändrar spelstil. Fullständigt inventory och ediktsystem är ännu inte byggda.
-5. Filmsekvenser med LTX-2 först när scenkomposition och bildidentitet håller. Ingen film har genererats eller kopplats in ännu.
+Läs `docs/ATLANTICA-NOTES.md` för primärhänvisningar. Minne, tal och skrift (tryckt s. 543–544) bär det första fyndet. Ingrid Jonsdotter, Mats Eriksson och Siri Nilsdotter och deras inskrifter är originalskriven fiktion, inte citat ur Atlantica. Hedvig kopplar kartans linjer till landskapet. Underjordiskt Atland är vår fiktion; Rudbeck läser vissa underjordsresor geografiskt.
+
+Användarens två PDF-filer i roten är lokalt researchmaterial. De har inte lagts till i Git. De större framtidsspåren — Ymers geologi, Gläsisvall, landskapskalendern och Uppsala — är konceptunderlag, inte färdiga banor.
+
+## Verifiering och fortsatt arbete
+
+- Regeltest: 16 031 assertions. Hela artilleri/öppen-rutten: 14 besegrade, 12 parader, 99 liv kvar, cirka 91 logiska sekunder. Hela fältvård/krypterade rutten: 13 besegrade, 100 liv kvar, cirka 96 sekunder. Detta är botkörning, inte uppskattad mänsklig speltid.
+- Sparprov omfattar delvis läst inskrift, utebliven dubbel patrull/belöning, väntan på sista fienden, sparat vägval, återtåg och en äldre sparfil utan de nya fälten.
+- Godot/OpenGL-integration når slutet via samma regler. Bilder: gameplay, boss, names, testimony, ending i artifacts.
+- UI-kontroll provar mute/återställning, tangent, musdrag/clamp, ingen attack vid reglageklick, settings-reload och fältdagbok. Separata radiobilder för de tre talarna.
+- Lokal Whisper-kontroll finns i artifacts. Egennamn och vissa ord får osäkra transkriberingar; det är en uttalskontroll, inte ett påstående om slutlig mänsklig castinggranskning.
+- Fysisk handkontroll har inte provats. Den längre Blekinge-missionen, loot/inventory, Varvsänkan, vidare kampanj och filmsekvenser återstår.
+
+Nästa produktionssteg: rörelser och riktningsanimationer från den godkända målade identiteten, därefter nästa sammanhängande miljö med måttsatt grundlayout. Bevara den allvarliga figurstilen, läsbara attacker och den nya radiobesättningen. Utöka inte hela kampanjen på en gång.
 
 ## Körning
 
-`./start.sh` importerar resurser, bygger C# och startar spelet. `dotnet run --project tests/Atland.Tests.csproj` kör reglernas tester. `./start.sh --fullscreen -- --integration` kör Godot-testspelaren. `--smoke` och `--capture-title` ger korta bildprov. Alla testbilder och loggar ligger i `artifacts/` och skrivs inte till användarsparfiler.
+`./start.sh` startar spelet. `./start-art-study.sh --fullscreen` visar samma bildsystem. Tester: `dotnet run --project tests/Atland.Tests.csproj`, `./start.sh -- --integration`, `./start.sh -- --ui-check`. `--smoke` ger ett kort bildprov. Loggar och fångster ligger i artifacts.
 
-Origin: https://github.com/NichlasEk/Stormakt3020ep2 . Commit/push efter fungerande milstolpar är uttryckligen önskat. Stor grafik, råljud och runtime-ljud går via Git LFS.
+Origin: https://github.com/NichlasEk/Stormakt3020ep2 . Commit/push efter fungerande milstolpar är uttryckligen önskat. Grafik, råljud och runtime-ljud använder Git LFS. Originalet i /home/nichlas/WaylandForge berörs inte.

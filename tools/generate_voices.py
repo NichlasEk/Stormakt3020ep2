@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Generate new synthetic Episode II cast and lines on local EutherLink."""
-import json,base64,time,urllib.request,hashlib,subprocess
+import json,base64,time,urllib.request,hashlib,subprocess,sys
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1];SRC=ROOT/'assets/source/voices';SRC.mkdir(parents=True,exist_ok=True)
 URL='http://127.0.0.1:8765'
@@ -33,10 +33,28 @@ lines={
  'rage':('collector','Även havet står i skuld till kronan.'),
  'fallen':('ebba','Vänta. Det ligger något vid porten. En karta, gjuten i brons. Den hör inte hemma här.'),
  'atland':('ebba','Atland. Det är vad Rudbeck kallade det. Karl, ta kartan ombord. Vi måste tala ostört.')}
+name_lines={
+ 'names-intro':('ebba','Kartan följer vår egen kust. Men namnen är andra. Karl, det finns skrift under kajens sigill. Frilägg den. Jag tar fram liggaren.'),
+ 'names-warning':('ebba','Rörelse vid porten. De kommer för stenarna. Lägg undan avtrycket och möt dem.'),
+ 'name-0':('ebba','Ingrid Jonsdotter. I liggaren står att färjan övergavs. Men stenen säger att hon väntade på den sista. Någon har tagit bort människorna ur berättelsen.'),
+ 'name-1':('ebba','Mats Eriksson. Dömd för stöld ur kronans magasin. Här står vilka han gav säden till. Det var en lång vinter, Karl.'),
+ 'name-2':('ebba','Siri Nilsdotter. Barnen kom tillbaka och högg hennes namn. I rapporten står det inga civila förluster. Det är en mycket prydlig rapport.'),
+ 'broadcast':('ebba','Jag sänder namnen på öppen frekvens. Nu finns de hos fler än oss. Hela hamnen hörde det, Karl. Ta dig tillbaka till båten.'),
+ 'cipher':('ebba','Avtrycken är säkrade. Jag skickar dem krypterat och håller båten redo med förband. Kom tillbaka, Karl. Vi behöver ett levande vittne också.'),
+ 'homebound':('ebba','Alla tre namnen är ombord. På bronskartan står Uppsala där våra sjökort visar inland. Vi följer spåret i gryningen.')}
+roles['hedvig']={'seed':30220606,'instruction':'A mature Swedish female historian around fifty-five, thoughtful low alto, slightly grainy warm voice, precise calm Swedish pronunciation, contemplative pacing, quiet wonder and resolve, distinctly older than the naval commander, no theatrical acting.','text':'Jag heter Hedvig Rålamb. Mitt arbete är att läsa det som andra har slutat se. En sten kan bära ett namn i tusen år. Men någon måste stanna och lyssna till berättelsen.'}
+hedvig_lines={
+ 'hedvig-karta':('hedvig','Hedvig Rålamb här. Kartans linjer följer gamla vadställen och gravhögar. Karl, vi behöver avtryck av inskrifterna.'),
+ 'hedvig-minne':('hedvig','Rudbecks äpplen är minne, tal och skrift. Stenarna bevarar gärningar som kronan har strukit. Ta med avtrycken.')}
+if '--hedvig-only' in sys.argv: lines=hedvig_lines
+elif '--names-only' in sys.argv: lines=name_lines
+else: lines.update(name_lines);lines.update(hedvig_lines)
 for role,v in roles.items():
+ if not any(r==role for r,_ in lines.values()):continue
  ref=render(role+'-reference',{'text':v['text'],'voice_instruction':v['instruction'],'language':'sv','model_backend':'voxcpm2','output_format':'wav','normalize':False,'seed':v['seed']})
  for name,(r,line) in lines.items():
   if r!=role:continue
+  if (ROOT/'assets/audio'/f'voice-{name}.ogg').exists():continue
   raw=render(name,{'text':line,'voice_instruction':v['instruction'],'language':'sv','model_backend':'dots.tts-mf','output_format':'wav','normalize':False,'seed':v['seed']+100,'reference_wav_base64':base64.b64encode(ref.read_bytes()).decode(),'prompt_text':v['text'],'dots_num_steps':4})
   subprocess.run(['ffmpeg','-y','-v','error','-i',str(raw),'-af','highpass=f=110,lowpass=f=7500,loudnorm=I=-18:TP=-2:LRA=8','-ar','48000','-ac','1','-c:a','libvorbis','-q:a','5',str(ROOT/'assets/audio'/f'voice-{name}.ogg')],check=True)
   print('saved',name,flush=True)

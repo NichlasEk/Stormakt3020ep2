@@ -60,13 +60,79 @@ finally{Directory.Delete(folder,true);}
 var run=Combat.New(Order.Artillery);
 for(int i=0;i<18000&&!run.Dead&&run.Phase!=Phase.Complete;i++)
 {
+ if(run.Phase==Phase.Testimony){Check(run.ChooseTestimony(TestimonyChoice.Broadcast),"Public testimony is available after all names");}
  var target=run.Enemies.Where(e=>!e.Dead).OrderBy(e=>Vector2.DistanceSquared(e.Position,run.Player)).FirstOrDefault();
- Vector2 goal=target?.Position??run.Seals.FirstOrDefault(s=>s.Health>0)?.Position??Combat.ChartPosition;
+ Vector2 goal=target?.Position??run.Seals.FirstOrDefault(s=>s.Health>0)?.Position??run.ObjectivePosition;
  var delta=goal-run.Player;float distance=delta.Length();
  bool guard=target!=null && target.State==1 && target.Timer<.16f && distance<150;
  var move=distance>60?Combat.Normal(delta,Vector2.UnitX):Vector2.Zero;
- run.Step(Input(move,delta,attack:distance<95&&!guard,heavy:distance<105&&i%47==0&&!guard,guard:guard,heal:run.Health<48,support:target!=null,interact:true));
+ bool fighting=target!=null||run.Seals.Any(s=>s.Health>0);
+ run.Step(Input(move,delta,attack:fighting&&distance<95&&!guard,heavy:fighting&&distance<105&&i%47==0&&!guard,guard:guard,heal:run.Health<48,support:target!=null,interact:true));
 }
 Console.WriteLine($"Campaign bot: phase={run.Phase}, health={run.Health:0}, kills={run.Kills}, parries={run.Parries}, seconds={run.Elapsed:0}");
 Check(run.Phase==Phase.Complete,"Full encounter is winnable through ordinary controls");
+Check(run.Inscriptions.All(i=>i.Read)&&run.Testimony==TestimonyChoice.Broadcast&&run.Kills==14,"Full route preserves all three names and defeats the patrols");
+var cipherRun=Combat.New(Order.Medicine);
+for(int i=0;i<18000&&!cipherRun.Dead&&cipherRun.Phase!=Phase.Complete;i++)
+{
+ if(cipherRun.Phase==Phase.Testimony)cipherRun.ChooseTestimony(TestimonyChoice.Cipher);
+ var target=cipherRun.Enemies.Where(e=>!e.Dead).OrderBy(e=>Vector2.DistanceSquared(e.Position,cipherRun.Player)).FirstOrDefault();
+ var delta=(target?.Position??cipherRun.Seals.FirstOrDefault(s=>s.Health>0)?.Position??cipherRun.ObjectivePosition)-cipherRun.Player;
+ float distance=delta.Length();bool guard=target!=null&&target.State==1&&target.Timer<.16f&&distance<150;
+ bool fighting=target!=null||cipherRun.Seals.Any(s=>s.Health>0);
+ cipherRun.Step(Input(distance>60?Combat.Normal(delta,Vector2.UnitX):Vector2.Zero,delta,
+  attack:fighting&&distance<95&&!guard,heavy:fighting&&distance<105&&i%47==0&&!guard,guard:guard,
+  heal:cipherRun.Health<48,support:target!=null,interact:true));
+}
+Check(cipherRun.Phase==Phase.Complete&&cipherRun.Testimony==TestimonyChoice.Cipher&&cipherRun.Kills==13,"Medical/cipher route is winnable through ordinary controls");
+Console.WriteLine($"Cipher bot: health={cipherRun.Health:0}, kills={cipherRun.Kills}, seconds={cipherRun.Elapsed:0}");
+
+var reading=Combat.New(Order.Medicine);reading.Enemies.Clear();reading.Seals.Clear();reading.Phase=Phase.Names;
+reading.Player=reading.Inscriptions[0].Position;
+Check(!reading.ChooseTestimony(TestimonyChoice.Cipher),"Cannot choose before finding the testimony");
+reading.Step(Input(interact:true));int spawned=reading.Enemies.Count;
+Check(spawned==2&&reading.Inscriptions[0].Disturbed,"Disturbing the first stone attracts one patrol");
+reading.Enemies[0].Position=reading.Player+new Vector2(80,0);
+for(int i=0;i<50;i++)reading.Step(Input(interact:true));
+Check(reading.Inscriptions[0].Progress==0&&reading.Enemies.Count==spawned,"Nearby threats prevent reading without spawning duplicate patrols");
+reading.Enemies.Clear();reading.Hurt=0;reading.HitStop=0;
+for(int i=0;i<60;i++)reading.Step(Input(interact:true));
+float partial=reading.Inscriptions[0].Progress;
+Check(partial>0&&!reading.Inscriptions[0].Read,"Inscription requires sustained work");
+reading.Step(Input());Check(reading.Inscriptions[0].Progress==partial,"Releasing E preserves work");
+reading.Step(Input(move:Vector2.UnitX,interact:true));Check(reading.Inscriptions[0].Progress==partial,"Cannot read while moving");
+string notesFolder=Path.Combine(Path.GetTempPath(),"atland-names-"+Guid.NewGuid());
+try
+{
+ string path=Path.Combine(notesFolder,"save.json");SaveStore.Write(path,reading);var copy=SaveStore.Read(path);
+ for(int i=0;i<180;i++){reading.Step(Input(interact:true));copy.Step(Input(interact:true));}
+ var options=new JsonSerializerOptions{IncludeFields=true};
+ Check(JsonSerializer.Serialize(reading,options)==JsonSerializer.Serialize(copy,options),"Partial inscription resumes deterministically without repeating patrol");
+ Check(copy.Inscriptions[0].Read,"Resumed reading reaches completion");
+ // A player can finish reading while a distant patrol lives. Killing it later
+ // must still unlock the decision instead of leaving the mission stuck.
+ foreach(var stone in copy.Inscriptions){stone.Disturbed=true;stone.Read=true;stone.Progress=Combat.ReadingDuration;}
+ copy.Spawn(EnemyKind.Guard,new(1200,500));copy.Step(Input());
+ Check(copy.Phase==Phase.Names,"Decision waits for the remaining threat");
+ copy.Enemies[0].Health=0;copy.Step(Input());Check(copy.Phase==Phase.Testimony,"Last distant threat unlocks completed testimony");
+ SaveStore.Write(path,copy);copy=SaveStore.Read(path);
+ int potions=copy.Potions;copy.SupportCooldown=20;
+ Check(copy.ChooseTestimony(TestimonyChoice.Cipher)&&copy.Enemies.Count(e=>!e.Dead)==2&&copy.Potions==potions+1&&copy.SupportCooldown==0,"Cipher route has distinct immediate supplies and fewer pursuers");
+ Check(!copy.ChooseTestimony(TestimonyChoice.Broadcast),"Decision cannot be repeated or changed for duplicate rewards");
+ SaveStore.Write(path,copy);copy=SaveStore.Read(path);
+ Check(copy.Testimony==TestimonyChoice.Cipher&&copy.Phase==Phase.Extraction,"Decision and live retreat survive reload");
+ copy.Player=Combat.LandingPosition;copy.Step(Input(interact:true));Check(copy.Phase==Phase.Extraction,"Cannot leave while pursuers live");
+ foreach(var e in copy.Enemies)e.Health=0;
+ copy.Step(Input(interact:true));Check(copy.Phase==Phase.Complete,"Cipher route can board after the retreat");
+ // Remove new fields from an actual valid envelope to exercise a legacy save.
+ var legacy=new Combat{Phase=Phase.Complete};SaveStore.Write(path,legacy);
+ var envelope=System.Text.Json.Nodes.JsonNode.Parse(File.ReadAllText(path))!;
+ var payload=System.Text.Json.Nodes.JsonNode.Parse(envelope["Payload"]!.GetValue<string>())!;
+ payload.AsObject().Remove("Inscriptions");payload.AsObject().Remove("Testimony");
+ string legacyText=payload.ToJsonString();envelope["Payload"]=legacyText;
+ envelope["Checksum"]=Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(legacyText)));
+ File.WriteAllText(path,envelope.ToJsonString());
+ Check(SaveStore.Read(path).Phase==Phase.Complete,"Old completed saves remain completed");
+}
+finally{Directory.Delete(notesFolder,true);}
 Console.WriteLine($"PASS · {checks} assertions · combat, orders, boundaries, save recovery, full encounter");

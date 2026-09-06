@@ -12,7 +12,7 @@ Från projektmappen:
 
 `F11` växlar helskärm. Välj **Gå i land**, välj artilleri eller fältvård och börja landstigningen.
 
-Det första spelprovet innehåller en kaj, två förstörbara sigill, fyra vakter med tre beteenden, varvets indrivare och ett avslutande kartfynd. Det är ett kort stridsprov som sätter grunden för den längre Blekinge-banan. Den fullständiga kampanjen, inventarie/loot-systemet, Varvsänkan och Atland byggs vidare senare.
+Spelprov 0.2, **De strukna namnen**: bryt kajens sigill, besegra indrivaren och undersök bronskartan. Frilägg därefter tre inskrifter medan nya patruller försöker stoppa dig. Jämför stenarna med kronans liggare, välj öppen sändning eller krypterad rapport och kämpa tillbaka till båten. Vägarna ger olika motstånd och fördelar under återtåget. Ebba Grip och antikvarien Hedvig Rålamb följer fynden över radion, med egna röster och målade porträtt. Detta är fortfarande ett kompakt spelprov som sätter grunden för den längre Blekinge-banan. Den fullständiga kampanjen, inventarie/loot-systemet, Varvsänkan och Atland byggs vidare senare.
 
 | Handling | Tangentbord/mus | Handkontroll |
 |---|---|---|
@@ -25,17 +25,21 @@ Det första spelprovet innehåller en kaj, två förstörbara sigill, fyra vakte
 | Byt sabel/hammare | Tab | RB |
 | Tinktur | Q | Styrkors upp |
 | Understöd | F | Styrkors ned |
-| Undersök | E | B |
+| Undersök / frilägg inskrift | E / håll E stillastående | B / håll B |
+| Läs fynd i fältdagboken | R | Back / Select |
+| Ljudvolym | Synligt reglage eller +/−; M tyst/ljud | Inställningar i pausmenyn |
 | Paus | Esc | Start |
 | Manuell sparning/laddning | F5 / F9 | Sparning i pausmenyn |
 
 En tajmad parad skickar tillbaka skyttens kula. Hammaren och tunga attacker bryter pikenerarens gard. Artilleriet träffar framför Karl i siktriktningen. Fältvård ger två extra tinkturer och återkommande läkning.
 
-Kontrollpunkter sparas vid landstigning, före indrivaren och efter segern. F5 skriver ett separat manuellt läge, F9 laddar det. Dödsmenyn återgår till kontrollpunkten. Varje sparfil har checksumma, atomisk skrivning och en föregående säkerhetskopia. Sparfiler ligger i Godots användarkatalog för spelet, helt separat från originalet.
+Startvolymen är 25 %. Reglaget går att dra direkt under platsnamnet; M återställer tidigare ljudnivå efter tyst läge. Volymen sparas mellan starter.
+
+Kontrollpunkter sparas också vid inskrifter, vägval och ombordstigning. Delvis frilagda inskrifter behåller arbetet när du släpper knappen eller sparar manuellt. Befintliga avslutade 0.1-sparningar förblir avslutade; välj **Ny landstigning** för det nya uppdraget. F5 skriver ett separat manuellt läge, F9 laddar det. Dödsmenyn återgår till kontrollpunkten. Varje sparfil har checksumma, atomisk skrivning och en föregående säkerhetskopia. Sparfiler ligger i Godots användarkatalog för spelet, helt separat från originalet.
 
 ## Utveckling
 
-Det senaste figur- och materialprovet öppnas med `./start-art-study.sh --fullscreen`. Mellanslag växlar mellan beredskap, upptakt och hugg; Esc avslutar. Det visar nya figurer med originalets identitet i spelets kameraskala. Detta är ett bildprov, inte färdiga riktningsanimationer. Den mattare kajen används även i den vanliga spelprototypen; dess tidigare figuranimationer är fortsatt provisoriska.
+Den godkända seriösa figurstilen används nu i spelet för samtliga stridsroller. `./start-art-study.sh --fullscreen` visar samma figurer och kaj; mellanslag växlar poser, G visar måttreferensen. Alla vuxna använder cirka 150 världspixlars ståhöjd. Kajföremålen har målats om i mindre skala. Figurerna har tre stridsposer och speglad sidriktning; fulla gångcykler och åtta riktningar är ännu inte klara.
 
 Godot **4.7.2 .NET**, .NET 8 SDK eller senare, Linux x64. På Arch: `godot-mono`, `dotnet-sdk`. Versionerna är låsta i projektet och exportmallarna ska matcha.
 
@@ -43,16 +47,20 @@ Godot **4.7.2 .NET**, .NET 8 SDK eller senare, Linux x64. På Arch: `godot-mono`
 dotnet run --project tests/Atland.Tests.csproj
 ./start.sh -- --smoke
 ./start.sh --fullscreen -- --integration
+./start.sh -- --ui-check
 ```
 
-`--smoke` sparar en bild efter två sekunders provkörning. `--integration` kör hela mötet med en testspelare genom vanliga stridsregler och fångar boss/slutbilder. Testlägen skriver inga användarsparfiler. Bilder/loggar hamnar i `artifacts/`.
+`--smoke` sparar en bild efter två sekunders provkörning. `--integration` kör hela mötet med en testspelare genom vanliga stridsregler och fångar boss/slutbilder. Testkörningarna är tysta och skriver inga användarsparfiler. `--ui-check` provar volym, mute, sparad ljudnivå, klick utan hugg och fältdagboken samt fångar radioporträtten; dess inställningar ligger separat i `artifacts/`. Bilder/loggar hamnar i `artifacts/`.
 
 - `scripts/Combat.cs`: stridsregler utan Godot-beroende.
 - `scripts/Main.cs`: presentation, kontroller, menyer och radiokort.
+- `scripts/PaintedCast.cs`: gemensam målad figurpresentation och kroppsskala.
+- `scripts/FieldNotes.cs`: fyndens originalskrivna vittnesmål.
 - `scripts/SaveStore.cs`: sparformat och återhämtning.
 - `scripts/Soundscape.cs`: musikövergångar, röster och effekter.
 - `docs/VISION.md`: överenskommen kreativ riktning.
 - `docs/PROGRESS.md`: aktuell checkpoint och nästa steg.
+- `docs/ATLANTICA-NOTES.md`: primärläsning med tryckta sidnummer och spelidéer.
 - `tools/`: lokal, reproducerbar assetproduktion.
 
 Stora bilder, ljud och fontfiler använder Git LFS. Efter kloning: `git lfs pull`.
