@@ -1,0 +1,11 @@
+{
+  "tool": "built-in image_gen",
+  "prompt": "Edit image 1 as a precisely registered 2x2 texture-projection atlas for a game model. Image 2 supplies ONLY the identity and dark painted costume of Karl (the blue-coated man in its top row). Paint rich, serious, worn oil-painted surface detail OVER the four existing model views in image 1: natural stern adult face with short brown hair and small brass forehead lamp, indigo wool long coat, narrow weathered bronze edging, waistcoat, leather belt, dark creased trousers and boots. Four views are the SAME man and same costume. Top left and bottom right show the face, top right and bottom left show his back. CRITICAL: preserve image 1's exact 1024x1024 square layout, character pixel positions, silhouette, limb positions, head positions, weapon position, camera and scale in every quadrant. This is a registered texture atlas, not a new illustration or character sheet. Preserve the exact flat gray background and all blank margins. Do not add text or lines. Paint anatomy and fabric detail within the existing silhouettes. Cover the primitive plastic appearance with convincing fine dark matte oil painting, textured cloth folds, restrained metal, subtle dirt and human skin detail. No shine, no caricature, no oversized eyes, no chibi, no fantasy armour. Do not add poses, move feet, enlarge heads or move any figure. Moderate diffuse lighting; no dramatic new cast shadows. Return only the edited square atlas.",
+  "references": [
+    "assets/source/animation/karl-paint-template-v1.png",
+    "assets/art/serious-cast-v6.png"
+  ],
+  "source": "/home/nichlas/.codex/generated_images/01a07608-36a4-7850-ba4d-824cc60ab5aa/exec-0ee1a00d-b6e7-438e-ae12-4d2e9e395a5a.png",
+  "selected": "assets/source/animation/karl-paint-v1.png",
+  "status": "projection paint trial; runtime frames are deterministic Blender renders, not individually AI-generated"
+}

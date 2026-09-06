@@ -47,7 +47,16 @@ public static class SaveStore
             throw new InvalidDataException("Ogiltig expedition");
         if(game.Region!=Region.Quay&&(!game.ExtendedJourney||!game.Inscriptions.All(i=>i.Read)||game.Testimony==TestimonyChoice.None))
             throw new InvalidDataException("Saknat underlag för expeditionen");
-        if(game.AtlandRevealed&&(game.Region!=Region.Shore||!game.Surveyed.All(s=>s)))throw new InvalidDataException("Ofullständig mätning");
+        if(game.AtlandRevealed&&((game.Region!=Region.Shore&&!game.InCampaign)||!game.Surveyed.All(s=>s)))throw new InvalidDataException("Ofullständig mätning");
+        if(game.CampaignStage < -1||game.CampaignStage>=Expedition.Stages.Length||game.CampaignProgress<0||game.CampaignProgress>3
+            ||game.CampaignMask<0||game.CampaignMask>7||game.CampaignWave<0||game.CampaignWave>3||game.ArchiveChoice<0||game.ArchiveChoice>2
+            ||!float.IsFinite(game.CampaignChannel)||game.CampaignChannel<0||game.CampaignChannel>2.5f
+            ||!float.IsFinite(game.CampaignClock)||game.CampaignClock<0||!float.IsFinite(game.CampaignCooldown)||game.CampaignCooldown<0||game.CampaignCooldown>1.1f)
+            throw new InvalidDataException("Ogiltig Atland-expedition");
+        if(game.InCampaign&&System.Numerics.BitOperations.PopCount((uint)game.CampaignMask)!=game.CampaignProgress)throw new InvalidDataException("Motsägande expeditionsfynd");
+        if(game.InCampaign&&(!game.AtlandCampaign||!game.AtlandRevealed||game.Region!=(Region)((int)Region.Atland+game.Stage.World)
+            ||(game.CampaignStage>=2&&game.ArchiveChoice==0)||(!game.CampaignFinished&&game.Phase!=Phase.Campaign)))throw new InvalidDataException("Ofullständig Atland-expedition");
+        if(game.CampaignFinished&&(!game.InCampaign||game.CampaignStage!=7||game.Phase!=Phase.Complete||!game.CampaignReady))throw new InvalidDataException("Ogiltigt expeditionsslut");
         return game;
     }
 }

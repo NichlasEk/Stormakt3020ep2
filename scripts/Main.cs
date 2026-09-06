@@ -39,14 +39,17 @@ public partial class Main : Node2D
     private bool _testMode;
     private bool _smokeCapture;
     private bool _integration;
+    private bool _campaignCheck;
+    private readonly HashSet<int> _capturedStages=new();
     private bool _bossCaptured;
     private bool _namesCaptured,_choiceCaptured;
     private int _journalPage;
     private float _choiceDelay;
     private bool _capturePending;
     private int _testTicks;
-    private string SavePath=>ProjectSettings.GlobalizePath("user://quay-save.json");
-    private string ManualPath=>ProjectSettings.GlobalizePath("user://manual-save.json");
+    private bool _atlandSlot;
+    private string SavePath=>ProjectSettings.GlobalizePath(_atlandSlot?"user://atland-save.json":"user://quay-save.json");
+    private string ManualPath=>ProjectSettings.GlobalizePath(_atlandSlot?"user://atland-manual-save.json":"user://manual-save.json");
     private const float Zoom=1.12f;
     private static readonly Color Gold=new("b99a64"), Pale=new("ddd6c5"), Muted=new("9b9a8d"), Teal=new("93aaa0"), Red=new("c57761");
     private static readonly Dictionary<string,(string Speaker,string Text)> Radio=new()
@@ -82,11 +85,12 @@ public partial class Main : Node2D
         _cast=new PaintedCast();LoadJourney();
         _sound=new Soundscape();AddChild(_sound);LoadSettings();
         GetWindow().MinSize=new Vector2I(960,540);
-        _integration=args.Contains("--integration");_testMode=args.Contains("--smoke")||_integration||_uiChecks||_sceneChecks;
+        _campaignCheck=args.Contains("--campaign-check");_integration=args.Contains("--integration")||_campaignCheck;_testMode=args.Contains("--smoke")||_integration||_uiChecks||_sceneChecks;
         if(_testMode||args.Contains("--capture-title"))_sound.Volume=0;
         if(_integration)Engine.TimeScale=3;
         if(_testMode)StartNew();
         if(args.Contains("--duel"))StartDuel();
+        if(args.Contains("--atland")||_campaignCheck)StartAtland();
         if(args.Contains("--capture-title"))_smokeCapture=true;
         if(_sceneChecks)RunSceneChecks();
     }
@@ -173,8 +177,9 @@ public partial class Main : Node2D
         {
             case "duel":StartDuel();break;
             case "journey":if(_game.ContinueJourney()){ChangeScreen(Screen.Game);foreach(var cue in _game.Events)HandleCue(cue);Save();}break;
+            case "atland":StartAtland();break;
             case "new":ChangeScreen(Screen.Briefing);break;
-            case "continue":ResumeSave();break;
+            case "continue":_atlandSlot=false;ResumeSave();break;
             case "artillery":_order=Order.Artillery;break;
             case "medicine":_order=Order.Medicine;break;
             case "land":StartNew();break;
@@ -191,7 +196,7 @@ public partial class Main : Node2D
             case "shake":_cameraShake=!_cameraShake;SaveSettings();break;
             case "fullscreen":DisplayServer.WindowSetMode(DisplayServer.WindowGetMode()==DisplayServer.WindowMode.Fullscreen?DisplayServer.WindowMode.Windowed:DisplayServer.WindowMode.Fullscreen);break;
             case "back":Back();break;
-            case "title":_sound.StopVoice();_radioQueue.Clear();_radio="";ChangeScreen(Screen.Title);break;
+            case "title":_atlandSlot=false;_sound.StopVoice();_radioQueue.Clear();_radio="";ChangeScreen(Screen.Title);break;
             case "retry":if(_game.Duel){StartDuel();break;}if(System.IO.File.Exists(SavePath))ResumeSave();else StartNew();break;
             case "quit":GetTree().Quit();break;
         }
@@ -206,7 +211,7 @@ public partial class Main : Node2D
     }
     private void StartNew()
     {
-        _game=Combat.New(_order,true);ApplyDeveloperSettings();_camera=G(_game.Player)+new Vector2(85,-80);_particles.Clear();_floating.Clear();_radioQueue.Clear();_radio="";_sound.StopVoice();
+        _atlandSlot=false;_game=Combat.New(_order,true);_game.AtlandCampaign=!_integration;ApplyDeveloperSettings();_camera=G(_game.Player)+new Vector2(85,-80);_particles.Clear();_floating.Clear();_radioQueue.Clear();_radio="";_sound.StopVoice();
         ChangeScreen(Screen.Game);_banner="BLEKINGES LIKVARV";_bannerTime=5;Save();
     }
     private void Save(bool manual=false)
@@ -219,6 +224,7 @@ public partial class Main : Node2D
         try
         {
             _game=SaveStore.Read(manual?ManualPath:SavePath);ApplyDeveloperSettings();_camera=G(_game.Player)+new Vector2(85,-80);_particles.Clear();_floating.Clear();_radioQueue.Clear();_radio="";_sound.StopVoice();
+            if(_game.InCampaign){_campaignText=_game.Stage.Intro;_campaignTextTime=10;_revealTime=0;}
             ChangeScreen(_game.Dead?Screen.Death:_game.Phase==Phase.Complete?Screen.Ending:_game.Phase==Phase.Testimony?Screen.Testimony:Screen.Game);Notice("Fältdagboken återupptagen");
         }
         catch(Exception e){GD.PushWarning(e.Message);Notice("Sparfilen kunde inte läsas. Du kan starta en ny landstigning.");}
@@ -272,6 +278,7 @@ public partial class Main : Node2D
         var controls=new Controls(N(move),N(aim),_attack||(!_controller&&!_adjustingVolume&&!VolumePanel.HasPoint(GetGlobalMousePosition())&&Input.IsMouseButtonPressed(MouseButton.Left)),_heavy,_dodge,guard,_swap,_heal,_support,reading);
         RememberRenderPositions();
         _game.Step(controls);ClearPresses();
+        if(_campaignCheck&&_testTicks%600==0)GD.Print($"CAMPAIGN CHECK stage={_game.CampaignStage+1} progress={_game.CampaignProgress} foes={_game.Enemies.Count(e=>!e.Dead)} hp={_game.Health} elapsed={_game.Elapsed} at={_game.Player} goal={_game.CampaignObjective}");
         foreach(var cue in _game.Events)HandleCue(cue);
         if(_game.Dead)ChangeScreen(Screen.Death);
         if(_game.Phase==Phase.Complete)ChangeScreen(Screen.Ending);
@@ -283,6 +290,7 @@ public partial class Main : Node2D
         switch(cue.Kind)
         {
             case "radio":QueueRadio(cue.Text);break;
+            case "campaign":_campaignText=cue.Text;_campaignTextTime=10;break;
             case "region":_camera=G(_game.Player)+new Vector2(0,-30);_particles.Clear();_floating.Clear();_radioQueue.Clear();_sound.StopVoice();_radioTime=0;_banner=cue.Text.ToUpperInvariant();_bannerTime=5;break;
             case "reveal":_radioQueue.Clear();_sound.StopVoice();_radioTime=0;_revealTime=9;_banner="VÄGEN LIGGER KVAR";_bannerTime=5;_sound.Play("seal",.65f);break;
             case "checkpoint":Save();break;
@@ -322,8 +330,8 @@ public partial class Main : Node2D
     }
     public override void _Process(double delta)
     {
-        float dt=(float)delta;_clock+=dt;_noticeTime=Math.Max(0,_noticeTime-dt);
-        _sound.Boss=(_game.Phase==Phase.Collector||(_game.Phase==Phase.Extraction&&_game.Enemies.Any(e=>!e.Dead))) && _screen is Screen.Game or Screen.Pause;
+        float dt=(float)delta;_clock+=dt;_noticeTime=Math.Max(0,_noticeTime-dt);if(_screen==Screen.Game)_campaignTextTime=Math.Max(0,_campaignTextTime-dt);
+        _sound.Boss=(_game.Phase==Phase.Collector||(_game.Phase==Phase.Extraction&&_game.Enemies.Any(e=>!e.Dead))||(_game.InCampaign&&_game.Enemies.Any(e=>!e.Dead&&e.Kind==EnemyKind.Collector))) && _screen is Screen.Game or Screen.Pause;
         _sound.Discovery=_game.Phase is Phase.Names or Phase.Testimony || _game.Region==Region.Shore;
         if(_screen is Screen.Game or Screen.Ending or Screen.Testimony)
         {
@@ -346,6 +354,7 @@ public partial class Main : Node2D
         if(_uiChecks&&!_uiChecked&&_testTicks>90){_uiChecked=true;RunUiChecks();return;}
         if(_integration)
         {
+            if(_game.InCampaign&&_capturedStages.Add(_game.CampaignStage))CaptureFrame($"campaign-{_game.CampaignStage+1:00}.png",false);
             if(_game.Region!=Region.Quay&&_capturedRegions.Add(_game.Region))CaptureFrame(_game.Region.ToString().ToLowerInvariant()+".png",false);
             if(_game.AtlandRevealed&&!_revealCaptured&&_revealTime<7){_revealCaptured=true;CaptureFrame("reveal.png",false);}
             if(_game.Phase==Phase.Collector&&!_bossCaptured){_bossCaptured=true;CaptureFrame("boss.png",false);}
@@ -410,14 +419,14 @@ public partial class Main : Node2D
     private async void CaptureFrame(string name,bool quit)
     {
         await ToSignal(RenderingServer.Singleton,RenderingServer.SignalName.FramePostDraw);
-        var path=ProjectSettings.GlobalizePath("res://artifacts/"+name);GetViewport().GetTexture().GetImage().SavePng(path);GD.Print("CAPTURE "+path);if(quit)GetTree().Quit();
+        var path=ProjectSettings.GlobalizePath("res://artifacts/"+name);System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(System.IO.Path.GetFullPath(path))!);using var capture=GetViewport().GetTexture().GetImage();var result=capture.SavePng(path);if(result!=Error.Ok){GD.PushError("Capture failed: "+result);GetTree().Quit(1);return;}GD.Print("CAPTURE "+path);if(quit)GetTree().Quit();
     }
     private async void CaptureAndQuit()
     {
         if(!_testMode&&!_smokeCapture)return;_testMode=false;_smokeCapture=false;
         await ToSignal(RenderingServer.Singleton,RenderingServer.SignalName.FramePostDraw);
         var path=ProjectSettings.GlobalizePath("res://artifacts/"+(_screen==Screen.Title?"title.png":"gameplay.png"));
-        GetViewport().GetTexture().GetImage().SavePng(path);GD.Print("CAPTURE "+path);GetTree().Quit();
+        System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(System.IO.Path.GetFullPath(path))!);using var capture=GetViewport().GetTexture().GetImage();var result=capture.SavePng(path);if(result!=Error.Ok){GD.PushError("Capture failed: "+result);GetTree().Quit(1);return;}GD.Print("CAPTURE "+path);GetTree().Quit();
     }
     private Vector2 Offset=>new Vector2(640,360)-_camera*Zoom+(_cameraShake?new Vector2(Mathf.Sin(_clock*65),Mathf.Cos(_clock*71))*_shake:Vector2.Zero);
     private Vector2 ScreenToWorld(Vector2 p)=>(p-Offset)/Zoom;
@@ -464,7 +473,7 @@ public partial class Main : Node2D
     {
         DrawSetTransform(Offset,0,Vector2.One*Zoom);
         if(_game.Region==Region.Quay)DrawTextureRectRegion(_background,new Rect2(18,30,1500,946),new Rect2(18,30,1500,946),Colors.White);
-        else {DrawTextureRect(_game.Region==Region.Warehouse?_warehouse:_game.AtlandRevealed?_shoreRevealed:_shore,new Rect2(0,0,1536,1024),false);DrawJourneyMarkers();}
+        else {DrawTextureRect(_game.InCampaign?_campaignWorlds[_game.Stage.World]:_game.Region==Region.Warehouse?_warehouse:_game.AtlandRevealed?_shoreRevealed:_shore,new Rect2(0,0,1536,1024),false);if(_game.InCampaign)DrawCampaignMarkers();else DrawJourneyMarkers();}
         foreach(var seal in _game.Seals)
         {
             var p=G(seal.Position);bool alive=seal.Health>0;var c=alive?Teal:Muted;
@@ -556,7 +565,7 @@ public partial class Main : Node2D
         }
         if(_game.DeveloperSurvival){Panel(new Rect2(20,132,240,29),.9f);Text("DEV · Karl överlever på 1 liv",new Vector2(30,152),12,Gold);}
         Panel(new Rect2(20,18,294,60),.87f);Text("STORMAKT 3020",new Vector2(38,41),12,Gold);Text(_game.RegionName,new Vector2(38,65),20,Pale,true);
-        Panel(new Rect2(928,18,332,102),.91f);Text(_game.Duel?"ÖVNING  /  SABEL":$"EXPEDITION  /  {(int)_game.Region+1:00}",new Vector2(946,42),12,Gold);
+        Panel(new Rect2(928,18,332,102),.91f);Text(_game.Duel?"ÖVNING  /  SABEL":_game.InCampaign?$"ATLAND  /  BANA {_game.CampaignStage+1} AV 8":$"EXPEDITION  /  {(int)_game.Region+1:00}",new Vector2(946,42),12,Gold);
         string objective=_game.Phase switch
         {
             Phase.Quay=>$"Bryt kajens sigill  ·  {_game.Seals.Count(s=>s.Health<=0)}/2",
@@ -565,6 +574,7 @@ public partial class Main : Node2D
             Phase.Extraction=>_game.ExtendedJourney?"Följ kartan genom magasinet":"Ta vittnesmålen till båten",
             Phase.Warehouse or Phase.Shore or Phase.Reveal=>JourneyGoal,
             Phase.Duel=>"Besegra sabelvakten",
+            Phase.Campaign=>_game.CampaignGoal,
             _=>"Undersök bronskartan vid porten"
         };
         Text(objective,new Vector2(946,69),17,Pale);
@@ -572,8 +582,9 @@ public partial class Main : Node2D
         Text(foes>0?$"Vakter kvar: {foes}":_game.Phase==Phase.Names?"Håll E vid en sten  ·  R Fynd":"E Undersök  ·  R Fynd",new Vector2(946,96),14,Muted);
         if(_game.Phase is Phase.Names or Phase.Extraction || _game.Region!=Region.Quay)DrawObjectiveDirection();
         DrawJourneyPrompt(foes);
+        if(_game.InCampaign)DrawCampaignStory();
         var boss=_game.Enemies.FirstOrDefault(e=>e.Kind==EnemyKind.Collector&&!e.Dead);
-        if(boss!=null){Panel(new Rect2(354,20,542,59),.91f);Centered("VARVETS INDRIVARE",625,42,14,Gold);WorldBar(new Vector2(378,56),490,boss.Health/boss.MaxHealth,Red);}
+        if(boss!=null){Panel(new Rect2(354,20,542,59),.91f);Centered(_game.InCampaign?(_game.CampaignStage==7?"KOLLEGIETS VÄKTARE":"KRONFOGDEN"):"VARVETS INDRIVARE",625,42,14,Gold);WorldBar(new Vector2(378,56),490,boss.Health/boss.MaxHealth,Red);}
         Panel(new Rect2(20,623,381,77),.96f);Text("KARL CCLV",new Vector2(38,646),13,Gold);Text($"{Math.Ceiling(_game.Health)} / 100",new Vector2(302,646),13,Pale);
         WorldBar(new Vector2(38,657),345,_game.Health/100,new Color("b6574d"),11);WorldBar(new Vector2(38,677),345,_game.Stamina/100,Teal,5);
         Panel(new Rect2(417,623,470,77),.96f);Text(_game.Weapon==Weapon.Saber?"OFFICERSSABEL":"GRUVHAMMARE",new Vector2(435,647),16,Gold);
@@ -581,7 +592,7 @@ public partial class Main : Node2D
         Panel(new Rect2(903,623,357,77),.96f);Text(_game.Order==Order.Artillery?"ÖRLOGSBATTERI":"FÄLTSJUKVÅRD",new Vector2(921,647),14,Gold);
         Text(_game.SupportCooldown<=0?(_controller?"↓  Understöd redo":"F  Understöd redo"):$"Redo om {Math.Ceiling(_game.SupportCooldown)} s",new Vector2(921,674),16,_game.SupportCooldown<=0?Teal:Muted);
         if(_bannerTime>0)
-        {float alpha=Math.Clamp(Math.Min(_bannerTime,5-_bannerTime),0,1);Centered(_banner,640,180,32,new Color(Pale,alpha),true);Centered(_game.AtlandRevealed?"Kartan följer landskapet.":_game.Region==Region.Warehouse?"Kollegiets förråd. Kollegiets hemligheter.":_game.Region==Region.Shore?"Gravhögen · vadstället · farleden":"En kust som inte längre räknar sina döda.",640,211,16,new Color(Muted,alpha));}
+        {float alpha=Math.Clamp(Math.Min(_bannerTime,5-_bannerTime),0,1);Centered(_banner,640,180,32,new Color(Pale,alpha),true);Centered(_game.InCampaign?_game.Stage.Goal:_game.AtlandRevealed?"Kartan följer landskapet.":_game.Region==Region.Warehouse?"Kollegiets förråd. Kollegiets hemligheter.":_game.Region==Region.Shore?"Gravhögen · vadstället · farleden":"En kust som inte längre räknar sina döda.",640,211,16,new Color(Muted,alpha));}
         if(_game.Phase==Phase.Names)
         {
             int index=_game.Inscriptions.FindIndex(i=>!i.Read&&NVec.Distance(_game.Player,i.Position)<Combat.ReadingRange);
@@ -599,7 +610,7 @@ public partial class Main : Node2D
         else
         {
             if(_game.Phase==Phase.Discovery && NVec.Distance(_game.Player,Combat.ChartPosition)<100){Panel(new Rect2(430,526,420,52),.94f);Centered(_controller?"B  Undersök bronskartan":"E  Undersök bronskartan",640,558,19,Gold);}
-            else if(_game.Elapsed<35){Panel(new Rect2(282,552,716,43),.85f);Centered(_controller?"X Hugg · Y Tungt · A Undanmanöver · LB Parad":"WASD Gå · Mus Sikta · Vänster Hugg · Höger Tungt · Space Undan · Shift Parad",640,578,14,Muted);}
+            else if(_game.Elapsed<35&&(!_game.InCampaign||_campaignTextTime<=0)){Panel(new Rect2(282,552,716,43),.85f);Centered(_controller?"X Hugg · Y Tungt · A Undanmanöver · LB Parad":"WASD Gå · Mus Sikta · Vänster Hugg · Höger Tungt · Space Undan · Shift Parad",640,578,14,Muted);}
         }
         Text(_controller?"START Paus · BACK Fynd":"ESC Paus · R Fynd",new Vector2(24,608),12,Muted);
     }
@@ -634,13 +645,14 @@ public partial class Main : Node2D
         Text("ATLANDS",new Vector2(72,204),67,Pale,true);Text("ARV",new Vector2(75,275),67,Pale,true);
         DrawLine(new Vector2(80,302),new Vector2(486,302),new Color(Gold,.6f),1);
         Wrapped("Det finns ett rike under riket.\nOch någon håller ännu dess hamnljus tända.",new Vector2(80,341),530,18,Muted,28);
-        bool hasSave=System.IO.File.Exists(SavePath);
+        bool hasSave=System.IO.File.Exists(ProjectSettings.GlobalizePath("user://quay-save.json"));
         Button(new Rect2(80,430,355,49),hasSave?"Återuppta fältdagboken":"Gå i land",hasSave?"continue":"new",true);
         if(hasSave)Button(new Rect2(80,490,355,43),"Ny landstigning","new");
         Button(new Rect2(80,hasSave?544:490,171,43),"Inställningar","settings");Button(new Rect2(264,hasSave?544:490,171,43),"Avsluta","quit");
         Button(new Rect2(80,600,355,43),"Öva sabelduell","duel");
+        Button(new Rect2(842,614,350,43),"Spela nästa del · åtta banor","atland");
         Text("BLEKINGES LIKVARV",new Vector2(842,533),19,Gold,true);Wrapped("En förlorad kaj. Två sigill.\nEtt fynd som ingen karta tillåter.",new Vector2(842,564),350,16,Pale,26);
-        Text("VÄGEN UNDER VATTNET  ·  SPELPROV 0.3",new Vector2(80,673),12,Muted);Text("WASD + mus  /  Handkontroll",new Vector2(970,673),12,Muted);
+        Text("VÄGEN UNDER VATTNET  ·  SPELPROV 0.4",new Vector2(80,673),12,Muted);Text("WASD + mus  /  Handkontroll",new Vector2(970,673),12,Muted);
     }
     private void DrawBriefing()
     {
@@ -679,6 +691,7 @@ public partial class Main : Node2D
     }
     private void DrawEnding()
     {
+        if(_game.CampaignFinished){DrawCampaignEnding();return;}
         DrawRect(new Rect2(0,0,1280,720),new Color(.012f,.032f,.044f,.86f));
         Text(_game.Duel?"ÖVNING  /  SABEL":"FÄLTDAGBOK  /  FÖRSTA FYNDET",new Vector2(100,113),14,Gold);Text(_game.Duel?"DUELLEN VUNNEN":"ATLAND",new Vector2(94,200),64,Pale,true);
         bool found=_game.Testimony!=TestimonyChoice.None;
@@ -690,6 +703,7 @@ public partial class Main : Node2D
         if(_radioTime>0 || _sound.Speaking)DrawRadio();
         Button(new Rect2(100,624,360,49),"Till huvudmenyn","title",true);
         if(!_game.Duel&&!_game.AtlandRevealed&&_game.Inscriptions.All(i=>i.Read))Button(new Rect2(510,563,440,49),"Fortsätt genom magasinet","journey");
+        if(!_game.Duel&&_game.AtlandRevealed&&!_game.CampaignFinished)Button(new Rect2(510,563,440,49),"Fortsätt in i Atland","journey");
         Text(_game.Duel?"Övningen avslutad.":_game.AtlandRevealed?"Vägen är funnen. Expeditionen fortsätter.":"Landstigningen avslutad. Uppsala väntar.",new Vector2(510,655),17,Muted);
     }
     private void DrawTestimony()
@@ -712,6 +726,7 @@ public partial class Main : Node2D
     }
     private void DrawJournal()
     {
+        if(_game.InCampaign){DrawCampaignJournal();return;}
         DrawRect(new Rect2(0,0,1280,720),new Color(.025f,.023f,.019f,.96f));
         Text("FÄLTDAGBOK  /  VITTNESMÅL",new Vector2(95,78),13,Gold);
         if(_journalPage==3){DrawExpeditionJournal();return;}
@@ -753,6 +768,7 @@ public partial class Main : Node2D
     private void WorldBar(Vector2 p,float width,float amount,Color color,float height=4){DrawRect(new Rect2(p,new Vector2(width,height)),new Color(.015f,.028f,.034f,.9f));DrawRect(new Rect2(p,new Vector2(width*Math.Clamp(amount,0,1),height)),color);}
     public override void _ExitTree()
     {
+        foreach(var texture in _campaignWorlds)texture?.Dispose();
         _cast?.Dispose();_animated?.Dispose();_warehouse?.Dispose();if(_shoreRevealed!=_shore)_shoreRevealed?.Dispose();_shore?.Dispose();
         _background?.Dispose();_radioPortraits?.Dispose();_ebbaPortrait?.Dispose();_serif?.Dispose();_sans?.Dispose();
     }

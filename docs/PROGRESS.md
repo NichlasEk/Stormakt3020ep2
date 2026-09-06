@@ -1,6 +1,25 @@
 # Checkpoint · Vägen under vattnet · 2026-09-06
 
-## Senast · animationens omtag
+## Gällande assetriktning · användarens senaste instruktion
+
+Äkta 2D-isometriska spelassets med fast projektion, rena silhuetter, läsbara former, återhållen palett, diskret målad textur och återanvändbara moduler. Ingen fortsatt Blender-/3D-produktion. Det tidigare renderade gångprovet är arkiverat experiment och ska inte ersätta kampanjens figurer. Nedanstående Blender-anvisningar beskriver historiken, inte nästa produktionssteg.
+
+Ett första direktgenererat 2D-kit med tolv delar finns i `assets/source/campaign/atland-modular-2d-candidate-v1.png`. Originalet har riktig alpha; golvprojektion och modulskarvar är ännu inte godkända. Tre korrigeringsförsök avvisades på grund av opaka bakgrunder respektive klippta golv. Kitet används inte i kampanjen. Promptar och kvalitetsstatus finns i intilliggande provenance-JSON.
+
+
+## Senast · åtta banor genom fyra världar
+
+Användaren prioriterade autonom bredd och ett separat detaljassetpass. 0.4 fortsätter nu från stranden genom åtta banor i fyra nya målade miljöer: Atland, rotmarkerna, Bergslagens underjord och Uppsala. Sekvensmekanismer, arkivval med följder, försvarsvågor, ångfaror, två bossmöten och ett förgrenat avslut är spelbara. Se `CAMPAIGN.md` för exakt omfattning, start, sparning och nästa assetpass.
+
+Direktstart från huvudmenyn: **Spela nästa del · åtta banor**, med separat kapitelspartillstånd. Landstigning och äldre 0.3-avslut kan också fortsätta in i Atland. Nya röster och detaljföremål är inte producerade i breddpasset. Varje miljömålning delas av två banor; figurgrafik och musik återanvänds.
+
+Verifierat: 29 139 regelassertions; full Godot-kampanj utan utvecklarskydd till slutet med 96 liv, 38 besegrade och 19 parader. Fyra rutter i regeltesterna täcker båda understöden och arkivvalen. Kampanjbilderna har granskats; överlappande kontrollhjälp och långa måltexter har justerats. Automatiserade GUI-prov körs med Xvfb för att undvika Waylands bakgrundsstrypning.
+
+Karls skrämmande projicerade ansikte är ersatt i det separata gångprovet med det tidigare godkända målade huvudet, följande riggens huvudcentrum. Kampanjens gång är fortfarande den gamla. Detaljgranskning och integration återstår enligt användarens nya prioritering.
+
+## Föregående · animationens omtag
+
+Användaren godkände 3D-provets rörelse och gav klartecken att fortsätta till målade 2D-sprites. Första kostymmodellen och ett gemensamt målat projektionsunderlag är framtagna. Fyra riktningar med 30 transparenta bilder vardera visas i ett separat Godot-prov på stranden: `./start-walk-study.sh`. Vänster/höger riktning, mellanslag paus. Ingen 3D eller AI körs i Godot. Kampanjens gång är fortfarande oförändrad; ansiktslikhet, axel-/kragform och texturövergångar i nya modellen behöver fortsatt visuell bearbetning. Se `ANIMATION.md` och `assets/source/animation/` för exakt produktionskedja och ursprung.
 
 Användaren avvisade två 2D-försök: deformerade målningar gav ”gummiben”, stela bilddelar såg ut som brutna ben. Båda är borttagna från spelkoden. Ny riktning: rörelsen byggs i 3D före målning och atlasrendering. Första riktiga armaturen och en animerad provfigur finns i `assets/source/animation/karl-walk-reference.blend`, genererad och geometriskt verifierad av `tools/build_walk_reference.py`. Fram-/bakvy är renderad; lokalt videoprov `artifacts/karl-walk-reference.mp4`. Detta är rörelseunderlag, inte färdig Karl-grafik eller en ny spelanimation. Se `ANIMATION.md` för reproduktion, begränsningar och fortsatt produktion. Spelet behåller gången från föregående checkpoint.
 
@@ -76,3 +95,5 @@ Låt användaren bedöma gång, murarnas överlappning och den längre banan. F�
 Rudbeck: `docs/ATLANTICA-NOTES.md` innehåller primärläsning med tryckta sidnummer. Mätordern, mätbanden och denna expedition är originalskriven fiktion. Användarens två PDF-filer i roten är lokalt researchmaterial och ligger utanför Git.
 
 Origin: https://github.com/NichlasEk/Stormakt3020ep2 . Commit/push efter fungerande milstolpar är önskat. Assets använder Git LFS. Originalet i /home/nichlas/WaylandForge berörs inte.
+
+Linux-export: `dist/AtlandsArv-0.4/AtlandsArv.x86_64`. Native `--smoke --atland` passerar med bildfångst, avslutskod 0 och utan resursläckagevarningar efter att bildfångstens Image-disposal rättats. Exporten innehåller de åtta banorna, inte det senare 2D-kitförsöket.

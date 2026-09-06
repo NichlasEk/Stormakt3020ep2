@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace Atland;
 
-public enum Region { Quay, Warehouse, Shore }
+public enum Region { Quay, Warehouse, Shore, Atland, Roots, Forge, Uppsala }
 
 public sealed partial class Combat
 {
@@ -25,8 +25,8 @@ public sealed partial class Combat
     public Vector2 Bound(Vector2 p)=>Region==Region.Quay?ClampToGround(p):Navigation.Clamp(Walkable,Obstacles,p);
     public bool ClearPath(Vector2 a,Vector2 b)=>Region==Region.Quay||Navigation.Clear(Walkable,Obstacles,a,b);
     public Vector2 NextWaypoint(Vector2 from,Vector2 target)=>Region==Region.Quay?target:Navigation.Next(Walkable,Obstacles,from,target);
-    [JsonIgnore] public string RegionName=>Region==Region.Warehouse?"Kronans magasin":Region==Region.Shore?"De tre vittnenas strand":Duel?"Sabelduell vid kajen":"Blekinges likvarv";
-    [JsonIgnore] public Vector2 JourneyObjective=>Region==Region.Warehouse
+    [JsonIgnore] public string RegionName=>InCampaign?Stage.Name:Region==Region.Warehouse?"Kronans magasin":Region==Region.Shore?"De tre vittnenas strand":Duel?"Sabelduell vid kajen":"Blekinges likvarv";
+    [JsonIgnore] public Vector2 JourneyObjective=>InCampaign?CampaignObjective:Region==Region.Warehouse
         ?!WhetstoneTaken?JourneyLayout.Whetstone:!ManifestTaken?JourneyLayout.Manifest:!WinchOpened?JourneyLayout.Winch:JourneyLayout.WarehouseExit
         :AtlandRevealed?JourneyLayout.ShoreExit:Surveyed.All(s=>s)?JourneyLayout.Reveal
         :JourneyLayout.Survey.Where((_,i)=>!Surveyed[i]).OrderBy(p=>Vector2.DistanceSquared(p,Player)).First();
@@ -39,6 +39,7 @@ public sealed partial class Combat
     }
     public bool ContinueJourney()
     {
+        if(!Dead&&!Duel&&Phase==Phase.Complete&&AtlandRevealed&&!CampaignFinished&&!InCampaign){EnterCampaign(0);return true;}
         if(Dead||Duel||Phase!=Phase.Complete||AtlandRevealed||!Inscriptions.All(i=>i.Read))return false;
         ExtendedJourney=true;EnterWarehouse();return true;
     }
@@ -63,6 +64,7 @@ public sealed partial class Combat
     }
     private void StepJourney(Controls input,float dt)
     {
+        if(InCampaign){StepCampaign(input,dt);return;}
         if(Duel&&Enemies.All(e=>e.Dead)){Phase=Phase.Complete;return;}
         if(Region==Region.Quay)return;
         bool peaceful=Enemies.All(e=>e.Dead);
@@ -89,7 +91,7 @@ public sealed partial class Combat
             Emit("reveal",Player);Emit("radio",Player,"atland-reveal");Emit("radio",Player,"already-here");Emit("checkpoint",Player);return;
         }
         if(AtlandRevealed&&peaceful&&use&&Near(JourneyLayout.ShoreExit))
-        {Phase=Phase.Complete;Emit("radio",Player,"journey-end");Emit("checkpoint",Player);return;}
+        {if(AtlandCampaign){EnterCampaign(0);return;}Phase=Phase.Complete;Emit("radio",Player,"journey-end");Emit("checkpoint",Player);return;}
         if(!use||!peaceful||AtlandRevealed)return;
         int index=Enumerable.Range(0,3).FirstOrDefault(i=>!Surveyed[i]&&Near(JourneyLayout.Survey[i]),-1);
         if(index<0)return;

@@ -1,0 +1,38 @@
+{
+  "status": "costume and 2D integration trial; not final approved Karl likeness",
+  "frames": 30,
+  "cycle_m": 1.0,
+  "size": 384,
+  "views": [
+    {
+      "direction": "se",
+      "anchor_px": [
+        192.00011444091797,
+        303.02575492858887
+      ]
+    },
+    {
+      "direction": "ne",
+      "anchor_px": [
+        192.0000228881836,
+        303.0256633758545
+      ]
+    },
+    {
+      "direction": "nw",
+      "anchor_px": [
+        191.9999771118164,
+        303.0256633758545
+      ]
+    },
+    {
+      "direction": "sw",
+      "anchor_px": [
+        191.99988555908203,
+        303.02575492858887
+      ]
+    }
+  ],
+  "generator": "tools/build_karl_sprite_model.py",
+  "base": "karl-walk-reference.blend"
+}

@@ -2,6 +2,12 @@
 
 Episod II. Ett nytt, fristående actionrollspel i Stormakts värld: nordisk barock, karoliner, mytologi och Rudbecks Atland.
 
+## Spela 0.4
+
+Välj **Spela nästa del · åtta banor** för att hoppa direkt till den nya expeditionen genom Atland, rotmarkerna, Bergslagens underjord och det felvända Uppsala. Den har en egen sparfil och fortsätter där du slutade. En ny landstigning leder också vidare genom alla åtta banor. Äldre avslutade 0.3-sparningar kan fortsätta in i Atland.
+
+Fyra nya målade miljöer, två banor i varje, med mekanismer, försvarsvågor, bossar och ett arkivval som påverkar senare motstånd och slutet. Detta är ett breddpass: detaljföremål, nya fiendeutseenden och nya röster kommer i ett separat assetpass. Se [banöversikten](docs/CAMPAIGN.md).
+
 ## Spela första landstigningen
 
 Från projektmappen:
@@ -14,7 +20,7 @@ Från projektmappen:
 
 Spelprov 0.3, **Vägen under vattnet**: kajens sigill, indrivare, bronskarta och tre strukna namn följs nu av kronans magasin och en övervuxen strand. Hitta brynstålet, läs kollegiets mätorder, öppna grinden och pröva kartan mot tre riktningar i landskapet. Ebba och Hedvig följer upptäckten över radion. Slutet avslöjar en väg under vattnet — och att någon var här före expeditionen.
 
-Välj **Öva sabelduell** i huvudmenyn för att prova sabel, parad och undanmanöver mot en vakt. Övningen skriver inte över kampanjens sparningar. Det är fortfarande ett kompakt spelprov; den fullständiga kampanjen återstår.
+Välj **Öva sabelduell** i huvudmenyn för att prova sabel, parad och undanmanöver mot en vakt. Övningen skriver inte över kampanjens sparningar. Det är fortfarande ett spelprov under utveckling.
 
 | Handling | Tangentbord/mus | Handkontroll |
 |---|---|---|
@@ -72,3 +78,8 @@ dotnet run --project tests/Atland.Tests.csproj
 Stora bilder, ljud och fontfiler använder Git LFS. Efter kloning: `git lfs pull`.
 
 Originalet i `/home/nichlas/WaylandForge` är referensmaterial och ändras inte här. GitHub: https://github.com/NichlasEk/Stormakt3020ep2
+# Målat gångprov
+
+`./start-walk-study.sh` visar Karls nya riggade gång som vanliga 2D-bilder på stranden. Vänster/höger byter riktning, mellanslag pausar, F11 helskärm, Esc avslutar. Separat grafikprov under arbete; kampanjens figurer är ännu inte ersatta. Produktionskedjan finns i `docs/ANIMATION.md`.
+
+Senaste assetriktningen är ren 2D-isometri och modulära delar. Blender-gångprovet ovan är ett arkiverat experiment, inte fortsatt produktion.

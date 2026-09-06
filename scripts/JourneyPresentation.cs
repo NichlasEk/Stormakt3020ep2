@@ -13,6 +13,7 @@ public partial class Main
     private bool _revealCaptured;
     private void LoadJourney()
     {
+        LoadCampaignWorlds();
         _animated=new AnimatedCast();
         _warehouse=GD.Load<Texture2D>("res://assets/art/warehouse-v1.png");
         _shore=GD.Load<Texture2D>("res://assets/art/shore-v1.png");
@@ -61,6 +62,7 @@ public partial class Main
     }
     private void DrawJourneyPrompt(int foes)
     {
+        if(_game.InCampaign){DrawCampaignPrompt(foes);return;}
         if(_game.Region==Region.Quay)return;
         if(NVec.Distance(_game.Player,_game.JourneyObjective)<90)
         {

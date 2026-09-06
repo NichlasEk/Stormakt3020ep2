@@ -4,6 +4,8 @@ Alla episodens figurer, scener, repliker och musik är nya produktioner. Origina
 
 ## Aktuella bilder
 
+- `art/karl-baked-walk-v1-{se,ne,nw,sw}.png`: 120 deterministiska Blender-renderingar från en egen riggad modell. Ett gemensamt målningsunderlag från inbyggda bildverktyget ger materialdetaljer; full prompt, referenser och originalfil finns i `source/animation/karl-paint-v1.provenance.json`. SHA-256, kameraankare och skala finns i `source/animation/karl-baked-v1.json`. Används i separat gångprov, ännu inte godkänd kampanjgrafik.
+
 - `art/likvarvet-scale-v5.png`: inbyggd bildgenerering, redigering av episodens matta v4-kaj. Mindre vardagsföremål och tre plana minneshällar; samma huvudsakliga gångyta. Visuellt granskat i Godot, inte en exakt måttsatt 3D-modell.
 - `art/serious-cast-v6.png`: godkänd Karl/sabel och dansk vakt, tre stridsposer. Ursprunglig prompt i `source/rough-pass/serious-cast-prompt.md`.
 - `art/serious-specialists-v1.png`: nya målade poser för Karl/hammare, pikenerare, skytt och indrivare. Samma stil som v6. Tre kolumner och fyra rader, faktiskt utfall 1086 × 1448. Bildstorleken läses vid körning.
@@ -52,3 +54,9 @@ Den tidigare helt täckande `ebba-radio-v2.png` bevaras som föregående variant
 # Rörelseunderlag · 3D-gångrigg
 
 `source/animation/karl-walk-reference.blend` är egen procedurbyggd geometri och armatur från `tools/build_walk_reference.py`, utan externa modeller eller motion-capture-data. Rörelseunderlag med fasta benlängder och markkontakt; inte produktionsgrafik. `source/animation/walk-reference.json` anger parametrar och uppmätta kontrollfel. Två avvisade 2D-riggförsök är borttagna ur spelkoden; godkända målningar har inte ändrats.
+
+## Expedition 0.4 och målat gångprov
+
+`art/world-{atland,roots,forge,uppsala}-v1.png`: fyra nya miljömålningar från inbyggd bildgenerering, en gemensam grund per två banor. Fullständiga promptar och originalvägar finns i `source/campaign/world-*.provenance.json`. Inga nya röstinspelningar ingår i detta breddpass; nya berättelsetexter är originalskrivna anteckningar. Musik och stridsfigurer återanvänds från tidigare delar.
+
+`art/karl-baked-walk-v1-*.png`: 120 offline-renderade transparenta kroppsbilder från egen rigg och kostymmodell. Ett gemensamt AI-målat underlag med godkända Karl som referens projiceras på modellen. Underlag, prompt och Blender-källor i `source/animation/karl-*`; produktionsskript i `tools/`. Ansiktet återanvänds separat från godkända `karl-attack-v1.png` och följer riggens huvudcentrum. Gångprovet är separat från kampanjen.

@@ -9,7 +9,7 @@ namespace Atland;
 public enum Weapon { Saber, Hammer }
 public enum EnemyKind { Guard, Pikeman, Gunner, Collector }
 // Keep the first four values stable for existing saves.
-public enum Phase { Quay, Collector, Discovery, Complete, Names, Testimony, Extraction, Warehouse, Shore, Reveal, Duel }
+public enum Phase { Quay, Collector, Discovery, Complete, Names, Testimony, Extraction, Warehouse, Shore, Reveal, Duel, Campaign }
 public enum TestimonyChoice { None, Broadcast, Cipher }
 public enum Order { Artillery, Medicine }
 public readonly record struct Controls(Vector2 Move, Vector2 Aim, bool Attack, bool Heavy, bool Dodge, bool Guard, bool Swap, bool Heal, bool Support, bool Interact);
@@ -386,7 +386,7 @@ public sealed partial class Combat
             }
         }
         if(e.Kind==EnemyKind.Collector && e.Health<e.MaxHealth*.5f && !BossEnraged)
-        {BossEnraged=true;Emit("radio",e.Position,"rage");}
+        {BossEnraged=true;if(InCampaign)Emit("campaign",e.Position,"Väktaren samlar kraft. Läs markeringarna och gå undan för nästa slag.");else Emit("radio",e.Position,"rage");}
     }
     private void DamageEnemy(Fighter e,float damage,Vector2 source,bool stagger)
     {

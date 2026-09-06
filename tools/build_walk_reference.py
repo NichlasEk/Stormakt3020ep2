@@ -79,6 +79,9 @@ bpy.context.view_layer.objects.active=rig;rig.select_set(True)
 bpy.ops.object.mode_set(mode='EDIT')
 for name,(a,b) in rest.items():
  bone=arm_data.edit_bones.new(name);bone.head=a;bone.tail=b
+ # Match the solver's roll convention. Otherwise a fitted coat rotates 180 degrees
+ # around the spine even though the bone endpoints are numerically correct.
+ bone.align_roll((b-a).to_track_quat('Y','Z').to_matrix().col[2])
 # Pelvis-rooted hierarchy; the solver supplies coherent global joint transforms.
 for name in rest:
  if name=='pelvis':continue

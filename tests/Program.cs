@@ -229,3 +229,55 @@ foreach(var direction in new[]{1f,-1f})
  Check(!shooter.Moving&&shooter.Walk==stopped,"Aiming stops the gunner walk cycle");
 }
 Console.WriteLine($"PASS DANISH MOTION AND SWORD FRAMES · {checks} assertions");
+
+// Eight-stage campaign: both strategic branches, ordinary combat, and save/reload at each boundary.
+foreach(var order in new[]{Order.Medicine,Order.Artillery})foreach(int archiveChoice in new[]{1,2})
+{
+ var campaign=Combat.NewAtland(order);var visited=new HashSet<int>();int previous=-1;
+ string path=Path.Combine(Path.GetTempPath(),"atland-campaign-"+Guid.NewGuid()+".json");
+ try
+ {
+  for(int tick=0;tick<72000&&!campaign.Dead&&!campaign.CampaignFinished;tick++)
+  {
+   if(campaign.CampaignStage!=previous)
+   {
+    previous=campaign.CampaignStage;visited.Add(previous);SaveStore.Write(path,campaign);campaign=SaveStore.Read(path);
+    Check(campaign.OnWalkable(campaign.Player),"Campaign entry remains on traversable ground");
+    foreach(var point in Expedition.Nodes.Append(Expedition.Entry).Append(Expedition.Exit).Append(Expedition.Forge).Append(Expedition.Preserve))Check(campaign.OnWalkable(point),"Campaign objectives are reachable on the painted floor");
+   }
+   var target=campaign.Enemies.Where(e=>!e.Dead).OrderBy(e=>Vector2.DistanceSquared(e.Position,campaign.Player)).FirstOrDefault();
+   var objective=campaign.Stage.Task==ExpeditionTask.Archive&&campaign.CampaignProgress==3&&campaign.ArchiveChoice==0&&archiveChoice==2?Expedition.Forge:campaign.CampaignObjective;
+   var goal=target?.Position??objective;var delta=goal-campaign.Player;float distance=delta.Length();
+   bool guard=target!=null&&target.State==1&&target.Timer<.16f&&distance<150;
+   var move=distance>58?Combat.Normal(campaign.NextWaypoint(campaign.Player,goal)-campaign.Player,Vector2.UnitX):Vector2.Zero;
+   campaign.Step(Input(move,delta,attack:target!=null&&distance<95&&!guard,heavy:target!=null&&distance<105&&tick%47==0&&!guard,guard:guard,heal:campaign.Health<48,support:target!=null,interact:true));
+  }
+  Console.WriteLine($"CAMPAIGN {order}/archive-{archiveChoice}: stage={campaign.CampaignStage} progress={campaign.CampaignProgress} phase={campaign.Phase} hp={campaign.Health} kills={campaign.Kills} elapsed={campaign.Elapsed} pos={campaign.Player} goal={campaign.CampaignObjective}");
+  Check(campaign.CampaignFinished&&!campaign.Dead&&visited.Count==8,"All eight stages finish with normal damage and ordinary controls");
+  Check(campaign.ArchiveChoice==archiveChoice,"Archive choice survives all following worlds");
+  SaveStore.Write(path,campaign);var resumed=SaveStore.Read(path);Check(resumed.CampaignFinished&&resumed.CampaignEnding==campaign.CampaignEnding,"Branch-specific ending survives reload");
+ }
+ finally{File.Delete(path);File.Delete(path+".bak");}
+}
+var door=Combat.NewAtland(Order.Medicine);door.Enemies.Clear();door.Player=Expedition.Nodes[0];
+for(int i=0;i<70;i++)door.Step(Input(interact:true));
+Check(door.CampaignProgress==0,"Wrong port sequence cannot open the gate");
+door.Player=Expedition.Nodes[2];for(int i=0;i<120;i++)door.Step(Input(interact:true));
+Check(door.CampaignProgress==1&&door.CampaignMask==4,"Correct first stone advances exactly once while held");
+door.Player=Expedition.Exit;for(int i=0;i<60;i++)door.Step(Input(interact:true));
+Check(door.CampaignStage==0,"Exit remains locked until its mechanism is complete");
+var previousEnding=Combat.NewAtland(Order.Medicine);previousEnding.CampaignStage=-1;previousEnding.CampaignProgress=previousEnding.CampaignMask=0;previousEnding.AtlandCampaign=false;previousEnding.Region=Region.Shore;previousEnding.Phase=Phase.Complete;
+Check(previousEnding.ContinueJourney()&&previousEnding.CampaignStage==0,"Existing shore ending continues directly into Atland");
+Console.WriteLine($"PASS EIGHT-STAGE CAMPAIGN · {checks} assertions");
+var segment=Combat.NewAtland(Order.Medicine);segment.Enemies.Clear();segment.Player=Expedition.Nodes[2];
+for(int i=0;i<15;i++)segment.Step(Input(interact:true));
+Check(segment.CampaignChannel>0&&segment.CampaignProgress==0,"Mechanism interaction has partial progress");
+string segmentPath=Path.Combine(Path.GetTempPath(),"atland-mechanism-"+Guid.NewGuid()+".json");
+try
+{
+ SaveStore.Write(segmentPath,segment);var copy=SaveStore.Read(segmentPath);
+ for(int i=0;i<60;i++){segment.Step(Input(interact:true));copy.Step(Input(interact:true));}
+ Check(segment.CampaignProgress==copy.CampaignProgress&&segment.CampaignMask==copy.CampaignMask&&Math.Abs(segment.CampaignChannel-copy.CampaignChannel)<.0001f,"Partial mechanism resumes without duplicate progress");
+}
+finally{File.Delete(segmentPath);}
+Console.WriteLine($"PASS CAMPAIGN CHECKPOINT · {checks} assertions");
