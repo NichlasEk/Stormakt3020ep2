@@ -210,3 +210,22 @@ protectedKarl.DeveloperSurvival=false;protectedKarl.Invulnerable=0;
 protectedKarl.Shots.Add(new(){Position=protectedKarl.Player+new Vector2(10,0),Velocity=new(-200,0)});protectedKarl.Step(Input());
 Check(protectedKarl.Dead&&protectedKarl.Events.Any(e=>e.Kind=="playerdeath"),"Turning off development protection restores lethal damage immediately");
 Console.WriteLine($"PASS DEV SURVIVAL · {checks} assertions");
+
+// Weapon tips crossing the regular grid are owned by the contact frame only.
+var northeastTip=AnimationAtlasLayout.Cell("karl","attack",1,2,1254,1254);
+var northeastRecovery=AnimationAtlasLayout.Cell("karl","attack",1,3,1254,1254);
+Check(northeastTip.Left<970&&northeastTip.Right>970&&northeastRecovery.Left>970,"Karl's full NE sword tip is retained in contact and excluded from recovery");
+var southwestTip=AnimationAtlasLayout.Cell("karl","attack",3,2,1254,1254);
+var southwestWindup=AnimationAtlasLayout.Cell("karl","attack",3,1,1254,1254);
+Check(southwestTip.Left<590&&southwestWindup.Right<590,"SW tip is not a stray fragment behind the winding-up Karl");
+foreach(var direction in new[]{1f,-1f})
+{
+ var walking=Combat.New(Order.Medicine);walking.Phase=Phase.Duel;walking.Enemies.Clear();walking.Seals.Clear();walking.Player=new(740,740);
+ walking.Spawn(EnemyKind.Gunner,new(740+(direction>0?350:100),740));var shooter=walking.Enemies[0];shooter.Cooldown=10;
+ var before=shooter.Position;walking.Step(Input());float travelled=Vector2.Distance(before,shooter.Position);
+ Check(shooter.Moving&&travelled>0&&Math.Abs(shooter.Walk-travelled*7/195)<.001f,"Gunner steps track travelled distance during approach and retreat");
+ Check(Vector2.Dot(shooter.MoveDirection,shooter.Position-before)>0,"Walking faces displacement even when retreating from Karl");
+ shooter.State=1;shooter.Timer=1;float stopped=shooter.Walk;walking.Step(Input());
+ Check(!shooter.Moving&&shooter.Walk==stopped,"Aiming stops the gunner walk cycle");
+}
+Console.WriteLine($"PASS DANISH MOTION AND SWORD FRAMES · {checks} assertions");

@@ -512,13 +512,13 @@ public partial class Main : Node2D
         string kind=e.Kind.ToString().ToLowerInvariant();if(kind=="guard")kind="guard";
         int pose=e.State==1?3:e.State==2?4:e.State==3?5:(int)e.Walk%2+1;
         if(dead)pose=6;
-        DrawActor(kind,RenderPosition(e),G(e.Facing),pose,e.Hurt,dead,false,e.Moving,e.Walk,e.State==2&&e.Timer>.37f&&e.Timer<=.5f);
+        DrawActor(kind,RenderPosition(e),G(e.Moving&&e.State==0&&e.MoveDirection.LengthSquared()>.01f?e.MoveDirection:e.Facing),pose,e.Hurt,dead,false,e.Moving,e.Walk,e.State==2&&e.Timer>.37f&&e.Timer<=.5f);
         if(!dead && e.Health<e.MaxHealth)WorldBar(G(e.Position)+new Vector2(-24,-160),48,e.Health/e.MaxHealth,e.Kind==EnemyKind.Collector?Gold:Red);
     }
     private void DrawPlayer()
     {
         int pose=_game.Guarding?5:_game.AttackTime>0?(_game.AttackContact?4:3):_game.Moving?(int)_game.Walk%2+1:0;
-        DrawActor(_game.Weapon==Weapon.Saber?"karl-saber":"karl-hammer",RenderPlayer,G(_game.Facing),pose,_game.Hurt,_game.Dead,true,_game.Moving,_game.Walk,_game.AttackContact&&_game.AttackTime<.22f);
+        DrawActor(_game.Weapon==Weapon.Saber?"karl-saber":"karl-hammer",RenderPlayer,G(_game.Facing),pose,_game.Hurt,_game.Dead,true,_game.Moving,_game.Walk,_game.AttackContact&&_game.AttackTime<_game.ContactTime+.09f);
         if(_game.AttackTime>0 && _game.AttackContact)
         {
             float a=G(_game.Facing).Angle();float r=_game.Weapon==Weapon.Hammer?97:89;
@@ -541,7 +541,7 @@ public partial class Main : Node2D
             if(dead){action="react";frame=3;}
             _animated.Draw(this,player?"karl":"guard",p,facing,action,frame,hurt,dead,Offset,Zoom);
         }
-        else if(kind is "karl-hammer" or "collector" && moving&&pose<3&&hurt<=0&&!dead)
+        else if(kind is "karl-hammer" or "collector" or "pikeman" or "gunner" && moving&&pose<3&&hurt<=0&&!dead)
             _animated.Draw(this,kind,p,player?G(_game.MoveDirection):facing,"walk",(int)walk%4,0,false,Offset,Zoom);
         else _cast.Draw(this,kind,p,facing,pose,hurt,dead,Offset,Zoom);
     }

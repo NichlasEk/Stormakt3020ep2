@@ -26,6 +26,15 @@ public partial class Main
             _game.Spawn(EnemyKind.Collector,new(925,666));var collector=_game.Enemies[0];collector.Moving=true;collector.Facing=new(-1,1);collector.Walk=2;
             RememberRenderPositions();QueueRedraw();await ToSignal(RenderingServer.Singleton,RenderingServer.SignalName.FramePostDraw);
             using(var walkImage=GetViewport().GetTexture().GetImage())walkImage.SavePng("res://artifacts/specialist-walks.png");
+            await Show("danish-walks",Region.Shore,new(768,690));
+            foreach(var kind in new[]{EnemyKind.Guard,EnemyKind.Pikeman,EnemyKind.Gunner})_game.Spawn(kind,new(480+(int)kind*245,650));
+            var directions=new[]{new System.Numerics.Vector2(1,1),new System.Numerics.Vector2(1,-1),new System.Numerics.Vector2(-1,-1),new System.Numerics.Vector2(-1,1)};
+            for(int direction=0;direction<4;direction++)for(int step=0;step<4;step++)
+            {
+                foreach(var actor in _game.Enemies){actor.Moving=true;actor.MoveDirection=actor.Facing=directions[direction];actor.Walk=step;}
+                RememberRenderPositions();QueueRedraw();await ToSignal(RenderingServer.Singleton,RenderingServer.SignalName.FramePostDraw);
+                using var danishImage=GetViewport().GetTexture().GetImage();danishImage.SavePng($"res://artifacts/danish-walks-{direction}-{step}.png");
+            }
             await Show("depth-crate-behind",Region.Warehouse,new(760,480));
             await Show("depth-crate-front",Region.Warehouse,new(790,660));
             await Show("depth-wall",Region.Warehouse,new(1070,696));

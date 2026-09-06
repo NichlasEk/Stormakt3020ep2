@@ -1,5 +1,17 @@
 # Checkpoint · Vägen under vattnet · 2026-09-06
 
+## Senast · danska gångark och värjspets
+
+Pikeneraren och skytten har nu egna provisoriska gångark i fyra riktningar. Sabelvakten hade redan ett. Alla fiender markerar nu verklig förflyttning, även skyttens reträtt; stegrytm beror på gångsträcka och gångbilden följer förflyttningsriktningen. Gång stoppar vid siktning/anfall. Pikenerarens kroppsskala mäts från hjälmen, inte från pikspetsen. Skyttens felordnade bakåtrader mappas om. Det samlade riggade omtaget av gång är fortfarande nästa större animationsarbete.
+
+Karls värjspets korsade rutgränsen i atlasen: den klipptes i kontakten och syntes som en lös bit i angränsande poser. `AnimationAtlasLayout.cs` ger nu granskade individuella källrektanglar för Karl och sabelvakten. Tunga sabelhugg visar kontaktbilden relativt verklig kontakttid, i stället för att hoppa över den vid 0,22 sekunder. Fyrariktningsbildprov: `./start-art-study.sh --fullscreen -- --capture-attacks`, resultat `artifacts/sword-frames.png`. `--scene-check` fångar även tre danska roller i samtliga riktningar/steg.
+
+Användaren godkände strandens visuella riktning uttryckligen: ”jag älskar denna miljö den är så cool”. `shore-v1.png` är riktmärke för fortsatt miljöarbete: mossig sten, tungt vatten, blek gryning och allvarlig nordisk storslagenhet. Bilden har inte ändrats i denna fix.
+
+Nästa avsnitt får gärna blanda in känslan av LucasArts Indiana Jones och Fate of Atlantis som en lätt hyllning. Konkret riktning finns nu i `VISION.md`: arkeologiska mysterier, användbara fynd, mekanismer, hemliga passager och alternativa lösningar, med fortsatt närstrid och seriösa figurer. Detta är nästa avsnitts kreativa riktning, ännu inte implementerat innehåll.
+
+Verifierat efter gång- och värjfixarna: 28 865 regelassertions passerar, inklusive skyttens framåt-/bakåtrörelse och Karls atlasgränser. Scenkontrollen passerar; danska roller och värjans fyra riktningar är visuellt granskade. Separat Linux-export `dist/AtlandsArv-0.3.2/AtlandsArv.x86_64` laddar och fångar spelbild med avslutskod 0. Native-bildprovets avslut rapporterar fortfarande 24 ObjectDB-instanser och 12 resurser kvar; ingen laddnings- eller spelfunktion fallerade i provet. Befintlig spelprocess har inte startats om.
+
 ## Senaste justering · överlevnad och provisorisk specialistgång
 
 Användaren tycker indrivaren är svår och vill kunna fortsätta spela trots skador. Inställningar har nu **Utvecklarläge: överlevnad**. Standard AV. PÅ behåller skada, skadeblink, ljud, gard och ordinarie träffimmunitet, men livet stannar vid 1. Synlig DEV-markering. Preferensen sparas i settings.cfg och tillämpas på aktuell kampanj, ny kampanj, duell och laddning. Den lagras inte i kampanjens JSON; nuvarande inställning styr. Automatiska stridstester kör utan skydd.

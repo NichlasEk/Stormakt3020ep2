@@ -9,20 +9,28 @@ public sealed class AnimatedCast : IDisposable
     private readonly Dictionary<string,Sheet> _sheets=new();
     public AnimatedCast()
     {
-        foreach(string role in new[]{"karl","guard","karl-hammer","collector"})foreach(string action in (role is "karl" or "guard"?new[]{"walk","attack","react"}:new[]{"walk"}))
+        foreach(string role in new[]{"karl","guard","karl-hammer","collector","pikeman","gunner"})foreach(string action in (role is "karl" or "guard"?new[]{"walk","attack","react"}:new[]{"walk"}))
         {
             var texture=SpriteCutout.Load($"res://assets/art/{role}-{action}-v1.png",chromaKey:new Color(1,0,1));
             using var image=texture.GetImage();int width=image.GetWidth(),height=image.GetHeight();var data=image.GetData();
             var frames=new Rect2[16];var feet=new Vector2[16];var scales=new float[4];
             for(int row=0;row<4;row++)for(int col=0;col<4;col++)
             {
-                int left=col*width/4,right=(col+1)*width/4,up=row*height/4,down=(row+1)*height/4;
-                // The painter's extended saber crosses the regular cell boundary.
-                if(role=="guard"&&action=="attack"&&col==2){left=new[]{650,640,600,540}[row];right=new[]{1020,1000,930,920}[row];}
-                if(role=="guard"&&action=="attack"&&col==3)left=1022;
+                var (left,up,right,down)=AnimationAtlasLayout.Cell(role,action,row,col,width,height);
                 int top=down,bottom=up,minX=right,maxX=left;
                 for(int y=up;y<down;y++)for(int x=left;x<right;x++)if(data[(y*width+x)*4+3]>180)
                 {top=Math.Min(top,y);bottom=Math.Max(bottom,y);minX=Math.Min(minX,x);maxX=Math.Max(maxX,x);}
+                // An upright pike is taller than its owner. Scale/anchor from the
+                // helmet-to-boot body, retaining the entire weapon in the UV region.
+                if(role=="pikeman")
+                {
+                    for(int y=up;y<bottom;y++)
+                    {
+                        int run=0,best=0;
+                        for(int x=left;x<right;x++){if(data[(y*width+x)*4+3]>180){run++;best=Math.Max(best,run);}else run=0;}
+                        if(best>(right-left)*.065f){top=y;break;}
+                    }
+                }
                 long sum=0,count=0;
                 for(int y=Math.Max(top,bottom-12);y<=bottom;y++)for(int x=left;x<right;x++)if(data[(y*width+x)*4+3]>180){sum+=x;count++;}
                 // Anchor a walk to the pelvis, not whichever boot happens to be lowest.
@@ -48,7 +56,7 @@ public sealed class AnimatedCast : IDisposable
     public void Draw(Node2D canvas,string role,Vector2 position,Vector2 facing,string action,int frame,float hurt,bool dead,Vector2 offset,float zoom)
     {
         int row=facing.Y>=0?(facing.X>=0?0:3):(facing.X>=0?1:2);bool flip=false;
-        if(role=="karl-hammer"&&action=="walk"){if(row==1)row=2;else if(row==2)row=1;} // Generated back-view rows are reversed.
+        if(role is "karl-hammer" or "gunner" &&action=="walk"){if(row==1)row=2;else if(row==2)row=1;} // Generated back-view rows are reversed.
         // Karl's NW contact was painted facing forward; mirror the correct back view.
         if(role=="karl"&&action=="attack"&&row==2&&frame==2){row=1;flip=true;}
         var sheet=_sheets[role+"-"+action];int index=row*4+Math.Clamp(frame,0,3);float scale=sheet.Scale[row];

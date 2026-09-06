@@ -9,7 +9,7 @@ public partial class ArtStudy : Node2D
     private AnimatedCast _cast=null!;
     private Font _font=null!;
     private int _pose,_direction;
-    private bool _capture,_capturing,_ruler;
+    private bool _capture,_capturing,_ruler,_attackCheck;
     private double _elapsed;
     private const float Zoom=1.12f;
     private static readonly Vector2 Offset=new(640-730*Zoom,360-700*Zoom);
@@ -17,7 +17,8 @@ public partial class ArtStudy : Node2D
     {
         _quay=GD.Load<Texture2D>("res://assets/art/likvarvet-scale-v5.png");
         _cast=new AnimatedCast();
-        _capture=OS.GetCmdlineUserArgs().Contains("--capture-study");
+        _attackCheck=OS.GetCmdlineUserArgs().Contains("--capture-attacks");
+        _capture=OS.GetCmdlineUserArgs().Contains("--capture-study")||_attackCheck;
         _ruler=OS.GetCmdlineUserArgs().Contains("--scale-guide");
         _font=GD.Load<Font>("res://assets/fonts/NotoSans-Regular.ttf");
     }
@@ -40,6 +41,11 @@ public partial class ArtStudy : Node2D
     private async void Capture()
     {
         var folder=ProjectSettings.GlobalizePath("res://artifacts");DirAccess.MakeDirRecursiveAbsolute(folder);
+        if(_attackCheck)
+        {
+            QueueRedraw();await ToSignal(RenderingServer.Singleton,RenderingServer.SignalName.FramePostDraw);
+            using var frame=GetViewport().GetTexture().GetImage();frame.SavePng(folder+"/sword-frames.png");GD.Print("SWORD FRAME CAPTURE");GetTree().Quit();return;
+        }
         for(int i=0;i<7;i++)
         {
             _pose=i;QueueRedraw();
@@ -54,6 +60,18 @@ public partial class ArtStudy : Node2D
     public override void _Draw()
     {
         if(_quay==null)return;
+        if(_attackCheck)
+        {
+            DrawRect(new Rect2(0,0,1280,720),new Color("242522"));
+            var directions=new[]{new Vector2(1,1),new Vector2(1,-1),new Vector2(-1,-1),new Vector2(-1,1)};
+            for(int row=0;row<4;row++)for(int col=0;col<4;col++)
+            {
+                var p=new Vector2(170+col*310,164+row*180);
+                _cast.Draw(this,"karl",p/.9f,directions[row],"attack",col,0,false,Vector2.Zero,.9f);DrawSetTransform(Vector2.Zero);
+                DrawString(_font,new Vector2(16+col*310,18+row*180),new[]{"SE","NE","NW","SW"}[row]+" · "+new[]{"BEREDSKAP","UPPTAKT","KONTAKT","ÅTERGÅNG"}[col],fontSize:12,modulate:new Color("c1ad88"));
+            }
+            return;
+        }
         DrawSetTransform(Offset,0,Vector2.One*Zoom);
         DrawTextureRectRegion(_quay,new Rect2(18,30,1500,946),new Rect2(18,30,1500,946),Colors.White);
         foreach(var feet in new[]{new Vector2(720,755),new Vector2(925,666)})

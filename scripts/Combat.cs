@@ -29,6 +29,7 @@ public sealed class Fighter
     public float Hurt;
     public float Walk;
     [JsonIgnore] public bool Moving;
+    [JsonIgnore] public Vector2 MoveDirection;
     public int State; // 0 approach, 1 telegraph, 2 recovery, 3 stagger
     public int Pattern;
     public bool Dead => Health <= 0;
@@ -339,8 +340,12 @@ public sealed partial class Combat
             e.Facing=Normal(to,e.Facing);
             float reach=e.Kind==EnemyKind.Gunner?290:e.Kind==EnemyKind.Pikeman?128:e.Kind==EnemyKind.Collector?142:78;
             float speed=e.Kind==EnemyKind.Collector?76:e.Kind==EnemyKind.Gunner?65:e.Kind==EnemyKind.Pikeman?83:106;
-            if(distance>reach*.82f||!ClearPath(e.Position,Player)){var before=e.Position;var direction=Normal(NextWaypoint(e.Position,Player)-e.Position,e.Facing);e.Position=Bound(e.Position+direction*speed*dt);e.Moving=Vector2.DistanceSquared(before,e.Position)>.01f;if(e.Moving)e.Walk+=dt*6;}
+            var before=e.Position;
+            if(distance>reach*.82f||!ClearPath(e.Position,Player))
+            {var direction=Normal(NextWaypoint(e.Position,Player)-e.Position,e.Facing);e.Position=Bound(e.Position+direction*speed*dt);}
             else if(e.Kind==EnemyKind.Gunner && distance<170)e.Position=Bound(e.Position-e.Facing*speed*dt);
+            var displacement=e.Position-before;float travelled=displacement.Length();e.Moving=travelled>.001f;
+            if(e.Moving){e.MoveDirection=displacement/travelled;e.Walk+=travelled*7/195;}
             if(distance<reach && e.Cooldown<=0 && ClearPath(e.Position,Player))
             {
                 e.State=1;e.LockedAim=Player;e.Timer=e.Kind==EnemyKind.Gunner?1.1f:e.Kind==EnemyKind.Collector?1.0f:e.Kind==EnemyKind.Pikeman?.75f:.55f;

@@ -46,3 +46,6 @@ Den tidigare helt täckande `ebba-radio-v2.png` bevaras som föregående variant
 
 
 `art/karl-hammer-walk-v1.png` och `art/collector-walk-v1.png`: två provisoriska gångark (1254 × 1254, fyra riktningar × fyra nyckelbilder) från inbyggd bildgenerering. `serious-specialists-v1.png` är identitetsreferens. Fulla promptar och originalvägar i `source/journey/specialist-walks.json`. Hammar-Karls bakåtrader mappas i omvänd ordning. Bilderna fyller luckorna men ersätter inte det planerade omtaget av samtliga gångcykler.
+
+
+`art/pikeman-walk-v1.png` och `art/gunner-walk-v1.png`: provisoriska gångark, 1254 × 1254, fyra riktningar/fyra nyckelbilder, inbyggd bildgenerering med `serious-specialists-v1.png` som identitetsreferens. Pikenerarens UV-rader och kroppshöjd korrigeras för den stående piken; skyttens två bakåtrader mappas om. Promptar och SHA-256 i `source/journey/danish-walks.json`. Befintliga sabelatlaser är oförändrade på disk; granskade källrektanglar förhindrar klippta och överförda värjspetsar i spelets rendering.

@@ -30,6 +30,14 @@ The bronze chart opens an inscription encounter inspired by Atlantica I, pp. 543
 
 Character style is approved, but three painted poses and horizontal mirroring are an interim animation solution. Scale must be shared across actors and props. The latest quay reduces everyday prop sizes; never compensate for giant lanterns by enlarging people. Painted portraits belong to every speaking role. Ebba retains her original full-busted adult silhouette at the user's explicit request, alongside her approved blonde face and serious painted admiral identity. Volume is always accessible and quiet by default.
 
+## Nästa avsnitt · arkeologiskt äventyr
+
+Användaren vill ha en lätt hyllning till LucasArts Indiana Jones och Fate of Atlantis i nästa avsnitts känsla. Riktningen är accepterad; avsnittet är ännu inte byggt. Låt upptäckarglädje, konkreta mysterier och gamla mekanismer bära expeditionen tillsammans med närstriden.
+
+Fynd ska kunna användas: en avritad inskrift, ett trasigt mätinstrument eller en märklig motvikt ger ett nytt sätt att förstå och påverka platsen. Ledtrådar finns i landskapet och går att resonera om. Hemliga passager och alternativa lösningar belönar observation, praktisk uppfinningsrikedom och ibland våld med begripliga följder. Rudbecks kartor kan stämma på ett oväntat sätt när expeditionen undersöker själva terrängen.
+
+Karl förblir allvarlig inför faran, Hedvig dras djupare in i upptäckten och Ebba följer expeditionens bedrövliga arbetsmiljö över radion. Egna mysterier, dialoger, mekanismer och assets växer ur Stormakts värld. Den mörka målade stranden i `assets/art/shore-v1.png`, uttryckligen älskad av användaren, är miljöernas riktmärke: mossig sten, tungt vatten och stilla nordisk storslagenhet. Pussel och utforskning ger striderna sammanhang och andrum.
+
 ## Production
 
 Local ComfyUI experiments with saved API graphs; selected painted assets through the built-in image tool when local results do not meet the approved style; new synthetic voices through EutherLink; ACE-Step score; authored layered effects. Blender can provide consistent actor geometry/animation. No runtime dependency on AI services. Every generated source retains provenance. Finish one coherent arena and validate it before expanding. Animation fidelity is the first art risk to resolve.
