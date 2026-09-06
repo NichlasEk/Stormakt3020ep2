@@ -1,0 +1,30 @@
+{
+  "task": "37381c2b-65ea-404d-a402-3423cbc3f650",
+  "result": [
+    {
+      "file": "/v1/audio?path=%2Fhome%2Fnichlas%2Fai%2Feutherstudio%2FACE-Step-1.5%2F.cache%2Facestep%2Ftmp%2Fapi_audio%2Fe434a60f-0e6d-dd1d-d227-4c4edd0c5355.wav",
+      "wave": "",
+      "status": 1,
+      "create_time": 1788688598,
+      "env": "development",
+      "prompt": "Instrumental Nordic romantic orchestral action RPG soundtrack. A haunted Swedish naval dock in blue twilight. Somber noble melody played by solo cello and low French horns, muted violas and nyckelharpa-like bowed folk strings, delicate harp, distant timpani and restrained military snare pulse. D minor, 96 BPM, steady purposeful walking and combat rhythm, warm amber melancholy against cold deep sea mystery. Beautiful memorable four-note leitmotif, cinematic but intimate, Swedish national romantic landscape painting in sound, subtle baroque counterpoint. Start immediately with the theme, consistent volume, repeating phrases suitable for seamless looping. No singing, no speech, no pop, no EDM, no comedy, no trailer braams, no long silent opening or fadeout.",
+      "lyrics": "[Instrumental]",
+      "metas": {
+        "bpm": 96,
+        "duration": 80.0,
+        "genres": "N/A",
+        "keyscale": "D minor",
+        "timesignature": "4/4",
+        "prompt": "Instrumental Nordic romantic orchestral action RPG soundtrack. A haunted Swedish naval dock in blue twilight. Somber noble melody played by solo cello and low French horns, muted violas and nyckelharpa-like bowed folk strings, delicate harp, distant timpani and restrained military snare pulse. D minor, 96 BPM, steady purposeful walking and combat rhythm, warm amber melancholy against cold deep sea mystery. Beautiful memorable four-note leitmotif, cinematic but intimate, Swedish national romantic landscape painting in sound, subtle baroque counterpoint. Start immediately with the theme, consistent volume, repeating phrases suitable for seamless looping. No singing, no speech, no pop, no EDM, no comedy, no trailer braams, no long silent opening or fadeout.",
+        "lyrics": "[Instrumental]"
+      },
+      "generation_info": "**\ud83c\udfb5 Total generation time (1 song): 2.73s**\n- 2.73s per song\n- DiT phase (1 song): 2.73s",
+      "seed_value": "30220603",
+      "lm_model": "acestep-5Hz-lm-1.7B",
+      "dit_model": "acestep-v15-turbo",
+      "progress": 1.0,
+      "stage": "succeeded"
+    }
+  ],
+  "sha256": "fff7eaa41e0454a3ff7aa3fdce77872bc5b3385518e87f507ab7059d25b57841"
+}

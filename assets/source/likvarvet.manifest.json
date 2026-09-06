@@ -1,0 +1,11 @@
+{
+  "prompt_id": "6decb8ee-aab8-4436-ae94-6cb16bb6df1a",
+  "seed": 302020601,
+  "model": "Krea-2-Turbo",
+  "sha256": "4404d4a3cc24839da8fe292411804883f80ca80c6481ded4d77bdde6a759967c",
+  "source": {
+    "filename": "likvarvet_00001_.png",
+    "subfolder": "AtlandsArv",
+    "type": "output"
+  }
+}

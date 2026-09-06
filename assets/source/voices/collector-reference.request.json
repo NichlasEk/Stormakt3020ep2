@@ -1,0 +1,9 @@
+{
+  "text": "Varvets liggare ligger öppen. Här lämnar inget skepp sin plats innan skulden är betald. Jag har väntat längre än era kungar har haft namn.",
+  "voice_instruction": "A deep Swedish male dockmaster, weathered bass baritone, solemn bureaucratic authority, slow threatening calm, clearly intelligible Swedish.",
+  "language": "sv",
+  "model_backend": "voxcpm2",
+  "output_format": "wav",
+  "normalize": false,
+  "seed": 30220602
+}

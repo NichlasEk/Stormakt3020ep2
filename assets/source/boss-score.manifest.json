@@ -1,0 +1,30 @@
+{
+  "task": "e8e9dfb8-0c1e-4466-bce6-e8ea1e941701",
+  "result": [
+    {
+      "file": "/v1/audio?path=%2Fhome%2Fnichlas%2Fai%2Feutherstudio%2FACE-Step-1.5%2F.cache%2Facestep%2Ftmp%2Fapi_audio%2F9bde142c-d821-bcc1-22a0-b696865fab5d.wav",
+      "wave": "",
+      "status": 1,
+      "create_time": 1788688799,
+      "env": "development",
+      "prompt": "Instrumental dark Nordic baroque boss battle music for a Swedish naval action RPG. D minor at 120 BPM. Relentless bowed low strings, ostinato cello, martial snare, deep timpani, imposing pipe organ chords, short mournful French horn theme and answering brass. Heavy purposeful duel against a haunted iron dockmaster. Noble tragic and threatening, detailed acoustic orchestration, vivid dynamics with steady intensity. Immediate musical entry, continuous 8-bar phrases, no vocals, no lyrics, no silence, no fadeout, no trailer braams, no modern drums, no electronic dance music.",
+      "lyrics": "[Instrumental]",
+      "metas": {
+        "bpm": 120,
+        "duration": 64.0,
+        "genres": "N/A",
+        "keyscale": "D minor",
+        "timesignature": "4/4",
+        "prompt": "Instrumental dark Nordic baroque boss battle music for a Swedish naval action RPG. D minor at 120 BPM. Relentless bowed low strings, ostinato cello, martial snare, deep timpani, imposing pipe organ chords, short mournful French horn theme and answering brass. Heavy purposeful duel against a haunted iron dockmaster. Noble tragic and threatening, detailed acoustic orchestration, vivid dynamics with steady intensity. Immediate musical entry, continuous 8-bar phrases, no vocals, no lyrics, no silence, no fadeout, no trailer braams, no modern drums, no electronic dance music.",
+        "lyrics": "[Instrumental]"
+      },
+      "generation_info": "**\ud83c\udfb5 Total generation time (1 song): 2.72s**\n- 2.72s per song\n- DiT phase (1 song): 2.72s",
+      "seed_value": "30220604",
+      "lm_model": "acestep-5Hz-lm-1.7B",
+      "dit_model": "acestep-v15-turbo",
+      "progress": 1.0,
+      "stage": "succeeded"
+    }
+  ],
+  "sha256": "a942298cd3303886eb3a369dbafc15049fe2b3393fab50567af0083817d43552"
+}

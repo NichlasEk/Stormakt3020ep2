@@ -1,0 +1,18 @@
+{
+  "prompt": "Instrumental Nordic romantic orchestral action RPG soundtrack. A haunted Swedish naval dock in blue twilight. Somber noble melody played by solo cello and low French horns, muted violas and nyckelharpa-like bowed folk strings, delicate harp, distant timpani and restrained military snare pulse. D minor, 96 BPM, steady purposeful walking and combat rhythm, warm amber melancholy against cold deep sea mystery. Beautiful memorable four-note leitmotif, cinematic but intimate, Swedish national romantic landscape painting in sound, subtle baroque counterpoint. Start immediately with the theme, consistent volume, repeating phrases suitable for seamless looping. No singing, no speech, no pop, no EDM, no comedy, no trailer braams, no long silent opening or fadeout.",
+  "lyrics": "[Instrumental]",
+  "vocal_language": "unknown",
+  "audio_duration": 80,
+  "audio_format": "wav",
+  "task_type": "text2music",
+  "batch_size": 1,
+  "thinking": false,
+  "use_format": false,
+  "bpm": 96,
+  "key_scale": "D minor",
+  "time_signature": "4/4",
+  "inference_steps": 8,
+  "guidance_scale": 7,
+  "use_random_seed": false,
+  "seed": 30220603
+}

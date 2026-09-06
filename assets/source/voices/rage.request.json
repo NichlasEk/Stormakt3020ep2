@@ -1,0 +1,11 @@
+{
+  "text": "Även havet står i skuld till kronan.",
+  "voice_instruction": "A deep Swedish male dockmaster, weathered bass baritone, solemn bureaucratic authority, slow threatening calm, clearly intelligible Swedish.",
+  "language": "sv",
+  "model_backend": "dots.tts-mf",
+  "output_format": "wav",
+  "normalize": false,
+  "seed": 30220702,
+  "prompt_text": "Varvets liggare ligger öppen. Här lämnar inget skepp sin plats innan skulden är betald. Jag har väntat längre än era kungar har haft namn.",
+  "dots_num_steps": 4
+}

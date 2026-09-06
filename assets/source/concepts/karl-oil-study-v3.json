@@ -1,0 +1,112 @@
+{
+  "1": {
+    "class_type": "UNETLoader",
+    "inputs": {
+      "unet_name": "Krea-2-Turbo/krea2_turbo_fp8_scaled.safetensors",
+      "weight_dtype": "default"
+    }
+  },
+  "2": {
+    "class_type": "CLIPLoader",
+    "inputs": {
+      "clip_name": "Krea-2/qwen3vl_4b_fp8_scaled.safetensors",
+      "type": "krea2",
+      "device": "default"
+    }
+  },
+  "3": {
+    "class_type": "VAELoader",
+    "inputs": {
+      "vae_name": "Krea-2/qwen_image_vae.safetensors"
+    }
+  },
+  "4": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        0
+      ],
+      "text": "A full-length oil-painted portrait of one battle-worn adult Swedish Carolean officer, circa 1700, a physically believable lean tall man aged forty, with mature realistic human anatomy, eight-head-tall proportions, small anatomically sized head, long legs, narrow natural hands, tired angular face, pronounced cheekbones, short stubble, stern eyes. His entire body and both boots are visible. He stands in a three-quarter view, seen slightly from above, right hand holding a long battle-scarred steel officers saber pointing diagonally down. Dark battered black felt tricorne, dirty deep indigo blue knee-length wool uniform coat, very muted ochre cuffs, a few tarnished small brass buttons, worn leather crossbelt, black mud-caked tall boots, patched cloth and rain-soaked hem. The sword is actual human sword size, the coat has real folds and hanging weight. Deep raw umber and charcoal background with no environment, isolated full figure occupying almost the entire height. A serious seventeenth-century Dutch oil painting of a soldier, visible impasto brush strokes, thin glazes over coarse linen, muted earth colors, restrained warm side lighting, deep shadows, believable painted skin, tragic dignity and exhaustion. Paint the human being with the realism of an old master military portrait. No ornament beyond the uniform, no large shoulder pads, no stylized anatomy."
+    }
+  },
+  "5": {
+    "class_type": "ConditioningKrea2Rebalance",
+    "inputs": {
+      "conditioning": [
+        "4",
+        0
+      ],
+      "multiplier": 2.5,
+      "per_layer_weights": "1.0,1.0,1.0,1.0,1.0,1.0,1.0,2.5,5.0,1.1,4.0,1.0"
+    }
+  },
+  "6": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        0
+      ],
+      "text": "cute, cartoon, chibi, toy, doll, wooden puppet, miniature, figurine, plastic, low poly, 3d render, voxel, oversized head, short legs, large eyes, oversized hands, round face, anime, fantasy armor, ornate pauldrons, oversized weapon, gold armor, exaggerated proportions, disney, pixar, game icon, smile, polished, airbrush, cel shaded, clean vector illustration, text, frame, cropped feet, missing boots"
+    }
+  },
+  "7": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 1024,
+      "height": 1536,
+      "batch_size": 1
+    }
+  },
+  "8": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "5",
+        0
+      ],
+      "negative": [
+        "6",
+        0
+      ],
+      "latent_image": [
+        "7",
+        0
+      ],
+      "seed": 30220631,
+      "steps": 12,
+      "cfg": 2.0,
+      "sampler_name": "euler",
+      "scheduler": "simple",
+      "denoise": 1.0
+    }
+  },
+  "9": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "8",
+        0
+      ],
+      "vae": [
+        "3",
+        0
+      ]
+    }
+  },
+  "10": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "9",
+        0
+      ],
+      "filename_prefix": "AtlandsArv/karl-oil-study-v3"
+    }
+  }
+}

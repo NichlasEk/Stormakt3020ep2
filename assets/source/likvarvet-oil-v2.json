@@ -1,0 +1,123 @@
+{
+  "1": {
+    "class_type": "UNETLoader",
+    "inputs": {
+      "unet_name": "Krea-2-Turbo/krea2_turbo_fp8_scaled.safetensors",
+      "weight_dtype": "default"
+    }
+  },
+  "2": {
+    "class_type": "CLIPLoader",
+    "inputs": {
+      "clip_name": "Krea-2/qwen3vl_4b_fp8_scaled.safetensors",
+      "type": "krea2",
+      "device": "default"
+    }
+  },
+  "3": {
+    "class_type": "VAELoader",
+    "inputs": {
+      "vae_name": "Krea-2/qwen_image_vae.safetensors"
+    }
+  },
+  "4": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        0
+      ],
+      "text": "A dark seventeenth-century Nordic oil painting on coarse linen canvas, a weatherbeaten Swedish military harbour in 1690, seen obliquely from above. Preserve the exact arrangement of the diagonal stone quay, moored wooden warship on the left, two round bronze pavement seals, and the iron sea gate at upper right. Deep tenebrist chiaroscuro. Everything is old, heavy, battered and damp. Angular broken grey granite cobbles with wet charcoal grout, black rotting timber, algae and soot, corroded dull brass, frayed rope. The stone quay has broad open traversable ground. A gaunt eroded lion carved on the ship, a massive decaying gate. Sparse amber tallow lanterns illuminate small patches of the quay, elsewhere muted moonlight and deep brown-black shadows. Palette: raw umber, burnt sienna, dirty grey, dark indigo, muted ochre. Thick irregular visible oil brushstrokes, scumbled shadows, dry brush edges, worn varnish, fine canvas grain, historic Dutch Golden Age maritime painting, solemn Nordic national romantic atmosphere, bleak grandeur and melancholy, museum quality painting. Hard angular architecture and natural irregular surfaces. No people, no writing."
+    }
+  },
+  "5": {
+    "class_type": "ConditioningKrea2Rebalance",
+    "inputs": {
+      "conditioning": [
+        "4",
+        0
+      ],
+      "multiplier": 2.5,
+      "per_layer_weights": "1.0,1.0,1.0,1.0,1.0,1.0,1.0,2.5,5.0,1.1,4.0,1.0"
+    }
+  },
+  "6": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        0
+      ],
+      "text": "cute, cartoon, chibi, toy, rounded, plastic, glossy, shiny gold, clean, smooth airbrush, smooth gradient, mobile game, cheerful, vivid colors, saturated cyan, turquoise glow, fantasy illustration, vector art, 3D render, polished marble, bloom, text, watermark, people"
+    }
+  },
+  "7": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "11",
+        0
+      ],
+      "vae": [
+        "3",
+        0
+      ]
+    }
+  },
+  "8": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "5",
+        0
+      ],
+      "negative": [
+        "6",
+        0
+      ],
+      "latent_image": [
+        "7",
+        0
+      ],
+      "seed": 30220621,
+      "steps": 12,
+      "cfg": 2.0,
+      "sampler_name": "euler",
+      "scheduler": "simple",
+      "denoise": 0.78
+    }
+  },
+  "9": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "8",
+        0
+      ],
+      "vae": [
+        "3",
+        0
+      ]
+    }
+  },
+  "10": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "9",
+        0
+      ],
+      "filename_prefix": "AtlandsArv/likvarvet-oil-v2"
+    }
+  },
+  "11": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "atland-quay-layout.png"
+    }
+  }
+}

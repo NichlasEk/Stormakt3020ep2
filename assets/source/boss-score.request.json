@@ -1,0 +1,18 @@
+{
+  "prompt": "Instrumental dark Nordic baroque boss battle music for a Swedish naval action RPG. D minor at 120 BPM. Relentless bowed low strings, ostinato cello, martial snare, deep timpani, imposing pipe organ chords, short mournful French horn theme and answering brass. Heavy purposeful duel against a haunted iron dockmaster. Noble tragic and threatening, detailed acoustic orchestration, vivid dynamics with steady intensity. Immediate musical entry, continuous 8-bar phrases, no vocals, no lyrics, no silence, no fadeout, no trailer braams, no modern drums, no electronic dance music.",
+  "lyrics": "[Instrumental]",
+  "vocal_language": "unknown",
+  "audio_duration": 64,
+  "audio_format": "wav",
+  "task_type": "text2music",
+  "batch_size": 1,
+  "thinking": false,
+  "use_format": false,
+  "bpm": 120,
+  "key_scale": "D minor",
+  "time_signature": "4/4",
+  "inference_steps": 8,
+  "guidance_scale": 7,
+  "use_random_seed": false,
+  "seed": 30220604
+}

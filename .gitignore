@@ -4,3 +4,5 @@ obj/
 artifacts/
 *.tmp
 __pycache__/
+assets/source/actor-frames/
+dist/

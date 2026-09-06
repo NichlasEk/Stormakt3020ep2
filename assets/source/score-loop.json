@@ -1,0 +1,8 @@
+{
+  "master": "assets/source/score-master.wav",
+  "end_seconds": 72.5,
+  "overlap_seconds": 2.5,
+  "duration_seconds": 70.0,
+  "filter": "[0:a]asplit=3[h][b][t];[h]atrim=0:2.5,asetpts=PTS-STARTPTS[head];[b]atrim=2.5:70.0,asetpts=PTS-STARTPTS[body];[t]atrim=70.0:72.5,asetpts=PTS-STARTPTS[tail];[tail][head]acrossfade=d=2.5:c1=tri:c2=tri[join];[body][join]concat=n=2:v=0:a=1,loudnorm=I=-19:TP=-2:LRA=10[out]",
+  "sha256": "c10738c3dd505c72e44cb3b479ce3b624e5f51cd76be8184382ac52ea55761dc"
+}

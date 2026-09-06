@@ -1,0 +1,7 @@
+assets/fonts/*.ttf filter=lfs diff=lfs merge=lfs -text
+assets/art/*.png filter=lfs diff=lfs merge=lfs -text
+assets/audio/*.ogg filter=lfs diff=lfs merge=lfs -text
+assets/audio/*.wav filter=lfs diff=lfs merge=lfs -text
+assets/source/**/*.wav filter=lfs diff=lfs merge=lfs -text
+assets/source/*.wav filter=lfs diff=lfs merge=lfs -text
+assets/source/**/*.png filter=lfs diff=lfs merge=lfs -text

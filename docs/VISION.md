@@ -6,6 +6,10 @@ Accepted direction, 2026-09-06. Original reference: /home/nichlas/WaylandForge, 
 
 A beautiful, immersive, enjoyable standalone action RPG. Linux first, Windows next; no browser requirement. Godot 4 .NET/C#. Painted Nordic baroque, oblique overhead view. Blue wool, worn gold, wet iron, copper, living silver. Direct combat carries the adventure: saber/pistol, mining hammer, eventually spear; dodge, timed parry, readable enemy cooperation. Strategic expedition decisions must change actual encounters.
 
+### Art direction correction, same session
+
+User found first rendering beautiful but too cute and rounded. Explicit new target: dark, worn oil painting from the Swedish great-power era. Adult proportions, narrow faces, angular silhouettes, dirty indigo wool, corroded brass, soot, rough granite, blackened ship timber; visible oil strokes, muted raw umber/ochre palette and restrained amber light. Avoid toy-like forms, big heads, shiny gold, bright cyan and clean airbrush gradients. This correction governs all further assets, UI and effects.
+
 Karl CCLV, Ebba Grip and Sören Svartkrut lead a Swedish-Danish expedition after Copenhagen. The Förmyndarkollegiet tries to perpetuate the realm and its wars. On an apparently military expedition they accidentally discover Atland beneath Sweden, with Gamla Uppsala central to the mystery. Rudbeck's historical theory becomes fictionally tangible. Heidenstam inspires longing, individual soldiers and tragic greatness; Nordic myth supplies independent ancient powers. Gods are not automatically explained away as machines. National romantic beauty must have room to breathe. Dry humor belongs in dialogue and institutions; grief and wonder remain sincere.
 
 Likvarvet → wandering Småland → Bergslagen → Åbo → Stockholm and Atland. Campaign order is provisional. Yggdrasil roots, Norn threads and a regiment refusing resurrection are candidate encounters. Atland is inhabited, not merely a boss dungeon. All dialogue, visuals and audio for Episode II are new.
