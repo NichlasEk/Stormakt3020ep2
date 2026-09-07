@@ -180,7 +180,9 @@ public sealed partial class Combat
         UpdateRoomSight(true);
         if(firstVisit&&destination==PortRooms.Roots)Emit("radio",Player,"roots-entry");
         if(firstVisit&&destination==PortRooms.Grove)Emit("campaign",Player,GroveClue+" E / B vid stenen börjar avtrycket.");
-        Emit("region",Player,RoomName);if(firstVisit&&destination==PortRooms.Pump)Emit("radio",Player,"rooms-pump");Emit("checkpoint",Player);
+        Emit("region",Player,RoomName);if(firstVisit&&destination==PortRooms.Pump)Emit("radio",Player,"rooms-pump");
+        if(firstVisit&&destination==PortRooms.Roots)Emit("cinematic",Player,"archive-gate");
+        Emit("checkpoint",Player);
     }
 
     public bool RoomRadioRelevant(string id)=>id switch

@@ -1,5 +1,12 @@
 # Checkpoint · Vägen under vattnet · 2026-09-06
 
+## Senast · arkivfilm och videobibliotek · 0.9.1 · 2026-09-07
+
+Första mellansekvensen är byggd: 8,1 sekunder lokal LTX-2-film med eget miljöljud, ny genererad ingångsbild och portöppning mot rötterna. Visas vid första arkiv→Rotvägen-passagen. Inställningarnas utvecklarverktyg har ett videobibliotek för återspelning utan ändrad sparning; Esc/B och naturligt slut återvänder rätt. Spelet pausas och filmens ljud följer mastervolymen. Källvideo, exakt graf, promptar och jobb är sparade.
+
+29 574 regelassertions. Godot/native videokontroller beskrivs i `CINEMATICS.md`; Linux-export `dist/AtlandsArv-0.9.1-cinematic/AtlandsArv.x86_64`. Direktprov `./start.sh -- --gate-film`. Nästa filmpass bör förbättra den målade stilen i yttergården och höja upplösningen efter användarens bedömning. Större intro och fler filmer är inte levererade. Banornas nästa checkpoint är fortfarande vägen mot berget.
+
+
 ## Senast · Rotvägen · 0.9 · 2026-09-07
 
 Nio beständiga rum. Två nya målningar för Rötternas trappa och De namnlösas lund, motviktsport, avtrycksstrid med en/två eftertrupper beroende på arkivvalet och Nornans vittnessigill som beständig belöning. Fem nya lokala Ebba-/Hedvig-repliker. Layoutversion 5 migrerar äldre sparningar, utan hälsopåfyllning eller tappad stash. Full väska blockerar inte progression, återbesök dubblar inget.

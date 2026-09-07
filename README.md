@@ -4,6 +4,12 @@ Episod II. Ett nytt, fristående actionrollspel i Stormakts värld: nordisk baro
 
 [Nästa arbetsmål och nulägesanalys](docs/ROADMAP.md): sammanhängande banor med flera målade rum, dörrar, upptäcktsmörker och egna bossmekaniker. Atlands port och Rotvägen har nu nio beständiga rum.
 
+## Nytt · Arkivets port och videobibliotek · 0.9.1
+
+Första mellansekvensen är ett lokalt genererat filmprov på åtta sekunder. Den visas en gång vid passagen från arkivet till Rotvägen. **Inställningar → Utvecklarverktyg · Videobibliotek** låter dig se den igen utan att ändra sparningen. Esc/B hoppar över; filmens ljud följer volymreglaget. Direktprov: `./start.sh -- --gate-film`. [Produktion och verifiering](docs/CINEMATICS.md).
+
+Linux-export: `dist/AtlandsArv-0.9.1-cinematic/AtlandsArv.x86_64`. Det större introt och fler mellansekvenser återstår.
+
 ## Nytt · Rotvägen · 0.9
 
 Två nya målade rum efter arkivets grind: Rötternas trappa med motviktsport och De namnlösas lund med avtryck, eftertrupper och vittnessigill. Arkivvalet avgör om en eller två eftertrupper hinner fram. Fem nya svenska Ebba-/Hedvig-repliker. Nio rum går att återbesöka med bevarad utrustning, stash, fiender och fynd. [Innehåll, bilder och verifiering](docs/ROOTWAY.md).

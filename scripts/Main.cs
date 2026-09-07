@@ -7,7 +7,7 @@ using NVec=System.Numerics.Vector2;
 
 public partial class Main : Node2D
 {
-    private enum Screen { Title, Briefing, Game, Pause, Settings, Death, Ending, Testimony, Journal, Inventory, Archive }
+    private enum Screen { Title, Briefing, Game, Pause, Settings, Death, Ending, Testimony, Journal, Inventory, Archive, Cinematic, Videos }
     private Screen _screen=Screen.Title;
     private Screen _settingsReturn=Screen.Title;
     private Combat _game=Combat.New(Order.Artillery);
@@ -77,7 +77,7 @@ public partial class Main : Node2D
     private static NVec N(Vector2 v)=>new(v.X,v.Y);
     public override void _Ready()
     {
-        var args=OS.GetCmdlineUserArgs();_rootwayChecks=args.Contains("--rootway-check");_archiveChecks=args.Contains("--archive-check")||_rootwayChecks;_roomAudioChecks=args.Contains("--room-audio-check");_oathChecks=args.Contains("--oath-check")||_roomAudioChecks||_archiveChecks;_waterChecks=args.Contains("--water-check");_fogChecks=args.Contains("--fog-check");_roomChecks=args.Contains("--rooms-check");_inventoryChecks=args.Contains("--inventory-check");_portChecks=args.Contains("--port-check");_sceneChecks=args.Contains("--scene-check")||_portChecks||_inventoryChecks||_roomChecks||_fogChecks||_waterChecks||_oathChecks;_uiChecks=args.Contains("--ui-check");
+        var args=OS.GetCmdlineUserArgs();_filmCheck=args.Contains("--cinematic-check");_filmPreview=args.Contains("--gate-film");_rootwayChecks=args.Contains("--rootway-check")||_filmCheck;_archiveChecks=args.Contains("--archive-check")||_rootwayChecks;_roomAudioChecks=args.Contains("--room-audio-check");_oathChecks=args.Contains("--oath-check")||_roomAudioChecks||_archiveChecks;_waterChecks=args.Contains("--water-check");_fogChecks=args.Contains("--fog-check");_roomChecks=args.Contains("--rooms-check");_inventoryChecks=args.Contains("--inventory-check");_portChecks=args.Contains("--port-check");_sceneChecks=args.Contains("--scene-check")||_portChecks||_inventoryChecks||_roomChecks||_fogChecks||_waterChecks||_oathChecks;_uiChecks=args.Contains("--ui-check");
         _serif=GD.Load<Font>("res://assets/fonts/NotoSerif-Regular.ttf");_sans=GD.Load<Font>("res://assets/fonts/NotoSans-Regular.ttf");
         _background=GD.Load<Texture2D>("res://assets/art/likvarvet-scale-v5.png");
         _radioPortraits=GD.Load<Texture2D>("res://assets/art/radio-cast-v1.png");
@@ -94,6 +94,7 @@ public partial class Main : Node2D
         else if(args.Contains("--atland")||_campaignCheck)StartAtland();
         if(args.Contains("--rooms")||_roomChecks||_fogChecks||_waterChecks||_oathChecks)StartRooms();
         if(args.Contains("--capture-title"))_smokeCapture=true;
+        if(_filmPreview)StartGateFilm(true);
         if(_oathChecks)RunOathChecks();else if(_waterChecks)RunWaterChecks();else if(_fogChecks)RunSightChecks();else if(_roomChecks)RunRoomChecks();else if(_inventoryChecks)RunInventoryChecks();else if(_portChecks)RunPortChecks();else if(_sceneChecks)RunSceneChecks();
     }
     public override void _Input(InputEvent ev)
@@ -167,10 +168,12 @@ public partial class Main : Node2D
     private void ChangeScreen(Screen screen){_screen=screen;_menuSelection=0;ClearPresses();_sound.PauseVoice(screen is not (Screen.Game or Screen.Ending or Screen.Testimony or Screen.Archive));}
     private void Back()
     {
-        if(_screen==Screen.Game)ChangeScreen(Screen.Pause);
+        if(_screen==Screen.Cinematic)FinishGateFilm();
+        else if(_screen==Screen.Game)ChangeScreen(Screen.Pause);
         else if(_screen==Screen.Pause)ChangeScreen(_game.Phase==Phase.Testimony?Screen.Testimony:Screen.Game);
         else if(_screen==Screen.Settings)ChangeScreen(_settingsReturn);
         else if(_screen==Screen.Briefing)ChangeScreen(Screen.Title);
+        else if(_screen==Screen.Videos)ChangeScreen(Screen.Settings);
         else if(_screen is Screen.Journal or Screen.Archive)ChangeScreen(Screen.Game);
         else if(_screen==Screen.Inventory){_inventoryMouseRelease=true;ChangeScreen(_inventoryReturn);}
         else if(_screen==Screen.Testimony)ChangeScreen(Screen.Pause);
@@ -185,6 +188,9 @@ public partial class Main : Node2D
             case "journey":if(_game.ContinueJourney()){ChangeScreen(Screen.Game);foreach(var cue in _game.Events)HandleCue(cue);Save();}break;
             case "archive-preserve":SelectArchiveDecision(1);break;
             case "archive-forge":SelectArchiveDecision(2);break;
+            case "videos":ChangeScreen(Screen.Videos);break;
+            case "gate-film":StartGateFilm(true);break;
+            case "film-skip":FinishGateFilm();break;
             case "rooms":StartRooms();break;
             case "port":_roomsSlot=false;_portSlot=true;StartAtland();break;
             case "atland":_roomsSlot=false;_portSlot=false;StartAtland();break;
@@ -301,6 +307,7 @@ public partial class Main : Node2D
         var p=G(cue.Position);
         switch(cue.Kind)
         {
+            case "cinematic":if(!_sceneChecks)StartGateFilm();break;
             case "archive-open":ChangeScreen(Screen.Archive);break;
             case "room-sound":if(NVec.Distance(_game.Player,cue.Position)<500)_sound.Play(cue.Text);break;
             case "oath-break":case "oath-wall":
@@ -368,7 +375,7 @@ public partial class Main : Node2D
     }
     public override void _Process(double delta)
     {
-        float dt=(float)delta;_clock+=dt;_noticeTime=Math.Max(0,_noticeTime-dt);if(_screen==Screen.Game)_campaignTextTime=Math.Max(0,_campaignTextTime-dt);
+        float dt=(float)delta;StepFilm(dt);_clock+=dt;_noticeTime=Math.Max(0,_noticeTime-dt);if(_screen==Screen.Game)_campaignTextTime=Math.Max(0,_campaignTextTime-dt);
         _sound.Boss=(_game.Phase==Phase.Collector||(_game.Phase==Phase.Extraction&&_game.Enemies.Any(e=>!e.Dead))||(_game.InCampaign&&_game.Enemies.Any(e=>!e.Dead&&e.Kind is (EnemyKind.Collector or EnemyKind.OathGuardian)&&_game.CanSeeRoomPoint(e.Position)))) && _screen is Screen.Game or Screen.Pause;
         _sound.Discovery=_game.Phase is Phase.Names or Phase.Testimony || _game.Region==Region.Shore || _game.Rooms?.Current is PortRooms.Gallery or PortRooms.Cistern or PortRooms.Archive;
         _sound.Underground=_game.InRooms&&_game.Rooms!.Current!=PortRooms.Court;
@@ -486,12 +493,14 @@ public partial class Main : Node2D
             DrawRect(new Rect2(0,0,1280,720),new Color(.012f,.035f,.045f,.38f));
             DrawRect(new Rect2(0,0,760,720),new Color(.025f,.05f,.062f,.78f));
         }
-        else DrawWorld();
-        if(_screen==Screen.Game)DrawHud();
+        else if(_screen!=Screen.Cinematic)DrawWorld();
+        if(_screen==Screen.Cinematic)DrawGateFilm();
+        else if(_screen==Screen.Game)DrawHud();
         else if(_screen==Screen.Title)DrawTitle();
         else if(_screen==Screen.Briefing)DrawBriefing();
         else if(_screen==Screen.Ending)DrawEnding();
         else if(_screen==Screen.Testimony)DrawTestimony();
+        else if(_screen==Screen.Videos)DrawVideoMenu();
         else if(_screen==Screen.Archive)DrawArchiveDocuments();
         else if(_screen==Screen.Journal)DrawJournal();
         else if(_screen==Screen.Inventory)DrawInventory();
@@ -736,9 +745,10 @@ public partial class Main : Node2D
         Button(new Rect2(455,329,370,49),"Kameraskakning: "+(_cameraShake?"på":"av"),"shake");
         Button(new Rect2(455,394,370,49),"Växla helskärm  ·  F11","fullscreen");Button(new Rect2(420,459,440,49),"Utvecklarläge: överlevnad "+(_developerSurvival?"PÅ":"AV"),"dev-survival");
         Centered("Karl tar skada men överlever på minst 1 liv.",640,534,15,Muted);
-        Button(new Rect2(455,567,370,49),"Tillbaka","back",true);
-        Centered("M tyst/ljud · +/− volym · dra reglaget uppe till höger",640,653,15,Gold);
-        Centered("Undertexter visas alltid. Inställningarna sparas automatiskt.",640,684,15,Muted);
+        Button(new Rect2(420,550,440,43),"Utvecklarverktyg · Videobibliotek","videos");
+        Button(new Rect2(455,609,370,38),"Tillbaka","back",true);
+        Centered("M tyst/ljud · +/− volym · dra reglaget uppe till höger",640,675,12,Gold);
+        Centered("Undertexter visas alltid. Inställningarna sparas automatiskt.",640,701,12,Muted);
     }
     private void DrawDeath()
     {
@@ -824,6 +834,7 @@ public partial class Main : Node2D
     private void WorldBar(Vector2 p,float width,float amount,Color color,float height=4){DrawRect(new Rect2(p,new Vector2(width,height)),new Color(.015f,.028f,.034f,.9f));DrawRect(new Rect2(p,new Vector2(width*Math.Clamp(amount,0,1),height)),color);}
     public override void _ExitTree()
     {
+        DisposeFilm();
         foreach(var texture in _campaignWorlds)texture?.Dispose();
         _cast?.Dispose();_animated?.Dispose();_warehouse?.Dispose();if(_shoreRevealed!=_shore)_shoreRevealed?.Dispose();_shore?.Dispose();
         _pumpArt?.Dispose();_pumpLowArt?.Dispose();_cisternArt?.Dispose();_galleryArt?.Dispose();_chamberArt?.Dispose();_chamberOpenArt?.Dispose();_archiveArt?.Dispose();_archiveDocuments?.Dispose();_rootwayArt?.Dispose();_groveArt?.Dispose();_oathCast?.Dispose();_roomFog?.Dispose();_inventoryBackground?.Dispose();foreach(var texture in _inventoryItemArt.Values)texture.Dispose();

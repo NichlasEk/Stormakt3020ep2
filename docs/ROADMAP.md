@@ -16,6 +16,8 @@
 
 **Sjunde checkpointen:** Rotvägen fortsätter arkivet med två egna målningar, motviktsport, arkivberoende förstärkningar, sigillbelöning och fem röster. Nio rum, migration och återväg är provade. Se `ROOTWAY.md`. Nästa steg är den första vägen mot berget; balans, gånganimation och detaljpass återstår.
 
+**Åttonde checkpointen:** första arkiv→Rotvägen-filmen och ett utvecklarbibliotek under inställningar finns. Ett lokalt LTX-2-prov, cirka åtta sekunder, med egen ljudbild, överhoppning och beständig engångsvisning. Se `CINEMATICS.md`. Intro och senare filmer väntar på bedömning av detta prov.
+
 ## Nuläge före rumsarbetet
 
 - Spelbar inledning med kaj, magasin och strand, därefter åtta kampanjsteg i fyra målade miljöer. Understöd och arkivval har faktiska följder.

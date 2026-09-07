@@ -17,6 +17,7 @@ static class RootwayTests
             check(g.Rooms.Current==PortRooms.Archive,"Return from cistern to the archive before continuing");
             float hp=g.Health;int potions=g.Potions,choice=g.ArchiveChoice;string inventory=JsonSerializer.Serialize(g.Inventory,new JsonSerializerOptions{IncludeFields=true});
             Use(ArchiveRoom.Seal);
+            check(g.Events.Count(e=>e.Kind=="cinematic"&&e.Text=="archive-gate")==1,"First archive passage emits one cinematic cue before checkpoint");
             check(g.Rooms.Current==PortRooms.Roots&&g.OnWalkable(g.Player)&&g.Enemies.Count==0,"Archive gate crosses into quiet rootway");
             check(hp==g.Health&&potions==g.Potions&&inventory==JsonSerializer.Serialize(g.Inventory,new JsonSerializerOptions{IncludeFields=true}),"New world entry does not reset inventory, health, stash or potions");
             Use(Rootway.Exit);check(g.Rooms.Current==PortRooms.Roots,"Counterweight gate blocks the grove until released");
@@ -37,7 +38,7 @@ static class RootwayTests
             check(g.Inventory.Bag.Count==Items.BagCapacity,"Reward remains accessible with full bag");
             g=Reload();Use(Rootway.GroveDoor);Use(Rootway.Door);
             check(g.Rooms!.Current==PortRooms.Archive&&g.Inventory.Stash.Any(i=>i.Definition=="iron-cap")&&g.ArchiveChoice==choice,"Return to archive preserves stash and decision");
-            Use(ArchiveRoom.Seal);Use(Rootway.Exit);Use(Rootway.Memorial);
+            Use(ArchiveRoom.Seal);check(!g.Events.Any(e=>e.Kind=="cinematic"),"Revisit does not replay the cinematic");Use(Rootway.Exit);Use(Rootway.Memorial);
             check(g.Rooms.GroveSecured&&g.Enemies.All(e=>e.Dead)&&g.NextId==next&&g.LocalDrops.Count(d=>d.Item.Definition=="norn")==1&&g.LocalDrops.Any(d=>d.Item.Id==id),"No repeated waves or duplicated reward after revisiting");
             g=Reload();g.Rooms!.GroveWave=0;
             bool invalid=false;try{g.ValidateRooms();}catch(InvalidDataException){invalid=true;}

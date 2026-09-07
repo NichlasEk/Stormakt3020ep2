@@ -1,0 +1,18 @@
+{
+  "keyframe_tool": "built-in image_gen",
+  "keyframe": "assets/source/cinematics/archive-gate-keyframe-v1.png",
+  "keyframe_source": "/home/nichlas/.codex/generated_images/01a07608-36a4-7850-ba4d-824cc60ab5aa/exec-668c1edc-63ea-450a-9128-18a575f6cc9a.png",
+  "keyframe_prompt": "Use case: historical-scene. A production FIRST FRAME for a short film in the 2D painted game Stormakt 3020, landscape 1536x1024. Dark worn seventeenth-century Swedish oil painting, matte weathered granite and dry bronze, heavy serious Nordic archaeological atmosphere. Close view from INSIDE an ancient subterranean archive looking toward a small massive sliding stone doorway. A thick rust-dark iron chain runs from upper left into a bronze pulley above the doorway. Rectangular stone door slab fills central frame, its closed seam visible on its right; it is carved with an eroded simple sun disc, no letters. A very narrow vertical crack of cold daylight at right edge reveals only a glimpse of enormous ash-tree roots BEYOND the door. Dust at sill. Frame door about (440,170) to (1100,910). Shelves/folios only suggested in deep darkness extreme left. Low camera at human eye height, restrained cinematic composition, no characters, no lanterns, no text, no UI. Strong clean stone geometry which can slide later, no glossy surfaces, no fantasy glow, no modern technology. Must feel painted and serious, not a 3D render, not cute or round, not concept-art montage.",
+  "video_tool": "Local ComfyUI LTX-2 distilled fp8",
+  "video_workflow": "assets/source/cinematics/archive-gate-ltx-v1.json",
+  "source_video": "assets/source/cinematics/archive-gate-ltx-v1.mp4",
+  "runtime_video": "assets/video/archive-gate-v1.ogv",
+  "prompt_id": "99d598c0-7053-406e-9a4e-1e3234d41c9c",
+  "processing": "ffmpeg Theora q8; highpass65Hz loudnorm I=-22 TP=-3 LRA=8 fade in0.3 fadeout7.4+0.6; Vorbis q5 48kHz",
+  "qa": "Decoded first, middle and final frames visually inspected. Native decoder playback and skip tested; no human listening claim.",
+  "sha256": {
+    "keyframe": "039704bad1df72e68c754d7ba4a7db02edb9515646df2f3b56526c3b2714ba43",
+    "source_video": "273d0cfccf340e35225cb8f98cab9ab447fb1c859004d2cab05dc89a07b6db9b",
+    "runtime_video": "64dcfb5af9cd27239f9c91bf9491c60e2a62cb43645f30a4ccfd8d15b083292a"
+  }
+}

@@ -54,6 +54,7 @@ public partial class Main
             if(_roomAudioChecks)await CheckRoomAudioPresentation();
             if(_archiveChecks)await CheckArchiveScenes();
             if(_rootwayChecks)await CheckRootwayScenes();
+            if(_filmCheck)await CheckCinematicScenes();
             GD.Print($"OATH CHECK PASS: six rooms, native boss, pillar exposure, reward, saved completion, journal; {ticks} ticks, {_game.Health:0} health");GetTree().Quit();
         }
         catch(Exception e){GD.PushError(e.ToString());GetTree().Quit(1);}

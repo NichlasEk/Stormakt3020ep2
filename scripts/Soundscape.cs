@@ -25,6 +25,7 @@ public partial class Soundscape : Node
     private float _namesMix;
     public bool Boss;
     public bool Discovery;
+    public bool Cinematic;
     public float Volume=.75f;
     public bool Speaking=>_voice.Playing;
     public override void _Ready()
@@ -54,7 +55,7 @@ public partial class Soundscape : Node
     }
     public override void _Process(double delta)
     {
-        float db=Volume<=0?-80:Mathf.LinearToDb(Volume);
+        float db=Volume<=0||Cinematic?-80:Mathf.LinearToDb(Volume);
         _bossMix=Mathf.MoveToward(_bossMix,Boss?1:0,(float)delta*.7f);
         _namesMix=Mathf.MoveToward(_namesMix,Discovery&&_clips.ContainsKey("names-score")?1:0,(float)delta*.45f);
         float duck=Speaking?-19:Discovery?-15:-10;
