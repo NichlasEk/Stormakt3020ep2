@@ -12,6 +12,11 @@ public partial class Main
         =>DrawPolygon(polygon,new[]{Colors.White},polygon.Select(p=>p/new Vector2(1536,1024)).ToArray(),texture);
     private void DrawDepthSortedActors()
     {
+        if(_game.InConnectedWorld){DrawConnectedActors();return;}
+        DrawLocalDepthSortedActors();
+    }
+    private void DrawLocalDepthSortedActors()
+    {
         var layers=new List<(float Depth,Action Draw)>();
         foreach(var enemy in _game.Enemies.Where(e=>_game.CanSeeRoomPoint(e.Position))){var e=enemy;layers.Add((e.Position.Y,()=>Actor(e,e.Dead)));}
         layers.Add((_game.Player.Y,DrawPlayer));

@@ -60,8 +60,8 @@ public sealed partial class Combat
     [JsonIgnore] public float EquipmentArmor=>Math.Min(60,Inventory.Equipped.Values.Sum(i=>i.Data.Armor));
     [JsonIgnore] public float EquipmentRecovery=>Inventory.Equipped.Values.Sum(i=>i.Data.Recovery);
     [JsonIgnore] public float AttackDamage=>(Weapon==Weapon.Saber?25:40)+Inventory.Equipped.Where(e=>e.Key==ActiveWeaponSlot||e.Key==GearSlot.Sigil).Sum(e=>e.Value.Data.Damage);
-    [JsonIgnore] public bool CanUseStash=>!Dead&&Enemies.All(e=>e.Dead)&&Shots.All(s=>s.Reflected)&&Hazards.All(h=>h.Friendly)&&AttackTime<=0&&DodgeTime<=0;
-    [JsonIgnore] public IEnumerable<ItemDrop> LocalDrops=>Inventory.Drops.Where(d=>d.Region==Region&&d.Stage==CampaignStage&&d.Room==(Rooms?.Current??""));
+    [JsonIgnore] public bool CanUseStash=>!Dead&&EncounterEnemies.All(e=>e.Dead)&&Shots.All(s=>s.Reflected)&&Hazards.All(h=>h.Friendly)&&AttackTime<=0&&DodgeTime<=0;
+    [JsonIgnore] public IEnumerable<ItemDrop> LocalDrops=>Inventory.Drops.Where(d=>d.Region==Region&&d.Stage==CampaignStage&&(InConnectedWorld?d.Room!="":d.Room==(Rooms?.Current??"")));
     public string EquipItem(int id)
     {
         if(Dead||AttackTime>0||DodgeTime>0)return "Avsluta rörelsen innan du byter utrustning.";

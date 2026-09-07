@@ -6,6 +6,10 @@ Episod II. Ett nytt, fristående actionrollspel i Stormakts värld: nordisk baro
 
 Starta senaste verifierade Linux-versionen med `./play.sh` (ingen ombyggnad). `./play.sh -- --gate-film` visar filmprovet direkt. Exportens programfil, `.pck` och `data_AtlandsArv_linuxbsd_x86_64` måste ligga tillsammans; `play.sh` kontrollerar detta innan start. `./start.sh` bygger och kör från källkoden.
 
+## Nytt · sammanhängande Atland · 0.12
+
+Nio rum, riktiga gångpassager, fysiska portar och cisternens genväg i samma karta. Huvudmenyn öppnar den nya rutten och migrerar befintliga rumssparningar. [Detaljer och kontroller](docs/CONNECTED-WORLD.md). Linux-export: `dist/AtlandsArv-0.12-connected/AtlandsArv.x86_64`.
+
 ## Fix · dörrbladets passning · 0.11.3
 
 Porten sitter nu längre in i den målade stenöppningen, med anpassad höjd, fast ekkarm och järngångjärn. Bild och kollisionslinje följer samma inmätta gångjärn. `./play.sh -- --doors-new` ger ett nytt prov. [Ändringar och verifiering](docs/PHYSICAL-DOORS.md).
@@ -20,7 +24,7 @@ Dörrprovet har nu målad fram- och baksida, överkant och ändträ som följer 
 
 ## Nytt · fysiska dörrar och standardvägen · 0.11
 
-**Spela expeditionen · nio rum** är nu huvudvalet. Landstigningens fortsättning går också till rumsvägen, med bevarad utrustning och resurser. Ett separat spelprov har två sammanhängande rum och en målad fysisk dörr: nyckel, öppna/stänga, verklig genomgång, förföljelse, kollision/sikt och förstöring med vapen. **Fysiska dörrar · spelprov** eller `./play.sh -- --doors`. `--doors-new` börjar om just provet. [Omfattning, produktion och verifiering](docs/PHYSICAL-DOORS.md).
+**Spela · sammanhängande Atland** är huvudvalet. Alla nio rum är nu gångbara på samma karta, inklusive cisternens genväg. E / B öppnar och stänger portar; gå igenom med vanliga rörelsekontroller. Äldre rumssparningar behåller utrustning, resurser, vakter och fynd. [Omfattning, färder och verifiering](docs/CONNECTED-WORLD.md). Det separata dörrprovet finns kvar: `./play.sh -- --doors`, eller `--doors-new` för att börja om just provet.
 
 Linux-export: `dist/AtlandsArv-0.11-doors/AtlandsArv.x86_64`. Övriga dörrar och sprängladdningar återstår.
 

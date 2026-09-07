@@ -17,6 +17,7 @@ public readonly record struct Cue(string Kind, Vector2 Position, string Text = "
 
 public sealed class Fighter
 {
+    public string HomeRoom="";
     public int Id;
     public EnemyKind Kind;
     public Vector2 Position;
@@ -158,7 +159,7 @@ public sealed partial class Combat
     public void Spawn(EnemyKind kind, Vector2 pos)
     {
         float hp = kind == EnemyKind.OathGuardian ? 720 : kind == EnemyKind.Collector ? 620 : kind == EnemyKind.Pikeman ? 105 : kind == EnemyKind.Gunner ? 65 : 85;
-        Enemies.Add(new Fighter { Id = NextId++, Kind = kind, Position = pos, Health = hp, MaxHealth = hp, Cooldown = .8f + NextId * .17f });
+        Enemies.Add(new Fighter { HomeRoom=Rooms?.Current??"", Id = NextId++, Kind = kind, Position = pos, Health = hp, MaxHealth = hp, Cooldown = .8f + NextId * .17f });
     }
     public void Emit(string kind, Vector2 at, string text = "", float value = 0) => Events.Add(new(kind, at, text, value));
     public void Step(Controls input, float dt = 1f / 60)
@@ -319,7 +320,7 @@ public sealed partial class Combat
         if(RiposteTime>0&&Weapon==Weapon.Saber){damage*=1.6f;RiposteTime=0;}
         float arc=HeavyAttack?-.1f:.05f;
         Emit("slash",Player,"",range);
-        HitPhysicalDoor(range,damage,arc);
+        HitPhysicalDoor(range,damage,arc);HitConnectedDoor(range,damage,arc);
         foreach(var e in Enemies.Where(e=>!e.Dead))
         {
             var delta=e.Position-Player;
@@ -340,6 +341,7 @@ public sealed partial class Combat
     {
         e.Moving=false;
         if(e.Dead)return;
+        if(InConnectedWorld&&Vector2.DistanceSquared(e.Position,Player)>800*800)return;
         if(InRooms&&!e.Alerted)
         {
             if(e.Health>=e.MaxHealth&&!CanSeeRoomPoint(e.Position))return;

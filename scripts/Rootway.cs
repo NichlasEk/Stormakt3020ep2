@@ -19,21 +19,21 @@ public sealed partial class Combat
     [JsonIgnore] public int GroveWaves=>ArchiveChoice==1?1:2;
     [JsonIgnore] public string RootGoal=>Rooms!.Current==PortRooms.Roots
         ?Rooms.RootGateOpen?"Följ kedjan till lunden":"Lossa motviktsportens spärr"
-        :Rooms.GroveSecured?"Lundens namn är återfunna · återväg öppen":Rooms.GroveWave>0&&Enemies.Any(e=>!e.Dead)?$"Skydda avtrycket · eftertrupp {Rooms.GroveWave}/{GroveWaves}":Rooms.GroveWave>0?"Ta sigillet vid minnesstenen":"Lägg arkivets handling mot stenen";
+        :Rooms.GroveSecured?"Lundens namn är återfunna · återväg öppen":Rooms.GroveWave>0&&EncounterEnemies.Any(e=>!e.Dead)?$"Skydda avtrycket · eftertrupp {Rooms.GroveWave}/{GroveWaves}":Rooms.GroveWave>0?"Ta sigillet vid minnesstenen":"Lägg arkivets handling mot stenen";
     [JsonIgnore] public string GroveClue=>ArchiveChoice==1
         ?"Vittnesmålets namn passar stenens märken. Ett snabbt avtryck räcker; en eftertrupp hinner fram."
         :"Passersedeln saknar namnen. Hedvig måste tyda stenen på nytt; två eftertrupper hinner fram.";
     private void AdvanceGrove()
     {
         if(Rooms!.Current!=PortRooms.Grove||Rooms.GroveSecured||Rooms.GroveWave==0||Rooms.GroveWave>=GroveWaves||Dead)return;
-        if(Enemies.All(e=>e.Dead)&&Shots.All(s=>s.Reflected)&&Hazards.All(h=>h.Friendly))SpawnGroveWave();
+        if(EncounterEnemies.All(e=>e.Dead)&&Shots.All(s=>s.Reflected)&&Hazards.All(h=>h.Friendly))SpawnGroveWave();
     }
     private void SpawnGroveWave()
     {
         Rooms!.GroveWave++;
         if(Rooms.GroveWave==1){Spawn(EnemyKind.Pikeman,Bound(new(1160,610)));Spawn(EnemyKind.Gunner,Bound(new(1190,520)));}
         else{Spawn(EnemyKind.Guard,Bound(new(380,530)));Spawn(EnemyKind.Guard,Bound(new(435,445)));}
-        foreach(var foe in Enemies.Where(e=>!e.Dead)){foe.State=2;foe.Timer=2.5f;foe.Cooldown=1.5f;}
+        foreach(var foe in EncounterEnemies.Where(e=>!e.Dead)){foe.State=2;foe.Timer=2.5f;foe.Cooldown=1.5f;}
         Emit("inscription",Player,$"KOLLEGIETS EFTERTRUPP · {Rooms.GroveWave}/{GroveWaves}");Emit("checkpoint",Player);
     }
     private bool StepRootway(Func<Vector2,bool> near,bool peaceful)
@@ -62,7 +62,7 @@ public sealed partial class Combat
     }
     private void ValidateRootway()
     {
-        var r=Rooms!;var actors=r.Current==PortRooms.Grove?Enemies:r.Rooms[PortRooms.Grove].Enemies;
+        var r=Rooms!;var actors=ActorsInRoom(PortRooms.Grove);
         if((r.Rooms[PortRooms.Roots].Visited&&!r.ArchiveSecured)||(r.RootGateOpen&&!r.Rooms[PortRooms.Roots].Visited)
             ||(r.Rooms[PortRooms.Grove].Visited&&!r.RootGateOpen)||r.GroveWave<0||r.GroveWave>GroveWaves
             ||(r.GroveWave>0&&!r.Rooms[PortRooms.Grove].Visited)||actors.Count!=r.GroveWave*2

@@ -42,6 +42,14 @@ public sealed partial class Combat
             int index=RoomSight.Index(at);
             if(index>=0&&CanSeeRoomPoint(at)){RoomSight.Reveal(seen,index);RoomVisible[index]=true;}
         }
+        if(InConnectedWorld)
+        {
+            foreach(var pair in Rooms.Rooms.Where(p=>p.Value.Visited&&p.Key!=Rooms.Current))
+            {var shift=ConnectedWorld.Origin(pair.Key)-WorldOrigin;for(int i=0;i<RoomSight.Count;i++)if(CanSeeRoomPoint(RoomSight.Center(i)+shift))RoomSight.Reveal(pair.Value.Explored,i);}
+            foreach(var l in RoomLinks.All)
+            {var route=ConnectedWorld.Route(l);for(int k=1;k<route.Length;k++)
+                {int count=Math.Max(1,(int)MathF.Ceiling(Vector2.Distance(route[k-1],route[k])/32));for(int j=0;j<count;j++)if(CanSeeRoomPoint(Vector2.Lerp(route[k-1],route[k],(j+.5f)/count)-WorldOrigin))Rooms.CorridorSeen.Add(l.Id+":"+k+":"+j);}}
+        }
         SightRevision++;
     }
 }

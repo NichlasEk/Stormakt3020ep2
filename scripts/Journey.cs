@@ -22,10 +22,10 @@ public sealed partial class Combat
     [JsonIgnore] public Vector2[] Walkable=>InDoorTrial?DoorTrialLayout.Ground:Rooms?.Current==PortRooms.Roots?Rootway.Ground:Rooms?.Current==PortRooms.Grove?Rootway.GroveGround:Rooms?.Current==PortRooms.Archive?ArchiveRoom.Ground:Rooms?.Current==PortRooms.Gallery?PortRooms.GalleryGround:Rooms?.Current==PortRooms.Chamber?PortRooms.OathGround:Rooms?.Current==PortRooms.Court?PortRooms.CourtGround:Rooms?.Current==PortRooms.Pump?PortRooms.PumpGround:Rooms?.Current==PortRooms.Cistern?PortRooms.CisternGround:Region==Region.Quay?Ground:(Region==Region.Warehouse||Rooms?.Current==PortRooms.Lodge)?JourneyLayout.WarehouseGround:JourneyLayout.Ground;
     [JsonIgnore] public Vector2[] Obstacles=>Rooms?.Current==PortRooms.Grove?Rootway.Slab:Rooms?.Current==PortRooms.Archive?ArchiveRoom.Table:Rooms?.Current==PortRooms.Gallery?PortRooms.Lectern:Rooms?.Current==PortRooms.Pump?PortRooms.PumpBasin:Rooms?.Current==PortRooms.Cistern?PortRooms.CisternBasin:(Region==Region.Warehouse||Rooms?.Current==PortRooms.Lodge)?Crate:Array.Empty<Vector2>();
     [JsonIgnore] public Vector2[][] SolidObstacles=>InDoorTrial?DoorObstacles:Rooms?.Current==PortRooms.Chamber?PortRooms.OathObstacles:new[]{Obstacles};
-    public bool OnWalkable(Vector2 p)=>Navigation.Contains(Walkable,p)&&!SolidObstacles.Any(o=>Navigation.Contains(o,p));
-    public Vector2 Bound(Vector2 p)=>Region==Region.Quay?ClampToGround(p):Navigation.Clamp(Walkable,SolidObstacles,p);
-    public bool ClearPath(Vector2 a,Vector2 b)=>Region==Region.Quay||Navigation.Clear(Walkable,SolidObstacles,a,b);
-    public Vector2 NextWaypoint(Vector2 from,Vector2 target)=>Region==Region.Quay?target:Navigation.Next(Walkable,SolidObstacles,from,target);
+    public bool OnWalkable(Vector2 p)=>InConnectedWorld?WorldWalkable(p+WorldOrigin):Navigation.Contains(Walkable,p)&&!SolidObstacles.Any(o=>Navigation.Contains(o,p));
+    public Vector2 Bound(Vector2 p)=>InConnectedWorld?WorldBound(p):Region==Region.Quay?ClampToGround(p):Navigation.Clamp(Walkable,SolidObstacles,p);
+    public bool ClearPath(Vector2 a,Vector2 b)=>InConnectedWorld?WorldClear(a,b):Region==Region.Quay||Navigation.Clear(Walkable,SolidObstacles,a,b);
+    public Vector2 NextWaypoint(Vector2 from,Vector2 target)=>InConnectedWorld?WorldNext(from,target):Region==Region.Quay?target:Navigation.Next(Walkable,SolidObstacles,from,target);
     [JsonIgnore] public string RegionName=>InRooms?RoomName:InCampaign?Stage.Name:Region==Region.Warehouse?"Kronans magasin":Region==Region.Shore?"De tre vittnenas strand":Duel?"Sabelduell vid kajen":"Blekinges likvarv";
     [JsonIgnore] public Vector2 JourneyObjective=>InRooms?RoomObjective:InCampaign?CampaignObjective:Region==Region.Warehouse
         ?!WhetstoneTaken?JourneyLayout.Whetstone:!ManifestTaken?JourneyLayout.Manifest:!WinchOpened?JourneyLayout.Winch:JourneyLayout.WarehouseExit
@@ -66,7 +66,7 @@ public sealed partial class Combat
     private void StepJourney(Controls input,float dt)
     {
         if(InDoorTrial){StepDoorTrial(input,dt);return;}
-        if(InRooms){StepRooms(input);return;}
+        if(InRooms){StepRooms(input,dt);return;}
         if(InCampaign){StepCampaign(input,dt);return;}
         if(Duel&&Enemies.All(e=>e.Dead)){Phase=Phase.Complete;return;}
         if(Region==Region.Quay)return;

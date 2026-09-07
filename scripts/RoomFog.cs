@@ -53,6 +53,7 @@ public partial class Main
     }
     private void DrawExplorationMap()
     {
+        if(_game.InConnectedWorld){DrawConnectedMap();return;}
         var origin=new Vector2(1048,140);const float cell=4;
         Panel(new Rect2(origin-new Vector2(10,22),new Vector2(212,166)),.87f);
         Text("UTFORSKAT",origin+new Vector2(0,-7),11,Gold);

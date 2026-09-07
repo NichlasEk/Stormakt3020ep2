@@ -27,14 +27,15 @@ public partial class Main
         LoadWaterArt();
         _roomsSlot=true;_atlandSlot=_portSlot=false;
         if(!_testMode&&System.IO.File.Exists(SavePath)){ResumeSave();return;}
-        _game=Combat.NewRooms(_order);ApplyDeveloperSettings();_particles.Clear();_floating.Clear();_radioQueue.Clear();_radio="";_sound.StopVoice();
+        _game=Combat.NewRooms(_order);if(!_testMode)_game.EnableConnectedWorld();ApplyDeveloperSettings();_particles.Clear();_floating.Clear();_radioQueue.Clear();_radio="";_sound.StopVoice();
         _revealTime=0;_camera=G(_game.Player)+new Vector2(0,-60);RememberRenderPositions();ChangeScreen(Screen.Game);
         foreach(var cue in _game.Events)HandleCue(cue);Save();
     }
     private void DrawRoomMarkers()
     {
         var run=_game.Rooms!;DrawRootwayMarkers();
-        foreach(var link in RoomLinks.From(run.Current))
+        if(_game.InConnectedWorld)DrawConnectedExits();
+        foreach(var link in (_game.InConnectedWorld?Array.Empty<RoomLink>():RoomLinks.From(run.Current)))
         {
             var at=link.At(run.Current);if(!_game.CanSeeRoomPoint(at))continue;
             string label=RoomLinks.Open(run,link)?"TILL "+PortRooms.Name(link.Other(run.Current)).ToUpperInvariant():link.Gate==PassageGate.Water?"VATTENFYLLD TRAPPA":link.Gate==PassageGate.Shortcut?"REGLAD LUCKA":"LÅST PASSAGE";
@@ -59,6 +60,7 @@ public partial class Main
     }
     private void AddRoomLayers(List<(float Depth,Action Draw)> layers)
     {
+        if(_game.InConnectedWorld)return;
         var run=_game.Rooms!;var door=G(PortRooms.Door(run.Current));
         // Use the architectural doorways already present in the paintings.
         // The bronze gate has an explicit lock indicator; final moving leaves are a later art pass.
@@ -84,7 +86,8 @@ public partial class Main
     {
         var r=_game.Rooms!;string prompt="";
         bool Near(System.Numerics.Vector2 p)=>System.Numerics.Vector2.Distance(_game.Player,p)<72&&_game.ClearPath(_game.Player,p);
-        var link=RoomLinks.From(r.Current).FirstOrDefault(l=>Near(l.At(r.Current)));
+        var link=(_game.InConnectedWorld?Array.Empty<RoomLink>():RoomLinks.From(r.Current)).FirstOrDefault(l=>Near(l.At(r.Current)));
+        if(_game.InConnectedWorld&&DrawConnectedPrompt())return;
         if(link?.Gate==PassageGate.Archive&&!r.ArchiveSecured&&_game.ArchiveChoice!=0)prompt="E / B · Säkra arkivets grind";
         else if(link?.Gate==PassageGate.InnerPort&&!r.Completed&&r.OathDefeated)prompt="E / B · Öppna den inre porten";
         else if(link!=null)prompt=RoomLinks.Open(r,link)?"E / B · Gå till "+PortRooms.Name(link.Other(r.Current)):link.Gate==PassageGate.Key&&r.KeyTaken?"E / B · Lås upp":link.Gate==PassageGate.Shortcut&&r.Current==PortRooms.Cistern?"E / B · Lyft regeln":RoomLinks.LockedReason(link);
@@ -106,6 +109,7 @@ public partial class Main
     private void DrawRoomJournal()
     {
         if(_game.InDoorTrial){DrawDoorJournal();return;}
+        if(_game.InConnectedWorld){DrawConnectedJournal();return;}
         DrawRect(new Rect2(0,0,1280,720),new Color(.025f,.023f,.019f,.96f));
         Text("ATLAND · PORTEN OCH ROTVÄGEN",new Vector2(95,100),26,Pale,true);
         Wrapped("Från den dränkta porten, genom arkivet och ut under de stora rötterna. Cisternen döljer en valfri genväg. Alla besökta rum går att återvända till.",new Vector2(95,170),1000,21,Muted,34);

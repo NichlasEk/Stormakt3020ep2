@@ -1,5 +1,9 @@
 # Checkpoint · Vägen under vattnet · 2026-09-06
 
+## 2026-09-07 · 0.12 sammanhängande Atland
+
+Alla nio huvudrum och cisternens genväg är nu fysiskt förbundna. Kameran och striden fortsätter över rumsgränser; nyckelport, reglad genväg, öppna gångvägar, sparning och minikarta ingår. [Aktuell omfattning och nästa detaljpass](CONNECTED-WORLD.md). Nästa geografiskt åtskilda område ska nås med båt eller Karl CCLV, med originalets skepp som referens. Transporterna är ännu inte byggda. Äldre checkpoints nedan är historik.
+
 ## Senast · dörrens visuella passning · 0.11.3
 
 Gångjärn/stängningsände och höjd inmätta mot stenöppningens insida. Fast ekkarm, synliga järngångjärn och sammanhängande målade dörrytor. De tätade kollisionsskarvarna finns kvar vid den nya placeringen; 3 583 riktade kontroller samt native bild-/uppspelningskontroll används. Se `PHYSICAL-DOORS.md`. Sammanhängande karta är fortfarande nästa större steg.

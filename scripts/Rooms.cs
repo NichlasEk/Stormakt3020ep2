@@ -40,6 +40,9 @@ public sealed class RoomSnapshot
 
 public sealed class RoomRun
 {
+    public bool Connected;
+    public HashSet<string> CorridorSeen=new();
+    public Dictionary<string,PhysicalDoor> Doors=new();
     public int LayoutVersion=1;
     public string Current=PortRooms.Court;
     public bool KeyTaken,DoorOpen,CacheTaken,PressureReleased,WaterLowered,ShortcutOpen,RelicTaken,WitnessRead,OathDefeated,Completed,ArchiveRead,ArchiveSecured,RootGateOpen,GroveSecured;
@@ -76,7 +79,7 @@ public sealed partial class Combat
             };
         }
     }
-    [JsonIgnore] public Vector2 RoomObjective=>Rooms!.Current switch
+    [JsonIgnore] public Vector2 RoomObjective=>InConnectedWorld?ConnectedObjective:Rooms!.Current switch
     {
         PortRooms.Archive=>!Rooms.ArchiveRead||ArchiveChoice==0?ArchiveRoom.Desk:ArchiveRoom.Seal,
         PortRooms.Roots=>Rooms.RootGateOpen?Rootway.Exit:Rootway.Winch,
@@ -99,25 +102,26 @@ public sealed partial class Combat
         return game;
     }
 
-    private void StepRooms(Controls input)
+    private void StepRooms(Controls input,float dt)
     {
+        if(InConnectedWorld)StepConnectedWorld(input,dt);
         UpdateRoomSight();AdvanceGrove();
         bool pressed=input.Interact&&!_roomInteractHeld;_roomInteractHeld=input.Interact;
         if(!pressed||Dead||Moving||AttackTime>0||DodgeTime>0||Guarding||Hurt>0)return;
         bool Near(Vector2 at)=>Vector2.Distance(Player,at)<72&&ClearPath(Player,at);
         if(Rooms!.Current==PortRooms.Court&&!Rooms.KeyTaken&&Near(PortRooms.Key))
         {
-            if(Enemies.Any(e=>!e.Dead)){Emit("room-notice",Player,"Slå tillbaka väktaren innan du söker hans packning.");return;}
+            if(EncounterEnemies.Any(e=>!e.Dead)){Emit("room-notice",Player,"Slå tillbaka väktaren innan du söker hans packning.");return;}
             Rooms.KeyTaken=true;Emit("inscription",Player,"VÄKTARENS NYCKEL");Emit("checkpoint",Player);return;
         }
         if(Rooms.Current==PortRooms.Lodge&&!Rooms.CacheTaken&&Near(PortRooms.Cache))
         {
-            if(Enemies.Any(e=>!e.Dead)){Emit("room-notice",Player,"Säkra logementet innan du undersöker kistan.");return;}
+            if(EncounterEnemies.Any(e=>!e.Dead)){Emit("room-notice",Player,"Säkra logementet innan du undersöker kistan.");return;}
             Rooms.CacheTaken=true;DropItem("memory",PortRooms.Cache);
             Emit("campaign",Player,"Under filtarna ligger ett vittnessigill och en fuktskadad ritning. En cistern förbinder logementet med portens äldre grund.");
             Emit("checkpoint",Player);return;
         }
-        bool peaceful=Enemies.All(e=>e.Dead)&&Shots.All(s=>s.Reflected)&&Hazards.All(h=>h.Friendly);
+        bool peaceful=EncounterEnemies.All(e=>e.Dead)&&Shots.All(s=>s.Reflected)&&Hazards.All(h=>h.Friendly);
         if(StepArchiveRoom(Near,peaceful)||StepRootway(Near,peaceful))return;
         if(Rooms.Current==PortRooms.Pump&&(Near(PortRooms.Pressure)||Near(PortRooms.Wheel)))
         {
@@ -146,9 +150,10 @@ public sealed partial class Combat
         if(Rooms.Current==PortRooms.Chamber&&Near(PortRooms.OathExit)&&Rooms.OathDefeated&&!Rooms.Completed)
         {
             Rooms.Completed=true;Emit("room-sound",Player,"stone-door");Emit("radio",Player,"rooms-port");Emit("inscription",Player,"ATLANDS INRE PORT ÄR ÖPPEN");
-            Emit("campaign",Player,"Bakom porten ligger Minnets arkivs nedre trappa. Rötter grövre än skeppsmaster har sprängt muren. På kartans baksida finns samma kust igen — men havet ligger åt fel håll. Tryck E igen vid porten för att gå ned. Du kan återvända och hämta kvarlämnade fynd.");
+            Emit("campaign",Player,"Bakom porten ligger Minnets arkivs nedre trappa. Rötter grövre än skeppsmaster har sprängt muren. På kartans baksida finns samma kust igen — men havet ligger åt fel håll. Följ passagen vidare ned. Du kan återvända och hämta kvarlämnade fynd.");
             Emit("checkpoint",Player);return;
         }
+        if(InConnectedWorld)return;
         var link=RoomLinks.From(Rooms.Current).FirstOrDefault(l=>Near(l.At(Rooms.Current)));if(link is null)return;
         if(!peaceful){Emit("room-notice",Player,"Säkra rummet före passage.");return;}
         if(!RoomLinks.Open(Rooms,link))
@@ -229,13 +234,13 @@ public sealed partial class Combat
             ||r.Rooms is null||r.LayoutVersion!=5||r.Rooms.Count!=9||PortRooms.Ids.Any(id=>!r.Rooms.ContainsKey(id))
             ||r.Rooms.Any(p=>p.Value is null||p.Value.Enemies is null||p.Value.Enemies.Count>100||p.Value.Explored is null||p.Value.Explored.Length!=RoomSight.Bytes||(!p.Value.Visited&&p.Value.Explored.Any(b=>b!=0)))
             ||!r.Rooms[PortRooms.Court].Visited||!r.Rooms[r.Current].Visited||r.Rooms[r.Current].Enemies.Count!=0
-            ||(r.DoorOpen&&!r.KeyTaken)||(r.Rooms[PortRooms.Lodge].Visited&&!r.DoorOpen)||(r.CacheTaken&&!r.Rooms[PortRooms.Lodge].Visited)
+            ||(r.DoorOpen&&!r.KeyTaken&&!(InConnectedWorld&&r.Doors is not null&&r.Doors.TryGetValue("lodge",out var brokenDoor)&&brokenDoor.Broken))||(r.Rooms[PortRooms.Lodge].Visited&&!r.DoorOpen)||(r.CacheTaken&&!r.Rooms[PortRooms.Lodge].Visited)
             ||(r.Rooms[PortRooms.Pump].Visited&&!r.CacheTaken)||(r.PressureReleased&&!r.Rooms[PortRooms.Pump].Visited)
             ||(r.WaterLowered&&!r.PressureReleased)||(r.Rooms[PortRooms.Cistern].Visited&&!r.WaterLowered)
             ||(r.Rooms[PortRooms.Gallery].Visited&&!r.WaterLowered)||(r.WitnessRead&&!r.Rooms[PortRooms.Gallery].Visited)
             ||(r.Rooms[PortRooms.Chamber].Visited&&!r.WitnessRead)||(r.OathDefeated&&!r.Rooms[PortRooms.Chamber].Visited)||(r.Completed&&!r.OathDefeated)
             ||(r.Rooms[PortRooms.Archive].Visited&&!r.Completed)||(r.ArchiveRead&&!r.Rooms[PortRooms.Archive].Visited)||(ArchiveChoice!=0&&!r.ArchiveRead)||(r.ArchiveSecured&&ArchiveChoice==0)
-            ||((r.ShortcutOpen||r.RelicTaken)&&!r.Rooms[PortRooms.Cistern].Visited))
+            ||(((!InConnectedWorld&&r.ShortcutOpen)||r.RelicTaken)&&!r.Rooms[PortRooms.Cistern].Visited))
             throw new System.IO.InvalidDataException("Ogiltig rumsexpedition");
         var actors=Enemies.Concat(r.Rooms.Values.SelectMany(s=>s.Enemies)).ToArray();
         if(actors.Any(e=>e is null||e.Id<1||!Enum.IsDefined(e.Kind)||!float.IsFinite(e.Health)||!float.IsFinite(e.MaxHealth)||e.MaxHealth<=0||e.Health>e.MaxHealth
@@ -247,10 +252,10 @@ public sealed partial class Combat
             ||!float.IsFinite(e.Facing.X)||!float.IsFinite(e.Facing.Y)||!float.IsFinite(e.LockedAim.X)||!float.IsFinite(e.LockedAim.Y))
             ||(r.Rooms[PortRooms.Chamber].Visited&&(guardians.Length!=1||guardians[0].Dead!=r.OathDefeated))
             ||(!r.Rooms[PortRooms.Chamber].Visited&&guardians.Length!=0))throw new System.IO.InvalidDataException("Ogiltig edsväktare");
-        var archiveActors=r.Current==PortRooms.Archive?Enemies:r.Rooms[PortRooms.Archive].Enemies;
+        var archiveActors=ActorsInRoom(PortRooms.Archive);
         if((ArchiveChoice==0&&archiveActors.Count!=0)||(ArchiveChoice!=0&&archiveActors.Count!=(ArchiveChoice==1?3:1))
             ||(r.ArchiveSecured&&archiveActors.Any(e=>!e.Dead)))throw new System.IO.InvalidDataException("Ogiltig arkivkontroll");
-        ValidateRootway();
+        ValidateRootway();ValidateConnectedWorld();
         if(Inventory.Drops.Any(d=>d.Room!=""&&!PortRooms.Known(d.Room)))throw new System.IO.InvalidDataException("Ogiltigt fyndrum");
     }
 }

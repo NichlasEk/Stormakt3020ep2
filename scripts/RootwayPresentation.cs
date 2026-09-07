@@ -7,7 +7,7 @@ public partial class Main
 {
     private void AddRootwayLayers(List<(float Depth,Action Draw)> layers)
     {
-        if(_game.Rooms!.Current==PortRooms.Grove)
+        if(PaintRoom==PortRooms.Grove)
             layers.Add((649,()=>PaintForeground(_groveArt!,new Vector2[]{new(645,547),new(798,475),new(928,540),new(928,576),new(778,644),new(643,599)})));
     }
     private void DrawRootwayMarkers()

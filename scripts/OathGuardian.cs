@@ -38,7 +38,7 @@ public sealed partial class Combat
             for(int i=0;i<steps;i++)
             {
                 var next=e.Position+e.Facing*(travel/steps);
-                bool pillar=Rooms?.Current==PortRooms.Chamber&&PortRooms.OathObstacles.Any(o=>Navigation.Contains(o,next));
+                bool pillar=(Rooms?.Current==PortRooms.Chamber||InConnectedWorld)&&PortRooms.OathObstacles.Any(o=>Navigation.Contains(o,next+(InConnectedWorld?WorldOrigin-ConnectedWorld.Origin(PortRooms.Chamber):Vector2.Zero)));
                 if(pillar||!OnWalkable(next))
                 {
                     e.State=pillar?3:2;e.Timer=pillar?2.8f:1.15f;e.Cooldown=1.1f;

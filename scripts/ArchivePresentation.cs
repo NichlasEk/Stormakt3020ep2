@@ -30,7 +30,7 @@ public partial class Main
     }
     private void AddArchiveLayers(List<(float Depth,Action Draw)> layers)
     {
-        if(_game.Rooms!.Current!=PortRooms.Archive)return;
+        if(PaintRoom!=PortRooms.Archive)return;
         layers.Add((687,()=>PaintForeground(_archiveArt!,new[]{new Vector2(575,550),new(659,453),new(960,531),new(952,569),new(884,681),new(864,689),new(579,620)})));
     }
 }

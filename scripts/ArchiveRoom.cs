@@ -16,7 +16,7 @@ public static class ArchiveRoom
 
 public sealed partial class Combat
 {
-    [JsonIgnore] public string ArchiveGoal=>!Rooms!.ArchiveRead?"Jämför handlingarna":ArchiveChoice==0?"Välj vad du för vidare":Enemies.Any(e=>!e.Dead)?"Möt arkivets kontroll":!Rooms.ArchiveSecured?"Säkra arkivets inre grind":"Fortsätt ut på Rotvägen";
+    [JsonIgnore] public string ArchiveGoal=>!Rooms!.ArchiveRead?"Jämför handlingarna":ArchiveChoice==0?"Välj vad du för vidare":EncounterEnemies.Any(e=>!e.Dead)?"Möt arkivets kontroll":!Rooms.ArchiveSecured?"Säkra arkivets inre grind":"Fortsätt ut på Rotvägen";
     [JsonIgnore] public string ArchiveResult=>ArchiveChoice==1?"Vittnesmålet är bevarat. Hela patrullen kallades in.":ArchiveChoice==2?"Passersedeln är förfalskad. Bara kontrollanten stannade.":"Beslutet återstår.";
     private bool StepArchiveRoom(Func<Vector2,bool> near,bool peaceful)
     {
@@ -43,11 +43,11 @@ public sealed partial class Combat
     public bool ChooseRoomArchive(int choice)
     {
         if(choice is not (1 or 2)||Rooms?.Current!=PortRooms.Archive||!Rooms.ArchiveRead||ArchiveChoice!=0||Dead||Moving||Hurt>0||AttackTime>0||DodgeTime>0||Guarding
-            ||Vector2.Distance(Player,ArchiveRoom.Desk)>=72||!ClearPath(Player,ArchiveRoom.Desk)||Enemies.Any(e=>!e.Dead)||Shots.Any(s=>!s.Reflected)||Hazards.Any(h=>!h.Friendly))return false;
+            ||Vector2.Distance(Player,ArchiveRoom.Desk)>=72||!ClearPath(Player,ArchiveRoom.Desk)||EncounterEnemies.Any(e=>!e.Dead)||Shots.Any(s=>!s.Reflected)||Hazards.Any(h=>!h.Friendly))return false;
         Events.Clear();ArchiveChoice=choice;
         Spawn(EnemyKind.Guard,Bound(new(1285,575)));
         if(choice==1){Spawn(EnemyKind.Pikeman,Bound(new(1210,530)));Spawn(EnemyKind.Gunner,Bound(new(1320,620)));}
-        foreach(var e in Enemies.Where(e=>!e.Dead)){e.State=2;e.Timer=2.5f;e.Cooldown=1.5f;}
+        foreach(var e in EncounterEnemies.Where(e=>!e.Dead)){e.State=2;e.Timer=2.5f;e.Cooldown=1.5f;}
         Emit("radio",Player,choice==1?"archive-preserve":"archive-forge");Emit("campaign",Player,ArchiveResult);
         Emit("room-sound",ArchiveRoom.Seal,"stone-door");Emit("checkpoint",Player);return true;
     }

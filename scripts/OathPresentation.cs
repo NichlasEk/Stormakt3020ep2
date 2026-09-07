@@ -26,9 +26,9 @@ public partial class Main
     }
     private void AddOathLayers(List<(float Depth,Action Draw)> layers)
     {
-        if(_game.Rooms!.Current==PortRooms.Gallery)
+        if(PaintRoom==PortRooms.Gallery)
             layers.Add((704,()=>PaintForeground(_galleryArt!,new[]{new Vector2(727,649),new(738,603),new(776,550),new(856,575),new(850,636),new(886,666),new(819,711)})));
-        if(_game.Rooms.Current!=PortRooms.Chamber)return;
+        if(PaintRoom!=PortRooms.Chamber)return;
         layers.Add((638,()=>PaintForeground(RoomBackground,new[]{new Vector2(522,612),new(531,539),new(528,506),new(567,486),new(610,506),new(608,537),new(611,617),new(567,642)})));
         layers.Add((658,()=>PaintForeground(RoomBackground,new[]{new Vector2(954,632),new(963,553),new(959,521),new(1000,501),new(1042,520),new(1040,550),new(1044,635),new(1001,661)})));
     }

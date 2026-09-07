@@ -77,7 +77,7 @@ public partial class Main : Node2D
     private static NVec N(Vector2 v)=>new(v.X,v.Y);
     public override void _Ready()
     {
-        var args=OS.GetCmdlineUserArgs();_doorChecks=args.Contains("--door-check");_filmCheck=args.Contains("--cinematic-check");_filmPreview=args.Contains("--gate-film");_introPreview=args.Contains("--intro-film");_rootwayChecks=args.Contains("--rootway-check")||_filmCheck;_archiveChecks=args.Contains("--archive-check")||_rootwayChecks;_roomAudioChecks=args.Contains("--room-audio-check");_oathChecks=args.Contains("--oath-check")||_roomAudioChecks||_archiveChecks;_waterChecks=args.Contains("--water-check");_fogChecks=args.Contains("--fog-check");_roomChecks=args.Contains("--rooms-check");_inventoryChecks=args.Contains("--inventory-check");_portChecks=args.Contains("--port-check");_sceneChecks=args.Contains("--scene-check")||_portChecks||_inventoryChecks||_roomChecks||_fogChecks||_waterChecks||_oathChecks||_doorChecks;_uiChecks=args.Contains("--ui-check");
+        var args=OS.GetCmdlineUserArgs();_doorChecks=args.Contains("--door-check");_filmCheck=args.Contains("--cinematic-check");_filmPreview=args.Contains("--gate-film");_introPreview=args.Contains("--intro-film");_rootwayChecks=args.Contains("--rootway-check")||_filmCheck;_archiveChecks=args.Contains("--archive-check")||_rootwayChecks;_roomAudioChecks=args.Contains("--room-audio-check");_oathChecks=args.Contains("--oath-check")||_roomAudioChecks||_archiveChecks;_waterChecks=args.Contains("--water-check");_fogChecks=args.Contains("--fog-check");_roomChecks=args.Contains("--rooms-check");_inventoryChecks=args.Contains("--inventory-check");_portChecks=args.Contains("--port-check");_sceneChecks=args.Contains("--world-check")||args.Contains("--scene-check")||_portChecks||_inventoryChecks||_roomChecks||_fogChecks||_waterChecks||_oathChecks||_doorChecks;_uiChecks=args.Contains("--ui-check");
         _serif=GD.Load<Font>("res://assets/fonts/NotoSerif-Regular.ttf");_sans=GD.Load<Font>("res://assets/fonts/NotoSans-Regular.ttf");
         _background=GD.Load<Texture2D>("res://assets/art/likvarvet-scale-v5.png");
         _radioPortraits=GD.Load<Texture2D>("res://assets/art/radio-cast-v1.png");
@@ -95,6 +95,7 @@ public partial class Main : Node2D
         if(args.Contains("--rooms")||_roomChecks||_fogChecks||_waterChecks||_oathChecks)StartRooms();
         if(args.Contains("--capture-title"))_smokeCapture=true;
         if(args.Contains("--doors")||args.Contains("--doors-new")||_doorChecks)StartDoorTrial(args.Contains("--doors-new"));
+        if(args.Contains("--world-check")){RunConnectedChecks();return;}
         if(_doorChecks){RunDoorChecks();return;}
         if(_filmPreview)StartGateFilm(true);else if(_introPreview)StartIntroFilm(true);
         if(_oathChecks)RunOathChecks();else if(_waterChecks)RunWaterChecks();else if(_fogChecks)RunSightChecks();else if(_roomChecks)RunRoomChecks();else if(_inventoryChecks)RunInventoryChecks();else if(_portChecks)RunPortChecks();else if(_sceneChecks)RunSceneChecks();
@@ -247,7 +248,7 @@ public partial class Main : Node2D
     {
         try
         {
-            _game=SaveStore.Read(manual?ManualPath:SavePath);if(_game.InDoorTrial)LoadDoorArt();if(_game.InRooms)LoadWaterArt();if(!_game.InCampaign)_game.PreferRoomRoute=true;ApplyDeveloperSettings();_camera=G(_game.Player)+new Vector2(85,-80);_particles.Clear();_floating.Clear();_radioQueue.Clear();_radio="";_sound.StopVoice();
+            _game=SaveStore.Read(manual?ManualPath:SavePath);if(_game.InDoorTrial)LoadDoorArt();if(_game.InRooms){LoadWaterArt();if(!_testMode)_game.EnableConnectedWorld();}if(!_game.InCampaign)_game.PreferRoomRoute=true;ApplyDeveloperSettings();_camera=G(_game.Player)+new Vector2(85,-80);_particles.Clear();_floating.Clear();_radioQueue.Clear();_radio="";_sound.StopVoice();
             if(_game.InCampaign){_campaignText=_game.InRooms?_game.RoomGoal:_game.Stage.Intro;_campaignTextTime=10;_revealTime=0;}
             ChangeScreen(_game.Dead?Screen.Death:_game.Phase==Phase.Complete?Screen.Ending:_game.Phase==Phase.Testimony?Screen.Testimony:Screen.Game);Notice("Fältdagboken återupptagen");
         }
@@ -328,7 +329,10 @@ public partial class Main : Node2D
             case "pickup":Notice("I väskan: "+cue.Text);_sound.Play("paper");break;
             case "radio":QueueRadio(cue.Text);break;
             case "campaign":_campaignText=cue.Text;_campaignTextTime=10;break;
-            case "region":if(_game.InRooms)LoadWaterArt();_camera=G(_game.Player)+new Vector2(0,-30);_particles.Clear();_floating.Clear();PrepareRegionRadio();_banner=cue.Text.ToUpperInvariant();_bannerTime=5;break;
+            case "world-frame":
+                _camera+=p;_previousPlayer+=p;foreach(var actor in _previousActors.Keys.ToArray())_previousActors[actor]+=p;foreach(var particle in _particles)particle.P+=p;foreach(var f in _floating)f.P+=p;
+                PrepareRegionRadio();_banner=cue.Text.ToUpperInvariant();_bannerTime=4;break;
+            case "region":if(_game.InRooms){LoadWaterArt();if(!_testMode)_game.EnableConnectedWorld();}_camera=G(_game.Player)+new Vector2(0,-30);_particles.Clear();_floating.Clear();PrepareRegionRadio();_banner=cue.Text.ToUpperInvariant();_bannerTime=5;break;
             case "reveal":_radioQueue.Clear();_sound.StopVoice();_radioTime=0;_revealTime=9;_banner="VÄGEN LIGGER KVAR";_bannerTime=5;_sound.Play("seal",.65f);break;
             case "checkpoint":Save();break;
             case "hit":Burst(p,Gold,12,100);_floating.Add(new(){P=p+new Vector2(0,-70),Text=cue.Text,C=Gold});_sound.Play("hit",.94f+(float)(_game.Tick%6)*.025f);_shake=3;break;
@@ -394,6 +398,7 @@ public partial class Main : Node2D
             {
                 var target=G(_game.Player)+new Vector2(70,-70);target.X=Math.Clamp(target.X,610,990);target.Y=Math.Clamp(target.Y,535,740);
                 if(_game.Region!=Region.Quay){target=G(_game.Player)+new Vector2(0,-60);target.X=Math.Clamp(target.X,580,956);target.Y=Math.Clamp(target.Y,415,730);}
+                if(_game.InConnectedWorld)target=G(_game.Player)+new Vector2(0,-60);
                 if(_revealTime<=5&&_game.Moving)_revealTime=0;
                 if(_revealTime>0)target=new Vector2(600,320);
                 _camera=_camera.Lerp(target,1-Mathf.Exp(-dt*5));
@@ -487,7 +492,7 @@ public partial class Main : Node2D
         get
         {
             var offset=new Vector2(640,360)-_camera*Zoom+(_cameraShake?new Vector2(Mathf.Sin(_clock*65),Mathf.Cos(_clock*71))*_shake:Vector2.Zero);
-            return _game.InRooms?new Vector2(Mathf.Clamp(offset.X,1280-1536*Zoom,0),Mathf.Clamp(offset.Y,720-1024*Zoom,0)):offset;
+            return _game.InRooms&&!_game.InConnectedWorld?new Vector2(Mathf.Clamp(offset.X,1280-1536*Zoom,0),Mathf.Clamp(offset.Y,720-1024*Zoom,0)):offset;
         }
     }
     private Vector2 ScreenToWorld(Vector2 p)=>(p-Offset)/Zoom;
@@ -537,7 +542,8 @@ public partial class Main : Node2D
     private void DrawWorld()
     {
         DrawSetTransform(Offset,0,Vector2.One*Zoom);
-        if(_game.Region==Region.Quay)DrawTextureRectRegion(_background,new Rect2(18,30,1500,946),new Rect2(18,30,1500,946),Colors.White);
+        if(_game.InConnectedWorld){DrawConnectedGround();DrawRoomMarkers();}
+        else if(_game.Region==Region.Quay)DrawTextureRectRegion(_background,new Rect2(18,30,1500,946),new Rect2(18,30,1500,946),Colors.White);
         else {DrawTextureRect(_game.InRooms?RoomBackground:_game.InCampaign?_campaignWorlds[_game.Stage.World]:_game.Region==Region.Warehouse?_warehouse:_game.AtlandRevealed?_shoreRevealed:_shore,new Rect2(0,0,1536,1024),false);if(_game.InDoorTrial)DrawDoorMarkers();else if(_game.InRooms)DrawRoomMarkers();else if(_game.InCampaign)DrawCampaignMarkers();else DrawJourneyMarkers();}
         foreach(var seal in _game.Seals)
         {
@@ -567,7 +573,7 @@ public partial class Main : Node2D
         {var p=G(_game.ObjectivePosition);DrawArc(p,40,0,Mathf.Tau,48,Gold,2,true);Text(_game.ExtendedJourney?"MAGASINET":"BÅTEN",p+new Vector2(-22,58),12,Gold);}
         foreach(var p in _particles)DrawCircle(p.P,p.Size,new Color(p.C,Math.Clamp(p.Life/p.Max,0,1)));
         foreach(var f in _floating)Text(f.Text,f.P,15,new Color(f.C,Math.Clamp(f.Life*2,0,1)));
-        if(_game.InRooms)DrawRoomFog();
+        if(_game.InConnectedWorld)DrawConnectedFog();else if(_game.InRooms)DrawRoomFog();
         DrawSetTransform(Vector2.Zero);
         // Restrained edge framing.
         DrawRect(new Rect2(0,0,1280,6),new Color(.015f,.035f,.04f,.8f));
@@ -718,7 +724,7 @@ public partial class Main : Node2D
         DrawLine(new Vector2(80,302),new Vector2(486,302),new Color(Gold,.6f),1);
         Wrapped("Det finns ett rike under riket.\nOch någon håller ännu dess hamnljus tända.",new Vector2(80,341),530,18,Muted,28);
         bool hasSave=System.IO.File.Exists(ProjectSettings.GlobalizePath("user://quay-save.json"));
-        Button(new Rect2(80,430,355,49),"Spela expeditionen · nio rum","expedition",true);
+        Button(new Rect2(80,430,355,49),"Spela · sammanhängande Atland","expedition",true);
         Button(new Rect2(80,490,355,43),hasSave?"Återuppta landstigningen":"Spela landstigningen",hasSave?"continue":"new");
         Button(new Rect2(80,544,171,43),"Inställningar","settings");Button(new Rect2(264,544,171,43),"Avsluta","quit");
         Button(new Rect2(80,600,355,43),"Öva sabelduell","duel");

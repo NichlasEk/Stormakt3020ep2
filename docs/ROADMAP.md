@@ -1,5 +1,9 @@
 # Från arenor till expeditioner
 
+## 2026-09-07 · 0.12 sammanhängande Atland
+
+Alla nio huvudrum och cisternens genväg är nu fysiskt förbundna. Kameran och striden fortsätter över rumsgränser; nyckelport, reglad genväg, öppna gångvägar, sparning och minikarta ingår. [Aktuell omfattning och nästa detaljpass](CONNECTED-WORLD.md). Nästa geografiskt åtskilda område ska nås med båt eller Karl CCLV, med originalets skepp som referens. Transporterna är ännu inte byggda. Äldre checkpoints nedan är historik.
+
 2026-09-07. Nulägesgranskning mot `VISION.md`, `CAMPAIGN.md`, `Campaign.cs`, `Combat.cs`, `Navigation.cs`, `SaveStore.cs` och inventariekoden. Användaren vill ha mindre repetition, fler rum per bana, dörrar, mörker över outforskade områden och olika bossar. Detta är arbetsplanen; nulägeslistan nedan beskriver utgångsläget före rumsarbetet.
 
 **Första checkpointen finns nu:** två sammankopplade provrum med nyckel/lås, separata beständiga fiender och fynd, återbesök och sparning. Se `ROOMS.md`. Mål 1 som helhet är fortfarande pågående; sex nya målade rum och bossen är inte klara.

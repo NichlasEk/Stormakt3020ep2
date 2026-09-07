@@ -49,7 +49,7 @@ public sealed partial class Combat
     private Vector2 MoveBody(Vector2 from,Vector2 target)
     {
         var bounded=Bound(target);
-        if(!InDoorTrial||ClearPath(from,bounded))return bounded;
+        if((!InDoorTrial&&!InConnectedWorld)||ClearPath(from,bounded))return bounded;
         // Check the entire displacement, including overlap separation and knockback.
         // Slide along an available axis instead of snapping to the far face of a solid.
         var x=Bound(new(target.X,from.Y));var y=Bound(new(from.X,target.Y));
