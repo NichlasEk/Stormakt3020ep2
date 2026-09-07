@@ -45,11 +45,25 @@ public partial class Main
             for(int i=0;i<6;i++)
             {int n=i;var at=h+new Vector2(25+i*21,24+i*10);layers.Add((at.Y,()=>DrawPolygon(new[]{at,at+new Vector2(51,-13),at+new Vector2(60,-6),at+new Vector2(5,10)},new[]{new Color(.65f,.61f,.54f)},new[]{new Vector2(n/6f,1),new Vector2(n/6f,0),new Vector2((n+1)/6f,0),new Vector2((n+1)/6f,1)},_doorFace)));}return;
         }
+        // Extrude the painted leaf in the same fixed isometric ground projection as its hinge.
+        // The complete visual thickness stays inside the existing 30px collision envelope.
+        float angle=d.Openness*Mathf.Pi/2;
+        var thickness=new Vector2(-14*(Mathf.Cos(angle)-Mathf.Sin(angle)),7.85f*(Mathf.Cos(angle)+Mathf.Sin(angle)));
+        var half=thickness/2;var up=new Vector2(0,-145);
+        float tint=d.Health<90?.76f:.94f;
         for(int i=0;i<16;i++)
         {
-            float u=i/16f,v=(i+1)/16f;var a=h.Lerp(tip,u);var b=h.Lerp(tip,v);var up=new Vector2(0,-145);
-            float tint=d.Health<90?.76f:.94f;
-            layers.Add(((a.Y+b.Y)/2,()=>DrawPolygon(new[]{a+up,b+up,b,a},new[]{new Color(tint,tint*.96f,tint*.88f)},new[]{new Vector2(u,0),new Vector2(v,0),new Vector2(v,1),new Vector2(u,1)},_doorFace)));
+            float u=i/16f,v=(i+1)/16f;var a=h.Lerp(tip,u);var b=h.Lerp(tip,v);
+            var backA=a-half;var backB=b-half;var frontA=a+half;var frontB=b+half;
+            var uv=new[]{new Vector2(u,0),new Vector2(v,0),new Vector2(v,1),new Vector2(u,1)};
+            layers.Add(((backA.Y+backB.Y)/2,()=>DrawPolygon(new[]{backA+up,backB+up,backB,backA},new[]{new Color(tint*.68f,tint*.65f,tint*.58f)},uv,_doorFace)));
+            layers.Add(((frontA.Y+frontB.Y)/2,()=>DrawPolygon(new[]{frontA+up,frontB+up,frontB,frontA},new[]{new Color(tint,tint*.96f,tint*.88f)},uv,_doorFace)));
+            layers.Add(((frontA.Y+frontB.Y)/2+.01f,()=>DrawPolygon(new[]{backA+up,backB+up,frontB+up,frontA+up},new[]{new Color(tint*.85f,tint*.81f,tint*.72f)},new[]{new Vector2(u,.94f),new Vector2(v,.94f),new Vector2(v,.98f),new Vector2(u,.98f)},_doorFace)));
+        }
+        foreach(var end in new[]{h,tip})
+        {
+            var back=end-half;var front=end+half;
+            layers.Add((front.Y+.02f,()=>DrawPolygon(new[]{back+up,front+up,front,back},new[]{new Color(tint*.64f,tint*.58f,tint*.49f)},new[]{new Vector2(.43f,0),new Vector2(.47f,0),new Vector2(.47f,1),new Vector2(.43f,1)},_doorFace)));
         }
     }
     private void DrawDoorJournal()

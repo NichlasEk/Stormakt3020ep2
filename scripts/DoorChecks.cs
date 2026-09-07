@@ -12,7 +12,7 @@ public partial class Main
    void Check(bool ok,string text){if(!ok)throw new Exception(text);}
    var g=_game;g.Enemies.Clear();g.Player=DoorTrialLayout.Center+new System.Numerics.Vector2(-35,65);_camera=G(g.Player)+new Vector2(0,-80);RememberRenderPositions();g.UpdateRoomSight(true);await Capture("door-closed");
    g.DoorTest!.KeyTaken=true;g.DoorTest.Door.Locked=false;g.DoorTest.Door.TargetOpen=true;
-   for(int i=0;i<50;i++){g.Step(new());await ToSignal(GetTree(),SceneTree.SignalName.ProcessFrame);}
+   for(int i=0;i<50;i++){g.Step(new());await ToSignal(GetTree(),SceneTree.SignalName.ProcessFrame);if(i==23)await Capture("door-half-open");}
    Check(g.DoorTest.Door.Openness==1,"Door reaches open position");await Capture("door-open");
    g.Player=new(950,540);g.Step(new());_camera=G(g.Player)+new Vector2(0,-80);RememberRenderPositions();g.UpdateRoomSight(true);await Capture("door-inside");
    g.DoorTest.Door.Health=0;g.UpdateRoomSight(true);await Capture("door-broken");

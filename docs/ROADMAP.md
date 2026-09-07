@@ -22,6 +22,12 @@
 
 **Tionde checkpointen:** standardknapp och strandövergång till niorumsrutten, utan att tappa inventarium eller resurser. Separat spelbart prov på en fysisk dörr mellan två samtidigt aktiva rum. Se `PHYSICAL-DOORS.md`. Nästa prioritet är att bedöma provet och införa fysiska passager i huvudrutten, före ytterligare rum.
 
+## Nästa sammanhängande kartpass
+
+Användaren vill kunna gå genom hela kartan, med både öppna passager och interaktiva dörrar. Nästa konkreta prov är **förgård → logement → öppen passage → pumphus**. Öppningar ska vara grundläggande förbindelser; dörrar är valfria hinder i dem. Rum ska ha placering i en gemensam värld och behålla sin målning, kollisionsgeometri och utforskning lokalt. De närmaste rummen simuleras tillsammans för förföljelse, skott och sikt; avlägsna rum kan vila och laddas i bakgrunden. Befintliga fiende-ID:n och sparade tillstånd måste ha en enda ägare även vid passage.
+
+Nuvarande renderer, kameragränser och upptäcktsmask är bundna till en bild på 1536×1024. Dessa behöver stöd för flera placerade rum innan hela niorumskartan blir sammanhängande. Konstnärligt behövs övergångsgolv och korridorer som förenar målningarnas ingångar och perspektiv. Det är mer arbete än att ersätta E med en automatisk rumsbytespunkt. Ingen öppen passage eller sammanfogning av hela kartan ingår i tjocklekspasset 0.11.1.
+
 ## Integrationsbehov efter filmpasset · historik före 0.11
 
 Användarens provspelning visade att den nya rutten är svår att hitta: vanlig kampanjfortsättning leder fortfarande till äldre banor. Innan fler rum byggs bör strandens fortsättning kopplas till de nio rummen, med bevarad utrustning, stash och berättelseprogression. Äldre kampanjsparningar behöver en uttrycklig migrationsstrategi, och huvudmenyn behöver en tydlig huvudingång. Detta är planerat, inte genomfört i 0.10. Under tiden är ingången **Atlands förseglade rum · prov** eller `./play.sh -- --rooms`.

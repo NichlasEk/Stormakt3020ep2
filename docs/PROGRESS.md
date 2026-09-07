@@ -1,5 +1,9 @@
 # Checkpoint · Vägen under vattnet · 2026-09-06
 
+## Senast · ekportens tjocklek · 0.11.1
+
+Målat dörrblad med fram-/baksida, överkant och ändträ. Renderingen följer gångjärnets isometriska projektion, inom befintlig kollisionsmarginal. Befintliga texturer och sparningar används. Bildkontroll i stängt, halvöppet, öppet och förstört läge. Nästa önskemål är hela kartan som sammanhängande områden, inklusive öppna passager; första föreslagna anslutningen är logementet till pumphuset. Se `ROADMAP.md` och `PHYSICAL-DOORS.md`.
+
 ## Senast · fysisk dörr och standardrutt · 0.11 · 2026-09-07
 
 Niorumsrutten är huvudmenyns primära expedition och den vanliga strandens fortsättning. Hälsa, förbrukning och inventarium bevaras; senast spelad rumsexpedition hittas i befintliga sparplatser. Äldre påbörjade åttastegskampanjer lämnas intakta.

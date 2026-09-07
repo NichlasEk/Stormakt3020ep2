@@ -2,6 +2,10 @@
 
 2026-09-07. Ett spelbart prov med förgård och logement i samma målade miljö. Karl och vakten delar koordinater, navigation och simulering. Dörröppningen byter inte scen och kräver inget extra knapptryck för genomgång.
 
+## Tjock ekport · 0.11.1
+
+Dörrbladet har nu fram- och baksida, en synlig överkant och ändträ på båda kortsidorna. Alla ytor följer samma isometriska gångjärnsprojektion. Den målade tjockleken ryms i den befintliga kollisionsmarginalen; navigation och sparformat är oförändrade. Befintlig ektextur återanvänds med olika utsnitt och matt skuggning. Native bildkontroll omfattar även halvöppen dörr. Export: `dist/AtlandsArv-0.11.1-oak`. Bygget och native dörrkontrollen passerar med avslutningskod 0; bilderna från slutexporten är granskade. Logg: `artifacts/door-thickness-export-native.log`.
+
 ## Prova
 
 Huvudmenyn → **Fysiska dörrar · spelprov**, eller:
