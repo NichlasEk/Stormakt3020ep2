@@ -60,6 +60,7 @@ public partial class Main
     }
     private void DrawCampaignJournal()
     {
+        if(_game.InRooms){DrawRoomJournal();return;}
         DrawRect(new Rect2(0,0,1280,720),new Color(.025f,.023f,.019f,.96f));
         Text($"EXPEDITIONEN / {_game.CampaignStage+1} AV {Expedition.Stages.Length}",new Vector2(95,78),13,Gold);
         Text(_game.Stage.Name,new Vector2(90,145),34,Pale,true);

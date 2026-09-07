@@ -1,5 +1,11 @@
 # Checkpoint · Vägen under vattnet · 2026-09-06
 
+## Senast · två beständiga rum · 2026-09-07
+
+Första kodcheckpointen mot `ROADMAP.md` mål 1: `./start.sh -- --rooms`, egen menyknapp och `rooms-save.json`. Förgård och logement binds av en nyckellåst passage. Fiender och markfynd bevaras per rum, nedhållen E/B ger inte återstuds och dörrbyten ger inga resurser. R visar besöks-/fyndstatus. Nuvarande målningar återanvänds och deras faktiska öppningar används; ingen ny 3D eller ny assetgeneration. Sexrumsbanan, upptäcktsmasken och nya bossen återstår. Exakt omfattning, begränsningar och testrecept i `ROOMS.md`.
+
+29 192 regelassertions passerar inklusive båda understöden genom hela rumsprovet utan utvecklarskydd och de fyra befintliga kampanjrutterna. Godot-menykontrollen för rum passerar, och bilder har granskats. Native-export under `dist/AtlandsArv-0.6-rooms/`; egna bilder under dess `artifacts/`.
+
 ## Senast · nulägesgranskning och nästa arbetsmål · 2026-09-07
 
 Användaren upplever repetition och önskar fler rum per bana, dörrsystem, mörker på outforskade ytor och olika bossar. `ROADMAP.md` är nästa arbetsplan med konkret sexrumsrutt i Atland och kriterier för rum, dörrar, sparning, upptäckt och egna bossmekaniker. Granskningen bekräftar att de åtta senare stegen delar koordinater och fyra miljömålningar; senare bossar återanvänder Collector. Nya rumsfunktioner är ännu inte implementerade. Nästa kodsteg är sparbar rums-/dörrmodell och två sammankopplade provrum, sedan resten av första banan. Regeltesterna är omkörda: 29 165 assertions passerar. Denna checkpoint ändrar dokumentation, inte spelet.

@@ -31,7 +31,7 @@ public static class Items
     public static string SlotName(GearSlot slot)=>slot switch {GearSlot.Saber=>"Sabel",GearSlot.Hammer=>"Hammare",GearSlot.Armor=>"Rustning",GearSlot.Helmet=>"Hjälm",_=>"Sigill"};
 }
 public sealed class GearItem { public int Id;public string Definition="";[JsonIgnore] public ItemDefinition Data=>Items.Get(Definition); }
-public sealed class ItemDrop { public GearItem Item=new();public Vector2 Position;public Region Region;public int Stage=-1; }
+public sealed class ItemDrop { public GearItem Item=new();public Vector2 Position;public Region Region;public int Stage=-1;public string Room=""; }
 public sealed class InventoryState
 {
     public int NextId=7;
@@ -48,7 +48,7 @@ public sealed class InventoryState
         var all=Bag.Concat(Stash).Concat(Equipped.Values).Concat(Drops.Select(d=>d.Item)).ToArray();
         if(all.Any(i=>i is null||i.Id<1||!Items.Known(i.Definition))||all.Select(i=>i.Id).Distinct().Count()!=all.Length||NextId<=all.Max(i=>i.Id)||NextId>1000000)
             throw new System.IO.InvalidDataException("Ogiltiga föremål");
-        if(Equipped.Any(e=>!Enum.IsDefined(e.Key)||e.Value.Data.Slot!=e.Key)||Drops.Any(d=>!Enum.IsDefined(d.Region)||d.Stage < -1||d.Stage>7||!float.IsFinite(d.Position.X)||!float.IsFinite(d.Position.Y)))
+        if(Equipped.Any(e=>!Enum.IsDefined(e.Key)||e.Value.Data.Slot!=e.Key)||Drops.Any(d=>d.Room is null||(d.Room!=""&&!PortRooms.Known(d.Room))||!Enum.IsDefined(d.Region)||d.Stage < -1||d.Stage>7||!float.IsFinite(d.Position.X)||!float.IsFinite(d.Position.Y)))
             throw new System.IO.InvalidDataException("Ogiltiga utrustningsplatser");
     }
 }
@@ -61,7 +61,7 @@ public sealed partial class Combat
     [JsonIgnore] public float EquipmentRecovery=>Inventory.Equipped.Values.Sum(i=>i.Data.Recovery);
     [JsonIgnore] public float AttackDamage=>(Weapon==Weapon.Saber?25:40)+Inventory.Equipped.Where(e=>e.Key==ActiveWeaponSlot||e.Key==GearSlot.Sigil).Sum(e=>e.Value.Data.Damage);
     [JsonIgnore] public bool CanUseStash=>!Dead&&Enemies.All(e=>e.Dead)&&Shots.All(s=>s.Reflected)&&Hazards.All(h=>h.Friendly)&&AttackTime<=0&&DodgeTime<=0;
-    [JsonIgnore] public IEnumerable<ItemDrop> LocalDrops=>Inventory.Drops.Where(d=>d.Region==Region&&d.Stage==CampaignStage);
+    [JsonIgnore] public IEnumerable<ItemDrop> LocalDrops=>Inventory.Drops.Where(d=>d.Region==Region&&d.Stage==CampaignStage&&d.Room==(Rooms?.Current??""));
     public string EquipItem(int id)
     {
         if(Dead||AttackTime>0||DodgeTime>0)return "Avsluta rörelsen innan du byter utrustning.";
@@ -89,7 +89,7 @@ public sealed partial class Combat
     public void DropItem(string definition,Vector2 at)
     {
         if(Duel)return;
-        Inventory.Drops.Add(new(){Item=Inventory.Create(definition),Position=Bound(at),Region=Region,Stage=CampaignStage});
+        Inventory.Drops.Add(new(){Item=Inventory.Create(definition),Position=Bound(at),Region=Region,Stage=CampaignStage,Room=Rooms?.Current??""});
         Emit("loot",at,Items.Get(definition).Name);Emit("checkpoint",Player);
     }
     private void DropEnemyLoot(Fighter enemy)

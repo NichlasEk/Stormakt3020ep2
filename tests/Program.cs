@@ -353,3 +353,5 @@ while(equippedHit.Inventory.Stash.Count<Items.StashCapacity)equippedHit.Inventor
 equippedHit.Enemies.Clear();equippedHit.AttackTime=0;int heldItem=equippedHit.Inventory.Bag[0].Id;
 Check(equippedHit.TransferItem(heldItem,true)!=""&&equippedHit.Inventory.Bag.Any(i=>i.Id==heldItem),"Full stash rejects deposit without losing ownership");
 Console.WriteLine($"PASS INVENTORY COMBAT AND CAPACITY · {checks} assertions");
+RoomTests.Run(Check);
+Console.WriteLine($"PASS PERSISTENT ROOMS · {checks} assertions");

@@ -1,6 +1,8 @@
 # Från arenor till expeditioner
 
-2026-09-07. Nulägesgranskning mot `VISION.md`, `CAMPAIGN.md`, `Campaign.cs`, `Combat.cs`, `Navigation.cs`, `SaveStore.cs` och inventariekoden. Användaren vill ha mindre repetition, fler rum per bana, dörrar, mörker över outforskade områden och olika bossar. Detta är nästa arbetsplan; nedanstående funktioner är ännu inte implementerade.
+2026-09-07. Nulägesgranskning mot `VISION.md`, `CAMPAIGN.md`, `Campaign.cs`, `Combat.cs`, `Navigation.cs`, `SaveStore.cs` och inventariekoden. Användaren vill ha mindre repetition, fler rum per bana, dörrar, mörker över outforskade områden och olika bossar. Detta är arbetsplanen; nulägeslistan nedan beskriver utgångsläget före rumsarbetet.
+
+**Första checkpointen finns nu:** två sammankopplade provrum med nyckel/lås, separata beständiga fiender och fynd, återbesök och sparning. Se `ROOMS.md`. Mål 1 som helhet är fortfarande pågående; sex nya målade rum och bossen är inte klara.
 
 ## Nuläge
 
@@ -86,4 +88,4 @@ Leverera ett granskbart delmål per checkpoint: aktuell status, testresultat, sk
 
 ## Nästa konkreta arbetssteg
 
-Mål 1 börjar med den sparbara rums-/dörrmodellen och två sammankopplade provrum. Bevisa återbesök, lås, fynd och sparning innan hela sexrumsrutten produceras. Därefter upptäcktsmask, kvarvarande rum och Edsväktaren. Denna granskning har fastställt planen; den har inte ännu lagt in rumsfunktioner i spelet.
+Den sparbara rums-/dörrmodellen och två sammankopplade provrum är byggda och provade. Fortsätt med upptäcktsmask och siktregler, därefter rumsmålningar, kvarvarande rum och Edsväktaren. Den långa kampanjen använder ännu sin befintliga rutt; rumsprovet startas separat.

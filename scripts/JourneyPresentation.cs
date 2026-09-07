@@ -62,6 +62,7 @@ public partial class Main
     }
     private void DrawJourneyPrompt(int foes)
     {
+        if(_game.InRooms){DrawRoomPrompt();return;}
         if(_game.InCampaign){DrawCampaignPrompt(foes);return;}
         if(_game.Region==Region.Quay)return;
         if(NVec.Distance(_game.Player,_game.JourneyObjective)<90)

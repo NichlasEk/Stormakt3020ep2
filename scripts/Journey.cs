@@ -19,14 +19,14 @@ public sealed partial class Combat
     public float RiposteTime;
     public Vector2 MoveDirection=Vector2.UnitY;
     [JsonIgnore] private static readonly Vector2[] Crate=Navigation.Expand(JourneyLayout.WarehouseObstacle,22);
-    [JsonIgnore] public Vector2[] Walkable=>Region==Region.Quay?Ground:Region==Region.Warehouse?JourneyLayout.WarehouseGround:JourneyLayout.Ground;
-    [JsonIgnore] public Vector2[] Obstacles=>Region==Region.Warehouse?Crate:Array.Empty<Vector2>();
+    [JsonIgnore] public Vector2[] Walkable=>Rooms?.Current==PortRooms.Court?PortRooms.CourtGround:Region==Region.Quay?Ground:(Region==Region.Warehouse||Rooms?.Current==PortRooms.Lodge)?JourneyLayout.WarehouseGround:JourneyLayout.Ground;
+    [JsonIgnore] public Vector2[] Obstacles=>(Region==Region.Warehouse||Rooms?.Current==PortRooms.Lodge)?Crate:Array.Empty<Vector2>();
     public bool OnWalkable(Vector2 p)=>Navigation.Contains(Walkable,p)&&!Navigation.Contains(Obstacles,p);
     public Vector2 Bound(Vector2 p)=>Region==Region.Quay?ClampToGround(p):Navigation.Clamp(Walkable,Obstacles,p);
     public bool ClearPath(Vector2 a,Vector2 b)=>Region==Region.Quay||Navigation.Clear(Walkable,Obstacles,a,b);
     public Vector2 NextWaypoint(Vector2 from,Vector2 target)=>Region==Region.Quay?target:Navigation.Next(Walkable,Obstacles,from,target);
-    [JsonIgnore] public string RegionName=>InCampaign?Stage.Name:Region==Region.Warehouse?"Kronans magasin":Region==Region.Shore?"De tre vittnenas strand":Duel?"Sabelduell vid kajen":"Blekinges likvarv";
-    [JsonIgnore] public Vector2 JourneyObjective=>InCampaign?CampaignObjective:Region==Region.Warehouse
+    [JsonIgnore] public string RegionName=>InRooms?RoomName:InCampaign?Stage.Name:Region==Region.Warehouse?"Kronans magasin":Region==Region.Shore?"De tre vittnenas strand":Duel?"Sabelduell vid kajen":"Blekinges likvarv";
+    [JsonIgnore] public Vector2 JourneyObjective=>InRooms?RoomObjective:InCampaign?CampaignObjective:Region==Region.Warehouse
         ?!WhetstoneTaken?JourneyLayout.Whetstone:!ManifestTaken?JourneyLayout.Manifest:!WinchOpened?JourneyLayout.Winch:JourneyLayout.WarehouseExit
         :AtlandRevealed?JourneyLayout.ShoreExit:Surveyed.All(s=>s)?JourneyLayout.Reveal
         :JourneyLayout.Survey.Where((_,i)=>!Surveyed[i]).OrderBy(p=>Vector2.DistanceSquared(p,Player)).First();
@@ -64,6 +64,7 @@ public sealed partial class Combat
     }
     private void StepJourney(Controls input,float dt)
     {
+        if(InRooms){StepRooms(input);return;}
         if(InCampaign){StepCampaign(input,dt);return;}
         if(Duel&&Enemies.All(e=>e.Dead)){Phase=Phase.Complete;return;}
         if(Region==Region.Quay)return;
