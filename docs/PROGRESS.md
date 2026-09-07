@@ -1,5 +1,12 @@
 # Checkpoint · Vägen under vattnet · 2026-09-06
 
+## Senast · återställd målad port · 2026-09-07
+
+Användaren förtydligade att oron för 3D gäller Karl och fienderna; de rika genererade miljöerna föredras framför modulprovet. Porten använder åter `world-atland-v1.png`, oförändrad på disk. Modulgolv, murar, cache-renderer och den avvisade skiljemurens kollisionsyta är borttagna. Den ursprungliga gångytan används igen. Gömman och dess engångsbelöning är kvar, och gamla sparpositioner anpassas till återställd gångyta.
+
+`./start.sh -- --port`, samma separata sparfil. Native: `dist/AtlandsArv-0.4.2/AtlandsArv.x86_64`. Verifierat: 29 144 regelassertions inklusive båda arkivvalen och understöden genom alla åtta banor; native `--port-check` passerar och bilderna i `dist/AtlandsArv-0.4.2/artifacts/` är visuellt granskade. `VISION.md` förtydligar den fortsatta riktningen: rika målade bakgrunder och seriösa 2D-figurer. Tidigare modulbeskrivningar nedan är historik.
+
+
 ## Senaste checkpoint · modulär Atlands port 0.4.1
 
 Portbanan använder nu direkt ritade 2D-moduler på ett fast 128:64-rutnät och en ny målad stenstruktur. Skiljemuren har kollision, stoppar kulor och hugg och skymmer figurer utifrån fotpunkter. Bakom den finns en sidoväg med en sparad engångsbelöning och ledtråd. Fyra småföremål återanvänds från det tidigare transparenta 2D-arket; inga av dess avvisade golv- eller murbilder används. Ingen Blender-produktion har gjorts.

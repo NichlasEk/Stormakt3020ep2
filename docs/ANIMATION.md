@@ -1,5 +1,7 @@
 # Animation · rörelsen före målningen
 
+Förtydligande 2026-09-07: Karl och fienderna ska vara 2D-sprites. Miljöernas rika genererade bakgrundsmålningar är önskade och ska behållas; tidigare generella modulkrav gällde för brett. Se aktuell `VISION.md`.
+
 ## Gällande assetriktning · användarens senaste instruktion
 
 Äkta 2D-isometriska spelassets med fast projektion, rena silhuetter, läsbara former, återhållen palett, diskret målad textur och återanvändbara moduler. Ingen fortsatt Blender-/3D-produktion. Det tidigare renderade gångprovet är arkiverat experiment och ska inte ersätta kampanjens figurer. Nedanstående Blender-anvisningar beskriver historiken, inte nästa produktionssteg.

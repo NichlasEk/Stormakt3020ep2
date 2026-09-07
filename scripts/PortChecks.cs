@@ -23,13 +23,12 @@ public partial class Main
             }
             await Capture("port-entry",Expedition.Entry);
             _game.Enemies.Clear();
-            await Capture("port-wall-behind",PortLayout.At(1.45f,7.4f));
-            await Capture("port-wall-front",PortLayout.At(2.95f,7.4f));
+            await Capture("port-courtyard",new System.Numerics.Vector2(510,612));
             await Capture("port-cache",PortLayout.Cache);
-            await Capture("port-gate-closed",Expedition.Exit+new System.Numerics.Vector2(0,90));
+            await Capture("port-objectives-locked",Expedition.Exit+new System.Numerics.Vector2(0,90));
             _game.CampaignProgress=3;_game.CampaignMask=7;
-            await Capture("port-gate-open",Expedition.Exit+new System.Numerics.Vector2(0,90));
-            GD.Print("PORT CHECK PASS: entry, wall front/behind, cache, closed/open gate");GetTree().Quit();
+            await Capture("port-objectives-complete",Expedition.Exit+new System.Numerics.Vector2(0,90));
+            GD.Print("PORT CHECK PASS: painted entry/courtyard, 2D cache, locked/completed objectives");GetTree().Quit();
         }
         catch(Exception ex){GD.PushError(ex.ToString());GetTree().Quit(1);}
     }

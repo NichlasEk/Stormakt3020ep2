@@ -1,3 +1,9 @@
+# Arkiverat modulprov · ersatt 2026-09-07
+
+Användaren föredrar den tidigare genererade bakgrundsmålningen. 0.4.2 återställer `assets/art/world-atland-v1.png` i portbanan och tar bort modulrenderer, rutnät och skiljemurens kollision. Figurerna förblir 2D-sprites. Gömman, dess belöning och separata portsparningar bevaras. `./start.sh -- --port` startar den återställda målade banan.
+
+Nedan följer historiken för det avvisade 0.4.1-provet. Mått, kollisioner, produktionskod och testantal nedan gäller den gamla checkpointen `e6038cc`, inte den aktuella banan.
+
 # Atlands port · modulärt 2D-prov · 0.4.1
 
 ## Prova

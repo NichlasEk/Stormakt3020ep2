@@ -66,7 +66,7 @@ public partial class Main
         Wrapped(_game.Stage.Intro,new Vector2(95,205),1040,22,Pale,34);
         Text("LEDTRÅD",new Vector2(95,333),13,Gold);Wrapped(_game.Stage.Clue,new Vector2(95,373),1040,22,Gold,34);
         Wrapped(_game.ArchiveChoice==0?"Arkivets öde är ännu inte avgjort.":_game.ArchiveChoice==1?"Arkivet är bevarat. Expeditionen fick extra förråd; kollegiet skickar fler väktare.":"Det förfalskade passet avleder patruller. Färre förstärkningar väntar längs färden.",new Vector2(95,487),1040,19,Muted,30);
-        if(_game.CampaignStage==0)Wrapped(_game.PortCacheTaken?"Murarens gömma: avtrycket och två tinkturer är säkrade.":"En lykta står vid murens södra ände. Det finns spår av en smal väg bakom den.",new Vector2(95,566),1040,16,Gold,24);
+        if(_game.CampaignStage==0)Wrapped(_game.PortCacheTaken?"Murarens gömma: avtrycket och två tinkturer är säkrade.":"En liten förrådskista står vid gårdens västra kant. Någon har lämnat den där.",new Vector2(95,566),1040,16,Gold,24);
         Button(new Rect2(830,614,340,49),"Tillbaka","back",true);
     }
     private void DrawCampaignEnding()

@@ -474,8 +474,7 @@ public partial class Main : Node2D
     private void DrawWorld()
     {
         DrawSetTransform(Offset,0,Vector2.One*Zoom);
-        if(_game.CampaignStage==0){DrawCachedPortFloor();DrawCampaignMarkers();}
-        else if(_game.Region==Region.Quay)DrawTextureRectRegion(_background,new Rect2(18,30,1500,946),new Rect2(18,30,1500,946),Colors.White);
+        if(_game.Region==Region.Quay)DrawTextureRectRegion(_background,new Rect2(18,30,1500,946),new Rect2(18,30,1500,946),Colors.White);
         else {DrawTextureRect(_game.InCampaign?_campaignWorlds[_game.Stage.World]:_game.Region==Region.Warehouse?_warehouse:_game.AtlandRevealed?_shoreRevealed:_shore,new Rect2(0,0,1536,1024),false);if(_game.InCampaign)DrawCampaignMarkers();else DrawJourneyMarkers();}
         foreach(var seal in _game.Seals)
         {
@@ -773,7 +772,7 @@ public partial class Main : Node2D
     {
         foreach(var texture in _campaignWorlds)texture?.Dispose();
         _cast?.Dispose();_animated?.Dispose();_warehouse?.Dispose();if(_shoreRevealed!=_shore)_shoreRevealed?.Dispose();_shore?.Dispose();
-        _portFloorCache?.Dispose();_portWallCache?.Dispose();_portStone?.Dispose();_portProps?.Dispose();
+        _portProps?.Dispose();
         _background?.Dispose();_radioPortraits?.Dispose();_ebbaPortrait?.Dispose();_serif?.Dispose();_sans?.Dispose();
     }
 }

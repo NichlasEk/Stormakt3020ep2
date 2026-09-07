@@ -40,10 +40,12 @@ Karl förblir allvarlig inför faran, Hedvig dras djupare in i upptäckten och E
 
 ## Production
 
-Local ComfyUI experiments with saved API graphs; selected painted assets through the built-in image tool when local results do not meet the approved style; new synthetic voices through EutherLink; ACE-Step score; authored layered effects. Blender can provide consistent actor geometry/animation. No runtime dependency on AI services. Every generated source retains provenance. Finish one coherent arena and validate it before expanding. Animation fidelity is the first art risk to resolve.
+Local ComfyUI experiments with saved API graphs; selected painted assets through the built-in image tool when local results do not meet the approved style; new synthetic voices through EutherLink; ACE-Step score; authored layered effects. Karl and enemies remain serious painted 2D sprites. No runtime dependency on AI services. Every generated source retains provenance. Finish one coherent arena and validate it before expanding. Animation fidelity is the first art risk to resolve.
 
 Sources: https://sv.wikipedia.org/wiki/Verner_von_Heidenstam ; https://www.uu.se/om-uu/historia/framstaende-personer/olof-rudbeck ; https://www.internationaleonline.org/contributions/reconstructing-the-anatomical-theatre-in-uppsala/
 
-## Senaste bindande assetriktning
+## Senaste bindande assetriktning · förtydligad 2026-09-07
 
-True 2D isometric game assets. Fixed projection, clean silhouettes, readable gameplay shapes, restrained palette, subtle painted texture, modular reusable design. No 3D, Blender, concept art or rendered-model sprites. Tidigare 3D-gångexperiment är historik och inte längre produktionsriktningen.
+Användarens oro för 3D gällde spelaren och fienderna. De rika genererade bakgrundsmålningarna var uttryckligen snyggare än det modulära portprovet och ska vara miljöernas fortsatta grund. Behåll djup, målad detaljrikedom, slitage och stämning från de godkända miljöerna. Anpassa gångytor, kollision och förgrundsskymning till målningen.
+
+Karl och fienderna förblir seriösa målade 2D-sprites med läsbara silhuetter och sammanhängande animation. Inga 3D-figurer ska införas. Kravet innebär inte att miljöerna ska ersättas av enkla rutgolv eller modulära murar. Det tidigare generella förbudet mot genererade miljöbilder var en feltolkning och gäller inte.

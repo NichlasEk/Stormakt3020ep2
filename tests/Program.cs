@@ -282,41 +282,21 @@ try
 finally{File.Delete(segmentPath);}
 Console.WriteLine($"PASS CAMPAIGN CHECKPOINT · {checks} assertions");
 
-// The port divider uses the same 2D footprint for movement, sight and weapons.
+// The restored painting has no invisible divider from the rejected modular version.
 var port=Combat.NewAtland(Order.Medicine);port.Enemies.Clear();
-var front=PortLayout.At(2.95f,7.4f);var behind=PortLayout.At(1.45f,7.4f);
-Check(port.OnWalkable(front)&&port.OnWalkable(behind),"Both sides of the low port wall are playable");
-Check(!port.ClearPath(front,behind),"Port wall blocks attacks and bullets across its footprint");
-Check(!port.OnWalkable(PortLayout.At(2.2f,7)),"Wall interior cannot be walked through");
-Check(port.OnWalkable(port.Bound(PortLayout.At(2.2f,7))),"Bound relocates older saves out of new masonry");
-port.Player=front;
-for(int tick=0;tick<1400&&Vector2.Distance(port.Player,PortLayout.Cache)>25;tick++)
-{
- var portWaypoint=port.NextWaypoint(port.Player,PortLayout.Cache);
- port.Step(Input(Combat.Normal(portWaypoint-port.Player,Vector2.UnitX)));
- Check(port.OnWalkable(port.Player),"Side passage stays outside wall collision");
-}
-Check(Vector2.Distance(port.Player,PortLayout.Cache)<25,"Ordinary movement reaches the cache around the wall");
-int beforeCache=port.Potions;port.Health=60;
+Check(port.ClearPath(new(483.2f,631.2f),new(387.2f,583.2f)),"Restored courtyard has no invisible modular wall");
+Check(port.OnWalkable(PortLayout.Cache),"Existing optional cache remains on the painted floor");
+port.Player=PortLayout.Cache;int beforeCache=port.Potions;port.Health=60;
 for(int tick=0;tick<100;tick++)port.Step(Input(interact:true));
-Check(port.PortCacheTaken&&port.Potions==beforeCache+2&&port.Health==80,"Cache grants its supplies exactly once");
+Check(port.PortCacheTaken&&port.Potions==beforeCache+2&&port.Health==80,"Restored scene retains the one-time cache reward");
 string portSave=Path.Combine(Path.GetTempPath(),"atland-port-"+Guid.NewGuid()+".json");
 try
 {
  SaveStore.Write(portSave,port);port=SaveStore.Read(portSave);
  for(int tick=0;tick<100;tick++)port.Step(Input(interact:true));
- Check(port.PortCacheTaken&&port.Potions==beforeCache+2,"Reload cannot duplicate the hidden supplies");
- port.Player=PortLayout.At(2.2f,7);SaveStore.Write(portSave,port);port=SaveStore.Read(portSave);
- Check(port.OnWalkable(port.Player),"Pre-layout checkpoint inside wall is safely relocated on load");
+ Check(port.PortCacheTaken&&port.Potions==beforeCache+2,"Reload keeps the optional find without duplicate supplies");
+ port.Player=new(1390,620);SaveStore.Write(portSave,port);port=SaveStore.Read(portSave);
+ Check(port.OnWalkable(port.Player),"Old modular-edge save relocates inside restored courtyard");
 }
 finally{File.Delete(portSave);File.Delete(portSave+".bak");}
-Console.WriteLine($"PASS MODULAR PORT · {checks} assertions");
-var wallCombat=Combat.NewAtland(Order.Medicine);wallCombat.Enemies.Clear();wallCombat.Player=behind;
-wallCombat.Shots.Add(new(){Position=front,Velocity=Combat.Normal(behind-front,Vector2.UnitX)*600,Life=2});
-for(int tick=0;tick<25;tick++)wallCombat.Step(Input());
-Check(wallCombat.Health==100&&wallCombat.Shots.Count==0,"Incoming bullet is stopped by real wall collision before Karl");
-wallCombat.Player=front;wallCombat.Spawn(EnemyKind.Guard,behind);wallCombat.Enemies[0].Cooldown=20;
-float guardHealth=wallCombat.Enemies[0].Health;
-for(int tick=0;tick<14;tick++)wallCombat.Step(Input(aim:behind-front,attack:true));
-Check(wallCombat.Enemies[0].Health==guardHealth,"Saber cannot hit through the port wall");
-Console.WriteLine($"PASS PORT WEAPON OCCLUSION · {checks} assertions");
+Console.WriteLine($"PASS PAINTED PORT RESTORATION · {checks} assertions");

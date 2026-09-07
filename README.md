@@ -2,9 +2,9 @@
 
 Episod II. Ett nytt, fristående actionrollspel i Stormakts värld: nordisk barock, karoliner, mytologi och Rudbecks Atland.
 
-## Nytt · Atlands port 0.4.1
+## Nytt · den målade Atlands port är tillbaka · 0.4.2
 
-`./start.sh -- --port` eller **Spela Atlands port** i menyn: en spelbar bana med modulärt 2D-golv, murar med kollision/skymning, portmekanism och en sidoväg med gömma. E/B undersöker, R visar ledtråden. Provets sparning ligger separat. [Mått, produktion och kvarvarande arbete](docs/PORT-MODULES.md).
+`./start.sh -- --port` eller **Spela Atlands port** i menyn. Den ursprungliga rika bakgrundsmålningen är återställd, och det modulära provets skiljemur och kollision är borttagna. Karl och fienderna är fortfarande målade 2D-sprites. Gömman och separata sparningar finns kvar. E/B undersöker, R visar ledtråden.
 
 ## Spela 0.4
 
@@ -86,4 +86,4 @@ Originalet i `/home/nichlas/WaylandForge` är referensmaterial och ändras inte 
 
 `./start-walk-study.sh` visar Karls nya riggade gång som vanliga 2D-bilder på stranden. Vänster/höger byter riktning, mellanslag pausar, F11 helskärm, Esc avslutar. Separat grafikprov under arbete; kampanjens figurer är ännu inte ersatta. Produktionskedjan finns i `docs/ANIMATION.md`.
 
-Senaste assetriktningen är ren 2D-isometri och modulära delar. Blender-gångprovet ovan är ett arkiverat experiment, inte fortsatt produktion.
+Senaste assetriktningen är rika genererade bakgrundsmålningar med seriösa 2D-sprites för Karl och fiender. Blender-gångprovet ovan är ett arkiverat experiment, inte fortsatt produktion.

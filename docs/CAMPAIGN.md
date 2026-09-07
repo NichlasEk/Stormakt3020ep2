@@ -1,5 +1,7 @@
 # Expeditionen genom Atland · 0.4
 
+Aktuell riktning 2026-09-07: rika genererade miljöbakgrunder behålls. 2D-kravet gäller Karl och fienderna. Äldre modulriktning nedan är historik, ersatt av `VISION.md`.
+
 ## Gällande assetriktning · användarens senaste instruktion
 
 Äkta 2D-isometriska spelassets med fast projektion, rena silhuetter, läsbara former, återhållen palett, diskret målad textur och återanvändbara moduler. Ingen fortsatt Blender-/3D-produktion. Det tidigare renderade gångprovet är arkiverat experiment och ska inte ersätta kampanjens figurer. Nedanstående Blender-anvisningar beskriver historiken, inte nästa produktionssteg.
@@ -42,6 +44,6 @@ xvfb-run -a -s '-screen 0 1280x720x24' godot-mono --display-driver x11 --path "$
 
 ## Eget detaljpass senare
 
-Bana 1 har nu modulärt golv, en kolliderande skiljemur och en sidoväg med sparat fynd; se `PORT-MODULES.md`. Banorna 2–8 har ännu gemensam öppen spelgolvsgeometri. Nästa pass bör ge varje bana egna landmärken, avgränsningar och interaktionsföremål: arkivsigill, rotlyktor, mönstringsklocka, ventiler, gjutform och stjärninstrument. Kontrollera alltid vuxenskala, passage och skymning framför/bakom figurerna.
+Bana 1 har åter sin ursprungliga bakgrundsmålning och öppen gångyta; modulprovet är avvisat. Det sparade sidofyndet finns kvar. Banorna 2–8 har fortsatt sina målade miljöer och öppna spelgolvsgeometri. Nästa pass bör ge varje bana egna landmärken, avgränsningar och interaktionsföremål: arkivsigill, rotlyktor, mönstringsklocka, ventiler, gjutform och stjärninstrument. Kontrollera alltid vuxenskala, passage och skymning framför/bakom figurerna.
 
 Kronfogden och kollegiets väktare återanvänder indrivarens grafik; nya vakter använder befintliga stridsroller. Nya berättelser visas som anteckningar. Egna porträtt, röster, musikvariationer och slutlig riggad gång hör till det senare assetpasset. Det målade gångprovet körs separat med `./start-walk-study.sh`.
