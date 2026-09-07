@@ -355,8 +355,8 @@ public sealed partial class Combat
             float speed=e.Kind==EnemyKind.Collector?76:e.Kind==EnemyKind.Gunner?65:e.Kind==EnemyKind.Pikeman?83:106;
             var before=e.Position;
             if(distance>reach*.82f||!ClearPath(e.Position,Player))
-            {var direction=Normal(NextWaypoint(e.Position,Player)-e.Position,e.Facing);e.Position=Bound(e.Position+direction*speed*dt);}
-            else if(e.Kind==EnemyKind.Gunner && distance<170)e.Position=Bound(e.Position-e.Facing*speed*dt);
+            {var direction=Normal(NextWaypoint(e.Position,Player)-e.Position,e.Facing);e.Position=MoveBody(e.Position,e.Position+direction*speed*dt);}
+            else if(e.Kind==EnemyKind.Gunner && distance<170)e.Position=MoveBody(e.Position,e.Position-e.Facing*speed*dt);
             var displacement=e.Position-before;float travelled=displacement.Length();e.Moving=travelled>.001f;
             if(e.Moving){e.MoveDirection=displacement/travelled;e.Walk+=travelled*7/195;}
             if(distance<reach && e.Cooldown<=0 && ClearPath(e.Position,Player))
@@ -408,7 +408,7 @@ public sealed partial class Combat
         {damage*=.3f;Emit("block",e.Position,"BRYT GARDEN");}
         if(e.Kind==EnemyKind.OathGuardian)damage*=e.State==3?1.65f:.18f;
         e.Health=Math.Max(0,e.Health-damage);e.Hurt=.16f;
-        if(stagger && e.Kind is not (EnemyKind.Collector or EnemyKind.OathGuardian)){e.State=3;e.Timer=.5f;e.Position=Bound(e.Position+Normal(e.Position-source,Vector2.UnitX)*12);}
+        if(stagger && e.Kind is not (EnemyKind.Collector or EnemyKind.OathGuardian)){e.State=3;e.Timer=.5f;e.Position=MoveBody(e.Position,e.Position+Normal(e.Position-source,Vector2.UnitX)*12);}
         HitStop=Weapon==Weapon.Hammer?.055f:.035f;Emit("hit",e.Position,((int)damage).ToString(),damage);
         if(e.Dead){Kills++;Stamina=Math.Min(100,Stamina+10);Emit("death",e.Position);if(e.Kind==EnemyKind.OathGuardian&&Rooms!=null){Rooms.OathDefeated=true;Emit("radio",Player,"rooms-fallen");DropItem("crown-helm",e.Position);Emit("inscription",e.Position,"EDEN ÄR BRUTEN");Emit("checkpoint",Player);}else DropEnemyLoot(e);}
     }
@@ -423,15 +423,15 @@ public sealed partial class Combat
     }
     private void MovePlayer(Vector2 delta)
     {
-        var target=Bound(Player+delta);
+        var target=MoveBody(Player,Player+delta);
         foreach(var e in Enemies.Where(e=>!e.Dead))
         {var d=target-e.Position;float l=d.Length();if(l<29 && l>.01f)target=e.Position+d/l*29;}
-        Player=Bound(target);
+        Player=MoveBody(Player,target);
     }
     private void SeparateEnemies()
     {
         for(int i=0;i<Enemies.Count;i++)for(int j=i+1;j<Enemies.Count;j++)
-        {var a=Enemies[i];var b=Enemies[j];if(a.Dead||b.Dead)continue;var d=b.Position-a.Position;float l=d.Length();if(l<37){var n=Normal(d,Vector2.UnitX);float push=(37-l)*.5f;a.Position=Bound(a.Position-n*push);b.Position=Bound(b.Position+n*push);}}
+        {var a=Enemies[i];var b=Enemies[j];if(a.Dead||b.Dead)continue;var d=b.Position-a.Position;float l=d.Length();if(l<37){var n=Normal(d,Vector2.UnitX);float push=(37-l)*.5f;a.Position=MoveBody(a.Position,a.Position-n*push);b.Position=MoveBody(b.Position,b.Position+n*push);}}
     }
     public static Vector2 Normal(Vector2 v,Vector2 fallback)=>v.LengthSquared()>.0001f?Vector2.Normalize(v):fallback;
     public static bool OnGround(Vector2 p)

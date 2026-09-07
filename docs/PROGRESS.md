@@ -1,5 +1,9 @@
 # Checkpoint · Vägen under vattnet · 2026-09-06
 
+## Senast · dörrskarvens kollision · 0.11.2
+
+Danskens genomgång återskapad vid fria dörränden. Dörr/karm har nu överlappande rundade kollisionsändar, och dörrprovets figurförflyttning kontrollerar hela rörelsen inklusive undanträngning och rekyl. 3 583 riktade kontroller täcker Karl, vakter, båda sidor, båda karmar, trängsel samt öppen/förstörd dörr. Se `PHYSICAL-DOORS.md`. Inga nya miljöer eller passager i denna buggfix.
+
 ## Senast · ekportens tjocklek · 0.11.1
 
 Målat dörrblad med fram-/baksida, överkant och ändträ. Renderingen följer gångjärnets isometriska projektion, inom befintlig kollisionsmarginal. Befintliga texturer och sparningar används. Bildkontroll i stängt, halvöppet, öppet och förstört läge. Nästa önskemål är hela kartan som sammanhängande områden, inklusive öppna passager; första föreslagna anslutningen är logementet till pumphuset. Se `ROADMAP.md` och `PHYSICAL-DOORS.md`.

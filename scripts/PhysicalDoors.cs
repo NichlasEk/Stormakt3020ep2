@@ -24,7 +24,19 @@ public static class DoorTrialLayout
     public static readonly Vector2[] Ground={new(125,385),new(340,280),new(980,85),new(1465,365),new(1465,928),new(1120,972),new(355,774),new(100,605)};
     public static readonly Vector2[][] Walls={Bar(new(150,230),Hinge-new Vector2(14,8),21),Bar(ClosedTip+new Vector2(12,7),new(1530,1005),21)};
     public static Vector2 Leaf(float open){float a=open*MathF.PI/2;return new(141*(MathF.Cos(a)+MathF.Sin(a)),79*(MathF.Cos(a)-MathF.Sin(a)));}
-    public static Vector2[] Bar(Vector2 a,Vector2 b,float width){var n=Vector2.Normalize(new Vector2(-(b-a).Y,(b-a).X))*width;return new[]{a+n,b+n,b-n,a-n};}
+    public static Vector2[] Bar(Vector2 a,Vector2 b,float width)
+    {
+        // Rounded end caps overlap adjoining jambs. Flat ends left a foot-sized seam
+        // which the navigation graph could correctly (but undesirably) route through.
+        var polygon=new Vector2[18];float heading=MathF.Atan2(b.Y-a.Y,b.X-a.X);
+        for(int i=0;i<9;i++)
+        {
+            float angle=heading-MathF.PI/2+i*MathF.PI/8;
+            polygon[i]=b+new Vector2(MathF.Cos(angle),MathF.Sin(angle))*width;
+            angle+=MathF.PI;polygon[i+9]=a+new Vector2(MathF.Cos(angle),MathF.Sin(angle))*width;
+        }
+        return polygon;
+    }
     public static float Side(Vector2 p)=>p.Y-(Hinge.Y+(p.X-Hinge.X)*79/141);
     public static float Distance(Vector2 p,Vector2 a,Vector2 b){var d=b-a;return Vector2.Distance(p,a+d*Math.Clamp(Vector2.Dot(p-a,d)/d.LengthSquared(),0,1));}
 }
@@ -34,6 +46,17 @@ public sealed partial class Combat
     public bool PreferRoomRoute;
     [JsonIgnore] public bool InDoorTrial=>DoorTest!=null;
     [JsonIgnore] public Vector2[][] DoorObstacles=>DoorTrialLayout.Walls.Append(DoorTest!.Door.Solid).ToArray();
+    private Vector2 MoveBody(Vector2 from,Vector2 target)
+    {
+        var bounded=Bound(target);
+        if(!InDoorTrial||ClearPath(from,bounded))return bounded;
+        // Check the entire displacement, including overlap separation and knockback.
+        // Slide along an available axis instead of snapping to the far face of a solid.
+        var x=Bound(new(target.X,from.Y));var y=Bound(new(from.X,target.Y));
+        bool canX=ClearPath(from,x),canY=ClearPath(from,y);
+        if(canX&&canY)return Vector2.DistanceSquared(x,target)<Vector2.DistanceSquared(y,target)?x:y;
+        return canX?x:canY?y:from;
+    }
     public static Combat NewDoorTrial(Order order)
     {
         var g=NewRooms(order);g.DoorTest=new();g.Enemies.Clear();g.Events.Clear();g.Player=DoorTrialLayout.Start;

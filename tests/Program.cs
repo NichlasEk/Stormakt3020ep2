@@ -5,6 +5,7 @@ using System.Text.Json;
 int checks=0;
 void Check(bool condition,string message){if(!condition)throw new Exception(message);checks++;}
 Controls Input(Vector2 move=default,Vector2 aim=default,bool attack=false,bool heavy=false,bool dodge=false,bool guard=false,bool swap=false,bool heal=false,bool support=false,bool interact=false)=>new(move,aim,attack,heavy,dodge,guard,swap,heal,support,interact);
+if(args.Contains("--doors-only")){DoorTests.Run(Check);Console.WriteLine($"PASS DOORS · {checks}");return;}
 var arena=Combat.New(Order.Artillery);
 arena.Enemies.Clear();arena.Player=new(740,740);arena.Spawn(EnemyKind.Guard,new(795,740));
 arena.Enemies[0].Cooldown=10;

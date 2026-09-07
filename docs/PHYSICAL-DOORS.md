@@ -2,6 +2,16 @@
 
 2026-09-07. Ett spelbart prov med förgård och logement i samma målade miljö. Karl och vakten delar koordinater, navigation och simulering. Dörröppningen byter inte scen och kräver inget extra knapptryck för genomgång.
 
+## Tät dörrskarv · 0.11.2
+
+Ett reproducerat fel lät en förföljande vakt passera den stängda dörrens fria ände efter 76 simulationsteg, vid ungefär (856, 627). Dörrens och karmens raka kollisionsändar lämnade en lucka som även Karl kunde gå genom.
+
+Kollisionsformerna har nu överlappande rundade ändar vid skarvarna. I dörrprovet kontrolleras dessutom hela förflyttningen för vanlig gång, undanmanöver, fienderörelse, rekyl och figurernas inbördes undanträngning. Figurer får glida längs ett hinder men inte snäppas över till dess andra sida. Övriga banor använder sin befintliga rörelsehantering.
+
+Regressioner provar vaktförföljelse mot stängd dörr från båda sidor, Karl vid båda karmarna med gång/undanmanöver, trängsel med tre vakter samt fungerande förföljelse genom öppen och förstörd dörr i båda riktningar. `dotnet run --project tests/Atland.Tests.csproj -- --doors-only` kör 3 583 dörr-/ruttkontroller. Röda reproduktionsloggen är `artifacts/door-collision-red.log`; gröna loggar har prefix `door-collision-`.
+
+Hela regelsviten passerar 33 157 kontroller, bygget har noll fel/varningar, och Linux-exportens native dörrkontroll avslutar med kod 0. Export: `dist/AtlandsArv-0.11.2-collision`. `./play.sh -- --doors-new` återställer just dörrprovet om dörren eller vakten redan har flyttats/förstörts i tidigare prov.
+
 ## Tjock ekport · 0.11.1
 
 Dörrbladet har nu fram- och baksida, en synlig överkant och ändträ på båda kortsidorna. Alla ytor följer samma isometriska gångjärnsprojektion. Den målade tjockleken ryms i den befintliga kollisionsmarginalen; navigation och sparformat är oförändrade. Befintlig ektextur återanvänds med olika utsnitt och matt skuggning. Native bildkontroll omfattar även halvöppen dörr. Export: `dist/AtlandsArv-0.11.1-oak`. Bygget och native dörrkontrollen passerar med avslutningskod 0; bilderna från slutexporten är granskade. Logg: `artifacts/door-thickness-export-native.log`.

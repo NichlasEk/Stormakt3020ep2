@@ -7,6 +7,43 @@ static class DoorTests
  {
   Controls C(Vector2 move=default,bool use=false,bool hit=false)=>new(move,new(0,-1),hit,false,false,false,false,false,false,use);
   void Frames(Combat g,int n){for(int i=0;i<n;i++)g.Step(C());}
+  foreach(int side in new[]{-1,1})
+  {
+   var blocked=Combat.NewDoorTrial(Order.Artillery);blocked.Enemies.Clear();blocked.DeveloperSurvival=true;
+   var normal=Vector2.Normalize(new Vector2(-79,141));
+   blocked.Player=DoorTrialLayout.Center+normal*side*100;
+   blocked.Spawn(EnemyKind.Guard,DoorTrialLayout.Center-normal*side*100);blocked.Enemies[0].Alerted=true;
+   for(int i=0;i<1200;i++)
+   {
+    blocked.Step(C());
+    check(DoorTrialLayout.Side(blocked.Enemies[0].Position)*side<0,$"Closed door stops pursuing guard from side {side}, tick {i}, at {blocked.Enemies[0].Position}");
+   }
+  }
+  foreach(var jamb in new[]{DoorTrialLayout.Hinge,DoorTrialLayout.ClosedTip})
+  foreach(int side in new[]{-1,1})foreach(bool dodge in new[]{false,true})
+  {
+   var seam=Combat.NewDoorTrial(Order.Artillery);seam.Enemies.Clear();var n=Vector2.Normalize(new Vector2(-79,141));seam.Player=jamb+n*side*55;
+   for(int i=0;i<100;i++)
+   {
+    seam.Step(new(-n*side,default,false,false,dodge&&i%30==0,false,false,false,false,false));
+    check(DoorTrialLayout.Side(seam.Player)*side>0,$"Karl stays on his side of jamb {jamb}, side {side}, dodge {dodge}, tick {i}");
+   }
+  }
+  foreach(int side in new[]{-1,1})foreach(bool broken in new[]{false,true})
+  {
+   var passage=Combat.NewDoorTrial(Order.Artillery);passage.Enemies.Clear();passage.DeveloperSurvival=true;passage.DoorTest!.KeyTaken=true;
+   var leaf=passage.DoorTest.Door;leaf.Locked=false;leaf.TargetOpen=true;leaf.Openness=1;if(broken)leaf.Health=0;
+   var yard=new Vector2(749,700);var lodge=new Vector2(1030,480);
+   passage.Player=side>0?yard:lodge;passage.Spawn(EnemyKind.Guard,side>0?lodge:yard);passage.Enemies[0].Alerted=true;
+   Frames(passage,500);check(DoorTrialLayout.Side(passage.Enemies[0].Position)*side>0,$"Guard can still pursue through {(broken?"broken":"open")} door from side {side}");
+  }
+  foreach(int side in new[]{-1,1})
+  {
+   var crowd=Combat.NewDoorTrial(Order.Artillery);crowd.Enemies.Clear();crowd.DeveloperSurvival=true;var n=Vector2.Normalize(new Vector2(-79,141));
+   crowd.Player=DoorTrialLayout.Center-n*side*90;
+   for(int j=0;j<3;j++){crowd.Spawn(EnemyKind.Guard,DoorTrialLayout.Center+n*side*(16+j*5));crowd.Enemies[^1].Alerted=true;}
+   for(int i=0;i<180;i++){crowd.Step(C());check(crowd.Enemies.All(e=>DoorTrialLayout.Side(e.Position)*side>0),"Crowd separation cannot push a guard through a closed leaf");}
+  }
   var g=Combat.NewDoorTrial(Order.Artillery);g.Enemies.Clear();var d=g.DoorTest!.Door;
   var outside=DoorTrialLayout.Center+new Vector2(-35,65);var inside=DoorTrialLayout.Center+new Vector2(35,-65);
   check(!g.ClearPath(outside,inside),"Closed leaf blocks sight and shots through the real threshold");
