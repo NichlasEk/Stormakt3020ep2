@@ -2,6 +2,14 @@
 
 2026-09-07. Ett spelbart prov med förgård och logement i samma målade miljö. Karl och vakten delar koordinater, navigation och simulering. Dörröppningen byter inte scen och kräver inget extra knapptryck för genomgång.
 
+## Passning mot stenöppningen · 0.11.3
+
+Bladet satt för långt ut på stenmurens framkant och var högre än den målade öppningen. Gångjärnet är nu inmätt vid (724, 533), stängningsänden vid (863, 612), och bladets målade höjd är 124 i miljöns bildkoordinater. Kollisionslinje och bild använder samma gångjärn och ändpunkt; väggarnas kollisionsändar följer den inmätta öppningen och överlappar fortsatt vid karmen.
+
+En fast ekkarm och järngångjärn förankrar bladet i muren. Fram-/baksida och överkant målas som sammanhängande ytor, så de gamla remsorna inte skriver över varandras kanter. Stenmurens förgrund behåller sin djupsortering. Befintlig målad textur återanvänds, inga nya bildgenereringar eller ändringar i sparformatet.
+
+3 583 riktade dörrkontroller passerar på den nya placeringen: båda sidor, båda skarvar, undanmanöver, trängsel och passage genom öppen/förstörd dörr. Native bildkontroll visar stängt, halvöppet, öppet, inne i logementet och förstört läge. Loggar: `artifacts/door-fit-tests.log`, `door-fit-build.log`, `door-fit-export-native.log`. Export: `dist/AtlandsArv-0.11.3-doorframe`. Bygget har noll fel/varningar och slutexportens native kontroll avslutar med kod 0. Bilderna från slutexporten är granskade.
+
 ## Tät dörrskarv · 0.11.2
 
 Ett reproducerat fel lät en förföljande vakt passera den stängda dörrens fria ände efter 76 simulationsteg, vid ungefär (856, 627). Dörrens och karmens raka kollisionsändar lämnade en lucka som även Karl kunde gå genom.
@@ -48,7 +56,7 @@ Vanlig landstigning fortsätter från stranden till de nio rummen. Samma Combat-
 
 `assets/art/door-courtyard-v1.png` är en ny gemensam målad miljö med tom öppning. `assets/art/door-oak-face-v1.png` är dörrens plana målade yta. Båda genererades med det inbyggda bildverktyget. Exakta promptar finns i `assets/source/door-trial-manifest-v1.json`.
 
-Ingen Blender behövdes för detta prov. En deterministisk isometrisk gångjärnsprojektion driver både den målade dörrytan och kollisionslinjen. Ytan ritas som 16 texturerade remsor med djupsortering; de befintliga målade väggarna ritas om i smala remsor framför/bakom figurer. Dörren har ingen fri fysiksimulering. Blender kan senare användas för att baka mer komplicerade portmekanismer till 2D-bildrutor.
+Ingen Blender behövdes för detta prov. En deterministisk isometrisk gångjärnsprojektion driver både den målade dörrytan och kollisionslinjen. Sedan 0.11.3 ritas bladets ytor sammanhängande; de befintliga målade väggarna ritas om i smala remsor framför/bakom figurer. Dörren har ingen fri fysiksimulering. Blender kan senare användas för att baka mer komplicerade portmekanismer till 2D-bildrutor.
 
 Samma dynamiska hinder används av gång, undanmanöver, navigation, närstrid, skott och markens sikt. Aktiva fiender finns samtidigt i båda rummen. Mörkret använder samma sparade utforskningsmask som huvudrutten. Föremålets geometriska linje och renderade gångjärn har en gemensam definition i `PhysicalDoors.cs`.
 

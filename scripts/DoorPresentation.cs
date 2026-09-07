@@ -40,6 +40,7 @@ public partial class Main
             float depth=548+(x+8-714)*79/141;layers.Add((depth,()=>PaintForeground(_doorGround!,strip)));
         }
         var d=_game.DoorTest!.Door;var h=G(DoorTrialLayout.Hinge);var tip=G(d.Tip);
+        AddOakFrame(layers);
         if(d.Broken)
         {
             for(int i=0;i<6;i++)
@@ -49,22 +50,47 @@ public partial class Main
         // The complete visual thickness stays inside the existing 30px collision envelope.
         float angle=d.Openness*Mathf.Pi/2;
         var thickness=new Vector2(-14*(Mathf.Cos(angle)-Mathf.Sin(angle)),7.85f*(Mathf.Cos(angle)+Mathf.Sin(angle)));
-        var half=thickness/2;var up=new Vector2(0,-145);
+        var half=thickness/2;var up=new Vector2(0,-124);
         float tint=d.Health<90?.76f:.94f;
-        for(int i=0;i<16;i++)
-        {
-            float u=i/16f,v=(i+1)/16f;var a=h.Lerp(tip,u);var b=h.Lerp(tip,v);
-            var backA=a-half;var backB=b-half;var frontA=a+half;var frontB=b+half;
-            var uv=new[]{new Vector2(u,0),new Vector2(v,0),new Vector2(v,1),new Vector2(u,1)};
-            layers.Add(((backA.Y+backB.Y)/2,()=>DrawPolygon(new[]{backA+up,backB+up,backB,backA},new[]{new Color(tint*.68f,tint*.65f,tint*.58f)},uv,_doorFace)));
-            layers.Add(((frontA.Y+frontB.Y)/2,()=>DrawPolygon(new[]{frontA+up,frontB+up,frontB,frontA},new[]{new Color(tint,tint*.96f,tint*.88f)},uv,_doorFace)));
-            layers.Add(((frontA.Y+frontB.Y)/2+.01f,()=>DrawPolygon(new[]{backA+up,backB+up,frontB+up,frontA+up},new[]{new Color(tint*.85f,tint*.81f,tint*.72f)},new[]{new Vector2(u,.94f),new Vector2(v,.94f),new Vector2(v,.98f),new Vector2(u,.98f)},_doorFace)));
-        }
+        // Paint each solid face as a whole. Independently sorting thin strips made
+        // neighboring top/side faces overwrite one another and produced a sawtooth edge.
+        var backA=h-half;var backB=tip-half;var frontA=h+half;var frontB=tip+half;
+        var uv=new[]{new Vector2(0,0),new Vector2(1,0),new Vector2(1,1),new Vector2(0,1)};
+        float leafDepth=(h.Y+tip.Y)/2;
+        layers.Add((leafDepth-half.Y,()=>DrawPolygon(new[]{backA+up,backB+up,backB,backA},new[]{new Color(tint*.68f,tint*.65f,tint*.58f)},uv,_doorFace)));
+        layers.Add((leafDepth+half.Y,()=>DrawPolygon(new[]{frontA+up,frontB+up,frontB,frontA},new[]{new Color(tint,tint*.96f,tint*.88f)},uv,_doorFace)));
+        layers.Add((leafDepth+half.Y+.01f,()=>DrawPolygon(new[]{backA+up,backB+up,frontB+up,frontA+up},new[]{new Color(tint*.85f,tint*.81f,tint*.72f)},new[]{new Vector2(0,.94f),new Vector2(1,.94f),new Vector2(1,.98f),new Vector2(0,.98f)},_doorFace)));
+
         foreach(var end in new[]{h,tip})
         {
             var back=end-half;var front=end+half;
             layers.Add((front.Y+.02f,()=>DrawPolygon(new[]{back+up,front+up,front,back},new[]{new Color(tint*.64f,tint*.58f,tint*.49f)},new[]{new Vector2(.43f,0),new Vector2(.47f,0),new Vector2(.47f,1),new Vector2(.43f,1)},_doorFace)));
         }
+    }
+    private void AddOakFrame(List<(float Depth,Action Draw)> layers)
+    {
+        var h=G(DoorTrialLayout.Hinge);var end=G(DoorTrialLayout.ClosedTip);
+        var along=(end-h).Normalized()*7;var across=new Vector2(-9,5);
+        var wood=new[]{new Vector2(.49f,.08f),new Vector2(.55f,.08f),new Vector2(.55f,.94f),new Vector2(.49f,.94f)};
+        foreach(var center in new[]{h-along*.25f,end+along*.25f})
+        {
+            var a=center-along-across;var b=center+along-across;var c=center+along+across;var d=center-along+across;var up=new Vector2(0,-137);
+            layers.Add((center.Y+across.Y,()=>
+            {
+                DrawPolygon(new[]{d+up,c+up,c,d},new[]{new Color(.63f,.59f,.50f)},wood,_doorFace);
+                DrawPolygon(new[]{b+up,c+up,c,b},new[]{new Color(.44f,.41f,.35f)},wood,_doorFace);
+                DrawPolygon(new[]{a+up,b+up,c+up,d+up},new[]{new Color(.70f,.65f,.54f)},wood,_doorFace);
+            }));
+        }
+        // Fixed iron hinge barrels remain attached to the jamb while the leaf turns.
+        layers.Add((h.Y+9,()=>
+        {
+            foreach(float height in new[]{31f,95f})
+            {
+                var at=h+new Vector2(4,-height);DrawLine(at-new Vector2(0,7),at+new Vector2(0,7),new Color("181917"),6,true);
+                DrawLine(at-new Vector2(1,6),at+new Vector2(-1,6),new Color("686251"),1.3f,true);
+            }
+        }));
     }
     private void DrawDoorJournal()
     {

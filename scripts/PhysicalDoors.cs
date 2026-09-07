@@ -19,11 +19,11 @@ public sealed class DoorTrial
 }
 public static class DoorTrialLayout
 {
-    public static readonly Vector2 Hinge=new(714,548),ClosedTip=new(855,627),Center=(Hinge+ClosedTip)/2;
+    public static readonly Vector2 Hinge=new(724,533),ClosedTip=new(863,612),Center=(Hinge+ClosedTip)/2;
     public static readonly Vector2 Key=new(520,680),Start=new(620,740),Guard=new(1010,475);
     public static readonly Vector2[] Ground={new(125,385),new(340,280),new(980,85),new(1465,365),new(1465,928),new(1120,972),new(355,774),new(100,605)};
-    public static readonly Vector2[][] Walls={Bar(new(150,230),Hinge-new Vector2(14,8),21),Bar(ClosedTip+new Vector2(12,7),new(1530,1005),21)};
-    public static Vector2 Leaf(float open){float a=open*MathF.PI/2;return new(141*(MathF.Cos(a)+MathF.Sin(a)),79*(MathF.Cos(a)-MathF.Sin(a)));}
+    public static readonly Vector2[][] Walls={Bar(new(150,230),new(710,535),21),Bar(new(864,620),new(1530,1005),21)};
+    public static Vector2 Leaf(float open){float a=open*MathF.PI/2;var closed=ClosedTip-Hinge;return new(closed.X*(MathF.Cos(a)+MathF.Sin(a)),closed.Y*(MathF.Cos(a)-MathF.Sin(a)));}
     public static Vector2[] Bar(Vector2 a,Vector2 b,float width)
     {
         // Rounded end caps overlap adjoining jambs. Flat ends left a foot-sized seam
@@ -37,7 +37,7 @@ public static class DoorTrialLayout
         }
         return polygon;
     }
-    public static float Side(Vector2 p)=>p.Y-(Hinge.Y+(p.X-Hinge.X)*79/141);
+    public static float Side(Vector2 p)=>p.Y-(Hinge.Y+(p.X-Hinge.X)*(ClosedTip.Y-Hinge.Y)/(ClosedTip.X-Hinge.X));
     public static float Distance(Vector2 p,Vector2 a,Vector2 b){var d=b-a;return Vector2.Distance(p,a+d*Math.Clamp(Vector2.Dot(p-a,d)/d.LengthSquared(),0,1));}
 }
 public sealed partial class Combat

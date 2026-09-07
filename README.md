@@ -6,6 +6,10 @@ Episod II. Ett nytt, fristående actionrollspel i Stormakts värld: nordisk baro
 
 Starta senaste verifierade Linux-versionen med `./play.sh` (ingen ombyggnad). `./play.sh -- --gate-film` visar filmprovet direkt. Exportens programfil, `.pck` och `data_AtlandsArv_linuxbsd_x86_64` måste ligga tillsammans; `play.sh` kontrollerar detta innan start. `./start.sh` bygger och kör från källkoden.
 
+## Fix · dörrbladets passning · 0.11.3
+
+Porten sitter nu längre in i den målade stenöppningen, med anpassad höjd, fast ekkarm och järngångjärn. Bild och kollisionslinje följer samma inmätta gångjärn. `./play.sh -- --doors-new` ger ett nytt prov. [Ändringar och verifiering](docs/PHYSICAL-DOORS.md).
+
 ## Fix · dörrens skarv · 0.11.2
 
 Karl och danska vakter kunde ta sig genom en lucka vid den stängda dörrens karm. Skarvarna överlappar nu och figurernas hela förflyttning kontrolleras. Nytt prov: `./play.sh -- --doors-new`. [Detaljer och regressionstester](docs/PHYSICAL-DOORS.md).

@@ -10,7 +10,7 @@ static class DoorTests
   foreach(int side in new[]{-1,1})
   {
    var blocked=Combat.NewDoorTrial(Order.Artillery);blocked.Enemies.Clear();blocked.DeveloperSurvival=true;
-   var normal=Vector2.Normalize(new Vector2(-79,141));
+   var normal=Vector2.Normalize(new Vector2(-(DoorTrialLayout.ClosedTip.Y-DoorTrialLayout.Hinge.Y),DoorTrialLayout.ClosedTip.X-DoorTrialLayout.Hinge.X));
    blocked.Player=DoorTrialLayout.Center+normal*side*100;
    blocked.Spawn(EnemyKind.Guard,DoorTrialLayout.Center-normal*side*100);blocked.Enemies[0].Alerted=true;
    for(int i=0;i<1200;i++)
@@ -22,7 +22,7 @@ static class DoorTests
   foreach(var jamb in new[]{DoorTrialLayout.Hinge,DoorTrialLayout.ClosedTip})
   foreach(int side in new[]{-1,1})foreach(bool dodge in new[]{false,true})
   {
-   var seam=Combat.NewDoorTrial(Order.Artillery);seam.Enemies.Clear();var n=Vector2.Normalize(new Vector2(-79,141));seam.Player=jamb+n*side*55;
+   var seam=Combat.NewDoorTrial(Order.Artillery);seam.Enemies.Clear();var n=Vector2.Normalize(new Vector2(-(DoorTrialLayout.ClosedTip.Y-DoorTrialLayout.Hinge.Y),DoorTrialLayout.ClosedTip.X-DoorTrialLayout.Hinge.X));seam.Player=jamb+n*side*55;
    for(int i=0;i<100;i++)
    {
     seam.Step(new(-n*side,default,false,false,dodge&&i%30==0,false,false,false,false,false));
@@ -39,7 +39,7 @@ static class DoorTests
   }
   foreach(int side in new[]{-1,1})
   {
-   var crowd=Combat.NewDoorTrial(Order.Artillery);crowd.Enemies.Clear();crowd.DeveloperSurvival=true;var n=Vector2.Normalize(new Vector2(-79,141));
+   var crowd=Combat.NewDoorTrial(Order.Artillery);crowd.Enemies.Clear();crowd.DeveloperSurvival=true;var n=Vector2.Normalize(new Vector2(-(DoorTrialLayout.ClosedTip.Y-DoorTrialLayout.Hinge.Y),DoorTrialLayout.ClosedTip.X-DoorTrialLayout.Hinge.X));
    crowd.Player=DoorTrialLayout.Center-n*side*90;
    for(int j=0;j<3;j++){crowd.Spawn(EnemyKind.Guard,DoorTrialLayout.Center+n*side*(16+j*5));crowd.Enemies[^1].Alerted=true;}
    for(int i=0;i<180;i++){crowd.Step(C());check(crowd.Enemies.All(e=>DoorTrialLayout.Side(e.Position)*side>0),"Crowd separation cannot push a guard through a closed leaf");}

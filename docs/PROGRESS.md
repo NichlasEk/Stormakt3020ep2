@@ -1,5 +1,9 @@
 # Checkpoint · Vägen under vattnet · 2026-09-06
 
+## Senast · dörrens visuella passning · 0.11.3
+
+Gångjärn/stängningsände och höjd inmätta mot stenöppningens insida. Fast ekkarm, synliga järngångjärn och sammanhängande målade dörrytor. De tätade kollisionsskarvarna finns kvar vid den nya placeringen; 3 583 riktade kontroller samt native bild-/uppspelningskontroll används. Se `PHYSICAL-DOORS.md`. Sammanhängande karta är fortfarande nästa större steg.
+
 ## Senast · dörrskarvens kollision · 0.11.2
 
 Danskens genomgång återskapad vid fria dörränden. Dörr/karm har nu överlappande rundade kollisionsändar, och dörrprovets figurförflyttning kontrollerar hela rörelsen inklusive undanträngning och rekyl. 3 583 riktade kontroller täcker Karl, vakter, båda sidor, båda karmar, trängsel samt öppen/förstörd dörr. Se `PHYSICAL-DOORS.md`. Inga nya miljöer eller passager i denna buggfix.
