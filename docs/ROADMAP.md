@@ -1,5 +1,9 @@
 # Från arenor till expeditioner
 
+## Aktuell fortsättning efter 0.12.1
+
+Huvudrutten slutar fortfarande vid De namnlösas lund. Galleriet–Edskammaren använder nu de målade valven; övriga anslutningar behöver individuell inpassning. Nästa kapitel är **Regementet som stannar**, därefter båtfärden mot **Järnets lungor**. [Aktuellt kapitelupplägg, portpass och leveranskrav](NEXT-EXPEDITION.md). Detta är en produktionsplan; inga ytterligare spelbara rum eller radioassets ingår ännu. Äldre arbetssteg nedan är historik.
+
 ## 2026-09-07 · 0.12 sammanhängande Atland
 
 Alla nio huvudrum och cisternens genväg är nu fysiskt förbundna. Kameran och striden fortsätter över rumsgränser; nyckelport, reglad genväg, öppna gångvägar, sparning och minikarta ingår. [Aktuell omfattning och nästa detaljpass](CONNECTED-WORLD.md). Nästa geografiskt åtskilda område ska nås med båt eller Karl CCLV, med originalets skepp som referens. Transporterna är ännu inte byggda. Äldre checkpoints nedan är historik.

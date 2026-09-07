@@ -1,5 +1,9 @@
 # Checkpoint · Vägen under vattnet · 2026-09-06
 
+## Nästa kapitel · plan efter provspelning
+
+Användaren uppskattar den sammanhängande världen och berättelsen med radio-/porträttkort. Fortsättningen är nu konkretiserad i [NEXT-EXPEDITION.md](NEXT-EXPEDITION.md): återstående målade portanslutningar, fem föreslagna platser i regementets marker, Rotmarskalken, arkivvalets följder och båtfärden mot berget. Detta är planarbete; spelbar version är fortfarande 0.12.1.
+
 ## 0.12.1 · gå genom den målade porten
 
 Vittnesgalleriets högra valv leder nu fysiskt till Edskammarens vänstra port. Bron framför galleriväggen är borttagen. Utgångs- och riktningspilar är avstängda i den sammanhängande rutten. [Omfattning och provspelning](PAINTED-ARCHES.md).
