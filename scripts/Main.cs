@@ -77,7 +77,7 @@ public partial class Main : Node2D
     private static NVec N(Vector2 v)=>new(v.X,v.Y);
     public override void _Ready()
     {
-        var args=OS.GetCmdlineUserArgs();_filmCheck=args.Contains("--cinematic-check");_filmPreview=args.Contains("--gate-film");_rootwayChecks=args.Contains("--rootway-check")||_filmCheck;_archiveChecks=args.Contains("--archive-check")||_rootwayChecks;_roomAudioChecks=args.Contains("--room-audio-check");_oathChecks=args.Contains("--oath-check")||_roomAudioChecks||_archiveChecks;_waterChecks=args.Contains("--water-check");_fogChecks=args.Contains("--fog-check");_roomChecks=args.Contains("--rooms-check");_inventoryChecks=args.Contains("--inventory-check");_portChecks=args.Contains("--port-check");_sceneChecks=args.Contains("--scene-check")||_portChecks||_inventoryChecks||_roomChecks||_fogChecks||_waterChecks||_oathChecks;_uiChecks=args.Contains("--ui-check");
+        var args=OS.GetCmdlineUserArgs();_filmCheck=args.Contains("--cinematic-check");_filmPreview=args.Contains("--gate-film");_introPreview=args.Contains("--intro-film");_rootwayChecks=args.Contains("--rootway-check")||_filmCheck;_archiveChecks=args.Contains("--archive-check")||_rootwayChecks;_roomAudioChecks=args.Contains("--room-audio-check");_oathChecks=args.Contains("--oath-check")||_roomAudioChecks||_archiveChecks;_waterChecks=args.Contains("--water-check");_fogChecks=args.Contains("--fog-check");_roomChecks=args.Contains("--rooms-check");_inventoryChecks=args.Contains("--inventory-check");_portChecks=args.Contains("--port-check");_sceneChecks=args.Contains("--scene-check")||_portChecks||_inventoryChecks||_roomChecks||_fogChecks||_waterChecks||_oathChecks;_uiChecks=args.Contains("--ui-check");
         _serif=GD.Load<Font>("res://assets/fonts/NotoSerif-Regular.ttf");_sans=GD.Load<Font>("res://assets/fonts/NotoSans-Regular.ttf");
         _background=GD.Load<Texture2D>("res://assets/art/likvarvet-scale-v5.png");
         _radioPortraits=GD.Load<Texture2D>("res://assets/art/radio-cast-v1.png");
@@ -94,7 +94,7 @@ public partial class Main : Node2D
         else if(args.Contains("--atland")||_campaignCheck)StartAtland();
         if(args.Contains("--rooms")||_roomChecks||_fogChecks||_waterChecks||_oathChecks)StartRooms();
         if(args.Contains("--capture-title"))_smokeCapture=true;
-        if(_filmPreview)StartGateFilm(true);
+        if(_filmPreview)StartGateFilm(true);else if(_introPreview)StartIntroFilm(true);
         if(_oathChecks)RunOathChecks();else if(_waterChecks)RunWaterChecks();else if(_fogChecks)RunSightChecks();else if(_roomChecks)RunRoomChecks();else if(_inventoryChecks)RunInventoryChecks();else if(_portChecks)RunPortChecks();else if(_sceneChecks)RunSceneChecks();
     }
     public override void _Input(InputEvent ev)
@@ -181,6 +181,7 @@ public partial class Main : Node2D
     }
     private void Activate(string id)
     {
+        if(id.StartsWith("film:",StringComparison.Ordinal)){StartFilm(id[5..],true);return;}
         if(InventoryAction(id))return;
         switch(id)
         {
@@ -188,7 +189,10 @@ public partial class Main : Node2D
             case "journey":if(_game.ContinueJourney()){ChangeScreen(Screen.Game);foreach(var cue in _game.Events)HandleCue(cue);Save();}break;
             case "archive-preserve":SelectArchiveDecision(1);break;
             case "archive-forge":SelectArchiveDecision(2);break;
-            case "videos":ChangeScreen(Screen.Videos);break;
+            case "videos":_videoPage=0;ChangeScreen(Screen.Videos);break;
+            case "film-prev":_videoPage=Math.Max(0,_videoPage-1);break;
+            case "film-next":_videoPage++;break;
+            case "intro-film":StartIntroFilm(true);break;
             case "gate-film":StartGateFilm(true);break;
             case "film-skip":FinishGateFilm();break;
             case "rooms":StartRooms();break;
@@ -307,7 +311,7 @@ public partial class Main : Node2D
         var p=G(cue.Position);
         switch(cue.Kind)
         {
-            case "cinematic":if(!_sceneChecks)StartGateFilm();break;
+            case "cinematic":if(!_sceneChecks)StartFilm(cue.Text);break;
             case "archive-open":ChangeScreen(Screen.Archive);break;
             case "room-sound":if(NVec.Distance(_game.Player,cue.Position)<500)_sound.Play(cue.Text);break;
             case "oath-break":case "oath-wall":

@@ -3,6 +3,8 @@ using Atland;
 using System;
 using System.Threading.Tasks;
 using System.Text.Json;
+using System.Linq;
+using System.Collections.Generic;
 
 public partial class Main
 {
@@ -42,6 +44,31 @@ public partial class Main
         // Exercise the same cue handler as a real first room passage.
         ChangeScreen(Screen.Game);_sceneChecks=false;HandleCue(new Cue("cinematic",_game.Player,"archive-gate"));_sceneChecks=checks;
         Check(_screen==Screen.Cinematic,"Room cue starts the film");FinishGateFilm();Check(_screen==Screen.Game,"Story playback returns to gameplay");
+        Check(Combat.NewRooms(Order.Artillery).Events.Count(e=>e.Kind=="cinematic"&&e.Text=="atland-intro")==1,"New room expedition has one intro event");
+        Check(Combat.NewAtland(Order.Artillery).Events.Count(e=>e.Kind=="cinematic"&&e.Text=="atland-intro")==1,"New Atland campaign has one intro event");
+        ChangeScreen(Screen.Pause);Activate("settings");Activate("videos");await Capture("intro-library");
+        Check(_buttons.Any(b=>b.Id=="film:atland-intro")&&_buttons.Any(b=>b.Id=="film:archive-gate"),"Both films have selectable catalog buttons");
+        var intro=Films.Single(f=>f.Id=="atland-intro");
+        var lines=JsonSerializer.Deserialize<Dictionary<string,string[]>>(FileAccess.GetFileAsString("res://assets/story/intro-radio.json"))!;
+        Check(intro.Captions.Length==3&&intro.Captions.Select(c=>c.Text).SequenceEqual(new[]{"ship","chart","coast"}.Select(k=>lines["intro-"+k][1])),"Intro subtitles match the generated Ebba script");
+        Check(intro.CaptionAt(6)==null&&intro.CaptionAt(10)?.Text==lines["intro-chart"][1],"Caption gaps and chart timing");
+        state=State();Activate("film:atland-intro");await Frames(60);
+        using(var key=new InputEventKey{PhysicalKeycode=Key.Escape,Pressed=true})_Input(key);
+        Check(_screen==Screen.Videos&&State()==state,"Intro skip is nondestructive");
+        Activate("film:atland-intro");int captured=0;
+        for(int frames=0;frames<3000&&_screen==Screen.Cinematic;frames++)
+        {
+            await Frames(1);double position=_filmPlayer!.StreamPosition;
+            if(captured<3&&position>=new[]{2.0,10.0,18.0}[captured])
+            {
+                Check(_activeFilm==intro&&intro.CaptionAt(position)!=null,"Caption follows video clock on shot "+captured);
+                await Capture("intro-shot-"+(++captured));
+            }
+        }
+        Check(captured==3&&_screen==Screen.Videos&&_filmElapsed>22&&_filmElapsed<32,"Complete 24-second intro reaches natural end, not the old 20-second watchdog");
+        Check(State()==state&&!_sound.Cinematic,"Full intro restores library and game state");
+        Activate("film:archive-gate");await Frames(15);Check(_activeFilm?.Id=="archive-gate"&&_filmPlayer!.IsPlaying(),"Switch back to cached gate movie");FinishGateFilm();
+        GD.Print("INTRO CHECK PASS: two-film catalog, three Ebba captions, frozen game state, skip/replay, 24-second natural end, switch back to gate");
         GD.Print("CINEMATIC CHECK PASS: decoded video, paused simulation, muted mix, settings library, replay without state changes, Escape/B skip, natural end, story cue return");
     }
 }

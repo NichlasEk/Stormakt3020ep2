@@ -6,11 +6,17 @@ Episod II. Ett nytt, fristående actionrollspel i Stormakts värld: nordisk baro
 
 Starta senaste verifierade Linux-versionen med `./play.sh` (ingen ombyggnad). `./play.sh -- --gate-film` visar filmprovet direkt. Exportens programfil, `.pck` och `data_AtlandsArv_linuxbsd_x86_64` måste ligga tillsammans; `play.sh` kontrollerar detta innan start. `./start.sh` bygger och kör från källkoden.
 
+## Nytt · Expeditionen till Atland · 0.10
+
+Ett intro på 24 sekunder: skeppet, bronskartan och kusten, med tre nya Ebba-repliker, musik och svenska undertexter. Både introt och Arkivets port finns i **Inställningar → Utvecklarverktyg · Videobibliotek**. Direktprov: `./play.sh -- --intro-film`. Introt visas vid en ny Atland-expedition; befintliga sparningar fortsätter som vanligt. [Produktion och verifiering](docs/INTRO.md).
+
+Linux-export: `dist/AtlandsArv-0.10-intro/AtlandsArv.x86_64`.
+
 ## Nytt · Arkivets port och videobibliotek · 0.9.1
 
 Första mellansekvensen är ett lokalt genererat filmprov på åtta sekunder. Den visas en gång vid passagen från arkivet till Rotvägen. **Inställningar → Utvecklarverktyg · Videobibliotek** låter dig se den igen utan att ändra sparningen. Esc/B hoppar över; filmens ljud följer volymreglaget. Direktprov: `./start.sh -- --gate-film`. [Produktion och verifiering](docs/CINEMATICS.md).
 
-Linux-export: `dist/AtlandsArv-0.9.1-cinematic/AtlandsArv.x86_64`. Det större introt och fler mellansekvenser återstår.
+Linux-export: `dist/AtlandsArv-0.9.1-cinematic/AtlandsArv.x86_64`. Detta var första filmprovet; introt tillkom i 0.10.
 
 ## Nytt · Rotvägen · 0.9
 

@@ -46,7 +46,8 @@ roles['hedvig']={'seed':30220606,'instruction':'A mature Swedish female historia
 hedvig_lines={
  'hedvig-karta':('hedvig','Hedvig Rålamb här. Kartans linjer följer gamla vadställen och gravhögar. Karl, vi behöver avtryck av inskrifterna.'),
  'hedvig-minne':('hedvig','Rudbecks äpplen är minne, tal och skrift. Stenarna bevarar gärningar som kronan har strukit. Ta med avtrycken.')}
-if '--roots-only' in sys.argv: lines=json.loads((ROOT/'assets/story/rootway-radio.json').read_text())
+if '--intro-only' in sys.argv: lines=json.loads((ROOT/'assets/story/intro-radio.json').read_text())
+elif '--roots-only' in sys.argv: lines=json.loads((ROOT/'assets/story/rootway-radio.json').read_text())
 elif '--archive-only' in sys.argv: lines=json.loads((ROOT/'assets/story/archive-radio.json').read_text())
 elif '--rooms-only' in sys.argv: lines=json.loads((ROOT/'assets/story/rooms-radio.json').read_text())
 elif '--journey-only' in sys.argv: lines=json.loads((ROOT/'assets/story/journey-radio.json').read_text())
@@ -59,6 +60,6 @@ for role,v in roles.items():
  for name,(r,line) in lines.items():
   if r!=role:continue
   if (ROOT/'assets/audio'/f'voice-{name}.ogg').exists():continue
-  raw=render(name,{'text':line,'voice_instruction':v['instruction'],'language':'sv','model_backend':'dots.tts-mf','output_format':'wav','normalize':False,'seed':v['seed']+100,'reference_wav_base64':base64.b64encode(ref.read_bytes()).decode(),'prompt_text':v['text'],'dots_num_steps':8 if '--rooms-only' in sys.argv or '--archive-only' in sys.argv or '--roots-only' in sys.argv else 4})
+  raw=render(name,{'text':line,'voice_instruction':v['instruction'],'language':'sv','model_backend':'dots.tts-mf','output_format':'wav','normalize':False,'seed':v['seed']+100,'reference_wav_base64':base64.b64encode(ref.read_bytes()).decode(),'prompt_text':v['text'],'dots_num_steps':8 if '--rooms-only' in sys.argv or '--archive-only' in sys.argv or '--roots-only' in sys.argv or '--intro-only' in sys.argv else 4})
   subprocess.run(['ffmpeg','-y','-v','error','-i',str(raw),'-af','highpass=f=110,lowpass=f=7500,loudnorm=I=-18:TP=-2:LRA=8','-ar','48000','-ac','1','-c:a','libvorbis','-q:a','5',str(ROOT/'assets/audio'/f'voice-{name}.ogg')],check=True)
   print('saved',name,flush=True)

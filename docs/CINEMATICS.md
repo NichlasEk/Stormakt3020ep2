@@ -1,6 +1,6 @@
 # Arkivets port · första filmprovet · 0.9.1
 
-2026-09-07. En lokal LTX-2-film på cirka åtta sekunder är integrerad mellan Minnets arkiv och Rotvägen. Kedjan spänns, stenpanelen glider undan och dagsljus avslöjar stora rötter utanför. Filmen har genererat miljöljud, utan dialog. Det större introt och andra mellansekvenser är ännu inte byggda.
+2026-09-07. En lokal LTX-2-film på cirka åtta sekunder är integrerad mellan Minnets arkiv och Rotvägen. Kedjan spänns, stenpanelen glider undan och dagsljus avslöjar stora rötter utanför. Filmen har genererat miljöljud, utan dialog. Detta dokument beskriver första checkpointen. Introt och den gemensamma filmkatalogen tillkom i [0.10](INTRO.md).
 
 ## Titta och spela
 
@@ -37,4 +37,4 @@ Ljudet normaliseras försiktigt och tonas in/ut. Mätt i den slutliga OGV-filen:
 - Native kontroll av mastervolym och mute utan att skriva användarens inställningar. Bilder från biblioteket och uppspelningen har granskats; inställningslayouten har också granskats i slutexporten.
 - Filmen kräver riktig tid i testet: använd `--max-fps 60`, inte snabbspolad `--fixed-fps`. Video-/ljudklockan följer faktisk uppspelning, medan fast delta annars kan hinna löpa ifrån den.
 
-Linux-export: `dist/AtlandsArv-0.9.1-cinematic/AtlandsArv.x86_64`. Samma kontroll passerar på Linux-exporten med avslutningskod 0. Slutkontrollens logg: `artifacts/cinematic-native-final.log`. Förhandsvisningsbilder hamnar under exportens `artifacts/`. Vid saknad film fortsätter rumsövergången, och en 20-sekunders reservgräns förhindrar att ett uteblivet slutmeddelande låser spelaren.
+Linux-export: `dist/AtlandsArv-0.9.1-cinematic/AtlandsArv.x86_64`. Samma kontroll passerar på Linux-exporten med avslutningskod 0. Slutkontrollens logg: `artifacts/cinematic-native-final.log`. Förhandsvisningsbilder hamnar under exportens `artifacts/`. Vid saknad film fortsätter rumsövergången, och en reservgräns på filmens kataloglängd plus tolv sekunder (sedan 0.10) förhindrar att ett uteblivet slutmeddelande låser spelaren.

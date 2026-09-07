@@ -1,0 +1,85 @@
+{
+  "keyframe_tool": "built-in image_gen",
+  "video_tool": "local ComfyUI LTX-2 distilled fp8",
+  "shots": [
+    {
+      "id": "ship",
+      "keyframe": "assets/source/cinematics/intro-ship-keyframe-v1.png",
+      "keyframe_source": "/home/nichlas/.codex/generated_images/01a07608-36a4-7850-ba4d-824cc60ab5aa/exec-c23c9299-0a99-4e00-a995-93dfcce8cb50.png",
+      "prompt": "Use case: historical-scene. First frame for a dark painted cinematic in the Swedish game Stormakt 3020 Episode II. 1536x1024. A heavy seventeenth-century Swedish warship advances slowly through black Baltic water before dawn. View low beside the bow, hull fills right third, open water left; massive weathered oak planks and worn bronze fittings, dark furled sails and sparse rigging disappearing into fog overhead. NO crew visible. Cold grey light on water, one tiny dim warm cabin window. A low rocky Swedish coastline is barely visible far left through mist. Restrained umber, charcoal, indigo and grey green palette. Rich OLD OIL PAINTING texture, visible subtle brushwork, matte surfaces, solemn period war drama, physically credible scale. Not 3D, not glossy CGI, not cartoon, no logos, no text, no UI, no glowing fantasy magic. Clean stable hull and horizon for gentle image-to-video motion later. Atmospheric but readable silhouettes. Do not make the ship a Viking longboat.",
+      "video": "assets/source/cinematics/intro-ship-ltx-v1.mp4",
+      "workflow": "assets/source/cinematics/intro-ship-workflow-v1.json",
+      "job": {
+        "prompt_id": "07901abd-43cd-46f3-aeb5-65a32f05654b",
+        "number": 0,
+        "node_errors": {}
+      },
+      "frames": 193,
+      "fps": 24,
+      "voice": "assets/audio/voice-intro-ship.ogg",
+      "sha256": {
+        "keyframe": "88d1008ff0af22440a33f85b131b98f0e5c3e06c3039ee7e036fed44600cfc99",
+        "video": "aa8834f2818987e79d2eb27f669368b3824e21e6818ef8ffed1cb8310123bc65",
+        "voice": "7f2e43fda1c1629b0996ea05f9be3edfb69a2cef12d764bee29d440772f5d97f"
+      }
+    },
+    {
+      "id": "chart",
+      "keyframe": "assets/source/cinematics/intro-chart-keyframe-v1.png",
+      "keyframe_source": "/home/nichlas/.codex/generated_images/01a07608-36a4-7850-ba4d-824cc60ab5aa/exec-e1732079-f8aa-4fcd-b93f-f3b45bd5187a.png",
+      "prompt": "Use case: historical-scene. First frame for a short dark painted cinematic in Swedish game Stormakt 3020 Episode II. 1536x1024. Close view down onto a weathered wooden chart table inside a seventeenth-century warship cabin. At center lies a thick oval ancient BRONZE COASTAL CHART, about45cm across: etched islands, channels and worn coastal contour lines with tiny punched position marks, eroded sun disc near its upper edge. An enigmatic archaeological object, not a modern map or fantasy crystal. To the side a modest brass compass, a closed leather ledger and rough linen partly under the chart. No hands, no people. Narrow cold dawn light through an unseen porthole crosses the bronze, a small warm candle OUT OF FRAME gives faint fill. Palette dry walnut, charcoal and muted verdigris bronze. Very rich OLD OIL PAINTING brush texture, matte tarnish, serious Swedish baroque atmosphere consistent with an old warship on black Baltic water. Clear stable geometry, no readable text, NO glowing lines, no UI, no modern electronics, no glossy CGI, no cartoon shapes, no 3D render. Leave chart surface unobstructed for a slow camera push later.",
+      "video": "assets/source/cinematics/intro-chart-ltx-v1.mp4",
+      "workflow": "assets/source/cinematics/intro-chart-workflow-v1.json",
+      "job": {
+        "prompt_id": "257818ed-c410-4732-9f04-67de4f6fc57e",
+        "number": 1,
+        "node_errors": {}
+      },
+      "frames": 193,
+      "fps": 24,
+      "voice": "assets/audio/voice-intro-chart.ogg",
+      "sha256": {
+        "keyframe": "7dd94da21f9d02ff835872317724c5a6f75238632cfc89e6b08c353680a60571",
+        "video": "5364baaa0e1a43b3e2053f8ce38a1ded009bcf69f1750150d13f9c4282808f96",
+        "voice": "51805e6596e35b1395a12033d6b4f3887f30646299434e0027635cc7c1a89e24"
+      }
+    },
+    {
+      "id": "coast",
+      "keyframe": "assets/source/cinematics/intro-coast-keyframe-v1.png",
+      "keyframe_source": "/home/nichlas/.codex/generated_images/01a07608-36a4-7850-ba4d-824cc60ab5aa/exec-d144bc26-cb62-4926-a551-d2dba25a41af.png",
+      "prompt": "Use case: historical-scene. First frame for a dark old-oil-painted cinematic in Swedish game Stormakt 3020 Episode II, 1536x1024. Wide view from the water approaching a desolate Swedish Baltic coast at dawn. A low ancient granite harbor is half swallowed by enormous ash roots and steep rough rock. A modest human-sized arched sea gate is visible at center-right below the cliff, ancient worn steps descend into black water. Crooked pines and bare ash branches silhouette the ridge. Morning mist veils the harbor, leaving hints of eroded sun-disc carvings in far stone. Massive natural roots crack the old retaining wall but remain believable natural wood, not tentacles. No houses, no modern quay equipment, no towers or castles, no ships or people in frame. Rich visible old oil painting brushwork throughout, matte umber granite, charcoal water, muted olive moss, cold grey sky; serious northern historical war drama. Moody and beautiful but readable, no luminous magic, no glossy CGI, no 3D render, no text or UI, no cute forms. Stable composition for subtle mist drifting and a slow camera approach later.",
+      "video": "assets/source/cinematics/intro-coast-ltx-v1.mp4",
+      "workflow": "assets/source/cinematics/intro-coast-workflow-v1.json",
+      "job": {
+        "prompt_id": "b49cfa6d-df8e-44ea-bb9b-4452041b6e21",
+        "number": 2,
+        "node_errors": {}
+      },
+      "frames": 193,
+      "fps": 24,
+      "voice": "assets/audio/voice-intro-coast.ogg",
+      "sha256": {
+        "keyframe": "d0a2b7147693f92d27c0bca074526f518b0b0fec98a0aad57e42a47fc109c7a9",
+        "video": "8404a877859af54dacb4dde4cc59d7e14bba114002f0947b8c5b636b57cd0824",
+        "voice": "19fb6dd682f790af88e2243115c41d52d77f5bbc0fd764e978c28fbc431aaaa5"
+      }
+    }
+  ],
+  "output": {
+    "file": "assets/video/atland-intro-v1.ogv",
+    "duration_seconds": 24.2,
+    "width": 768,
+    "height": 512,
+    "sha256": "a75f09601153733ee20d5a13d86d6da8d8a71e8590e18f582bc4cff807743f96",
+    "mean_volume_db": -22.7,
+    "max_volume_db": -3.0
+  },
+  "assembly": "assets/source/cinematics/intro-assembly-v1.json",
+  "voice_qa": "assets/source/voices/intro-radio-qa.json",
+  "limitations": [
+    "LTX motion softens the painted texture and invents shore buildings absent from the keyframe.",
+    "CPU Whisper transcription is an automated check, not human listening; coast line was transcribed as Ta det i land instead of Ta dig i land.",
+    "Score is reused from names-score.ogg."
+  ]
+}

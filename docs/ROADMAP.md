@@ -18,6 +18,12 @@
 
 **Åttonde checkpointen:** första arkiv→Rotvägen-filmen och ett utvecklarbibliotek under inställningar finns. Ett lokalt LTX-2-prov, cirka åtta sekunder, med egen ljudbild, överhoppning och beständig engångsvisning. Se `CINEMATICS.md`. Intro och senare filmer väntar på bedömning av detta prov.
 
+**Nionde checkpointen:** 24-sekundersintro med skepp, bronskarta, kust och tre nya Ebba-repliker. Två filmer i katalogen, tidsstyrd textning och ny-expeditionsstart. Se `INTRO.md`. Nästa spelcheckpoint är vägen mot berget; filmens kustgeometri och penselstruktur kan förbättras i ett senare bildpass.
+
+## Prioriterad integration efter filmpasset
+
+Användarens provspelning visade att den nya rutten är svår att hitta: vanlig kampanjfortsättning leder fortfarande till äldre banor. Innan fler rum byggs bör strandens fortsättning kopplas till de nio rummen, med bevarad utrustning, stash och berättelseprogression. Äldre kampanjsparningar behöver en uttrycklig migrationsstrategi, och huvudmenyn behöver en tydlig huvudingång. Detta är planerat, inte genomfört i 0.10. Under tiden är ingången **Atlands förseglade rum · prov** eller `./play.sh -- --rooms`.
+
 ## Nuläge före rumsarbetet
 
 - Spelbar inledning med kaj, magasin och strand, därefter åtta kampanjsteg i fyra målade miljöer. Understöd och arkivval har faktiska följder.

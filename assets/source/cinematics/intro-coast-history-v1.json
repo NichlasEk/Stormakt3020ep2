@@ -1,0 +1,517 @@
+{
+  "b49cfa6d-df8e-44ea-bb9b-4452041b6e21": {
+    "prompt": [
+      2,
+      "b49cfa6d-df8e-44ea-bb9b-4452041b6e21",
+      {
+        "4958": {
+          "inputs": {
+            "filename_prefix": "video/Ep2_Intro_coast_v1",
+            "format": "mp4",
+            "codec": "h264",
+            "video": [
+              "5190",
+              0
+            ]
+          },
+          "class_type": "SaveVideo",
+          "_meta": {
+            "title": "Save Video"
+          }
+        },
+        "5173": {
+          "inputs": {
+            "frame_rate": [
+              "5184",
+              0
+            ],
+            "positive": [
+              "5174",
+              0
+            ],
+            "negative": [
+              "5174",
+              0
+            ]
+          },
+          "class_type": "LTXVConditioning",
+          "_meta": {
+            "title": "LTXVConditioning"
+          }
+        },
+        "5174": {
+          "inputs": {
+            "text": [
+              "5175",
+              0
+            ],
+            "clip": [
+              "5178",
+              0
+            ]
+          },
+          "class_type": "CLIPTextEncode",
+          "_meta": {
+            "title": "Enhanced Prompt (Positive)"
+          }
+        },
+        "5175": {
+          "inputs": {
+            "value": "Camera advances very slowly from the water toward the small stone harbor entrance. Gentle waves lap at the lowest steps. Mist thins gradually to reveal the roots gripping the ruined wall. Keep the architecture, trees and roots motionless and rigid. Preserve the old oil painting brush texture and muted grey dawn palette. No buildings appear, no new objects, no people, no magical light, no cuts. Audio: low wash of water against stone and faint coastal wind, no speech, no music."
+          },
+          "class_type": "PrimitiveStringMultiline",
+          "_meta": {
+            "title": "Positive Prompt"
+          }
+        },
+        "5176": {
+          "inputs": {
+            "ckpt_name": "LTX-2/ltx-2-19b-distilled-fp8.safetensors"
+          },
+          "class_type": "CheckpointLoaderSimple",
+          "_meta": {
+            "title": "Load Checkpoint"
+          }
+        },
+        "5178": {
+          "inputs": {
+            "text_encoder": "LTX-2/gemma_3_12B_it_fp4_mixed.safetensors",
+            "ckpt_name": "LTX-2/ltx-2-19b-distilled-fp8.safetensors",
+            "device": "default"
+          },
+          "class_type": "LTXAVTextEncoderLoader",
+          "_meta": {
+            "title": "Load LTXV Audio Text Encoder"
+          }
+        },
+        "5180": {
+          "inputs": {
+            "image": "ep2-intro-coast-v1.png"
+          },
+          "class_type": "LoadImage",
+          "_meta": {
+            "title": "Load Image"
+          }
+        },
+        "5184": {
+          "inputs": {
+            "value": 24.0
+          },
+          "class_type": "PrimitiveFloat",
+          "_meta": {
+            "title": "Frame Rate"
+          }
+        },
+        "5185": {
+          "inputs": {
+            "width": 768,
+            "height": 512,
+            "batch_size": 1,
+            "color": 0
+          },
+          "class_type": "EmptyImage",
+          "_meta": {
+            "title": "Empty Image"
+          }
+        },
+        "5186": {
+          "inputs": {
+            "value": 193
+          },
+          "class_type": "PrimitiveInt",
+          "_meta": {
+            "title": "length"
+          }
+        },
+        "5188": {
+          "inputs": {
+            "ckpt_name": "LTX-2/ltx-2-19b-distilled-fp8.safetensors"
+          },
+          "class_type": "LTXVAudioVAELoader",
+          "_meta": {
+            "title": "Load LTXV Audio VAE"
+          }
+        },
+        "5190": {
+          "inputs": {
+            "fps": [
+              "5184",
+              0
+            ],
+            "bit_depth": 8,
+            "images": [
+              "5189:5245",
+              0
+            ],
+            "audio": [
+              "5189:5103",
+              0
+            ]
+          },
+          "class_type": "CreateVideo",
+          "_meta": {
+            "title": "Create Video"
+          }
+        },
+        "5196": {
+          "inputs": {
+            "a": [
+              "5184",
+              0
+            ]
+          },
+          "class_type": "CM_FloatToInt",
+          "_meta": {
+            "title": "Frame Rate"
+          }
+        },
+        "5189:5114": {
+          "inputs": {
+            "av_latent": [
+              "5189:5107",
+              1
+            ]
+          },
+          "class_type": "LTXVSeparateAVLatent",
+          "_meta": {
+            "title": "LTXVSeparateAVLatent"
+          }
+        },
+        "5189:5108": {
+          "inputs": {
+            "video_latent": [
+              "5189:5254",
+              0
+            ],
+            "audio_latent": [
+              "5189:5152",
+              0
+            ]
+          },
+          "class_type": "LTXVConcatAVLatent",
+          "_meta": {
+            "title": "LTXVConcatAVLatent"
+          }
+        },
+        "5189:5107": {
+          "inputs": {
+            "noise": [
+              "5189:5111",
+              0
+            ],
+            "guider": [
+              "5189:5110",
+              0
+            ],
+            "sampler": [
+              "5189:5109",
+              0
+            ],
+            "sigmas": [
+              "5189:5232",
+              0
+            ],
+            "latent_image": [
+              "5189:5108",
+              0
+            ]
+          },
+          "class_type": "SamplerCustomAdvanced",
+          "_meta": {
+            "title": "SamplerCustomAdvanced"
+          }
+        },
+        "5189:5232": {
+          "inputs": {
+            "sigmas": "1., 0.99375, 0.9875, 0.98125, 0.975, 0.909375, 0.725, 0.421875, 0.0"
+          },
+          "class_type": "ManualSigmas",
+          "_meta": {
+            "title": "ManualSigmas"
+          }
+        },
+        "5189:5109": {
+          "inputs": {
+            "sampler_name": "euler"
+          },
+          "class_type": "KSamplerSelect",
+          "_meta": {
+            "title": "KSamplerSelect"
+          }
+        },
+        "5189:5110": {
+          "inputs": {
+            "cfg": 1.0,
+            "model": [
+              "5176",
+              0
+            ],
+            "positive": [
+              "5189:5239",
+              0
+            ],
+            "negative": [
+              "5173",
+              1
+            ]
+          },
+          "class_type": "CFGGuider",
+          "_meta": {
+            "title": "CFG Guider"
+          }
+        },
+        "5189:5152": {
+          "inputs": {
+            "frames_number": [
+              "5186",
+              0
+            ],
+            "frame_rate": [
+              "5196",
+              0
+            ],
+            "batch_size": 1,
+            "audio_vae": [
+              "5188",
+              0
+            ]
+          },
+          "class_type": "LTXVEmptyLatentAudio",
+          "_meta": {
+            "title": "LTXV Empty Latent Audio"
+          }
+        },
+        "5189:5069": {
+          "inputs": {
+            "image": [
+              "5189:5075",
+              0
+            ]
+          },
+          "class_type": "GetImageSize",
+          "_meta": {
+            "title": "Get Image Size"
+          }
+        },
+        "5189:5103": {
+          "inputs": {
+            "samples": [
+              "5189:5114",
+              1
+            ],
+            "audio_vae": [
+              "5188",
+              0
+            ]
+          },
+          "class_type": "LTXVAudioVAEDecode",
+          "_meta": {
+            "title": "LTXV Audio VAE Decode"
+          }
+        },
+        "5189:5245": {
+          "inputs": {
+            "spatial_tiles": 4,
+            "spatial_overlap": 4,
+            "temporal_tile_length": 16,
+            "temporal_overlap": 4,
+            "last_frame_fix": false,
+            "working_device": "auto",
+            "working_dtype": "auto",
+            "vae": [
+              "5176",
+              2
+            ],
+            "latents": [
+              "5189:5114",
+              0
+            ]
+          },
+          "class_type": "LTXVSpatioTemporalTiledVAEDecode",
+          "_meta": {
+            "title": "\ud83c\udd5b\ud83c\udd63\ud83c\udd67 LTXV Spatio Temporal Tiled VAE Decode"
+          }
+        },
+        "5189:5138": {
+          "inputs": {
+            "width": [
+              "5189:5069",
+              0
+            ],
+            "height": [
+              "5189:5069",
+              1
+            ],
+            "length": [
+              "5186",
+              0
+            ],
+            "batch_size": 1
+          },
+          "class_type": "EmptyLTXVLatentVideo",
+          "_meta": {
+            "title": "EmptyLTXVLatentVideo"
+          }
+        },
+        "5189:5244": {
+          "inputs": {
+            "longer_edge": 768,
+            "images": [
+              "5189:5239",
+              1
+            ]
+          },
+          "class_type": "ResizeImagesByLongerEdge",
+          "_meta": {
+            "title": "Resize Images by Longer Edge (DEPRECATED)"
+          }
+        },
+        "5189:5240": {
+          "inputs": {
+            "img_compression": 33,
+            "image": [
+              "5189:5244",
+              0
+            ]
+          },
+          "class_type": "LTXVPreprocess",
+          "_meta": {
+            "title": "LTXV Preprocess"
+          }
+        },
+        "5189:5075": {
+          "inputs": {
+            "upscale_method": "bicubic",
+            "scale_by": 1.0,
+            "image": [
+              "5185",
+              0
+            ]
+          },
+          "class_type": "ImageScaleBy",
+          "_meta": {
+            "title": "Upscale Image By"
+          }
+        },
+        "5189:5254": {
+          "inputs": {
+            "strength": 0.85,
+            "bypass": false,
+            "vae": [
+              "5176",
+              2
+            ],
+            "image": [
+              "5189:5240",
+              0
+            ],
+            "latent": [
+              "5189:5138",
+              0
+            ]
+          },
+          "class_type": "LTXVImgToVideoInplace",
+          "_meta": {
+            "title": "LTXVImgToVideoInplace"
+          }
+        },
+        "5189:5239": {
+          "inputs": {
+            "signal": [
+              "5173",
+              0
+            ],
+            "value": [
+              "5180",
+              0
+            ]
+          },
+          "class_type": "ImpactExecutionOrderController",
+          "_meta": {
+            "title": "Execution Order Controller"
+          }
+        },
+        "5189:5111": {
+          "inputs": {
+            "noise_seed": 30201012
+          },
+          "class_type": "RandomNoise",
+          "_meta": {
+            "title": "RandomNoise"
+          }
+        }
+      },
+      {
+        "client_id": "stormakt-ep2-intro",
+        "create_time": 1788799675101
+      },
+      [
+        "4958"
+      ]
+    ],
+    "outputs": {
+      "4958": {
+        "images": [
+          {
+            "filename": "Ep2_Intro_coast_v1_00001_.mp4",
+            "subfolder": "video",
+            "type": "output"
+          }
+        ],
+        "animated": [
+          true
+        ]
+      }
+    },
+    "status": {
+      "status_str": "success",
+      "completed": true,
+      "messages": [
+        [
+          "execution_start",
+          {
+            "prompt_id": "b49cfa6d-df8e-44ea-bb9b-4452041b6e21",
+            "timestamp": 1788799675102
+          }
+        ],
+        [
+          "execution_cached",
+          {
+            "nodes": [
+              "5176",
+              "5178",
+              "5184",
+              "5185",
+              "5186",
+              "5188",
+              "5196",
+              "5189:5232",
+              "5189:5109",
+              "5189:5152",
+              "5189:5069",
+              "5189:5138",
+              "5189:5075"
+            ],
+            "prompt_id": "b49cfa6d-df8e-44ea-bb9b-4452041b6e21",
+            "timestamp": 1788799675143
+          }
+        ],
+        [
+          "execution_success",
+          {
+            "prompt_id": "b49cfa6d-df8e-44ea-bb9b-4452041b6e21",
+            "timestamp": 1788799791089
+          }
+        ]
+      ]
+    },
+    "meta": {
+      "4958": {
+        "node_id": "4958",
+        "display_node": "4958",
+        "parent_node": null,
+        "real_node_id": "4958"
+      }
+    }
+  }
+}

@@ -94,6 +94,7 @@ public sealed partial class Combat
         game.Spawn(EnemyKind.Guard,new(650,625));game.Player=new(768,805);
         game.UpdateRoomSight(true);
         game.Emit("region",game.Player,game.RoomName);game.Emit("radio",game.Player,"rooms-entry");game.Emit("campaign",game.Player,"Väktaren bar nyckeln till logementet. Hans packning ligger kvar i förgården.");
+        game.Emit("cinematic",game.Player,"atland-intro");
         return game;
     }
 

@@ -1,5 +1,11 @@
 # Checkpoint · Vägen under vattnet · 2026-09-06
 
+## Senast · Expeditionen till Atland · 0.10 · 2026-09-07
+
+24,2 sekunders intro med tre genererade bilder, lokala LTX-klipp, tre nya Ebba-röster och tidsstyrd textning. Filmkatalogen innehåller introt och Arkivets port. Ny Atland-kampanj/rumsexpedition visar introt; återupptagen sparning gör det inte. Musik återanvänds. Kustklippet hittar på byggnader och mjukar upp penselstrukturen; nästa bildpass bör förbättra följsamheten mot målningen. Se `INTRO.md` för verifiering och produktionskällor.
+
+Banornas nästa steg är fortfarande vägen mot berget. Detta pass tillför film, inte rum eller figuranimation.
+
 ## Senast · arkivfilm och videobibliotek · 0.9.1 · 2026-09-07
 
 Första mellansekvensen är byggd: 8,1 sekunder lokal LTX-2-film med eget miljöljud, ny genererad ingångsbild och portöppning mot rötterna. Visas vid första arkiv→Rotvägen-passagen. Inställningarnas utvecklarverktyg har ett videobibliotek för återspelning utan ändrad sparning; Esc/B och naturligt slut återvänder rätt. Spelet pausas och filmens ljud följer mastervolymen. Källvideo, exakt graf, promptar och jobb är sparade.

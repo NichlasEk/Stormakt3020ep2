@@ -60,7 +60,9 @@ public sealed partial class Combat
                 SpawnExpedition(EnemyKind.Collector,Expedition.Spawns[2]);var boss=Enemies[^1];boss.Health=boss.MaxHealth=Stage.Task==ExpeditionTask.Tribunal?520:440;
             }
         }
-        Emit("campaign",Player,Stage.Intro);Emit("checkpoint",Player);
+        Emit("campaign",Player,Stage.Intro);
+        if(index==0)Emit("cinematic",Player,"atland-intro");
+        Emit("checkpoint",Player);
     }
     private void SpawnExpedition(EnemyKind kind,Vector2 at)
     {
