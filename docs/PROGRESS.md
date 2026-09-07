@@ -1,5 +1,11 @@
 # Checkpoint · Vägen under vattnet · 2026-09-06
 
+## Senast · målat inventarium 0.5.1 · 2026-09-07
+
+Ny genererad trä-/läderbakgrund och 14 individuella målade föremålsbilder i utrustning, väska, stash och större detaljförhandsvisning. Fulla promptar och ursprung: `assets/source/inventory/art-v1.json`. C växlar stats på/av och återgår till paus om fliken öppnades därifrån.
+
+Build utan varningar/fel; Godot- och native `--inventory-check` passerar inklusive laddning av hela bildkatalogen, C-växling från spel/paus och befintliga utrustnings-/stashflöden. Bilder granskade i 1280 × 720. Export: `dist/AtlandsArv-0.5.1/AtlandsArv.x86_64`. Native avslutar med kod 0 men rapporterar kvarhållna Ogg-musikresurser vid avslut; verbose-loggen identifierar fyra musikströmmar, inga inventariebilder. Detta är kvarstående ljudstädning, inte ett underkänt menyprov.
+
 ## Senast · inventarium, utrustning och stash 0.5 · 2026-09-07
 
 I öppnar inventarium; C stats; pausmenyn ger handkontrollväg. Fem utrustningsplatser (två vapenslag, rustning, hjälm, sigill), väska 24 och stash 60. Bonusar påverkar verklig vapenskada, skadeskydd och uthållighetsåterhämtning. 14 föremål i katalogen, loot från fiender/bossar och portens gömma. Fulla behållare tappar inga föremål. Förrådet låses under aktiv fara. Sparade identiteter, utrustning och stash följer respektive kampanj, och äldre fältdagböcker migrerar till grundset.

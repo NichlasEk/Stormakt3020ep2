@@ -12,6 +12,7 @@ public partial class Main
     {
         if(_screen is not (Screen.Game or Screen.Pause or Screen.Inventory))return;
         if(_screen!=Screen.Inventory)_inventoryReturn=_screen;
+        LoadInventoryArt();
         _inventoryTab=tab;_inventoryPage=0;ChangeScreen(Screen.Inventory);
     }
     private bool InventoryAction(string id)
@@ -60,7 +61,7 @@ public partial class Main
     }
     private void DrawInventory()
     {
-        DrawRect(new Rect2(0,0,1280,720),new Color(.025f,.035f,.033f,.97f));
+        DrawTextureRect(_inventoryBackground!,new Rect2(0,0,1280,720),false);
         Text("KARL CCLV · FÄLTUTRUSTNING",new Vector2(40,55),24,Pale,true);
         Text("Spelet är pausat",new Vector2(40,84),13,Muted);
         Button(new Rect2(375,96,151,43),"Inventarium","inv-tab-0",_inventoryTab==0);
@@ -70,10 +71,11 @@ public partial class Main
         int row=0;
         foreach(var slot in Enum.GetValues<GearSlot>())
         {
-            var r=new Rect2(40,153+row*85,291,76);Panel(r,.97f);
+            var r=new Rect2(40,153+row*85,291,76);InventoryPanel(r,.64f);
             _game.Inventory.Equipped.TryGetValue(slot,out var item);bool selected=item!=null&&item.Id==_selectedItem;
             if(selected)DrawRect(r,Gold,false,2);
-            ItemIcon(slot,r.Position+new Vector2(34,39),43,item==null?Muted:Gold);
+            if(item==null)ItemIcon(slot,r.Position+new Vector2(34,39),43,Muted);
+            else PaintedInventoryItem(item.Data,r.Position+new Vector2(34,39),60);
             Text(Items.SlotName(slot)+(slot==_game.ActiveWeaponSlot?" · AKTIV":""),r.Position+new Vector2(68,24),12,Gold);
             Wrapped(item?.Data.Name??"Tom plats",r.Position+new Vector2(68,47),211,14,Pale,18);
             if(item!=null)
@@ -95,11 +97,11 @@ public partial class Main
         Text($"{(stash?"EXPEDITIONSFÖRRÅD":"VÄSKA")} · {source.Count}/{(stash?Items.StashCapacity:Items.BagCapacity)}",new Vector2(375,167),13,Gold);
         for(int index=0;index<24;index++)
         {
-            var r=new Rect2(375+index%6*79,185+index/6*89,70,80);Panel(r,.98f);
+            var r=new Rect2(375+index%6*79,185+index/6*89,70,80);InventoryPanel(r,.7f);
             int actual=_inventoryPage*24+index;if(actual>=source.Count)continue;
             var item=source[actual];bool selected=item.Id==_selectedItem;
             DrawRect(r,selected?Gold:new Color("4b4c3f"),false,selected?2:1);
-            ItemIcon(item.Data.Slot,r.Position+new Vector2(35,32),44,Gold);
+            PaintedInventoryItem(item.Data,r.Position+new Vector2(35,32),62);
             Text(Items.SlotName(item.Data.Slot),r.Position+new Vector2(5,70),11,Muted);
             _buttons.Add((r,"inv-item-"+item.Id));
             if(((_controller||_menuKeyboard)&&_menuSelection==_buttons.Count-1)||r.HasPoint(GetGlobalMousePosition()))DrawRect(r,new Color(Pale,.6f),false,1);
@@ -111,13 +113,14 @@ public partial class Main
             Text($"{_inventoryPage+1}/{pages}",new Vector2(570,613),14,Gold);
             if(_inventoryPage+1<pages)Button(new Rect2(699,587,151,36),"Nästa","inv-next");
         }
-        Panel(new Rect2(892,153,348,464),.98f);
+        InventoryPanel(new Rect2(892,153,348,464),.82f);
         var selectedItem=_game.Inventory.Bag.Concat(_game.Inventory.Stash).Concat(_game.Inventory.Equipped.Values).FirstOrDefault(i=>i.Id==_selectedItem);
         if(selectedItem is null){Wrapped("Välj ett föremål för att se egenskaper, jämföra och flytta det.",new Vector2(914,206),300,18,Muted,28);return;}
         var d=selectedItem.Data;Wrapped(d.Name,new Vector2(914,186),300,21,Pale,27);
-        Text(Items.SlotName(d.Slot),new Vector2(914,251),13,Gold);
-        Wrapped(d.Description,new Vector2(914,285),300,15,Muted,23);
-        Wrapped(ItemStats(d),new Vector2(914,364),300,17,Gold,26);
+        PaintedInventoryItem(d,new Vector2(972,281),116);
+        Text(Items.SlotName(d.Slot),new Vector2(1047,244),13,Gold);
+        Wrapped(ItemStats(d),new Vector2(1047,275),170,15,Gold,23);
+        Wrapped(d.Description,new Vector2(914,364),300,15,Muted,23);
         _game.Inventory.Equipped.TryGetValue(d.Slot,out var equipped);
         bool worn=equipped?.Id==selectedItem.Id;
         if(!worn&&equipped!=null)
@@ -136,7 +139,7 @@ public partial class Main
     }
     private void DrawInventoryStats()
     {
-        Panel(new Rect2(375,153,865,465),.98f);
+        InventoryPanel(new Rect2(375,153,865,465),.78f);
         Text("KARLS EGENSKAPER",new Vector2(401,187),17,Gold);
         var rows=new (string,string)[]{("Liv",$"{Math.Ceiling(_game.Health)} / 100"),("Uthållighet",$"{Math.Ceiling(_game.Stamina)} / 100"),("Aktivt vapen",_game.WeaponName),("Grundhugg",$"{_game.AttackDamage:0.#} skada"),("Tungt hugg",$"{_game.AttackDamage*1.8f:0.#} skada"),("Skadeskydd",$"{_game.EquipmentArmor:0} %"),("Återhämtning i vila",$"{29+_game.EquipmentRecovery:0} uthållighet/s"),("Besegrade / parader",$"{_game.Kills} / {_game.Parries}")};
         for(int i=0;i<rows.Length;i++){float y=229+i*40;Text(rows[i].Item1,new Vector2(401,y),17,Muted);Text(rows[i].Item2,new Vector2(768,y),17,Pale);}

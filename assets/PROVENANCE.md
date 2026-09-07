@@ -64,3 +64,7 @@ Den tidigare helt täckande `ebba-radio-v2.png` bevaras som föregående variant
 ## Modulär port 0.4.1
 
 `art/port-stone-v1.png` är en ny direktgenererad platt målad stenstruktur, inbyggt bildverktyg. `PortPresentation.cs` använder den inuti egna 2D-polygoner med exakt projektion från `PortLayout.cs`; inga renderade modeller. `art/port-props-v1.png` är en identisk kopia av det första transparenta 2D-kitet: endast plint, lykta, kista och runsten från sista raden används. Full prompt, källa och avgränsning: `source/campaign/port-modules-v1.provenance.json`.
+
+## Inventariegrafik · 2026-09-07
+
+`art/inventory-background-v1.png` och `art/inventory-item-*-v1.png` (14 föremål) är nya originalbilder genererade med OpenAI imagegen. Mörk målad trä-/läderram och individuella matta föremålskort; originalfilerna är kopierade utan bildbearbetning. Fullständiga promptar, genereringskällor och destinationsfiler finns i [manifestet](source/inventory/art-v1.json). Bilderna används i inventarium, utrustning, stash och detaljpanel.

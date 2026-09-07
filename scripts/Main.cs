@@ -121,7 +121,7 @@ public partial class Main : Node2D
             if(key.PhysicalKeycode==Key.F11){DisplayServer.WindowSetMode(DisplayServer.WindowGetMode()==DisplayServer.WindowMode.Fullscreen?DisplayServer.WindowMode.Windowed:DisplayServer.WindowMode.Fullscreen);return;}
             if(key.PhysicalKeycode==Key.Escape){Back();return;}
             if(key.PhysicalKeycode==Key.I&&_screen is Screen.Game or Screen.Pause or Screen.Inventory){if(_screen==Screen.Inventory)Back();else OpenInventory();return;}
-            if(key.PhysicalKeycode==Key.C&&_screen is Screen.Game or Screen.Pause or Screen.Inventory){OpenInventory(2);return;}
+            if(key.PhysicalKeycode==Key.C&&_screen is Screen.Game or Screen.Pause or Screen.Inventory){if(_screen==Screen.Inventory&&_inventoryTab==2)Back();else OpenInventory(2);return;}
             if(_screen!=Screen.Game)
             {
                 if(key.PhysicalKeycode is Key.Down or Key.S)SelectMenu(1);
@@ -782,6 +782,7 @@ public partial class Main : Node2D
     {
         foreach(var texture in _campaignWorlds)texture?.Dispose();
         _cast?.Dispose();_animated?.Dispose();_warehouse?.Dispose();if(_shoreRevealed!=_shore)_shoreRevealed?.Dispose();_shore?.Dispose();
+        _inventoryBackground?.Dispose();foreach(var texture in _inventoryItemArt.Values)texture.Dispose();
         _portProps?.Dispose();
         _background?.Dispose();_radioPortraits?.Dispose();_ebbaPortrait?.Dispose();_serif?.Dispose();_sans?.Dispose();
     }

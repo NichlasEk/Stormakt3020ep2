@@ -2,7 +2,7 @@
 
 ## Användning
 
-- **I** öppnar/stänger inventariet. **C** öppnar statsfliken. Spelet pausas medan flikarna är öppna.
+- **I** öppnar/stänger inventariet. **C** öppnar statsfliken och stänger den vid nästa tryck. Öppnad från pausmenyn återgår den till paus. Spelet pausas medan flikarna är öppna.
 - Inventarium finns också i pausmenyn, så det går att nå med handkontroll. Styrkors väljer knappar, A aktiverar, B går tillbaka.
 - Välj ett föremål för namn, beskrivning, bonusar och jämförelse med utrustat föremål. **Utrusta**, **Ta av**, **Flytta till stash** och **Flytta till väskan** gör verkliga, omedelbart sparade byten.
 - **E/B** plockar upp närliggande fynd när Karl står stilla. En full väska lämnar fyndet på marken.
@@ -32,10 +32,10 @@ Inventarium, utrustning, stash och markfynd sparas i samma fältdagbok som exped
 
 ## Kod och verifiering
 
-`Inventory.cs` innehåller katalog, ägande, byten, stats och lootregler utan Godot-beroende. `InventoryPresentation.cs` innehåller pausade flikar, egna enkla graverade UI-symboler och markfynd. Inga nya bild- eller röstgenerationer krävs för detta system.
+`Inventory.cs` innehåller katalog, ägande, byten, stats och lootregler utan Godot-beroende. `InventoryPresentation.cs` innehåller pausade flikar och markfynd. `InventoryArt.cs` laddar en genererad målad bakgrund och 14 individuella föremålsbilder, med större förhandsvisning i detaljpanelen. Tomma platser och markfynd använder graverade symboler. Fulla bildpromptar och ursprung finns i `assets/source/inventory/art-v1.json`. Bilderna är opaka mörka kort i sliten oljemålningsstil.
 
 - `dotnet run --project tests/Atland.Tests.csproj`: 29 165 assertions. Alla åtta banor med båda understöden och arkivvalen passerar. Nya tester täcker faktisk kul-/vapenskada, sigillåterhämtning, fulla behållare, dubbla upphämtningar, stashlås, sparning och äldre sparformat.
-- `--inventory-check`: öppna flikar via tangentbord, utrusta, stats, stashsidor, deposit/withdraw, stridslås och återgång till spel. Bildfångster finns i `artifacts/inventory-*.png`; i native-exporten under dess egen `artifacts/`.
-- Linux-version: `dist/AtlandsArv-0.5/AtlandsArv.x86_64`. Native-menykontrollen passerar.
+- `--inventory-check`: ladda alla 14 bilder, öppna/stäng stats med C från spel och paus, öppna flikar via tangentbord, utrusta, stats, stashsidor, deposit/withdraw, stridslås och återgång till spel. Bildfångster finns i `artifacts/inventory-*.png`; i native-exporten under dess egen `artifacts/`.
+- Linux-version: `dist/AtlandsArv-0.5.1/AtlandsArv.x86_64`. Native-menykontrollen passerar. Vid avslut rapporterar native kvarhållna Ogg-musikresurser; detta är dokumenterat i `PROGRESS.md`.
 
 Första systemversionen använder fasta föremålsdefinitioner, en ruta per föremål och knappstyrda flyttar. Handel, slumpade affix, drag-and-drop och synliga klädbyten är inte implementerade.
