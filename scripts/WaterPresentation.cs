@@ -5,16 +5,20 @@ using System.Collections.Generic;
 
 public partial class Main
 {
-    private Texture2D? _pumpArt,_pumpLowArt,_cisternArt;
+    private Texture2D? _pumpArt,_pumpLowArt,_cisternArt,_galleryArt,_chamberArt,_chamberOpenArt;
     private void LoadWaterArt()
     {
         if(_pumpArt!=null)return;
         _pumpArt=GD.Load<Texture2D>("res://assets/art/room-pump-v1.png");
-        _pumpLowArt=GD.Load<Texture2D>("res://assets/art/room-pump-low-v1.png");
+        _pumpLowArt=GD.Load<Texture2D>("res://assets/art/room-pump-low-v2.png");
+        _galleryArt=GD.Load<Texture2D>("res://assets/art/room-gallery-v1.png");
+        _chamberOpenArt=GD.Load<Texture2D>("res://assets/art/room-chamber-open-v1.png");
+        _chamberArt=GD.Load<Texture2D>("res://assets/art/room-chamber-v1.png");
+        _oathCast=new OathCast();
         _cisternArt=GD.Load<Texture2D>("res://assets/art/room-cistern-v1.png");
     }
     private Texture2D RoomBackground=>_game.Rooms!.Current switch
-    {PortRooms.Lodge=>_warehouse,PortRooms.Pump=>_game.Rooms.WaterLowered?_pumpLowArt!:_pumpArt!,PortRooms.Cistern=>_cisternArt!,_=>_campaignWorlds[0]};
+    {PortRooms.Gallery=>_galleryArt!,PortRooms.Chamber=>_game.Rooms.Completed?_chamberOpenArt!:_chamberArt!,PortRooms.Lodge=>_warehouse,PortRooms.Pump=>_game.Rooms.WaterLowered?_pumpLowArt!:_pumpArt!,PortRooms.Cistern=>_cisternArt!,_=>_campaignWorlds[0]};
     private void AddWaterLayers(List<(float Depth,Action Draw)> layers)
     {
         bool pump=_game.Rooms!.Current==PortRooms.Pump;

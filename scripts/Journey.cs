@@ -19,12 +19,13 @@ public sealed partial class Combat
     public float RiposteTime;
     public Vector2 MoveDirection=Vector2.UnitY;
     [JsonIgnore] private static readonly Vector2[] Crate=Navigation.Expand(JourneyLayout.WarehouseObstacle,22);
-    [JsonIgnore] public Vector2[] Walkable=>Rooms?.Current==PortRooms.Court?PortRooms.CourtGround:Rooms?.Current==PortRooms.Pump?PortRooms.PumpGround:Rooms?.Current==PortRooms.Cistern?PortRooms.CisternGround:Region==Region.Quay?Ground:(Region==Region.Warehouse||Rooms?.Current==PortRooms.Lodge)?JourneyLayout.WarehouseGround:JourneyLayout.Ground;
-    [JsonIgnore] public Vector2[] Obstacles=>Rooms?.Current==PortRooms.Pump?PortRooms.PumpBasin:Rooms?.Current==PortRooms.Cistern?PortRooms.CisternBasin:(Region==Region.Warehouse||Rooms?.Current==PortRooms.Lodge)?Crate:Array.Empty<Vector2>();
-    public bool OnWalkable(Vector2 p)=>Navigation.Contains(Walkable,p)&&!Navigation.Contains(Obstacles,p);
-    public Vector2 Bound(Vector2 p)=>Region==Region.Quay?ClampToGround(p):Navigation.Clamp(Walkable,Obstacles,p);
-    public bool ClearPath(Vector2 a,Vector2 b)=>Region==Region.Quay||Navigation.Clear(Walkable,Obstacles,a,b);
-    public Vector2 NextWaypoint(Vector2 from,Vector2 target)=>Region==Region.Quay?target:Navigation.Next(Walkable,Obstacles,from,target);
+    [JsonIgnore] public Vector2[] Walkable=>Rooms?.Current==PortRooms.Gallery?PortRooms.GalleryGround:Rooms?.Current==PortRooms.Chamber?PortRooms.OathGround:Rooms?.Current==PortRooms.Court?PortRooms.CourtGround:Rooms?.Current==PortRooms.Pump?PortRooms.PumpGround:Rooms?.Current==PortRooms.Cistern?PortRooms.CisternGround:Region==Region.Quay?Ground:(Region==Region.Warehouse||Rooms?.Current==PortRooms.Lodge)?JourneyLayout.WarehouseGround:JourneyLayout.Ground;
+    [JsonIgnore] public Vector2[] Obstacles=>Rooms?.Current==PortRooms.Gallery?PortRooms.Lectern:Rooms?.Current==PortRooms.Pump?PortRooms.PumpBasin:Rooms?.Current==PortRooms.Cistern?PortRooms.CisternBasin:(Region==Region.Warehouse||Rooms?.Current==PortRooms.Lodge)?Crate:Array.Empty<Vector2>();
+    [JsonIgnore] public Vector2[][] SolidObstacles=>Rooms?.Current==PortRooms.Chamber?PortRooms.OathObstacles:new[]{Obstacles};
+    public bool OnWalkable(Vector2 p)=>Navigation.Contains(Walkable,p)&&!SolidObstacles.Any(o=>Navigation.Contains(o,p));
+    public Vector2 Bound(Vector2 p)=>Region==Region.Quay?ClampToGround(p):Navigation.Clamp(Walkable,SolidObstacles,p);
+    public bool ClearPath(Vector2 a,Vector2 b)=>Region==Region.Quay||Navigation.Clear(Walkable,SolidObstacles,a,b);
+    public Vector2 NextWaypoint(Vector2 from,Vector2 target)=>Region==Region.Quay?target:Navigation.Next(Walkable,SolidObstacles,from,target);
     [JsonIgnore] public string RegionName=>InRooms?RoomName:InCampaign?Stage.Name:Region==Region.Warehouse?"Kronans magasin":Region==Region.Shore?"De tre vittnenas strand":Duel?"Sabelduell vid kajen":"Blekinges likvarv";
     [JsonIgnore] public Vector2 JourneyObjective=>InRooms?RoomObjective:InCampaign?CampaignObjective:Region==Region.Warehouse
         ?!WhetstoneTaken?JourneyLayout.Whetstone:!ManifestTaken?JourneyLayout.Manifest:!WinchOpened?JourneyLayout.Winch:JourneyLayout.WarehouseExit

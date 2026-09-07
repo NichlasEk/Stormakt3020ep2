@@ -27,6 +27,7 @@ public partial class Main
             layers.Add((404,()=>PaintForeground(_background,new Vector2[]{new(949,389),new(951,363),new(959,353),new(961,345),new(968,358),new(976,365),new(977,391),new(970,402),new(952,401)})));
         }
         if(_game.Rooms?.Current is PortRooms.Pump or PortRooms.Cistern)AddWaterLayers(layers);
+        if(_game.InRooms)AddOathLayers(layers);
         if(_game.InRooms)AddRoomLayers(layers);else if(_game.CampaignStage==0)AddPortLayers(layers);
         foreach(var layer in layers.OrderBy(l=>l.Depth))layer.Draw();
         if((_game.Region==Region.Warehouse||_game.Rooms?.Current==PortRooms.Lodge))

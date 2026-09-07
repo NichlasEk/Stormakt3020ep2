@@ -359,3 +359,6 @@ SightTests.Run(Check);
 Console.WriteLine($"PASS EXPLORATION AND SIGHT · {checks} assertions");
 WaterTests.Run(Check);
 Console.WriteLine($"PASS WATER AND SHORTCUT · {checks} assertions");
+
+OathTests.Run(Check);
+Console.WriteLine($"PASS OATH AND SIX ROOMS · {checks} assertions");

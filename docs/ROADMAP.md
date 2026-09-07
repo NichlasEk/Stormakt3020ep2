@@ -8,7 +8,9 @@
 
 **Tredje checkpointen:** fyra rum, egna målningar för pumphus/cistern, tryckavlastning och synlig tömning, ett valfritt fynd och en beständig genväg till förgården. Äldre två-rumssparningar migrerar. Se `WATER-ROOMS.md`. Vittnesgalleriet och Edskammaren med bossen återstår.
 
-## Nuläge
+**Fjärde checkpointen:** sex rum, Vittnesgalleriets ledtråd, egen målad Edsväktare med pelarrus, unik hjälmbelöning och öppnad inre port. Flershindergeometri och migration av två-/fyrarumssparningar finns. Se `OATH-ROOMS.md`. Mål 1 återstår att koppla vidare till arkivet; mänsklig balansbedömning och radio-/ljudpass väntar. Ovanstående checkpoints är historik.
+
+## Nuläge före rumsarbetet
 
 - Spelbar inledning med kaj, magasin och strand, därefter åtta kampanjsteg i fyra målade miljöer. Understöd och arkivval har faktiska följder.
 - Sabel, hammare, pistol, gard/parad, undanmanöver, fiender, loot, sparning, volym, utvecklarskydd, inventarium/stash och stats finns. 14 föremål har egna bilder.
@@ -92,4 +94,4 @@ Leverera ett granskbart delmål per checkpoint: aktuell status, testresultat, sk
 
 ## Nästa konkreta arbetssteg
 
-Rumsgrund, upptäcktsmask, sikt och vatten-/genvägsloopen är byggda och provade i fyra rum. Fortsätt med Vittnesgalleriet, Edskammaren och Edsväktaren. Den långa kampanjen använder ännu sin befintliga rutt; rumsprovet startas separat.
+Sexrumsrutten och Edsväktarens pelarmekanik är byggda och automatiskt provade med båda vapnen/understöden. Gör först ett ljud-/radiopass för vittnesboken och bossmötet, anslut sedan den öppnade porten till Minnets arkiv med bevarad utrustning och berättelseval. Mänsklig balansbedömning väntar; därefter rotmarkernas egen rumsrutt och Rotmarskalken. Den långa kampanjen använder fortfarande sin befintliga rutt; rumsprovet startas separat.

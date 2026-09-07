@@ -27,33 +27,36 @@ public static class Navigation
         for(int i=0;i<polygon.Length;i++)result[i]=polygon[i]+Vector2.Normalize(polygon[i]-center)*amount;
         return result;
     }
-    public static Vector2 Clamp(Vector2[] ground,Vector2[] obstacle,Vector2 p)
+    public static Vector2 Clamp(Vector2[] ground,Vector2[] obstacle,Vector2 p)=>Clamp(ground,new[]{obstacle},p);
+    public static Vector2 Clamp(Vector2[] ground,Vector2[][] obstacles,Vector2 p)
     {
         if(!Contains(ground,p))p=Vector2.Lerp(Edge(ground,p),new Vector2(768,620),.003f);
-        if(obstacle.Length>0&&Contains(obstacle,p))
+        foreach(var obstacle in obstacles)if(obstacle.Length>0&&Contains(obstacle,p))
         {var center=Vector2.Zero;foreach(var vertex in obstacle)center+=vertex;center/=obstacle.Length;
             var q=Edge(obstacle,p);p=q+Combat.Normal(q-center,Vector2.UnitX)*.6f;}
         return p;
     }
-    public static bool Clear(Vector2[] ground,Vector2[] obstacle,Vector2 a,Vector2 b)
+    public static bool Clear(Vector2[] ground,Vector2[] obstacle,Vector2 a,Vector2 b)=>Clear(ground,new[]{obstacle},a,b);
+    public static bool Clear(Vector2[] ground,Vector2[][] obstacles,Vector2 a,Vector2 b)
     {
         int samples=Math.Max(2,(int)MathF.Ceiling(Vector2.Distance(a,b)/8));
-        for(int i=0;i<=samples;i++){var p=Vector2.Lerp(a,b,i/(float)samples);if(!Contains(ground,p)||(obstacle.Length>0&&Contains(obstacle,p)))return false;}
+        for(int i=0;i<=samples;i++){var p=Vector2.Lerp(a,b,i/(float)samples);if(!Contains(ground,p))return false;foreach(var obstacle in obstacles)if(Contains(obstacle,p))return false;}
         return true;
     }
-    public static Vector2 Next(Vector2[] ground,Vector2[] obstacle,Vector2 from,Vector2 target)
+    public static Vector2 Next(Vector2[] ground,Vector2[] obstacle,Vector2 from,Vector2 target)=>Next(ground,new[]{obstacle},from,target);
+    public static Vector2 Next(Vector2[] ground,Vector2[][] obstacles,Vector2 from,Vector2 target)
     {
-        target=Clamp(ground,obstacle,target);
-        if(obstacle.Length==0||Clear(ground,obstacle,from,target))return target;
-        // Small deterministic visibility graph around the measured crate island.
-        var vertices=new List<Vector2>{from,target};vertices.AddRange(Expand(obstacle,12));
+        target=Clamp(ground,obstacles,target);
+        if(Clear(ground,obstacles,from,target))return target;
+        // Small deterministic visibility graph around measured solid islands.
+        var vertices=new List<Vector2>{from,target};foreach(var obstacle in obstacles)if(obstacle.Length>0)vertices.AddRange(Expand(obstacle,12));
         int count=vertices.Count;var distance=new float[count];Array.Fill(distance,float.MaxValue);
         var previous=new int[count];Array.Fill(previous,-1);var visited=new bool[count];distance[0]=0;
         for(int pass=0;pass<count;pass++)
         {
             int best=-1;for(int i=0;i<count;i++)if(!visited[i]&&(best<0||distance[i]<distance[best]))best=i;
             if(best<0||distance[best]==float.MaxValue)break;visited[best]=true;if(best==1)break;
-            for(int j=0;j<count;j++)if(!visited[j]&&Clear(ground,obstacle,vertices[best],vertices[j]))
+            for(int j=0;j<count;j++)if(!visited[j]&&Clear(ground,obstacles,vertices[best],vertices[j]))
             {float d=distance[best]+Vector2.Distance(vertices[best],vertices[j]);if(d<distance[j]){distance[j]=d;previous[j]=best;}}
         }
         int next=1;if(previous[next]<0)return from;

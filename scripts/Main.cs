@@ -77,7 +77,7 @@ public partial class Main : Node2D
     private static NVec N(Vector2 v)=>new(v.X,v.Y);
     public override void _Ready()
     {
-        var args=OS.GetCmdlineUserArgs();_waterChecks=args.Contains("--water-check");_fogChecks=args.Contains("--fog-check");_roomChecks=args.Contains("--rooms-check");_inventoryChecks=args.Contains("--inventory-check");_portChecks=args.Contains("--port-check");_sceneChecks=args.Contains("--scene-check")||_portChecks||_inventoryChecks||_roomChecks||_fogChecks||_waterChecks;_uiChecks=args.Contains("--ui-check");
+        var args=OS.GetCmdlineUserArgs();_oathChecks=args.Contains("--oath-check");_waterChecks=args.Contains("--water-check");_fogChecks=args.Contains("--fog-check");_roomChecks=args.Contains("--rooms-check");_inventoryChecks=args.Contains("--inventory-check");_portChecks=args.Contains("--port-check");_sceneChecks=args.Contains("--scene-check")||_portChecks||_inventoryChecks||_roomChecks||_fogChecks||_waterChecks||_oathChecks;_uiChecks=args.Contains("--ui-check");
         _serif=GD.Load<Font>("res://assets/fonts/NotoSerif-Regular.ttf");_sans=GD.Load<Font>("res://assets/fonts/NotoSans-Regular.ttf");
         _background=GD.Load<Texture2D>("res://assets/art/likvarvet-scale-v5.png");
         _radioPortraits=GD.Load<Texture2D>("res://assets/art/radio-cast-v1.png");
@@ -92,9 +92,9 @@ public partial class Main : Node2D
         if(args.Contains("--duel"))StartDuel();
         if(args.Contains("--port")||_portChecks||_inventoryChecks){_portSlot=true;StartAtland();}
         else if(args.Contains("--atland")||_campaignCheck)StartAtland();
-        if(args.Contains("--rooms")||_roomChecks||_fogChecks||_waterChecks)StartRooms();
+        if(args.Contains("--rooms")||_roomChecks||_fogChecks||_waterChecks||_oathChecks)StartRooms();
         if(args.Contains("--capture-title"))_smokeCapture=true;
-        if(_waterChecks)RunWaterChecks();else if(_fogChecks)RunSightChecks();else if(_roomChecks)RunRoomChecks();else if(_inventoryChecks)RunInventoryChecks();else if(_portChecks)RunPortChecks();else if(_sceneChecks)RunSceneChecks();
+        if(_oathChecks)RunOathChecks();else if(_waterChecks)RunWaterChecks();else if(_fogChecks)RunSightChecks();else if(_roomChecks)RunRoomChecks();else if(_inventoryChecks)RunInventoryChecks();else if(_portChecks)RunPortChecks();else if(_sceneChecks)RunSceneChecks();
     }
     public override void _Input(InputEvent ev)
     {
@@ -344,7 +344,7 @@ public partial class Main : Node2D
     public override void _Process(double delta)
     {
         float dt=(float)delta;_clock+=dt;_noticeTime=Math.Max(0,_noticeTime-dt);if(_screen==Screen.Game)_campaignTextTime=Math.Max(0,_campaignTextTime-dt);
-        _sound.Boss=(_game.Phase==Phase.Collector||(_game.Phase==Phase.Extraction&&_game.Enemies.Any(e=>!e.Dead))||(_game.InCampaign&&_game.Enemies.Any(e=>!e.Dead&&e.Kind==EnemyKind.Collector&&_game.CanSeeRoomPoint(e.Position)))) && _screen is Screen.Game or Screen.Pause;
+        _sound.Boss=(_game.Phase==Phase.Collector||(_game.Phase==Phase.Extraction&&_game.Enemies.Any(e=>!e.Dead))||(_game.InCampaign&&_game.Enemies.Any(e=>!e.Dead&&e.Kind is (EnemyKind.Collector or EnemyKind.OathGuardian)&&_game.CanSeeRoomPoint(e.Position)))) && _screen is Screen.Game or Screen.Pause;
         _sound.Discovery=_game.Phase is Phase.Names or Phase.Testimony || _game.Region==Region.Shore;
         if(_screen is Screen.Game or Screen.Ending or Screen.Testimony)
         {
@@ -531,6 +531,7 @@ public partial class Main : Node2D
     }
     private void DrawTelegraph(Fighter e)
     {
+        if(e.Kind==EnemyKind.OathGuardian){DrawOathTelegraph(e);return;}
         var p=G(e.Position);var f=G(e.Facing);
         if(e.Kind==EnemyKind.Gunner){DrawLine(p,G(e.LockedAim),new Color(Red,.6f),2,true);DrawArc(G(e.LockedAim),17,0,Mathf.Tau,30,Red,1,true);return;}
         float range=e.Kind==EnemyKind.Collector?145:e.Kind==EnemyKind.Pikeman?135:88;
@@ -541,6 +542,7 @@ public partial class Main : Node2D
     }
     private void Actor(Fighter e,bool dead)
     {
+        if(e.Kind==EnemyKind.OathGuardian){DrawOathActor(e);return;}
         string kind=e.Kind.ToString().ToLowerInvariant();if(kind=="guard")kind="guard";
         int pose=e.State==1?3:e.State==2?4:e.State==3?5:(int)e.Walk%2+1;
         if(dead)pose=6;
@@ -607,8 +609,8 @@ public partial class Main : Node2D
         if(_game.InRooms)DrawExplorationMap();
         DrawJourneyPrompt(foes);
         if(_game.InCampaign)DrawCampaignStory();
-        var boss=_game.Enemies.FirstOrDefault(e=>e.Kind==EnemyKind.Collector&&!e.Dead&&_game.CanSeeRoomPoint(e.Position));
-        if(boss!=null){Panel(new Rect2(354,20,542,59),.91f);Centered(_game.InCampaign?(_game.CampaignStage==7?"KOLLEGIETS VÄKTARE":"KRONFOGDEN"):"VARVETS INDRIVARE",625,42,14,Gold);WorldBar(new Vector2(378,56),490,boss.Health/boss.MaxHealth,Red);}
+        var boss=_game.Enemies.FirstOrDefault(e=>e.Kind is (EnemyKind.Collector or EnemyKind.OathGuardian)&&!e.Dead&&_game.CanSeeRoomPoint(e.Position));
+        if(boss!=null){Panel(new Rect2(354,20,542,59),.91f);Centered(boss.Kind==EnemyKind.OathGuardian?(boss.State==3?"EDSVÄKTAREN · EDEN VACKLAR":boss.Health<boss.MaxHealth*.5f?"EDSVÄKTAREN · FÖRTVIVLAD ED":"EDSVÄKTAREN"):_game.InCampaign?(_game.CampaignStage==7?"KOLLEGIETS VÄKTARE":"KRONFOGDEN"):"VARVETS INDRIVARE",625,42,14,Gold);WorldBar(new Vector2(378,56),490,boss.Health/boss.MaxHealth,Red);}
         Panel(new Rect2(20,623,381,77),.96f);Text("KARL CCLV",new Vector2(38,646),13,Gold);Text($"{Math.Ceiling(_game.Health)} / 100",new Vector2(302,646),13,Pale);
         WorldBar(new Vector2(38,657),345,_game.Health/100,new Color("b6574d"),11);WorldBar(new Vector2(38,677),345,_game.Stamina/100,Teal,5);
         Panel(new Rect2(417,623,470,77),.96f);Text(_game.WeaponName.ToUpperInvariant(),new Vector2(435,647),16,Gold);
@@ -797,7 +799,7 @@ public partial class Main : Node2D
     {
         foreach(var texture in _campaignWorlds)texture?.Dispose();
         _cast?.Dispose();_animated?.Dispose();_warehouse?.Dispose();if(_shoreRevealed!=_shore)_shoreRevealed?.Dispose();_shore?.Dispose();
-        _pumpArt?.Dispose();_pumpLowArt?.Dispose();_cisternArt?.Dispose();_roomFog?.Dispose();_inventoryBackground?.Dispose();foreach(var texture in _inventoryItemArt.Values)texture.Dispose();
+        _pumpArt?.Dispose();_pumpLowArt?.Dispose();_cisternArt?.Dispose();_galleryArt?.Dispose();_chamberArt?.Dispose();_chamberOpenArt?.Dispose();_oathCast?.Dispose();_roomFog?.Dispose();_inventoryBackground?.Dispose();foreach(var texture in _inventoryItemArt.Values)texture.Dispose();
         _portProps?.Dispose();
         _background?.Dispose();_radioPortraits?.Dispose();_ebbaPortrait?.Dispose();_serif?.Dispose();_sans?.Dispose();
     }

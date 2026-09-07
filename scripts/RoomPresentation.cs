@@ -31,6 +31,8 @@ public partial class Main
             if(_game.CanSeeRoomPoint(PortRooms.Pressure))Text(run.PressureReleased?"AVLASTAD":"TRYCKAVLASTNING",G(PortRooms.Pressure)+new Vector2(-65,35),12,Gold);
             if(_game.CanSeeRoomPoint(PortRooms.Wheel))Text(run.WaterLowered?"PUMPEN ÄR TÖMD":"MATARHJUL",G(PortRooms.Wheel)+new Vector2(-50,35),12,Gold);
         }
+        if(run.Current==PortRooms.Gallery&&_game.CanSeeRoomPoint(PortRooms.Witness))Text(run.WitnessRead?"EDEN OCH STENEN":"VITTNESBOKEN",G(PortRooms.Witness)+new Vector2(-55,35),12,Gold);
+        if(run.Current==PortRooms.Chamber&&_game.CanSeeRoomPoint(PortRooms.OathExit))Text(run.Completed?"PORTEN ÄR ÖPPEN":run.OathDefeated?"BRYT PORTENS SIGILL":"EDSFÖRSEGLAD PORT",G(PortRooms.OathExit)+new Vector2(-70,35),12,Gold);
         if(run.Current==PortRooms.Cistern&&!run.RelicTaken&&_game.CanSeeRoomPoint(PortRooms.Relic))Text("SALTETS VITTNESMÅL",G(PortRooms.Relic)+new Vector2(-65,35),12,Gold);
         if(run.Current==PortRooms.Court&&!run.KeyTaken&&_game.CanSeeRoomPoint(PortRooms.Key))
         {var p=G(PortRooms.Key);DrawCircle(p,17,new Color(.03f,.04f,.03f,.9f));DrawArc(p,7,0,Mathf.Tau,20,Gold,2,true);DrawLine(p+new Vector2(5,5),p+new Vector2(17,17),Gold,3,true);Text("VÄKTARENS PACKNING",p+new Vector2(-80,38),12,Gold);}
@@ -70,6 +72,8 @@ public partial class Main
         else if(r.Current==PortRooms.Pump&&Near(PortRooms.Pressure)&&!r.PressureReleased)prompt="E / B · Släpp övertrycket";
         else if(r.Current==PortRooms.Pump&&Near(PortRooms.Wheel)&&!r.WaterLowered)prompt=r.PressureReleased?"E / B · Vrid matarhjulet":"Matarhjulet är trycklåst";
         else if(r.Current==PortRooms.Cistern&&Near(PortRooms.Relic)&&!r.RelicTaken)prompt="E / B · Undersök altaret";
+        else if(r.Current==PortRooms.Gallery&&Near(PortRooms.Witness))prompt=r.WitnessRead?"Eden löses mot de ringmärkta pelarna":"E / B · Läs vittnesboken";
+        else if(r.Current==PortRooms.Chamber&&Near(PortRooms.OathExit)&&r.OathDefeated)prompt=r.Completed?"Rutten är säkrad · återvänd och hämta fynd":"E / B · Öppna den inre porten";
         if(prompt=="")return;
         if(_game.Enemies.Any(e=>!e.Dead))prompt=_game.Enemies.Any(e=>!e.Dead&&_game.CanSeeRoomPoint(e.Position))?"Slå tillbaka rummets väktare":"Området behöver säkras först";
         Panel(new Rect2(390,412,500,59),.94f);Centered(prompt,640,442,17,Gold);
@@ -78,13 +82,13 @@ public partial class Main
     {
         DrawRect(new Rect2(0,0,1280,720),new Color(.025f,.023f,.019f,.96f));
         Text("ATLAND · DE FÖRSEGLADE RUMMEN",new Vector2(95,100),26,Pale,true);
-        Wrapped("En gammal logementdörr leder in under porten. Väktarens packning i förgården kan innehålla nyckeln. Säkra rummet och undersök kistan innanför.",new Vector2(95,170),1000,21,Muted,34);
+        Wrapped("Logementets ritning visar vägen till pumphuset. Bortom vattnet ligger Vittnesgalleriet och den edsförseglade porten. Cisternen döljer en valfri väg tillbaka.",new Vector2(95,170),1000,21,Muted,34);
         var r=_game.Rooms!;
         int row=0;
-        foreach(var id in new[]{PortRooms.Court,PortRooms.Lodge,PortRooms.Pump,PortRooms.Cistern})
-        {Text(r.Rooms[id].Visited?PortRooms.Name(id):"Oundersökt rum",new Vector2(95,310+row++*38),20,id==r.Current?Gold:Muted);}
+        foreach(var id in PortRooms.Ids)
+        {Text(r.Rooms[id].Visited?PortRooms.Name(id):"Oundersökt rum",new Vector2(95+(row/3)*520,310+(row++%3)*42),20,id==r.Current?Gold:Muted);}
         Text($"Nyckel: {(r.KeyTaken?"säkrad":"saknas")} · Vatten: {(r.WaterLowered?"sänkt":"högt")} · Genväg: {(r.ShortcutOpen?"öppen":"reglad")}",new Vector2(95,495),18,Pale);
-        Wrapped(r.CacheTaken?"Ritningen visar pumpens ordning: avlasta trycket på östra sidan, vrid sedan västra matarhjulet. Cisternen kan dölja en äldre väg tillbaka till förgården.":"Sök väktarens nyckel och undersök logementets kista. Återbesök minns fiender, fynd och utforskade ytor.",new Vector2(95,540),1000,18,Muted,27);
+        Wrapped(r.Completed?"Den inre porten är öppen. Rutten är säkrad; kvarlämnade fynd och cisternens genväg går fortfarande att besöka.":r.WitnessRead?"Locka Edsväktarens sköldrus mot en ringmärkt edspelare. Kliv undan när riktningen låsts. Angrip när skölden faller; vanlig kraft biter svagt genom eden.":r.CacheTaken?"Ritningen visar pumpens ordning: avlasta trycket på östra sidan, vrid sedan västra matarhjulet. Cisternen kan dölja en äldre väg tillbaka till förgården.":"Sök väktarens nyckel och undersök logementets kista. Återbesök minns fiender, fynd och utforskade ytor.",new Vector2(95,540),1000,18,Muted,27);
         Button(new Rect2(830,614,340,49),"Tillbaka","back",true);
     }
 

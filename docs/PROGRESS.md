@@ -1,5 +1,12 @@
 # Checkpoint · Vägen under vattnet · 2026-09-06
 
+## Senast · Vittnesgalleriet och Edsväktaren · 2026-09-07
+
+Sex sammankopplade rum med valfri cistern. Två nya rumsmålningar, pumpens sidopassage, öppen bossport och egen fyrposers 2D-bossatlas. Galleriets vittnesbok öppnar Edskammaren; Edsväktarens riktade sköldrus mot återanvändbara pelare ger en skadeöppning. Solid pulpet och två pelare styr navigation, sikt och förgrundsordning. Layoutversion 3 migrerar äldre rumsrutter utan reset. Hjälmbelöning, boss/slutflagga och återbesök sparas. Se `OATH-ROOMS.md` för exakt omfattning och bildproveniens.
+
+29 274 assertions, inklusive åtta nya kombinationer av vapen/understöd/valfri rutt utan utvecklarskydd. Godot och fristående Linux `--oath-check` passerar genom sex rum, boss, port, sparning och journal; bilder granskade. Bygget har 0 varningar/fel. Exporten finns i `dist/AtlandsArv-0.7-oath/AtlandsArv.x86_64`. Rutten slutar vid den öppnade inre porten; arkivanslutning och nya radio-/ljudassets är nästa steg. Bossens gång består ännu av fasta poser; mänsklig svårighets- och tempobedömning återstår.
+
+
 ## Senast · pumphus, cistern och genväg · 2026-09-07
 
 Rumsprovet är nu fyra rum. Tre nya genererade bilder: pumphus högt/lågt vatten och cistern. De två första målningarna består. Logementets ritning öppnar vägen till pumphuset; avlasta östra trycket och vrid västra matarhjulet. Cisternens fynd är valfritt, och dess regel öppnar en återvändbar genväg till förgården. Rumslayout version 2 migrerar gamla två-rumssparningar utan omstart. Geometri och sikt följer granskade gångytor/bassänger. Reglage/altare visas från sina åtkomliga interaktionspunkter. Detaljer och promptmanifest i `WATER-ROOMS.md`.

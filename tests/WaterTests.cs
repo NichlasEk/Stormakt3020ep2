@@ -38,9 +38,9 @@ static class WaterTests
             Use(game,RoomLinks.All[3].AtB);check(game.LocalDrops.Single().Item.Id==id,"Optional reward stays available on return");
             var old=Combat.NewRooms(Order.Artillery);old.Enemies[0].Health=42;
             var options=new JsonSerializerOptions{IncludeFields=true};var node=JsonSerializer.SerializeToNode(old,options)!;
-            node["Rooms"]!.AsObject().Remove("LayoutVersion");var dict=node["Rooms"]!["Rooms"]!.AsObject();dict.Remove(PortRooms.Pump);dict.Remove(PortRooms.Cistern);
+            node["Rooms"]!.AsObject().Remove("LayoutVersion");var dict=node["Rooms"]!["Rooms"]!.AsObject();dict.Remove(PortRooms.Pump);dict.Remove(PortRooms.Cistern);dict.Remove(PortRooms.Gallery);dict.Remove(PortRooms.Chamber);
             var migrated=Save(node.Deserialize<Combat>(options)!,"legacy");
-            check(migrated.Rooms!.LayoutVersion==2&&migrated.Rooms.Rooms.Count==4&&migrated.Enemies[0].Health==42&&!migrated.Rooms.Rooms[PortRooms.Pump].Visited,"Old two-room save gains unopened rooms without resetting progress");
+            check(migrated.Rooms!.LayoutVersion==3&&migrated.Rooms.Rooms.Count==6&&migrated.Enemies[0].Health==42&&!migrated.Rooms.Rooms[PortRooms.Pump].Visited,"Old two-room save gains unopened rooms without resetting progress");
             foreach(var order in Enum.GetValues<Order>())
             {
                 var run=Combat.NewRooms(order);int ticks=0;
@@ -48,7 +48,7 @@ static class WaterTests
                 {
                     if(run.Rooms!.ShortcutOpen&&run.Rooms.Current==PortRooms.Court)break;
                     var foe=run.Enemies.Where(e=>!e.Dead).OrderBy(e=>Vector2.DistanceSquared(e.Position,run.Player)).FirstOrDefault();
-                    var target=foe?.Position??run.RoomObjective;var delta=target-run.Player;float distance=delta.Length();
+                    var target=foe?.Position??(run.Rooms!.Current==PortRooms.Pump&&run.Rooms.WaterLowered?RoomLinks.All[2].AtA:run.RoomObjective);var delta=target-run.Player;float distance=delta.Length();
                     bool guard=foe is not null&&foe.State==1&&foe.Timer<.16f&&distance<150;
                     var move=distance>48||!run.ClearPath(run.Player,target)?Combat.Normal(run.NextWaypoint(run.Player,target)-run.Player,Vector2.UnitX):Vector2.Zero;
                     run.Step(new(move,Combat.Normal(delta,Vector2.UnitX),foe is not null&&distance<95&&!guard,foe is not null&&distance<105&&ticks%47==0&&!guard,false,guard,false,run.Health<48,foe is not null,ticks%30==0));
