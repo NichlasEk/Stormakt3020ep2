@@ -16,10 +16,10 @@ static class ArchiveTests
                 var g=Combat.NewRooms(order);g.Weapon=weapon;int ticks=0;
                 for(;ticks<18000&&!g.Dead&&!g.Rooms!.Completed;ticks++)g.Step(OathCheckPilot.Decide(g,choice==1));
                 check(g.Rooms!.Completed&&!g.Dead,"Reach opened oath port before archive");
-                g.Rooms.LayoutVersion=3;g.Rooms.Rooms.Remove(PortRooms.Archive);
+                g.Rooms.LayoutVersion=3;g.Rooms.Rooms.Remove(PortRooms.Archive);g.Rooms.Rooms.Remove(PortRooms.Roots);g.Rooms.Rooms.Remove(PortRooms.Grove);
                 g.Inventory.Stash.Add(g.Inventory.Create("iron-cap"));
                 g=Save(g,$"legacy-{weapon}-{order}-{choice}");
-                check(g.Rooms!.LayoutVersion==4&&g.Rooms.Rooms.Count==7&&!g.Rooms.Rooms[PortRooms.Archive].Visited,"Completed v3 save gains unopened archive");
+                check(g.Rooms!.LayoutVersion==5&&g.Rooms.Rooms.Count==9&&!g.Rooms.Rooms[PortRooms.Archive].Visited,"Completed v3 save gains unopened archive");
                 int oldNextId=g.NextId;float health=g.Health;int potions=g.Potions;string inventory=JsonSerializer.Serialize(g.Inventory,new JsonSerializerOptions{IncludeFields=true});
                 Use(g,PortRooms.OathExit);
                 check(g.Rooms.Current==PortRooms.Archive&&g.OnWalkable(g.Player),"Separate E crosses open port to valid arrival");
@@ -45,6 +45,7 @@ static class ArchiveTests
                 check(g.Rooms.Current==PortRooms.Cistern&&g.Inventory.Stash.Any(i=>i.Definition=="iron-cap"),"Return through all old rooms keeps stash");
                 if(!g.Rooms.RelicTaken)Use(g,PortRooms.Relic);
                 check(g.Rooms.RelicTaken&&g.LocalDrops.Any(d=>d.Item.Definition=="atland-saber"),"Uncollected cistern loot survives the archive decision and full bag");
+                RootwayTests.Continue(g,check);
                 Console.WriteLine($"ARCHIVE ROUTE {weapon}/{order}, choice={choice}: {ticks} ticks, {g.Health:0} health, decision and return intact");
             }
         }

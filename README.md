@@ -2,7 +2,13 @@
 
 Episod II. Ett nytt, fristående actionrollspel i Stormakts värld: nordisk barock, karoliner, mytologi och Rudbecks Atland.
 
-[Nästa arbetsmål och nulägesanalys](docs/ROADMAP.md): sammanhängande banor med flera målade rum, dörrar, upptäcktsmörker och egna bossmekaniker. Atlands port har nu sju beständiga rum fram till Minnets arkiv.
+[Nästa arbetsmål och nulägesanalys](docs/ROADMAP.md): sammanhängande banor med flera målade rum, dörrar, upptäcktsmörker och egna bossmekaniker. Atlands port och Rotvägen har nu nio beständiga rum.
+
+## Nytt · Rotvägen · 0.9
+
+Två nya målade rum efter arkivets grind: Rötternas trappa med motviktsport och De namnlösas lund med avtryck, eftertrupper och vittnessigill. Arkivvalet avgör om en eller två eftertrupper hinner fram. Fem nya svenska Ebba-/Hedvig-repliker. Nio rum går att återbesöka med bevarad utrustning, stash, fiender och fynd. [Innehåll, bilder och verifiering](docs/ROOTWAY.md).
+
+`./start.sh -- --rooms` fortsätter din rumssparning. E/B vid den säkrade arkivgrinden går vidare. Äldre sparningar migrerar utan omstart. Linux-export: `dist/AtlandsArv-0.9-rootway/AtlandsArv.x86_64 -- --rooms`. Slutpunkten är lundens sigill; nästa expedition mot berget återstår.
 
 ## Nytt · Minnets arkiv · 0.8
 

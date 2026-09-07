@@ -1,5 +1,7 @@
 # Minnets arkiv · 0.8
 
+Fortsättningen är nu byggd i [Rotvägen 0.9](ROOTWAY.md). Nedan beskrivs arkivcheckpointen och dess dåvarande slutpunkt.
+
 2026-09-07. Sjunde beständiga rummet i Atlands port, efter Edsväktaren. Den separata åttastegskampanjen är oförändrad; den nya rumsrutten slutar vid arkivets säkrade grind.
 
 ## Prova i kväll

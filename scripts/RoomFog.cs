@@ -17,6 +17,7 @@ public partial class Main
             var props=_game.Rooms.Current==PortRooms.Pump
                 ?new[]{(Access:PortRooms.Wheel,Foot:new System.Numerics.Vector2(300,565)),(Access:PortRooms.Pressure,Foot:new System.Numerics.Vector2(1250,595))}
                 :_game.Rooms.Current==PortRooms.Cistern?new[]{(Access:PortRooms.Relic,Foot:new System.Numerics.Vector2(230,675))}:_game.Rooms.Current==PortRooms.Archive?new[]{(Access:ArchiveRoom.Desk,Foot:new System.Numerics.Vector2(800,680))}
+                :_game.Rooms.Current==PortRooms.Roots?new[]{(Access:Rootway.Winch,Foot:new System.Numerics.Vector2(745,375))}:_game.Rooms.Current==PortRooms.Grove?new[]{(Access:Rootway.Memorial,Foot:new System.Numerics.Vector2(780,640))}
                 :_game.Rooms.Current==PortRooms.Gallery?new[]{(Access:PortRooms.Witness,Foot:new System.Numerics.Vector2(800,700))}
                 :_game.Rooms.Current==PortRooms.Chamber?PortRooms.Pillars.Select(p=>(Access:p+new System.Numerics.Vector2(0,42),Foot:p)).ToArray():Array.Empty<(System.Numerics.Vector2 Access,System.Numerics.Vector2 Foot)>();
             for(int y=0;y<RoomSight.Rows;y++)for(int x=0;x<RoomSight.Columns;x++)

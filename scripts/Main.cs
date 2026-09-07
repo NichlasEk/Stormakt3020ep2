@@ -77,7 +77,7 @@ public partial class Main : Node2D
     private static NVec N(Vector2 v)=>new(v.X,v.Y);
     public override void _Ready()
     {
-        var args=OS.GetCmdlineUserArgs();_archiveChecks=args.Contains("--archive-check");_roomAudioChecks=args.Contains("--room-audio-check");_oathChecks=args.Contains("--oath-check")||_roomAudioChecks||_archiveChecks;_waterChecks=args.Contains("--water-check");_fogChecks=args.Contains("--fog-check");_roomChecks=args.Contains("--rooms-check");_inventoryChecks=args.Contains("--inventory-check");_portChecks=args.Contains("--port-check");_sceneChecks=args.Contains("--scene-check")||_portChecks||_inventoryChecks||_roomChecks||_fogChecks||_waterChecks||_oathChecks;_uiChecks=args.Contains("--ui-check");
+        var args=OS.GetCmdlineUserArgs();_rootwayChecks=args.Contains("--rootway-check");_archiveChecks=args.Contains("--archive-check")||_rootwayChecks;_roomAudioChecks=args.Contains("--room-audio-check");_oathChecks=args.Contains("--oath-check")||_roomAudioChecks||_archiveChecks;_waterChecks=args.Contains("--water-check");_fogChecks=args.Contains("--fog-check");_roomChecks=args.Contains("--rooms-check");_inventoryChecks=args.Contains("--inventory-check");_portChecks=args.Contains("--port-check");_sceneChecks=args.Contains("--scene-check")||_portChecks||_inventoryChecks||_roomChecks||_fogChecks||_waterChecks||_oathChecks;_uiChecks=args.Contains("--ui-check");
         _serif=GD.Load<Font>("res://assets/fonts/NotoSerif-Regular.ttf");_sans=GD.Load<Font>("res://assets/fonts/NotoSans-Regular.ttf");
         _background=GD.Load<Texture2D>("res://assets/art/likvarvet-scale-v5.png");
         _radioPortraits=GD.Load<Texture2D>("res://assets/art/radio-cast-v1.png");
@@ -338,14 +338,15 @@ public partial class Main : Node2D
         var keep=_radioQueue.Where(key=>_game.RoomRadioRelevant(key)).ToArray();_radioQueue.Clear();foreach(var key in keep)_radioQueue.Enqueue(key);
         if(!_game.RoomRadioRelevant(_radio)){_sound.StopVoice();_radioTime=0;_radio="";}
     }
+    private static bool IsRoomRadio(string id)=>id.StartsWith("rooms-",StringComparison.Ordinal)||id.StartsWith("archive-",StringComparison.Ordinal)||id.StartsWith("roots-",StringComparison.Ordinal);
     private void QueueRadio(string id)
     {
-        if((id.StartsWith("rooms-",StringComparison.Ordinal)||id.StartsWith("archive-",StringComparison.Ordinal)))
+        if(IsRoomRadio(id))
         {
             if(!_game.RoomRadioRelevant(id))return;
-            var retained=_radioQueue.Where(key=>(!key.StartsWith("rooms-",StringComparison.Ordinal)&&!key.StartsWith("archive-",StringComparison.Ordinal))||_game.RoomRadioRelevant(key)).ToArray();
+            var retained=_radioQueue.Where(key=>!IsRoomRadio(key)||_game.RoomRadioRelevant(key)).ToArray();
             _radioQueue.Clear();foreach(var key in retained)_radioQueue.Enqueue(key);
-            if(((_radio.StartsWith("rooms-",StringComparison.Ordinal)||_radio.StartsWith("archive-",StringComparison.Ordinal))&&!_game.RoomRadioRelevant(_radio))||(id=="rooms-fallen"&&_radio=="cannon"))
+            if((IsRoomRadio(_radio)&&!_game.RoomRadioRelevant(_radio))||(id=="rooms-fallen"&&_radio=="cannon"))
             {_sound.StopVoice();_radioTime=0;_radio="";}
             if(id=="rooms-fallen")
             {var pending=_radioQueue.Where(key=>key!="cannon").ToArray();_radioQueue.Clear();foreach(var key in pending)_radioQueue.Enqueue(key);}
@@ -825,7 +826,7 @@ public partial class Main : Node2D
     {
         foreach(var texture in _campaignWorlds)texture?.Dispose();
         _cast?.Dispose();_animated?.Dispose();_warehouse?.Dispose();if(_shoreRevealed!=_shore)_shoreRevealed?.Dispose();_shore?.Dispose();
-        _pumpArt?.Dispose();_pumpLowArt?.Dispose();_cisternArt?.Dispose();_galleryArt?.Dispose();_chamberArt?.Dispose();_chamberOpenArt?.Dispose();_archiveArt?.Dispose();_archiveDocuments?.Dispose();_oathCast?.Dispose();_roomFog?.Dispose();_inventoryBackground?.Dispose();foreach(var texture in _inventoryItemArt.Values)texture.Dispose();
+        _pumpArt?.Dispose();_pumpLowArt?.Dispose();_cisternArt?.Dispose();_galleryArt?.Dispose();_chamberArt?.Dispose();_chamberOpenArt?.Dispose();_archiveArt?.Dispose();_archiveDocuments?.Dispose();_rootwayArt?.Dispose();_groveArt?.Dispose();_oathCast?.Dispose();_roomFog?.Dispose();_inventoryBackground?.Dispose();foreach(var texture in _inventoryItemArt.Values)texture.Dispose();
         _portProps?.Dispose();
         _background?.Dispose();_radioPortraits?.Dispose();_ebbaPortrait?.Dispose();_serif?.Dispose();_sans?.Dispose();
     }

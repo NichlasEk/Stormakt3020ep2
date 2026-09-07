@@ -53,6 +53,7 @@ public partial class Main
             Check(_screen==Screen.Journal,"Journal opens after completion");await Capture("oath-journal");
             if(_roomAudioChecks)await CheckRoomAudioPresentation();
             if(_archiveChecks)await CheckArchiveScenes();
+            if(_rootwayChecks)await CheckRootwayScenes();
             GD.Print($"OATH CHECK PASS: six rooms, native boss, pillar exposure, reward, saved completion, journal; {ticks} ticks, {_game.Health:0} health");GetTree().Quit();
         }
         catch(Exception e){GD.PushError(e.ToString());GetTree().Quit(1);}

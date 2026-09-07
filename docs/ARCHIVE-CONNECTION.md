@@ -1,9 +1,9 @@
-# Minnets arkiv: anslutningen är byggd
+# Arkivets fortsättning
 
-2026-09-07 · 0.8. Den tidigare planen är genomförd: sjunde beständiga rummet, egen målning och dokumentvy, layoutmigration 3→4, två beslut med olika kontrollpatruller och återväg med sparad utrustning/fynd. Se [levererad funktion och verifiering](ARCHIVE.md).
+2026-09-07 · 0.9. Arkivet är kopplat till Rotvägen: två nya beständiga rum, motviktsport och ett stridsmöte vars förstärkningar följer arkivvalet. Se [Rotvägen](ROOTWAY.md). Nio rum delar samma rumssparning, hälsa, utrustning och stash. Layout 4 migrerar till 5.
 
-## När nästa värld ansluts
+## Fortsatt expansion
 
-`EnterCampaign(index)` tömmer aktiva fiender, använder de gamla gemensamma arenakoordinaterna och ger hälsa/tinktur. `ValidateRooms()` kräver fortfarande kampanjsteg 0. `LocalDrops` kopplar fynd till region, steg och rum-ID. Övergången vidare mot rotmarkerna måste därför uttryckligen bevara rumsruttens vilande tillstånd och definiera återvägen, fyndens ägarskap och resursregler. Den gamla åttastegskampanjen är fortfarande separat.
+Rumsrutten behåller `CampaignStage == 0` och använder stabila rum-ID:n. `EnterCampaign(index)` i gamla åttastegskampanjen tömmer fiender och ger hälsa/tinktur; den används inte vid passage från arkivet till Rotvägen. Framtida rum mot berget ska följa samma snapshot-/dörrmodell eller uttryckligen migrera den. De två kampanjstarterna är fortfarande separata.
 
-`Combat.ArchiveChoice` är beslutets enda källa (1 bevara, 2 förfalska). `RoomRun.ArchiveSecured` anger att kontrollen besegrats och grinden undersökts. Nästa värld bör läsa dessa flaggor och inte fråga efter valet på nytt. Arkivets patrull får inte återställas eller belönas igen vid återbesök.
+`Combat.ArchiveChoice` är enda källan till dokumentbeslutet. `ArchiveSecured` öppnar Rotvägen. `RootGateOpen` öppnar lunden, `GroveWave` minns utlösta förstärkningar och `GroveSecured` skyddar belöningen från upprepning. Nästa värld ska bevara dessa flaggor, utrustning, utforskning och fyndens rumsägarskap. Återvägen är en del av systemet.

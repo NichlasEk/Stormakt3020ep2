@@ -1,0 +1,66 @@
+{
+  "lines": [
+    {
+      "id": "roots-entry",
+      "role": "hedvig",
+      "text": "Rötterna har vuxit genom muren. Men vägen fanns här före trädet. Följ kedjan. Den hör till en gammal port.",
+      "asset": "assets/audio/voice-roots-entry.ogg",
+      "source": "assets/source/voices/roots-entry.wav",
+      "job": "b3ff5b3e11b844da9b6134422591cc41",
+      "backend": "dots.tts-mf",
+      "synthetic_reference": true,
+      "sha256": "6993fc977c5534b6dced9ca603d88a576803f6143310ae74fd6fb5ce6af02f5a",
+      "duration_seconds": 7.9
+    },
+    {
+      "id": "roots-winch",
+      "role": "ebba",
+      "text": "Porten rör sig. Bra. Jag skriver fungerande infrastruktur i rapporten. Det blir första gången i dag.",
+      "asset": "assets/audio/voice-roots-winch.ogg",
+      "source": "assets/source/voices/roots-winch.wav",
+      "job": "128435bf71c041a6a7d3b29f508ddb3b",
+      "backend": "dots.tts-mf",
+      "synthetic_reference": true,
+      "sha256": "244edcaff32fe597dd5d8681f0b6047030e6c730609101a67cc5de2568db9e28",
+      "duration_seconds": 6.4
+    },
+    {
+      "id": "roots-names",
+      "role": "hedvig",
+      "text": "Namnen passar märkena i stenen. Vittnet talade sanning. Jag behöver ett avtryck. Håll vakterna borta en stund.",
+      "asset": "assets/audio/voice-roots-names.ogg",
+      "source": "assets/source/voices/roots-names.wav",
+      "job": "03014a28c51e4e1990472981a323391b",
+      "backend": "dots.tts-mf",
+      "synthetic_reference": true,
+      "sha256": "5d691c50296476677697dba9c79199483b3d3d36c93da92aaedf05a216617475",
+      "duration_seconds": 7.9
+    },
+    {
+      "id": "roots-forged",
+      "role": "hedvig",
+      "text": "Ditt papper säger inget om namnen. Jag måste tyda stenen från början. Det tar längre tid. Fler vakter är på väg.",
+      "asset": "assets/audio/voice-roots-forged.ogg",
+      "source": "assets/source/voices/roots-forged.wav",
+      "job": "18648825372644e68cf63e9f0461de97",
+      "backend": "dots.tts-mf",
+      "synthetic_reference": true,
+      "sha256": "6bdf2f0707208ce2c3c456aca7de53cdc20138712d877932c7242cf4bbfa3e29",
+      "duration_seconds": 7.2
+    },
+    {
+      "id": "roots-secured",
+      "role": "ebba",
+      "text": "Vi har namnen och vägen vidare. Ta med fyndet. Sedan vill jag veta varför solen går upp i norr på den där kartan.",
+      "asset": "assets/audio/voice-roots-secured.ogg",
+      "source": "assets/source/voices/roots-secured.wav",
+      "job": "3976c2ff184f4e07bebacc4fbe3a4482",
+      "backend": "dots.tts-mf",
+      "synthetic_reference": true,
+      "sha256": "485ecb8a3f4ad92616940dfeee1c669301b6a48c0a95c2ed9c122fe844c3b50f",
+      "duration_seconds": 6.8
+    }
+  ],
+  "processing": "ffmpeg highpass=110, lowpass=7500, loudnorm I=-18 TP=-2 LRA=8; 48kHz mono Vorbis q5",
+  "qa": "CPU Whisper screening; roots-secured retaken with simpler phrasing. See ROOTWAY.md for pronunciation uncertainty."
+}

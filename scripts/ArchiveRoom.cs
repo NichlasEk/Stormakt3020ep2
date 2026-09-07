@@ -16,7 +16,7 @@ public static class ArchiveRoom
 
 public sealed partial class Combat
 {
-    [JsonIgnore] public string ArchiveGoal=>!Rooms!.ArchiveRead?"Jämför handlingarna":ArchiveChoice==0?"Välj vad du för vidare":Enemies.Any(e=>!e.Dead)?"Möt arkivets kontroll":!Rooms.ArchiveSecured?"Säkra arkivets inre grind":"Arkivet säkrat · återväg öppen";
+    [JsonIgnore] public string ArchiveGoal=>!Rooms!.ArchiveRead?"Jämför handlingarna":ArchiveChoice==0?"Välj vad du för vidare":Enemies.Any(e=>!e.Dead)?"Möt arkivets kontroll":!Rooms.ArchiveSecured?"Säkra arkivets inre grind":"Fortsätt ut på Rotvägen";
     [JsonIgnore] public string ArchiveResult=>ArchiveChoice==1?"Vittnesmålet är bevarat. Hela patrullen kallades in.":ArchiveChoice==2?"Passersedeln är förfalskad. Bara kontrollanten stannade.":"Beslutet återstår.";
     private bool StepArchiveRoom(Func<Vector2,bool> near,bool peaceful)
     {
@@ -27,7 +27,7 @@ public sealed partial class Combat
             if(!Rooms.ArchiveRead){Rooms.ArchiveRead=true;Emit("radio",Player,"archive-read");Emit("checkpoint",Player);}
             Emit("archive-open",Player);return true;
         }
-        if(near(ArchiveRoom.Seal))
+        if(near(ArchiveRoom.Seal)&&!Rooms.ArchiveSecured)
         {
             if(ArchiveChoice==0){Emit("room-notice",Player,"Kollegiets kontroll väntar på en handling från läsbordet.");return true;}
             if(!peaceful){Emit("room-notice",Player,"Möt kontrollen innan du säkrar grinden.");return true;}

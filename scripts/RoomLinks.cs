@@ -4,7 +4,7 @@ using System.Numerics;
 
 namespace Atland;
 
-public enum PassageGate { Key,Plans,Water,Shortcut,Witness,InnerPort }
+public enum PassageGate { Key,Plans,Water,Shortcut,Witness,InnerPort,Archive,RootGate }
 public sealed record RoomLink(string Id,string A,Vector2 AtA,Vector2 ArrivalA,string B,Vector2 AtB,Vector2 ArrivalB,PassageGate Gate)
 {
     public Vector2 At(string room)=>room==A?AtA:AtB;
@@ -21,11 +21,13 @@ public static class RoomLinks
         new("shortcut",PortRooms.Cistern,new(1315,655),new(1200,685),PortRooms.Court,new(290,655),new(375,660),PassageGate.Shortcut),
         new("gallery",PortRooms.Pump,new(1310,535),new(1200,555),PortRooms.Gallery,new(290,435),new(375,490),PassageGate.Water),
         new("chamber",PortRooms.Gallery,new(1250,445),new(1160,520),PortRooms.Chamber,new(275,435),new(370,500),PassageGate.Witness),
-        new("archive",PortRooms.Chamber,PortRooms.OathExit,new(810,395),PortRooms.Archive,ArchiveRoom.Door,ArchiveRoom.Arrival,PassageGate.InnerPort)
+        new("archive",PortRooms.Chamber,PortRooms.OathExit,new(810,395),PortRooms.Archive,ArchiveRoom.Door,ArchiveRoom.Arrival,PassageGate.InnerPort),
+        new("roots",PortRooms.Archive,ArchiveRoom.Seal,new(1300,565),PortRooms.Roots,Rootway.Door,Rootway.Arrival,PassageGate.Archive),
+        new("grove",PortRooms.Roots,Rootway.Exit,new(1300,580),PortRooms.Grove,Rootway.GroveDoor,Rootway.GroveArrival,PassageGate.RootGate)
     };
     public static IEnumerable<RoomLink> From(string room)=>Array.FindAll(All,l=>l.A==room||l.B==room);
     public static bool Open(RoomRun run,RoomLink link)=>link.Gate switch
-    {PassageGate.InnerPort=>run.Completed,PassageGate.Key=>run.DoorOpen,PassageGate.Plans=>run.CacheTaken,PassageGate.Water=>run.WaterLowered,PassageGate.Witness=>run.WitnessRead,_=>run.ShortcutOpen};
+    {PassageGate.Archive=>run.ArchiveSecured,PassageGate.RootGate=>run.RootGateOpen,PassageGate.InnerPort=>run.Completed,PassageGate.Key=>run.DoorOpen,PassageGate.Plans=>run.CacheTaken,PassageGate.Water=>run.WaterLowered,PassageGate.Witness=>run.WitnessRead,_=>run.ShortcutOpen};
     public static string LockedReason(RoomLink link)=>link.Gate switch
-    {PassageGate.InnerPort=>"Besegra Edsväktaren och öppna den inre porten.",PassageGate.Key=>"Låst · väktarens nyckel saknas.",PassageGate.Plans=>"Undersök logementets ritning först.",PassageGate.Witness=>"Läs vittnesboken innan du bryter kammarens försegling.",PassageGate.Water=>"Trappan ligger under vatten. Frilägg den med pumpen.",_=>"Reglad från cisternens sida."};
+    {PassageGate.Archive=>"Säkra arkivets grind efter kontrollen.",PassageGate.RootGate=>"Lossa spärren vid motvikten först.",PassageGate.InnerPort=>"Besegra Edsväktaren och öppna den inre porten.",PassageGate.Key=>"Låst · väktarens nyckel saknas.",PassageGate.Plans=>"Undersök logementets ritning först.",PassageGate.Witness=>"Läs vittnesboken innan du bryter kammarens försegling.",PassageGate.Water=>"Trappan ligger under vatten. Frilägg den med pumpen.",_=>"Reglad från cisternens sida."};
 }

@@ -1,5 +1,14 @@
 # Checkpoint · Vägen under vattnet · 2026-09-06
 
+## Senast · Rotvägen · 0.9 · 2026-09-07
+
+Nio beständiga rum. Två nya målningar för Rötternas trappa och De namnlösas lund, motviktsport, avtrycksstrid med en/två eftertrupper beroende på arkivvalet och Nornans vittnessigill som beständig belöning. Fem nya lokala Ebba-/Hedvig-repliker. Layoutversion 5 migrerar äldre sparningar, utan hälsopåfyllning eller tappad stash. Full väska blockerar inte progression, återbesök dubblar inget.
+
+29 558 regelassertions. Åtta vapen-/understöds-/beslutskombinationer klarar Rotvägen utan utvecklarskydd. Godot och Linuxkontroller samt bild-/röstgranskning dokumenteras i `ROOTWAY.md`. Export: `dist/AtlandsArv-0.9-rootway/AtlandsArv.x86_64`. Prova `./start.sh -- --rooms`, E/B vid arkivets säkrade grind.
+
+Nästa byggsteg: den första vägen mot berget, med ett eget möte och bevarad återväg. Spelbalans och röster behöver användarens provspelning. Figurer, föremålsbild till sigillet och miljöljud återanvänds; ingen ny boss/gånganimation eller rörligt portblad i denna checkpoint. Historiken nedan beskriver äldre slutpunkter.
+
+
 ## Senast · Minnets arkiv · 0.8 · 2026-09-07
 
 Sju beständiga rum. Arkivet har en egen rik målning, läsbord med kollision/förgrund och en målad dokumentvy. Två motstridiga handlingar ger ett permanent val: bevarat vittnesmål kallar tre vakter, falsk passersedel lämnar en kontrollant. Fyra nya svenska Ebba-/Hedvig-repliker. Layoutversion 4 migrerar äldre rumssparningar; beslut, fiender, utforskning, stash och återväg består. Ingen läkning eller duplicering vid dörren.

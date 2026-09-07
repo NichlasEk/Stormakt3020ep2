@@ -1,0 +1,10 @@
+{
+  "method": "faster-whisper-small CPU int8 Swedish beam5; automatic screening, no human listening claim",
+  "transcripts": {
+    "voice-roots-entry": "Rötterna har vuxit genom muren, men vägen fanns här företrädet. Följ kedjan, den hör till en gammal port.",
+    "voice-roots-forged": "Ditt papper säger inget om namnen, jag måste tyda stenen från början, det tar längre tid, fler vakter är på väg.",
+    "voice-roots-names": "Namnen passar märkerna i stenen, vittnet talade sanning, jag behöver ett avtryck, håll vakterna borta en stund.",
+    "voice-roots-secured": "Vi har namnen och vägen vidare. Ta med fyndet. Sen vill jag veta varför solen går upp i norr på den där kartan.",
+    "voice-roots-winch": "Porten rör sig, bra. Jag skriver fungerande infrastruktur i rapporten. Det blir första gången idag."
+  }
+}
