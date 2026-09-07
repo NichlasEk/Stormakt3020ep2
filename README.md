@@ -4,6 +4,8 @@ Episod II. Ett nytt, fristående actionrollspel i Stormakts värld: nordisk baro
 
 [Nästa arbetsmål och nulägesanalys](docs/ROADMAP.md): sammanhängande banor med flera målade rum, dörrar, upptäcktsmörker och egna bossmekaniker. Atlands port och Rotvägen har nu nio beständiga rum.
 
+Starta senaste verifierade Linux-versionen med `./play.sh` (ingen ombyggnad). `./play.sh -- --gate-film` visar filmprovet direkt. Exportens programfil, `.pck` och `data_AtlandsArv_linuxbsd_x86_64` måste ligga tillsammans; `play.sh` kontrollerar detta innan start. `./start.sh` bygger och kör från källkoden.
+
 ## Nytt · Arkivets port och videobibliotek · 0.9.1
 
 Första mellansekvensen är ett lokalt genererat filmprov på åtta sekunder. Den visas en gång vid passagen från arkivet till Rotvägen. **Inställningar → Utvecklarverktyg · Videobibliotek** låter dig se den igen utan att ändra sparningen. Esc/B hoppar över; filmens ljud följer volymreglaget. Direktprov: `./start.sh -- --gate-film`. [Produktion och verifiering](docs/CINEMATICS.md).
