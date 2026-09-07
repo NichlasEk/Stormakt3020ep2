@@ -2,6 +2,8 @@
 
 Episod II. Ett nytt, fristående actionrollspel i Stormakts värld: nordisk barock, karoliner, mytologi och Rudbecks Atland.
 
+[Nästa arbetsmål och nulägesanalys](docs/ROADMAP.md): sammanhängande banor med flera målade rum, dörrar, upptäcktsmörker och egna bossmekaniker. Första byggmålet är Atlands port med sex rum.
+
 ## Nytt · inventarium och utrustning 0.5.1
 
 **I** öppnar/stänger inventariet, **C** öppnar/stänger stats. Målad inventariebakgrund och 14 egna föremålsbilder med större förhandsvisning. Utrusta vapen, rustning, hjälm och sigill, jämför bonusar och flytta föremål mellan 24 väskplatser och 60 stashplatser. Spelet pausas. Stashöverföringar kräver ett säkrat område; **E/B** plockar upp fynd från fiender. Äldre sparningar fungerar och får ett grundset automatiskt. [System och kontroller](docs/INVENTORY.md).

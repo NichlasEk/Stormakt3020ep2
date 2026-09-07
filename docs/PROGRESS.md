@@ -1,5 +1,9 @@
 # Checkpoint · Vägen under vattnet · 2026-09-06
 
+## Senast · nulägesgranskning och nästa arbetsmål · 2026-09-07
+
+Användaren upplever repetition och önskar fler rum per bana, dörrsystem, mörker på outforskade ytor och olika bossar. `ROADMAP.md` är nästa arbetsplan med konkret sexrumsrutt i Atland och kriterier för rum, dörrar, sparning, upptäckt och egna bossmekaniker. Granskningen bekräftar att de åtta senare stegen delar koordinater och fyra miljömålningar; senare bossar återanvänder Collector. Nya rumsfunktioner är ännu inte implementerade. Nästa kodsteg är sparbar rums-/dörrmodell och två sammankopplade provrum, sedan resten av första banan. Regeltesterna är omkörda: 29 165 assertions passerar. Denna checkpoint ändrar dokumentation, inte spelet.
+
 ## Senast · målat inventarium 0.5.1 · 2026-09-07
 
 Ny genererad trä-/läderbakgrund och 14 individuella målade föremålsbilder i utrustning, väska, stash och större detaljförhandsvisning. Fulla promptar och ursprung: `assets/source/inventory/art-v1.json`. C växlar stats på/av och återgår till paus om fliken öppnades därifrån.
