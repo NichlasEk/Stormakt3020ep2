@@ -1,0 +1,34 @@
+{
+  "rooms-entry": [
+    "ebba",
+    "Karl, signalen går genom muren. Hitta väktarens nyckel. Jag har begärt en planritning. Kollegiet vill först veta vilket århundrade ärendet gäller."
+  ],
+  "rooms-pump": [
+    "ebba",
+    "Pumphuset. Avlasta trycket innan du rör matarhjulet. Jag vill helst slippa rapportera dig som en vätska."
+  ],
+  "rooms-drained": [
+    "hedvig",
+    "Två vägar, Karl. Galleriet ligger åt öster. Trappan ned till cisternen är äldre än byggnaden."
+  ],
+  "rooms-witness": [
+    "hedvig",
+    "Eden kan bara lösas av stenen. Locka väktarens sköld mot en pelare med ringar. Då faller hans gard."
+  ],
+  "rooms-rush": [
+    "ebba",
+    "Han låser riktningen innan han rusar. Låt pelaren ta emot skölden. När han tappar garden går du in."
+  ],
+  "rooms-fallen": [
+    "ebba",
+    "Där föll vakten. Ta hans hjälm och se efter vad han bevakade. Kollegiet kallade platsen obemannad. Jag stryker det ordet."
+  ],
+  "rooms-port": [
+    "hedvig",
+    "Minnets arkiv ligger under oss. Där finns namnen som kartan saknar. Behåll avtrycken, Karl. De behövs som bevis."
+  ],
+  "rooms-cistern": [
+    "hedvig",
+    "En klinga under saltet. Ristningen visar en väg tillbaka till förgården. Någon tänkte återvända."
+  ]
+}

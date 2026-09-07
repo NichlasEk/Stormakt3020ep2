@@ -84,10 +84,10 @@ public sealed partial class Combat
 
     public static Combat NewRooms(Order order)
     {
-        var game=NewAtland(order);game.Rooms=new(){LayoutVersion=3};foreach(var id in PortRooms.Ids.Skip(2))game.Rooms.Rooms.Add(id,new());game.Enemies.Clear();game.Events.Clear();
+        var game=NewAtland(order);game.IntroPlayed=true;game.Rooms=new(){LayoutVersion=3};foreach(var id in PortRooms.Ids.Skip(2))game.Rooms.Rooms.Add(id,new());game.Enemies.Clear();game.Events.Clear();
         game.Spawn(EnemyKind.Guard,new(650,625));game.Player=new(768,805);
         game.UpdateRoomSight(true);
-        game.Emit("region",game.Player,game.RoomName);game.Emit("campaign",game.Player,"Väktaren bar nyckeln till logementet. Hans packning ligger kvar i förgården.");
+        game.Emit("region",game.Player,game.RoomName);game.Emit("radio",game.Player,"rooms-entry");game.Emit("campaign",game.Player,"Väktaren bar nyckeln till logementet. Hans packning ligger kvar i förgården.");
         return game;
     }
 
@@ -114,29 +114,29 @@ public sealed partial class Combat
         {
             if(!peaceful){Emit("room-notice",Player,"Säkra pumphuset först.");return;}
             if(Near(PortRooms.Pressure)&&!Rooms.PressureReleased)
-            {Rooms.PressureReleased=true;Emit("campaign",Player,"Trycket faller. Den fastrostade matningen går nu att vrida. Vattenmärkena visar en trappa under cisternens yta.");}
+            {Rooms.PressureReleased=true;Emit("room-sound",Player,"pump-pressure");Emit("campaign",Player,"Trycket faller. Den fastrostade matningen går nu att vrida. Vattenmärkena visar en trappa under cisternens yta.");}
             else if(Near(PortRooms.Wheel)&&!Rooms.WaterLowered)
             {
                 if(!Rooms.PressureReleased){Emit("room-notice",Player,"Matarhjulet står under tryck. Öppna avlastningen först.");return;}
-                Rooms.WaterLowered=true;Emit("campaign",Player,"Vattnet drar sig undan. En trappa löper ned längs cisternens vägg. Stegen är slitna av människor som gick här innan porten murades igen.");
+                Rooms.WaterLowered=true;Emit("room-sound",Player,"pump-drain");Emit("radio",Player,"rooms-drained");Emit("campaign",Player,"Vattnet drar sig undan. En trappa löper ned längs cisternens vägg. Stegen är slitna av människor som gick här innan porten murades igen.");
                 Emit("inscription",Player,"CISTERNEN ÄR FRILAGD");
             }
             Emit("checkpoint",Player);return;
         }
         if(Rooms.Current==PortRooms.Cistern&&Near(PortRooms.Relic)&&!Rooms.RelicTaken)
         {
-            Rooms.RelicTaken=true;DropItem("atland-saber",PortRooms.Relic);
+            Rooms.RelicTaken=true;Emit("radio",Player,"rooms-cistern");DropItem("atland-saber",PortRooms.Relic);
             Emit("campaign",Player,"En klinga vilar under saltkrusten. I bronsen intill är en väg ristad: från cisternen upp till förgårdens glömda lucka.");Emit("checkpoint",Player);return;
         }
         if(Rooms.Current==PortRooms.Gallery&&Near(PortRooms.Witness)&&!Rooms.WitnessRead)
         {
-            Rooms.WitnessRead=true;
+            Rooms.WitnessRead=true;Emit("radio",Player,"rooms-witness");
             Emit("campaign",Player,"Vittnesboken: Ingen ed får brytas av järn. Endast stenen som bevittnade eden kan lösa den. Reliefen visar en väktare som rusar med skölden mot en ringmärkt pelare.");
             Emit("checkpoint",Player);return;
         }
         if(Rooms.Current==PortRooms.Chamber&&Near(PortRooms.OathExit)&&Rooms.OathDefeated&&!Rooms.Completed)
         {
-            Rooms.Completed=true;Emit("inscription",Player,"ATLANDS INRE PORT ÄR ÖPPEN");
+            Rooms.Completed=true;Emit("room-sound",Player,"stone-door");Emit("radio",Player,"rooms-port");Emit("inscription",Player,"ATLANDS INRE PORT ÄR ÖPPEN");
             Emit("campaign",Player,"Bakom porten ligger Minnets arkivs nedre trappa. Rötter grövre än skeppsmaster har sprängt muren. På kartans baksida finns samma kust igen — men havet ligger åt fel håll. Första rutten är säkrad. Du kan återvända och hämta kvarlämnade fynd.");
             Emit("checkpoint",Player);return;
         }
@@ -145,9 +145,9 @@ public sealed partial class Combat
         if(!RoomLinks.Open(Rooms,link))
         {
             if(link.Gate==PassageGate.Key&&Rooms.KeyTaken)
-            {Rooms.DoorOpen=true;Emit("room-notice",Player,"Dörren är upplåst. Tryck E / B igen för passage.");}
+            {Rooms.DoorOpen=true;Emit("room-sound",Player,"stone-door");Emit("room-notice",Player,"Dörren är upplåst. Tryck E / B igen för passage.");}
             else if(link.Gate==PassageGate.Shortcut&&Rooms.Current==PortRooms.Cistern)
-            {Rooms.ShortcutOpen=true;Emit("inscription",Player,"GENVÄGEN TILL FÖRGÅRDEN");}
+            {Rooms.ShortcutOpen=true;Emit("room-sound",Player,"stone-door");Emit("inscription",Player,"GENVÄGEN TILL FÖRGÅRDEN");}
             else{Emit("room-notice",Player,RoomLinks.LockedReason(link));return;}
             Emit("checkpoint",Player);return;
         }
@@ -158,7 +158,7 @@ public sealed partial class Combat
     {
         Rooms!.Rooms[Rooms.Current].Enemies=Enemies;
         Rooms.Current=destination;var next=Rooms.Rooms[destination];
-        Enemies=next.Enemies;next.Enemies=new();
+        Enemies=next.Enemies;next.Enemies=new();bool firstVisit=!next.Visited;
         if(!next.Visited)
         {
             next.Visited=true;
@@ -171,12 +171,22 @@ public sealed partial class Combat
         Shots.Clear();Hazards.Clear();AttackTime=AttackBuffer=DodgeTime=HitStop=Hurt=GuardTime=0;
         Guarding=Moving=false;
         UpdateRoomSight(true);
-        Emit("region",Player,RoomName);Emit("checkpoint",Player);
+        Emit("region",Player,RoomName);if(firstVisit&&destination==PortRooms.Pump)Emit("radio",Player,"rooms-pump");Emit("checkpoint",Player);
     }
+
+    public bool RoomRadioRelevant(string id)=>id switch
+    {
+        "rooms-entry"=>InRooms&&!Rooms!.DoorOpen,
+        "rooms-pump"=>Rooms?.Current==PortRooms.Pump&&!Rooms.WaterLowered,
+        "rooms-drained"=>InRooms&&!Rooms!.WitnessRead,
+        "rooms-rush"=>Rooms?.Current==PortRooms.Chamber&&!Rooms.OathDefeated,
+        _=>id.StartsWith("rooms-",StringComparison.Ordinal)&&InRooms
+    };
 
     public void ValidateRooms()
     {
         if(Rooms is null)return; // Original campaign saves have no room run.
+        IntroPlayed=true; // Never replay the old quay/sigil briefing when resuming a room run.
         var r=Rooms;
         if(r.LayoutVersion==1)
         {

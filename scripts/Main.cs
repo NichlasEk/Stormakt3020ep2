@@ -77,7 +77,7 @@ public partial class Main : Node2D
     private static NVec N(Vector2 v)=>new(v.X,v.Y);
     public override void _Ready()
     {
-        var args=OS.GetCmdlineUserArgs();_oathChecks=args.Contains("--oath-check");_waterChecks=args.Contains("--water-check");_fogChecks=args.Contains("--fog-check");_roomChecks=args.Contains("--rooms-check");_inventoryChecks=args.Contains("--inventory-check");_portChecks=args.Contains("--port-check");_sceneChecks=args.Contains("--scene-check")||_portChecks||_inventoryChecks||_roomChecks||_fogChecks||_waterChecks||_oathChecks;_uiChecks=args.Contains("--ui-check");
+        var args=OS.GetCmdlineUserArgs();_roomAudioChecks=args.Contains("--room-audio-check");_oathChecks=args.Contains("--oath-check")||_roomAudioChecks;_waterChecks=args.Contains("--water-check");_fogChecks=args.Contains("--fog-check");_roomChecks=args.Contains("--rooms-check");_inventoryChecks=args.Contains("--inventory-check");_portChecks=args.Contains("--port-check");_sceneChecks=args.Contains("--scene-check")||_portChecks||_inventoryChecks||_roomChecks||_fogChecks||_waterChecks||_oathChecks;_uiChecks=args.Contains("--ui-check");
         _serif=GD.Load<Font>("res://assets/fonts/NotoSerif-Regular.ttf");_sans=GD.Load<Font>("res://assets/fonts/NotoSans-Regular.ttf");
         _background=GD.Load<Texture2D>("res://assets/art/likvarvet-scale-v5.png");
         _radioPortraits=GD.Load<Texture2D>("res://assets/art/radio-cast-v1.png");
@@ -232,7 +232,7 @@ public partial class Main : Node2D
         try
         {
             _game=SaveStore.Read(manual?ManualPath:SavePath);ApplyDeveloperSettings();_camera=G(_game.Player)+new Vector2(85,-80);_particles.Clear();_floating.Clear();_radioQueue.Clear();_radio="";_sound.StopVoice();
-            if(_game.InCampaign){_campaignText=_game.Stage.Intro;_campaignTextTime=10;_revealTime=0;}
+            if(_game.InCampaign){_campaignText=_game.InRooms?_game.RoomGoal:_game.Stage.Intro;_campaignTextTime=10;_revealTime=0;}
             ChangeScreen(_game.Dead?Screen.Death:_game.Phase==Phase.Complete?Screen.Ending:_game.Phase==Phase.Testimony?Screen.Testimony:Screen.Game);Notice("Fältdagboken återupptagen");
         }
         catch(Exception e){GD.PushWarning(e.Message);Notice("Sparfilen kunde inte läsas. Du kan starta en ny landstigning.");}
@@ -299,12 +299,18 @@ public partial class Main : Node2D
         var p=G(cue.Position);
         switch(cue.Kind)
         {
+            case "room-sound":if(NVec.Distance(_game.Player,cue.Position)<500)_sound.Play(cue.Text);break;
+            case "oath-break":case "oath-wall":
+                if(NVec.Distance(_game.Player,cue.Position)<500)_sound.Play("oath-impact",cue.Kind=="oath-break"?1:.8f);
+                if(_game.CanSeeRoomPoint(cue.Position))
+                {Burst(p,cue.Kind=="oath-break"?Teal:Gold,30,190);_shake=6;if(cue.Text!="")_floating.Add(new(){P=p-new Vector2(0,110),Text=cue.Text,C=Teal});}
+                break;
             case "room-notice":Notice(cue.Text);_sound.Play("paper");break;
             case "loot":Notice("Fynd: "+cue.Text+" · E för att plocka upp");break;
             case "pickup":Notice("I väskan: "+cue.Text);_sound.Play("paper");break;
             case "radio":QueueRadio(cue.Text);break;
             case "campaign":_campaignText=cue.Text;_campaignTextTime=10;break;
-            case "region":_camera=G(_game.Player)+new Vector2(0,-30);_particles.Clear();_floating.Clear();_radioQueue.Clear();_sound.StopVoice();_radioTime=0;_banner=cue.Text.ToUpperInvariant();_bannerTime=5;break;
+            case "region":_camera=G(_game.Player)+new Vector2(0,-30);_particles.Clear();_floating.Clear();PrepareRegionRadio();_banner=cue.Text.ToUpperInvariant();_bannerTime=5;break;
             case "reveal":_radioQueue.Clear();_sound.StopVoice();_radioTime=0;_revealTime=9;_banner="VÄGEN LIGGER KVAR";_bannerTime=5;_sound.Play("seal",.65f);break;
             case "checkpoint":Save();break;
             case "hit":Burst(p,Gold,12,100);_floating.Add(new(){P=p+new Vector2(0,-70),Text=cue.Text,C=Gold});_sound.Play("hit",.94f+(float)(_game.Tick%6)*.025f);_shake=3;break;
@@ -324,8 +330,23 @@ public partial class Main : Node2D
             case "block":_sound.Play("parry",.7f);if(cue.Text!="")_floating.Add(new(){P=p-new Vector2(0,80),Text=cue.Text,C=Muted});break;
         }
     }
+    private void PrepareRegionRadio()
+    {
+        var keep=_radioQueue.Where(key=>_game.RoomRadioRelevant(key)).ToArray();_radioQueue.Clear();foreach(var key in keep)_radioQueue.Enqueue(key);
+        if(!_game.RoomRadioRelevant(_radio)){_sound.StopVoice();_radioTime=0;_radio="";}
+    }
     private void QueueRadio(string id)
     {
+        if(id.StartsWith("rooms-",StringComparison.Ordinal))
+        {
+            if(!_game.RoomRadioRelevant(id))return;
+            var retained=_radioQueue.Where(key=>!key.StartsWith("rooms-",StringComparison.Ordinal)||_game.RoomRadioRelevant(key)).ToArray();
+            _radioQueue.Clear();foreach(var key in retained)_radioQueue.Enqueue(key);
+            if((_radio.StartsWith("rooms-",StringComparison.Ordinal)&&!_game.RoomRadioRelevant(_radio))||(id=="rooms-fallen"&&_radio=="cannon"))
+            {_sound.StopVoice();_radioTime=0;_radio="";}
+            if(id=="rooms-fallen")
+            {var pending=_radioQueue.Where(key=>key!="cannon").ToArray();_radioQueue.Clear();foreach(var key in pending)_radioQueue.Enqueue(key);}
+        }
         // Clear obsolete combat orders at the scene change. A slain enemy
         // should not continue threatening Karl over a new discovery.
         if(id is "fallen" or "names-intro")
@@ -345,7 +366,8 @@ public partial class Main : Node2D
     {
         float dt=(float)delta;_clock+=dt;_noticeTime=Math.Max(0,_noticeTime-dt);if(_screen==Screen.Game)_campaignTextTime=Math.Max(0,_campaignTextTime-dt);
         _sound.Boss=(_game.Phase==Phase.Collector||(_game.Phase==Phase.Extraction&&_game.Enemies.Any(e=>!e.Dead))||(_game.InCampaign&&_game.Enemies.Any(e=>!e.Dead&&e.Kind is (EnemyKind.Collector or EnemyKind.OathGuardian)&&_game.CanSeeRoomPoint(e.Position)))) && _screen is Screen.Game or Screen.Pause;
-        _sound.Discovery=_game.Phase is Phase.Names or Phase.Testimony || _game.Region==Region.Shore;
+        _sound.Discovery=_game.Phase is Phase.Names or Phase.Testimony || _game.Region==Region.Shore || _game.Rooms?.Current is PortRooms.Gallery or PortRooms.Cistern;
+        _sound.Underground=_game.InRooms&&_game.Rooms!.Current!=PortRooms.Court;
         if(_screen is Screen.Game or Screen.Ending or Screen.Testimony)
         {
             _revealTime=Math.Max(0,_revealTime-dt);_bannerTime=Math.Max(0,_bannerTime-dt);_shake=Math.Max(0,_shake-dt*22);

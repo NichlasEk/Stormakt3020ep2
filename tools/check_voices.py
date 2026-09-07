@@ -4,9 +4,10 @@ from pathlib import Path
 import json,sys
 root=Path(__file__).resolve().parents[1]
 model=WhisperModel('/home/nichlas/EutherVox/models/faster-whisper/models--Systran--faster-whisper-small/snapshots/536b0662742c02347bc0e980a01041f333bce120',device='cpu',compute_type='int8',cpu_threads=4,local_files_only=True)
-journey='--journey' in sys.argv
-journey_ids={'voice-'+key for key in json.loads((root/'assets/story/journey-radio.json').read_text())}
-report=root/('artifacts/journey-voice-transcripts.json' if journey else 'artifacts/voice-transcripts.json')
+rooms='--rooms' in sys.argv
+journey='--journey' in sys.argv or rooms
+journey_ids={'voice-'+key for key in json.loads((root/('assets/story/rooms-radio.json' if rooms else 'assets/story/journey-radio.json')).read_text())}
+report=root/('artifacts/rooms-voice-transcripts.json' if rooms else 'artifacts/journey-voice-transcripts.json' if journey else 'artifacts/voice-transcripts.json')
 result=json.loads(report.read_text()) if len(sys.argv)>1 and report.exists() else {}
 for f in sorted((root/'assets/audio').glob('voice-*.ogg')):
     if journey and f.stem not in journey_ids:continue
@@ -14,4 +15,4 @@ for f in sorted((root/'assets/audio').glob('voice-*.ogg')):
     segments,info=model.transcribe(str(f),language='sv',beam_size=5)
     result[f.stem]=' '.join(s.text.strip() for s in segments)
     print(f.stem,result[f.stem],flush=True)
-(root/'artifacts/voice-transcripts.json').write_text(json.dumps(result,ensure_ascii=False,indent=2))
+report.write_text(json.dumps(result,ensure_ascii=False,indent=2))

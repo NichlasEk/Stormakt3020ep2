@@ -11,6 +11,12 @@ public partial class Soundscape : Node
     private AudioStreamPlayer _namesMusic=new();
     private AudioStreamPlayer _voice=new();
     private AudioStreamPlayer _ambience=new();
+    private AudioStreamPlayer _vault=new();
+    private float _undergroundMix;
+    public bool Underground;
+    public bool HasClip(string name)=>_clips.ContainsKey(name);
+    public double ClipDuration(string name)=>_clips.TryGetValue(name,out var clip)?clip.GetLength():0;
+    public bool VaultDominates=>_vault.Playing&&_vault.VolumeDb>_ambience.VolumeDb;
     private readonly List<AudioStreamPlayer> _effects=new();
     private readonly Dictionary<string,AudioStream> _clips=new();
     private int _next;
@@ -22,8 +28,8 @@ public partial class Soundscape : Node
     public bool Speaking=>_voice.Playing;
     public override void _Ready()
     {
-        AddChild(_music);AddChild(_bossMusic);AddChild(_namesMusic);AddChild(_voice);AddChild(_ambience);
-        _music.VolumeDb=-30;_bossMusic.VolumeDb=-80;_namesMusic.VolumeDb=-80;_ambience.VolumeDb=-30;
+        AddChild(_music);AddChild(_bossMusic);AddChild(_namesMusic);AddChild(_voice);AddChild(_ambience);AddChild(_vault);
+        _music.VolumeDb=-30;_bossMusic.VolumeDb=-80;_namesMusic.VolumeDb=-80;_ambience.VolumeDb=-30;_vault.VolumeDb=-80;
         for(int i=0;i<12;i++){var p=new AudioStreamPlayer();AddChild(p);_effects.Add(p);}
         foreach(var name in new[]{"score","boss-score","ambience","swing","hammer","hit","parry","shot","cannon","seal","heal","dodge","death","voice-arrival","voice-cannon","voice-collector","voice-rage","voice-fallen","voice-atland"})
             if(ResourceLoader.Exists($"res://assets/audio/{name}.ogg"))_clips[name]=GD.Load<AudioStream>($"res://assets/audio/{name}.ogg");
@@ -31,9 +37,13 @@ public partial class Soundscape : Node
             if(ResourceLoader.Exists($"res://assets/audio/voice-{name}.ogg"))_clips["voice-"+name]=GD.Load<AudioStream>($"res://assets/audio/voice-{name}.ogg");
         foreach(var id in JourneyDialogue.Load().Keys)
             if(ResourceLoader.Exists($"res://assets/audio/voice-{id}.ogg"))_clips["voice-"+id]=GD.Load<AudioStream>($"res://assets/audio/voice-{id}.ogg");
+        foreach(var id in JourneyDialogue.Rooms().Keys)
+            if(ResourceLoader.Exists($"res://assets/audio/voice-{id}.ogg"))_clips["voice-"+id]=GD.Load<AudioStream>($"res://assets/audio/voice-{id}.ogg");
+        foreach(var name in new[]{"pump-pressure","pump-drain","stone-door","oath-lock","oath-rush","oath-impact","vault-ambience"})
+            _clips[name]=GD.Load<AudioStream>($"res://assets/audio/{name}.ogg");
         foreach(var name in new[]{"scrape","inscription","paper","footstep"})_clips[name]=GD.Load<AudioStream>($"res://assets/audio/{name}.ogg");
         if(ResourceLoader.Exists("res://assets/audio/names-score.ogg"))_clips["names-score"]=GD.Load<AudioStream>("res://assets/audio/names-score.ogg");
-        Loop(_music,"score");Loop(_bossMusic,"boss-score");Loop(_namesMusic,"names-score");Loop(_ambience,"ambience");
+        Loop(_music,"score");Loop(_bossMusic,"boss-score");Loop(_namesMusic,"names-score");Loop(_ambience,"ambience");Loop(_vault,"vault-ambience");
     }
     private void Loop(AudioStreamPlayer player,string name)
     {
@@ -50,7 +60,9 @@ public partial class Soundscape : Node
         _music.VolumeDb=db+duck+Mathf.LinearToDb(Math.Max(.0001f,(1-_bossMix)*(1-_namesMix)));
         _bossMusic.VolumeDb=db+duck+Mathf.LinearToDb(Math.Max(.0001f,_bossMix));
         _namesMusic.VolumeDb=db+duck+Mathf.LinearToDb(Math.Max(.0001f,_namesMix*(1-_bossMix)));
-        _ambience.VolumeDb=db-17;_voice.VolumeDb=db;
+        _undergroundMix=Mathf.MoveToward(_undergroundMix,Underground?1:0,(float)delta*.5f);
+        _ambience.VolumeDb=db-17+Mathf.LinearToDb(Math.Max(.0001f,1-_undergroundMix));
+        _vault.VolumeDb=db-12+Mathf.LinearToDb(Math.Max(.0001f,_undergroundMix));_voice.VolumeDb=db;
         foreach(var p in _effects)p.VolumeDb=db-8;
     }
     public void Speak(string name)
@@ -68,7 +80,7 @@ public partial class Soundscape : Node
     public override void _ExitTree()
     {
         foreach(var player in _effects){player.Stop();player.Stream=null;}
-        foreach(var player in new[]{_music,_bossMusic,_namesMusic,_voice,_ambience}){player.Stop();player.Stream=null;}
+        foreach(var player in new[]{_music,_bossMusic,_namesMusic,_voice,_ambience,_vault}){player.Stop();player.Stream=null;}
         foreach(var clip in _clips.Values)clip.Dispose();
         _clips.Clear();_effects.Clear();
     }

@@ -25,7 +25,8 @@ public sealed partial class Combat
             if(e.Cooldown<=0&&delta.Length()<410)
             {
                 e.State=1;e.LockedAim=Player;e.Facing=Normal(Player-e.Position,e.Facing);
-                e.Timer=furious?.95f:1.25f;e.ChargeHit=false;Emit("warning",e.Position);
+                e.Timer=furious?.95f:1.25f;e.ChargeHit=false;Emit("warning",e.Position);Emit("room-sound",e.Position,"oath-lock");
+                if(e.Pattern++==0)Emit("radio",Player,"rooms-rush");
             }
             return;
         }
@@ -41,7 +42,7 @@ public sealed partial class Combat
                 if(pillar||!OnWalkable(next))
                 {
                     e.State=pillar?3:2;e.Timer=pillar?2.8f:1.15f;e.Cooldown=1.1f;
-                    Emit(pillar?"parry":"slam",e.Position,pillar?"EDEN VACKLAR · ANGRIP":"",pillar?0:45);
+                    Emit(pillar?"oath-break":"oath-wall",e.Position,pillar?"EDEN VACKLAR · ANGRIP":"",pillar?0:45);
                     if(pillar)HitStop=.08f;
                     return;
                 }
@@ -55,7 +56,7 @@ public sealed partial class Combat
         }
         e.Timer-=dt;
         if(e.Timer>0)return;
-        if(e.State==1){e.State=4;e.Timer=1.15f;Emit("enemystrike",e.Position,"",50);}
+        if(e.State==1){e.State=4;e.Timer=1.15f;Emit("room-sound",e.Position,"oath-rush");Emit("enemystrike",e.Position,"",50);}
         else {e.State=0;e.Cooldown=.6f;}
     }
 }

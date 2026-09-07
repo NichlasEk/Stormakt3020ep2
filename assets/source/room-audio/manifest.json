@@ -1,0 +1,65 @@
+[
+  {
+    "asset": "assets/audio/pump-pressure.ogg",
+    "source": "assets/source/room-audio/pump-pressure.wav",
+    "duration": 1.8,
+    "seed": 303591,
+    "sha256": "821bd3519bb4ebf7af4c1da4fe3dc9e17577f0ee056d6cbeb28983f1bd2d48d0",
+    "method": "original procedural PCM; room Foley and looped air",
+    "loop_gain_db": 0
+  },
+  {
+    "asset": "assets/audio/pump-drain.ogg",
+    "source": "assets/source/room-audio/pump-drain.wav",
+    "duration": 3.2,
+    "seed": 303228,
+    "sha256": "e3f252f3c7a487da007c425bffee7d26b819b1c87eea1e832af3814c90abb09a",
+    "method": "original procedural PCM; room Foley and looped air",
+    "loop_gain_db": 0
+  },
+  {
+    "asset": "assets/audio/stone-door.ogg",
+    "source": "assets/source/room-audio/stone-door.wav",
+    "duration": 2.0,
+    "seed": 303241,
+    "sha256": "3a8e5e79150bb70cca4a8cc752ea72c39862408216b2176d82208bea43fb44e1",
+    "method": "original procedural PCM; room Foley and looped air",
+    "loop_gain_db": 0
+  },
+  {
+    "asset": "assets/audio/oath-lock.ogg",
+    "source": "assets/source/room-audio/oath-lock.wav",
+    "duration": 0.72,
+    "seed": 303105,
+    "sha256": "745c95cd8c538853ea69a07a964dfac9eeb350af75e6526a8badfabd7cd4c565",
+    "method": "original procedural PCM; room Foley and looped air",
+    "loop_gain_db": 0
+  },
+  {
+    "asset": "assets/audio/oath-rush.ogg",
+    "source": "assets/source/room-audio/oath-rush.wav",
+    "duration": 0.65,
+    "seed": 303130,
+    "sha256": "3429cd70bb3c6ddd37600db82d16a60127fcf714c1a9049142f5041cc8939cb5",
+    "method": "original procedural PCM; room Foley and looped air",
+    "loop_gain_db": 0
+  },
+  {
+    "asset": "assets/audio/oath-impact.ogg",
+    "source": "assets/source/room-audio/oath-impact.wav",
+    "duration": 1.5,
+    "seed": 303318,
+    "sha256": "d059354ea72a76fc112f9bcf725ea31cb13424c7725a007eaa341f5f43b57477",
+    "method": "original procedural PCM; room Foley and looped air",
+    "loop_gain_db": 0
+  },
+  {
+    "asset": "assets/audio/vault-ambience.ogg",
+    "source": "assets/source/room-audio/vault-ambience.wav",
+    "duration": 23.0,
+    "seed": 303628,
+    "sha256": "f6abe03ec27dd77b4e961f870966bbee524f1bd50c63ebd3df275665a1240893",
+    "method": "original procedural PCM; room Foley and looped air",
+    "loop_gain_db": 12
+  }
+]

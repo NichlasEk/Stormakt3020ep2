@@ -362,3 +362,5 @@ Console.WriteLine($"PASS WATER AND SHORTCUT · {checks} assertions");
 
 OathTests.Run(Check);
 Console.WriteLine($"PASS OATH AND SIX ROOMS · {checks} assertions");
+RoomAudioTests.Run(Check);
+Console.WriteLine($"PASS ROOM AUDIO CUES · {checks} assertions");

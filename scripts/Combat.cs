@@ -409,7 +409,7 @@ public sealed partial class Combat
         e.Health=Math.Max(0,e.Health-damage);e.Hurt=.16f;
         if(stagger && e.Kind is not (EnemyKind.Collector or EnemyKind.OathGuardian)){e.State=3;e.Timer=.5f;e.Position=Bound(e.Position+Normal(e.Position-source,Vector2.UnitX)*12);}
         HitStop=Weapon==Weapon.Hammer?.055f:.035f;Emit("hit",e.Position,((int)damage).ToString(),damage);
-        if(e.Dead){Kills++;Stamina=Math.Min(100,Stamina+10);Emit("death",e.Position);if(e.Kind==EnemyKind.OathGuardian&&Rooms!=null){Rooms.OathDefeated=true;DropItem("crown-helm",e.Position);Emit("inscription",e.Position,"EDEN ÄR BRUTEN");Emit("checkpoint",Player);}else DropEnemyLoot(e);}
+        if(e.Dead){Kills++;Stamina=Math.Min(100,Stamina+10);Emit("death",e.Position);if(e.Kind==EnemyKind.OathGuardian&&Rooms!=null){Rooms.OathDefeated=true;Emit("radio",Player,"rooms-fallen");DropItem("crown-helm",e.Position);Emit("inscription",e.Position,"EDEN ÄR BRUTEN");Emit("checkpoint",Player);}else DropEnemyLoot(e);}
     }
     private void DamagePlayer(float damage,Vector2 source)
     {

@@ -52,6 +52,6 @@ Loggar: `artifacts/oath-tests.log`, `oath-build.log`, `oath-native-editor.log`, 
 
 - Mänsklig bedömning av svårighet, tempo, skala och stridsläsbarhet.
 - Bossens sammanhängande gång-/riktningsanimationer; nu fyra fasta målade poser med spegling.
-- Egna rumsambienser, bossljud och inspelad radiodialog till vittnesboken. Befintliga ljud och Ebba-understöd återanvänds.
+- Första rumsambienserna, bossljuden och inspelad radiodialog är levererade i 0.7.1; se `ROOM-AUDIO.md`. Mänsklig provlyssning återstår.
 - Rörliga dörrblad/övergångar; öppet/stängt visas nu med bildtillstånd.
 - Anslutning till Minnets arkiv och kampanjens fortsättning, därefter rotmarkernas rumsrutt och Rotmarskalken enligt `ROADMAP.md`.

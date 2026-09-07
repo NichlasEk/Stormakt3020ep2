@@ -1,5 +1,14 @@
 # Checkpoint · Vägen under vattnet · 2026-09-06
 
+## Senast · rumsradio och underjordiskt ljud · 2026-09-07
+
+0.7.1 levererar åtta nya svenska Ebba-/Hedvig-repliker från lokal EutherLink/dots.tts-mf, sju egna syntetiserade effekt-/miljöljud och mjuk övergång från hamn till underjord. Porträtt och musik återanvänds. Vittnesboken kan fortsätta över en dörr; inaktuella råd/artilleri rensas efter bossen. Första rådet spelas en gång via sparad attackräknare. Den gamla kajbriefingen spelas inte längre i rumsrutten, och laddning visar aktuellt rumsmål. Manus, jobb, källor, hashvärden och automatisk uttalskontroll finns i `ROOM-AUDIO.md`.
+
+29 290 assertions. Godot och Linux `--room-audio-check` passerar genom sex rum samt verifierar de åtta rösterna, undertexter, effekter, miljömix, köhantering och porträtt. Export: `dist/AtlandsArv-0.7.1-radio/AtlandsArv.x86_64`. Native slutkontroll avslutar med kod 0; editorprovet hade de tidigare intermittenta resursvarningarna. Uttal/mix behöver mänsklig provlyssning; Whisper-transkriptionen redovisar kvarvarande avvikelser.
+
+Nästa byggsteg är Minnets arkiv som sjunde beständigt rum med dokumentval och återväg. Anslutningen är kodgranskad och beskriven i `ARCHIVE-CONNECTION.md`, men inte implementerad. Denna checkpoint utökar ljudet, inte antalet banor.
+
+
 ## Senast · Vittnesgalleriet och Edsväktaren · 2026-09-07
 
 Sex sammankopplade rum med valfri cistern. Två nya rumsmålningar, pumpens sidopassage, öppen bossport och egen fyrposers 2D-bossatlas. Galleriets vittnesbok öppnar Edskammaren; Edsväktarens riktade sköldrus mot återanvändbara pelare ger en skadeöppning. Solid pulpet och två pelare styr navigation, sikt och förgrundsordning. Layoutversion 3 migrerar äldre rumsrutter utan reset. Hjälmbelöning, boss/slutflagga och återbesök sparas. Se `OATH-ROOMS.md` för exakt omfattning och bildproveniens.

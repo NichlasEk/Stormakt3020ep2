@@ -4,13 +4,17 @@ Episod II. Ett nytt, fristående actionrollspel i Stormakts värld: nordisk baro
 
 [Nästa arbetsmål och nulägesanalys](docs/ROADMAP.md): sammanhängande banor med flera målade rum, dörrar, upptäcktsmörker och egna bossmekaniker. Första byggmålet är Atlands port med sex rum.
 
+## Nytt · Ebba, Hedvig och rumsljud · 0.7.1
+
+Åtta nya svenska radiorepliker från de lokala AI-rösterna och sju egna ljud för pumpar, portar, sköldrus och underjord. Ledtrådar följer med genom dörrar; stridsråd rensas när de blivit inaktuella. [Ljudpass och verifiering](docs/ROOM-AUDIO.md). Linux-export: `dist/AtlandsArv-0.7.1-radio/AtlandsArv.x86_64`.
+
 ## Nytt · sex rum och Edsväktaren · 0.7
 
 Vittnesgalleriet och Edskammaren har egna rika målningar. Läs vittnesboken och locka Edsväktarens sköldrus mot en edspelare för att bryta hans gard. Bossen har egna målade 2D-poser, en utrustningsbelöning och en port som öppnas efter striden. Cisternens fynd och genväg är valfria. [Rutt, boss och verifiering](docs/OATH-ROOMS.md).
 
 `./start.sh -- --rooms` eller **Atlands förseglade rum · prov**. Sex rum med beständiga fiender/fynd, dörrkrav, upptäcktsmörker och utforskningskarta. Äldre rumssparningar får de nya rummen utan omstart; separat sparfil från kampanjen. Linux-export: `dist/AtlandsArv-0.7-oath/AtlandsArv.x86_64`.
 
-Rutten slutar vid den öppnade inre porten. Arkivanslutning, nya röster/ljud och full bossgång återstår. [Vattenmekanism](docs/WATER-ROOMS.md) · [Sikt](docs/EXPLORATION.md) · [Grundsystem](docs/ROOMS.md).
+Rutten slutar vid den öppnade inre porten. Arkivanslutning och full bossgång återstår; rumsradion och första ljudpasset finns i 0.7.1. [Vattenmekanism](docs/WATER-ROOMS.md) · [Sikt](docs/EXPLORATION.md) · [Grundsystem](docs/ROOMS.md).
 
 ## Nytt · inventarium och utrustning 0.5.1
 

@@ -10,6 +10,8 @@
 
 **Fjärde checkpointen:** sex rum, Vittnesgalleriets ledtråd, egen målad Edsväktare med pelarrus, unik hjälmbelöning och öppnad inre port. Flershindergeometri och migration av två-/fyrarumssparningar finns. Se `OATH-ROOMS.md`. Mål 1 återstår att koppla vidare till arkivet; mänsklig balansbedömning och radio-/ljudpass väntar. Ovanstående checkpoints är historik.
 
+**Femte checkpointen:** åtta nya radiorepliker, pump-/port-/bossljud och underjordiskt miljöljud finns. Se `ROOM-AUDIO.md`. Arkivanslutningen är granskad och planerad i `ARCHIVE-CONNECTION.md`.
+
 ## Nuläge före rumsarbetet
 
 - Spelbar inledning med kaj, magasin och strand, därefter åtta kampanjsteg i fyra målade miljöer. Understöd och arkivval har faktiska följder.
@@ -94,4 +96,4 @@ Leverera ett granskbart delmål per checkpoint: aktuell status, testresultat, sk
 
 ## Nästa konkreta arbetssteg
 
-Sexrumsrutten och Edsväktarens pelarmekanik är byggda och automatiskt provade med båda vapnen/understöden. Gör först ett ljud-/radiopass för vittnesboken och bossmötet, anslut sedan den öppnade porten till Minnets arkiv med bevarad utrustning och berättelseval. Mänsklig balansbedömning väntar; därefter rotmarkernas egen rumsrutt och Rotmarskalken. Den långa kampanjen använder fortfarande sin befintliga rutt; rumsprovet startas separat.
+Sexrumsrutten och Edsväktarens pelarmekanik är byggda och automatiskt provade med båda vapnen/understöden. Ljud-/radiopasset för vittnesboken och bossmötet är levererat. Bygg nu Minnets arkiv som sjunde beständigt rum enligt `ARCHIVE-CONNECTION.md`, med bevarad utrustning, fynd, återväg och berättelseval. Mänsklig balansbedömning väntar; därefter rotmarkernas egen rumsrutt och Rotmarskalken. Den långa kampanjen använder fortfarande sin befintliga rutt; rumsprovet startas separat.

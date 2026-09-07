@@ -18,7 +18,7 @@ public partial class Main
         _warehouse=GD.Load<Texture2D>("res://assets/art/warehouse-v1.png");
         _shore=GD.Load<Texture2D>("res://assets/art/shore-v1.png");
         _shoreRevealed=ResourceLoader.Exists("res://assets/art/shore-revealed-v1.png")?GD.Load<Texture2D>("res://assets/art/shore-revealed-v1.png"):_shore;
-        foreach(var (id,line) in JourneyDialogue.Load())Radio[id]=(line[0]=="ebba"?"RIKSAMIRAL EBBA GRIP":"ANTIKVARIE HEDVIG RÅLAMB",line[1]);
+        foreach(var (id,line) in JourneyDialogue.Load().Concat(JourneyDialogue.Rooms()))Radio[id]=(line[0]=="ebba"?"RIKSAMIRAL EBBA GRIP":"ANTIKVARIE HEDVIG RÅLAMB",line[1]);
     }
     private void StartDuel()
     {
