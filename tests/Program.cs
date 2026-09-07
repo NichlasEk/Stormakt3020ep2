@@ -300,3 +300,56 @@ try
 }
 finally{File.Delete(portSave);File.Delete(portSave+".bak");}
 Console.WriteLine($"PASS PAINTED PORT RESTORATION · {checks} assertions");
+
+// Equipment changes actual combat; transfers are atomic and identities survive reload.
+var geared=Combat.NewAtland(Order.Medicine);geared.Enemies.Clear();
+Check(geared.EquipmentArmor==0&&geared.AttackDamage==25,"Starter equipment preserves existing combat balance");
+Check(geared.EquipItem(4)==""&&geared.EquipmentArmor==4,"Helmet occupies its own slot and adds protection");
+Check(geared.EquipItem(5)==""&&geared.EquipmentArmor==10,"Armor and helmet protection combine");
+Check(geared.EquipItem(6)==""&&geared.EquipmentRecovery==3,"Sigil affects stamina recovery");
+geared.Invulnerable=0;geared.Shots.Add(new(){Position=geared.Player+new Vector2(10,0),Velocity=new(-200,0)});geared.Step(Input());
+Check(Math.Abs(geared.Health-86.5f)<.001f,"Ten percent armor reduces a real 15-damage bullet to 13.5");
+geared.Hurt=0;geared.Stamina=50;geared.Step(Input());Check(Math.Abs(geared.Stamina-(50+32/60f))<.01f,"Sigil recovery is applied by fixed-tick simulation");
+var blade=geared.Inventory.Create("atland-saber");geared.Inventory.Bag.Add(blade);
+Check(geared.EquipItem(blade.Id)==""&&geared.AttackDamage==34,"Better saber changes actual attack damage");
+geared.Weapon=Weapon.Hammer;Check(geared.AttackDamage==40,"Inactive saber bonus never leaks into hammer damage");
+geared.Weapon=Weapon.Saber;
+while(geared.Inventory.Bag.Count<Items.BagCapacity)geared.Inventory.Bag.Add(geared.Inventory.Create("helmet"));
+var replacement=geared.Inventory.Bag.First(i=>i.Definition=="helmet");int fullCount=geared.Inventory.Bag.Count;
+Check(geared.EquipItem(replacement.Id)==""&&geared.Inventory.Bag.Count==fullCount,"Replacing equipment in a full bag swaps atomically");
+Check(geared.UnequipItem(GearSlot.Helmet)!=""&&geared.Inventory.Equipped.ContainsKey(GearSlot.Helmet),"Full bag cannot lose an unequipped item");
+geared.Spawn(EnemyKind.Guard,geared.Player+new Vector2(140,0));int transfer=geared.Inventory.Bag[0].Id;
+Check(geared.TransferItem(transfer,true)!=""&&geared.Inventory.Bag.Any(i=>i.Id==transfer),"Combat locks stash transfers without removing the item");
+geared.Enemies.Clear();Check(geared.TransferItem(transfer,true)==""&&geared.Inventory.Stash.Single().Id==transfer,"Secured area allows deposit");
+Check(geared.TransferItem(transfer,false)==""&&geared.Inventory.Stash.Count==0,"Withdraw restores the same identity");
+geared.DropItem("memory",geared.Player);var loot=geared.Inventory.Drops.Last();
+Check(geared.PickUpItem(loot.Item.Id)!=""&&geared.Inventory.Drops.Contains(loot),"Full bag leaves loot on the ground");
+geared.TransferItem(geared.Inventory.Bag[0].Id,true);geared.Moving=false;geared.Hurt=0;
+Check(geared.PickUpItem(loot.Item.Id)==""&&!geared.Inventory.Drops.Contains(loot),"Loot can be picked up after making room");
+Check(geared.PickUpItem(loot.Item.Id)!="","Repeated pickup cannot duplicate loot");
+geared.Inventory.Validate();
+string gearSave=Path.Combine(Path.GetTempPath(),"atland-inventory-"+Guid.NewGuid()+".json");
+try
+{
+ SaveStore.Write(gearSave,geared);var loaded=SaveStore.Read(gearSave);
+ Check(loaded.AttackDamage==34&&loaded.Inventory.Stash.Count==1&&loaded.Inventory.Bag.Count==24,"Equipment, bag, stash and stats survive save/load");
+ var oldOptions=new JsonSerializerOptions{IncludeFields=true};var oldNode=System.Text.Json.Nodes.JsonNode.Parse(JsonSerializer.Serialize(geared,oldOptions))!;oldNode.AsObject().Remove("Inventory");
+ string legacyPayload=oldNode.ToJsonString();
+ File.WriteAllText(gearSave,JsonSerializer.Serialize(new{Version=1,Checksum=Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(legacyPayload))),Payload=legacyPayload}));
+ var migrated=SaveStore.Read(gearSave);migrated.Inventory.Validate();
+ Check(migrated.AttackDamage==25&&migrated.Inventory.Bag.Count==3,"Old saves receive standard equipment without losing journey state");
+ var duplicate=loaded.Inventory.Bag[0];loaded.Inventory.Stash.Add(duplicate);bool rejected=false;
+ try{loaded.Inventory.Validate();}catch(InvalidDataException){rejected=true;}Check(rejected,"Duplicate item identity is rejected");
+}
+finally{File.Delete(gearSave);File.Delete(gearSave+".bak");}
+Console.WriteLine($"PASS INVENTORY · {checks} assertions");
+
+var equippedHit=Combat.NewAtland(Order.Medicine);equippedHit.Enemies.Clear();equippedHit.Player=new(768,650);
+var testBlade=equippedHit.Inventory.Create("quay-saber");equippedHit.Inventory.Bag.Add(testBlade);equippedHit.EquipItem(testBlade.Id);
+equippedHit.Spawn(EnemyKind.Guard,new(825,650));var equipmentVictim=equippedHit.Enemies[0];equipmentVictim.State=2;equipmentVictim.Timer=5;float beforeEquipmentHit=equipmentVictim.Health;
+for(int tick=0;tick<16;tick++)equippedHit.Step(Input(aim:Vector2.UnitX,attack:tick==0));
+Check(Math.Abs(beforeEquipmentHit-equipmentVictim.Health-30)<.001f,"Equipped weapon bonus reaches real enemy damage resolution");
+while(equippedHit.Inventory.Stash.Count<Items.StashCapacity)equippedHit.Inventory.Stash.Add(equippedHit.Inventory.Create("helmet"));
+equippedHit.Enemies.Clear();equippedHit.AttackTime=0;int heldItem=equippedHit.Inventory.Bag[0].Id;
+Check(equippedHit.TransferItem(heldItem,true)!=""&&equippedHit.Inventory.Bag.Any(i=>i.Id==heldItem),"Full stash rejects deposit without losing ownership");
+Console.WriteLine($"PASS INVENTORY COMBAT AND CAPACITY · {checks} assertions");

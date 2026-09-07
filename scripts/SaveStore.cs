@@ -34,6 +34,8 @@ public static class SaveStore
         if(env.Version!=1)throw new InvalidDataException("Okänd sparversion");
         if(Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(env.Payload)))!=env.Checksum)throw new InvalidDataException("Skadad sparfil");
         var game=JsonSerializer.Deserialize<Combat>(env.Payload,Options)??throw new InvalidDataException("Saknat speltillstånd");
+        if(game.Inventory is null)throw new InvalidDataException("Saknat inventarium");
+        game.Inventory.Validate();
         if(game.Schema!=1 || !float.IsFinite(game.Health) || game.Health<0 || game.Health>100 || !float.IsFinite(game.Player.X) || !float.IsFinite(game.Player.Y) || game.Enemies.Count>1000 || !Enum.IsDefined(game.Phase) || !Enum.IsDefined(game.Order))throw new InvalidDataException("Ogiltigt speltillstånd");
         if(game.Inscriptions is null || game.Inscriptions.Count!=3 || !Enum.IsDefined(game.Testimony)
             || game.Inscriptions.Any(i=>i is null || !float.IsFinite(i.Progress) || i.Progress<0 || i.Progress>Combat.ReadingDuration

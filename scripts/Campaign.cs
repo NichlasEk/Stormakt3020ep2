@@ -95,7 +95,7 @@ public sealed partial class Combat
         if(!peaceful){CampaignChannel=0;return;}
         if(CampaignStage==0&&!PortCacheTaken&&Near(PortLayout.Cache))
         {
-            PortCacheTaken=true;Potions+=2;Health=Math.Min(100,Health+20);
+            PortCacheTaken=true;DropItem("memory",PortLayout.Cache);Potions+=2;Health=Math.Min(100,Health+20);
             Emit("campaign",Player,"I murarens gömma ligger två tinkturer och ett avtryck: landet bär vattnet, vattnet bär minnet. Någon har försökt slipa bort det sista ordet.");
             Emit("inscription",Player,"MURARENS GÖMMA · +2 TINKTURER");Emit("checkpoint",Player);return;
         }

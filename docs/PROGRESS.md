@@ -1,5 +1,12 @@
 # Checkpoint · Vägen under vattnet · 2026-09-06
 
+## Senast · inventarium, utrustning och stash 0.5 · 2026-09-07
+
+I öppnar inventarium; C stats; pausmenyn ger handkontrollväg. Fem utrustningsplatser (två vapenslag, rustning, hjälm, sigill), väska 24 och stash 60. Bonusar påverkar verklig vapenskada, skadeskydd och uthållighetsåterhämtning. 14 föremål i katalogen, loot från fiender/bossar och portens gömma. Fulla behållare tappar inga föremål. Förrådet låses under aktiv fara. Sparade identiteter, utrustning och stash följer respektive kampanj, och äldre fältdagböcker migrerar till grundset.
+
+29 165 regelassertions passerar inklusive de fyra fulla kampanjrutterna. Godot- och native-menykontroller för flikar, utrustning, stats, stash, sidor och lås passerar; bilder är granskade i 1280 × 720. Linux-export `dist/AtlandsArv-0.5/AtlandsArv.x86_64`. Se `INVENTORY.md` för detaljer. Inga nya 3D-figurer eller miljöbyten: målade 2D-aktörer och rika bakgrunder består. Utrustningen ändrar ännu inte figurens kläder visuellt.
+
+
 ## Senast · återställd målad port · 2026-09-07
 
 Användaren förtydligade att oron för 3D gäller Karl och fienderna; de rika genererade miljöerna föredras framför modulprovet. Porten använder åter `world-atland-v1.png`, oförändrad på disk. Modulgolv, murar, cache-renderer och den avvisade skiljemurens kollisionsyta är borttagna. Den ursprungliga gångytan används igen. Gömman och dess engångsbelöning är kvar, och gamla sparpositioner anpassas till återställd gångyta.

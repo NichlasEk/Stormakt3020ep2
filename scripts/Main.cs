@@ -7,7 +7,7 @@ using NVec=System.Numerics.Vector2;
 
 public partial class Main : Node2D
 {
-    private enum Screen { Title, Briefing, Game, Pause, Settings, Death, Ending, Testimony, Journal }
+    private enum Screen { Title, Briefing, Game, Pause, Settings, Death, Ending, Testimony, Journal, Inventory }
     private Screen _screen=Screen.Title;
     private Screen _settingsReturn=Screen.Title;
     private Combat _game=Combat.New(Order.Artillery);
@@ -77,7 +77,7 @@ public partial class Main : Node2D
     private static NVec N(Vector2 v)=>new(v.X,v.Y);
     public override void _Ready()
     {
-        var args=OS.GetCmdlineUserArgs();_portChecks=args.Contains("--port-check");_sceneChecks=args.Contains("--scene-check")||_portChecks;_uiChecks=args.Contains("--ui-check");
+        var args=OS.GetCmdlineUserArgs();_inventoryChecks=args.Contains("--inventory-check");_portChecks=args.Contains("--port-check");_sceneChecks=args.Contains("--scene-check")||_portChecks||_inventoryChecks;_uiChecks=args.Contains("--ui-check");
         _serif=GD.Load<Font>("res://assets/fonts/NotoSerif-Regular.ttf");_sans=GD.Load<Font>("res://assets/fonts/NotoSans-Regular.ttf");
         _background=GD.Load<Texture2D>("res://assets/art/likvarvet-scale-v5.png");
         _radioPortraits=GD.Load<Texture2D>("res://assets/art/radio-cast-v1.png");
@@ -90,10 +90,10 @@ public partial class Main : Node2D
         if(_integration)Engine.TimeScale=3;
         if(_testMode)StartNew();
         if(args.Contains("--duel"))StartDuel();
-        if(args.Contains("--port")||_portChecks){_portSlot=true;StartAtland();}
+        if(args.Contains("--port")||_portChecks||_inventoryChecks){_portSlot=true;StartAtland();}
         else if(args.Contains("--atland")||_campaignCheck)StartAtland();
         if(args.Contains("--capture-title"))_smokeCapture=true;
-        if(_portChecks)RunPortChecks();else if(_sceneChecks)RunSceneChecks();
+        if(_inventoryChecks)RunInventoryChecks();else if(_portChecks)RunPortChecks();else if(_sceneChecks)RunSceneChecks();
     }
     public override void _Input(InputEvent ev)
     {
@@ -120,6 +120,8 @@ public partial class Main : Node2D
             if(key.PhysicalKeycode is Key.Equal or Key.KpAdd || key.Keycode==Key.Plus){SetVolume(_volume+.05f);return;}
             if(key.PhysicalKeycode==Key.F11){DisplayServer.WindowSetMode(DisplayServer.WindowGetMode()==DisplayServer.WindowMode.Fullscreen?DisplayServer.WindowMode.Windowed:DisplayServer.WindowMode.Fullscreen);return;}
             if(key.PhysicalKeycode==Key.Escape){Back();return;}
+            if(key.PhysicalKeycode==Key.I&&_screen is Screen.Game or Screen.Pause or Screen.Inventory){if(_screen==Screen.Inventory)Back();else OpenInventory();return;}
+            if(key.PhysicalKeycode==Key.C&&_screen is Screen.Game or Screen.Pause or Screen.Inventory){OpenInventory(2);return;}
             if(_screen!=Screen.Game)
             {
                 if(key.PhysicalKeycode is Key.Down or Key.S)SelectMenu(1);
@@ -169,11 +171,13 @@ public partial class Main : Node2D
         else if(_screen==Screen.Settings)ChangeScreen(_settingsReturn);
         else if(_screen==Screen.Briefing)ChangeScreen(Screen.Title);
         else if(_screen==Screen.Journal)ChangeScreen(Screen.Game);
+        else if(_screen==Screen.Inventory){_inventoryMouseRelease=true;ChangeScreen(_inventoryReturn);}
         else if(_screen==Screen.Testimony)ChangeScreen(Screen.Pause);
         else if(_screen==Screen.Title)GetTree().Quit();
     }
     private void Activate(string id)
     {
+        if(InventoryAction(id))return;
         switch(id)
         {
             case "duel":StartDuel();break;
@@ -277,7 +281,8 @@ public partial class Main : Node2D
             _heal=_game.Health<48;_support=target!=null;_interact=true;
         }
         bool reading=_interact||Input.IsPhysicalKeyPressed(Key.E)||(_controller&&Input.IsJoyButtonPressed(0,JoyButton.B));
-        var controls=new Controls(N(move),N(aim),_attack||(!_controller&&!_adjustingVolume&&!VolumePanel.HasPoint(GetGlobalMousePosition())&&Input.IsMouseButtonPressed(MouseButton.Left)),_heavy,_dodge,guard,_swap,_heal,_support,reading);
+        if(!Input.IsMouseButtonPressed(MouseButton.Left))_inventoryMouseRelease=false;
+        var controls=new Controls(N(move),N(aim),_attack||(!_controller&&!_adjustingVolume&&!_inventoryMouseRelease&&!VolumePanel.HasPoint(GetGlobalMousePosition())&&Input.IsMouseButtonPressed(MouseButton.Left)),_heavy,_dodge,guard,_swap,_heal,_support,reading);
         RememberRenderPositions();
         _game.Step(controls);ClearPresses();
         if(_campaignCheck&&_testTicks%600==0)GD.Print($"CAMPAIGN CHECK stage={_game.CampaignStage+1} progress={_game.CampaignProgress} foes={_game.Enemies.Count(e=>!e.Dead)} hp={_game.Health} elapsed={_game.Elapsed} at={_game.Player} goal={_game.CampaignObjective}");
@@ -291,6 +296,8 @@ public partial class Main : Node2D
         var p=G(cue.Position);
         switch(cue.Kind)
         {
+            case "loot":Notice("Fynd: "+cue.Text+" · E för att plocka upp");break;
+            case "pickup":Notice("I väskan: "+cue.Text);_sound.Play("paper");break;
             case "radio":QueueRadio(cue.Text);break;
             case "campaign":_campaignText=cue.Text;_campaignTextTime=10;break;
             case "region":_camera=G(_game.Player)+new Vector2(0,-30);_particles.Clear();_floating.Clear();_radioQueue.Clear();_sound.StopVoice();_radioTime=0;_banner=cue.Text.ToUpperInvariant();_bannerTime=5;break;
@@ -449,6 +456,7 @@ public partial class Main : Node2D
         else if(_screen==Screen.Ending)DrawEnding();
         else if(_screen==Screen.Testimony)DrawTestimony();
         else if(_screen==Screen.Journal)DrawJournal();
+        else if(_screen==Screen.Inventory)DrawInventory();
         else
         {
             DrawRect(new Rect2(0,0,1280,720),new Color(.015f,.03f,.043f,.88f));
@@ -486,6 +494,7 @@ public partial class Main : Node2D
         {var c=h.Friendly?Gold:Red;DrawCircle(G(h.Position),h.Radius,new Color(c,.10f));DrawArc(G(h.Position),h.Radius,0,Mathf.Tau,70,c,2,true);DrawArc(G(h.Position),h.Radius*Math.Clamp(1-h.Timer/1.5f,0,1),0,Mathf.Tau,60,new Color(c,.5f),2,true);}
         foreach(var e in _game.Enemies.Where(e=>!e.Dead && e.State==1))DrawTelegraph(e);
         DrawDepthSortedActors();
+        DrawDroppedItems();
         foreach(var shot in _game.Shots){var p=G(shot.Position);var v=G(shot.Velocity).Normalized();DrawLine(p-v*17,p,shot.Reflected?Teal:Gold,3,true);DrawCircle(p,3,Pale);}
         if(_game.Phase==Phase.Discovery)
         {var p=G(Combat.ChartPosition);DrawCircle(p,30,new Color(Gold,.13f));DrawArc(p,25,0,Mathf.Tau,40,Gold,1.5f,true);DrawRect(new Rect2(p-new Vector2(14,18),new Vector2(28,24)),Gold);DrawLine(p-new Vector2(10,4),p+new Vector2(10,-10),new Color(.15f,.23f,.24f),2,true);}
@@ -589,7 +598,7 @@ public partial class Main : Node2D
         if(boss!=null){Panel(new Rect2(354,20,542,59),.91f);Centered(_game.InCampaign?(_game.CampaignStage==7?"KOLLEGIETS VÄKTARE":"KRONFOGDEN"):"VARVETS INDRIVARE",625,42,14,Gold);WorldBar(new Vector2(378,56),490,boss.Health/boss.MaxHealth,Red);}
         Panel(new Rect2(20,623,381,77),.96f);Text("KARL CCLV",new Vector2(38,646),13,Gold);Text($"{Math.Ceiling(_game.Health)} / 100",new Vector2(302,646),13,Pale);
         WorldBar(new Vector2(38,657),345,_game.Health/100,new Color("b6574d"),11);WorldBar(new Vector2(38,677),345,_game.Stamina/100,Teal,5);
-        Panel(new Rect2(417,623,470,77),.96f);Text(_game.Weapon==Weapon.Saber?"OFFICERSSABEL":"GRUVHAMMARE",new Vector2(435,647),16,Gold);
+        Panel(new Rect2(417,623,470,77),.96f);Text(_game.WeaponName.ToUpperInvariant(),new Vector2(435,647),16,Gold);
         Text(_controller?"RB  Byt vapen     ↑  Tinktur ×"+_game.Potions:"TAB  Byt vapen     Q  Tinktur ×"+_game.Potions,new Vector2(435,674),14,Muted);
         Panel(new Rect2(903,623,357,77),.96f);Text(_game.Order==Order.Artillery?"ÖRLOGSBATTERI":"FÄLTSJUKVÅRD",new Vector2(921,647),14,Gold);
         Text(_game.SupportCooldown<=0?(_controller?"↓  Understöd redo":"F  Understöd redo"):$"Redo om {Math.Ceiling(_game.SupportCooldown)} s",new Vector2(921,674),16,_game.SupportCooldown<=0?Teal:Muted);
@@ -614,7 +623,7 @@ public partial class Main : Node2D
             if(_game.Phase==Phase.Discovery && NVec.Distance(_game.Player,Combat.ChartPosition)<100){Panel(new Rect2(430,526,420,52),.94f);Centered(_controller?"B  Undersök bronskartan":"E  Undersök bronskartan",640,558,19,Gold);}
             else if(_game.Elapsed<35&&(!_game.InCampaign||_campaignTextTime<=0)){Panel(new Rect2(282,552,716,43),.85f);Centered(_controller?"X Hugg · Y Tungt · A Undanmanöver · LB Parad":"WASD Gå · Mus Sikta · Vänster Hugg · Höger Tungt · Space Undan · Shift Parad",640,578,14,Muted);}
         }
-        Text(_controller?"START Paus · BACK Fynd":"ESC Paus · R Fynd",new Vector2(24,608),12,Muted);
+        Text(_controller?"START Paus · BACK Fynd":"ESC Paus · R Fynd · I Inventarium · C Stats",new Vector2(24,608),12,Muted);
     }
     private void DrawObjectiveDirection()
     {
@@ -654,7 +663,7 @@ public partial class Main : Node2D
         Button(new Rect2(80,600,355,43),"Öva sabelduell","duel");
         Button(new Rect2(842,614,350,43),"Spela nästa del · åtta banor","atland");
         Text("VÄGEN TILL ATLAND",new Vector2(842,533),19,Gold,true);Button(new Rect2(842,554,350,43),"Spela Atlands port","port");
-        Text("VÄGEN UNDER VATTNET  ·  SPELPROV 0.4",new Vector2(80,673),12,Muted);Text("WASD + mus  /  Handkontroll",new Vector2(970,673),12,Muted);
+        Text("VÄGEN UNDER VATTNET  ·  SPELPROV 0.5",new Vector2(80,673),12,Muted);Text("WASD + mus  /  Handkontroll",new Vector2(970,673),12,Muted);
     }
     private void DrawBriefing()
     {
@@ -669,6 +678,7 @@ public partial class Main : Node2D
     private void DrawPause()
     {
         Centered("Fältdagboken",640,157,40,Pale,true);Centered("Striden väntar.",640,194,17,Muted);
+        Button(new Rect2(455,190,370,43),"Inventarium och stats","inventory");
         Button(new Rect2(455,249,370,49),"Fortsätt","resume",true);Button(new Rect2(455,310,370,49),"Spara fältdagboken","save");Button(new Rect2(455,371,370,49),"Inställningar","settings");Button(new Rect2(455,432,370,49),"Till huvudmenyn","title");
         Centered("WASD: gå   Mus: sikta   J / vänsterklick: hugg   K / högerklick: tungt",640,552,15,Muted);
         Centered("Space: undanmanöver   Shift: parad   Tab: vapen   Q: tinktur   E: undersök   F: understöd",640,581,14,Muted);

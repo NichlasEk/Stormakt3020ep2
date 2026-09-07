@@ -205,7 +205,7 @@ public sealed partial class Combat
             var before=Player;MovePlayer(move*(Guarding?85:195)*dt);float travelled=Vector2.Distance(before,Player);Moving=travelled>.001f;
             if(Moving){MoveDirection=Normal(move,Facing);float previousWalk=Walk;Walk+=travelled*7/195; if((int)(Walk/2)!=(int)(previousWalk/2))Emit("step",Player);}
         }
-        Stamina = Math.Min(100,Stamina+dt*(Guarding?5:AttackTime>0?10:29));
+        Stamina = Math.Min(100,Stamina+dt*((Guarding?5:AttackTime>0?10:29)+EquipmentRecovery));
         if (AttackTime > 0)
         {
             AttackTime += dt;
@@ -244,6 +244,11 @@ public sealed partial class Combat
         }
         Hazards.RemoveAll(h=>h.Timer<=0);
         if(Dead)return;
+        if(input.Interact)
+        {
+            var nearby=LocalDrops.Where(d=>Vector2.Distance(Player,d.Position)<=65&&ClearPath(Player,d.Position)).OrderBy(d=>Vector2.DistanceSquared(Player,d.Position)).FirstOrDefault();
+            if(nearby!=null&&PickUpItem(nearby.Item.Id)=="")input=input with{Interact=false};
+        }
         if (Phase==Phase.Quay && Seals.All(s=>s.Health<=0) && Enemies.All(e=>e.Dead))
         {
             Phase=Phase.Collector;Health=Math.Max(Health,75);Stamina=100;Shots.Clear();
@@ -309,7 +314,7 @@ public sealed partial class Combat
     {
         float range=Weapon==Weapon.Hammer?100:91;
         if(HeavyAttack)range+=15;
-        float damage=(Weapon==Weapon.Hammer?40:25)*(HeavyAttack?1.8f:1)*(Combo==3?1.25f:1);
+        float damage=AttackDamage*(HeavyAttack?1.8f:1)*(Combo==3?1.25f:1);
         if(RiposteTime>0&&Weapon==Weapon.Saber){damage*=1.6f;RiposteTime=0;}
         float arc=HeavyAttack?-.1f:.05f;
         Emit("slash",Player,"",range);
@@ -396,13 +401,14 @@ public sealed partial class Combat
         e.Health=Math.Max(0,e.Health-damage);e.Hurt=.16f;
         if(stagger && e.Kind!=EnemyKind.Collector){e.State=3;e.Timer=.5f;e.Position=Bound(e.Position+Normal(e.Position-source,Vector2.UnitX)*12);}
         HitStop=Weapon==Weapon.Hammer?.055f:.035f;Emit("hit",e.Position,((int)damage).ToString(),damage);
-        if(e.Dead){Kills++;Stamina=Math.Min(100,Stamina+10);Emit("death",e.Position);}
+        if(e.Dead){Kills++;Stamina=Math.Min(100,Stamina+10);Emit("death",e.Position);DropEnemyLoot(e);}
     }
     private void DamagePlayer(float damage,Vector2 source)
     {
         if(Invulnerable>0 || Dead)return;
         if(Guarding && Vector2.Dot(Facing,Normal(source-Player,Facing))>.1f && Stamina>=18)
         {Stamina-=18;damage*=.22f;Emit("block",Player);}
+        damage*=1-EquipmentArmor/100;
         Health=Math.Max(DeveloperSurvival?1:0,Health-damage);Invulnerable=.55f;Hurt=.22f;Emit("hurt",Player,"",damage);
         if(Dead)Emit("playerdeath",Player);
     }
