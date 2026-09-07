@@ -20,7 +20,9 @@
 
 **Nionde checkpointen:** 24-sekundersintro med skepp, bronskarta, kust och tre nya Ebba-repliker. Två filmer i katalogen, tidsstyrd textning och ny-expeditionsstart. Se `INTRO.md`. Nästa spelcheckpoint är vägen mot berget; filmens kustgeometri och penselstruktur kan förbättras i ett senare bildpass.
 
-## Prioriterad integration efter filmpasset
+**Tionde checkpointen:** standardknapp och strandövergång till niorumsrutten, utan att tappa inventarium eller resurser. Separat spelbart prov på en fysisk dörr mellan två samtidigt aktiva rum. Se `PHYSICAL-DOORS.md`. Nästa prioritet är att bedöma provet och införa fysiska passager i huvudrutten, före ytterligare rum.
+
+## Integrationsbehov efter filmpasset · historik före 0.11
 
 Användarens provspelning visade att den nya rutten är svår att hitta: vanlig kampanjfortsättning leder fortfarande till äldre banor. Innan fler rum byggs bör strandens fortsättning kopplas till de nio rummen, med bevarad utrustning, stash och berättelseprogression. Äldre kampanjsparningar behöver en uttrycklig migrationsstrategi, och huvudmenyn behöver en tydlig huvudingång. Detta är planerat, inte genomfört i 0.10. Under tiden är ingången **Atlands förseglade rum · prov** eller `./play.sh -- --rooms`.
 

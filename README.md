@@ -6,6 +6,12 @@ Episod II. Ett nytt, fristående actionrollspel i Stormakts värld: nordisk baro
 
 Starta senaste verifierade Linux-versionen med `./play.sh` (ingen ombyggnad). `./play.sh -- --gate-film` visar filmprovet direkt. Exportens programfil, `.pck` och `data_AtlandsArv_linuxbsd_x86_64` måste ligga tillsammans; `play.sh` kontrollerar detta innan start. `./start.sh` bygger och kör från källkoden.
 
+## Nytt · fysiska dörrar och standardvägen · 0.11
+
+**Spela expeditionen · nio rum** är nu huvudvalet. Landstigningens fortsättning går också till rumsvägen, med bevarad utrustning och resurser. Ett separat spelprov har två sammanhängande rum och en målad fysisk dörr: nyckel, öppna/stänga, verklig genomgång, förföljelse, kollision/sikt och förstöring med vapen. **Fysiska dörrar · spelprov** eller `./play.sh -- --doors`. `--doors-new` börjar om just provet. [Omfattning, produktion och verifiering](docs/PHYSICAL-DOORS.md).
+
+Linux-export: `dist/AtlandsArv-0.11-doors/AtlandsArv.x86_64`. Övriga dörrar och sprängladdningar återstår.
+
 ## Nytt · Expeditionen till Atland · 0.10
 
 Ett intro på 24 sekunder: skeppet, bronskartan och kusten, med tre nya Ebba-repliker, musik och svenska undertexter. Både introt och Arkivets port finns i **Inställningar → Utvecklarverktyg · Videobibliotek**. Direktprov: `./play.sh -- --intro-film`. Introt visas vid en ny Atland-expedition; befintliga sparningar fortsätter som vanligt. [Produktion och verifiering](docs/INTRO.md).

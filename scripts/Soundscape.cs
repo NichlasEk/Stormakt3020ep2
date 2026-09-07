@@ -41,7 +41,7 @@ public partial class Soundscape : Node
             if(ResourceLoader.Exists($"res://assets/audio/voice-{id}.ogg"))_clips["voice-"+id]=GD.Load<AudioStream>($"res://assets/audio/voice-{id}.ogg");
         foreach(var id in JourneyDialogue.Rooms().Keys.Concat(JourneyDialogue.Archive().Keys).Concat(JourneyDialogue.Roots().Keys))
             if(ResourceLoader.Exists($"res://assets/audio/voice-{id}.ogg"))_clips["voice-"+id]=GD.Load<AudioStream>($"res://assets/audio/voice-{id}.ogg");
-        foreach(var name in new[]{"pump-pressure","pump-drain","stone-door","oath-lock","oath-rush","oath-impact","vault-ambience"})
+        foreach(var name in new[]{"door-unlock","door-creak","door-hit","door-break","pump-pressure","pump-drain","stone-door","oath-lock","oath-rush","oath-impact","vault-ambience"})
             _clips[name]=GD.Load<AudioStream>($"res://assets/audio/{name}.ogg");
         foreach(var name in new[]{"scrape","inscription","paper","footstep"})_clips[name]=GD.Load<AudioStream>($"res://assets/audio/{name}.ogg");
         if(ResourceLoader.Exists("res://assets/audio/names-score.ogg"))_clips["names-score"]=GD.Load<AudioStream>("res://assets/audio/names-score.ogg");

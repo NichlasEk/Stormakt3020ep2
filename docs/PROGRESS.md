@@ -1,5 +1,11 @@
 # Checkpoint · Vägen under vattnet · 2026-09-06
 
+## Senast · fysisk dörr och standardrutt · 0.11 · 2026-09-07
+
+Niorumsrutten är huvudmenyns primära expedition och den vanliga strandens fortsättning. Hälsa, förbrukning och inventarium bevaras; senast spelad rumsexpedition hittas i befintliga sparplatser. Äldre påbörjade åttastegskampanjer lämnas intakta.
+
+Separat spelbart två-rumsprov med ny gemensam målning, målad dörryta, exakt gångjärnsprojektion, aktiv vaktförföljelse, nyckel, öppna/stänga, kollision/sikt, upptäcktsmörker och förstöring. Egen sparning och fyra ljudskisser. 29 593 assertions. Se `PHYSICAL-DOORS.md`. Nästa steg är provspelning och därefter införande av de fysiska passagerna i huvudrutten; sprängning och fienders dörrbrytning återstår.
+
 ## Senast · Expeditionen till Atland · 0.10 · 2026-09-07
 
 24,2 sekunders intro med tre genererade bilder, lokala LTX-klipp, tre nya Ebba-röster och tidsstyrd textning. Filmkatalogen innehåller introt och Arkivets port. Ny Atland-kampanj/rumsexpedition visar introt; återupptagen sparning gör det inte. Musik återanvänds. Kustklippet hittar på byggnader och mjukar upp penselstrukturen; nästa bildpass bör förbättra följsamheten mot målningen. Se `INTRO.md` för verifiering och produktionskällor.

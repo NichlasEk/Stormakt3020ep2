@@ -28,7 +28,7 @@ public partial class Main
         }
         if(_game.Rooms?.Current is PortRooms.Pump or PortRooms.Cistern)AddWaterLayers(layers);
         if(_game.InRooms){AddOathLayers(layers);AddArchiveLayers(layers);AddRootwayLayers(layers);}
-        if(_game.InRooms)AddRoomLayers(layers);else if(_game.CampaignStage==0)AddPortLayers(layers);
+        if(_game.InDoorTrial)AddDoorLayers(layers);else if(_game.InRooms)AddRoomLayers(layers);else if(_game.CampaignStage==0)AddPortLayers(layers);
         foreach(var layer in layers.OrderBy(l=>l.Depth))layer.Draw();
         if((_game.Region==Region.Warehouse||_game.Rooms?.Current==PortRooms.Lodge))
         {

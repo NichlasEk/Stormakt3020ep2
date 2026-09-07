@@ -21,7 +21,7 @@ public partial class Main
         _oathCast=new OathCast();
         _cisternArt=GD.Load<Texture2D>("res://assets/art/room-cistern-v1.png");
     }
-    private Texture2D RoomBackground=>_game.Rooms!.Current switch
+    private Texture2D RoomBackground=>_game.InDoorTrial?_doorGround!:_game.Rooms!.Current switch
     {PortRooms.Roots=>_rootwayArt!,PortRooms.Grove=>_groveArt!,PortRooms.Archive=>_archiveArt!,PortRooms.Gallery=>_galleryArt!,PortRooms.Chamber=>_game.Rooms.Completed?_chamberOpenArt!:_chamberArt!,PortRooms.Lodge=>_warehouse,PortRooms.Pump=>_game.Rooms.WaterLowered?_pumpLowArt!:_pumpArt!,PortRooms.Cistern=>_cisternArt!,_=>_campaignWorlds[0]};
     private void AddWaterLayers(List<(float Depth,Action Draw)> layers)
     {

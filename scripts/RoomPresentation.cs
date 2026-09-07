@@ -8,8 +8,22 @@ using System.Threading.Tasks;
 public partial class Main
 {
     private bool _roomsSlot,_roomChecks;
+    private void StartStandardExpedition()
+    {
+        // A shore continuation keeps its original save slot. Prefer whichever room expedition
+        // was played most recently, without overwriting the other independent run.
+        var quay=ProjectSettings.GlobalizePath("user://quay-save.json");
+        var rooms=ProjectSettings.GlobalizePath("user://rooms-save.json");
+        if(!_testMode&&System.IO.File.Exists(quay)&&(!System.IO.File.Exists(rooms)||System.IO.File.GetLastWriteTimeUtc(quay)>System.IO.File.GetLastWriteTimeUtc(rooms)))
+        {
+            try{if(SaveStore.Read(quay).InRooms){_doorSlot=_roomsSlot=_portSlot=_atlandSlot=false;ResumeSave();return;}}
+            catch(System.Exception e){GD.PushWarning("Kunde inte bedöma äldre expedition: "+e.Message);}
+        }
+        StartRooms();
+    }
     private void StartRooms()
     {
+        _doorSlot=false;
         LoadWaterArt();
         _roomsSlot=true;_atlandSlot=_portSlot=false;
         if(!_testMode&&System.IO.File.Exists(SavePath)){ResumeSave();return;}
@@ -91,6 +105,7 @@ public partial class Main
     }
     private void DrawRoomJournal()
     {
+        if(_game.InDoorTrial){DrawDoorJournal();return;}
         DrawRect(new Rect2(0,0,1280,720),new Color(.025f,.023f,.019f,.96f));
         Text("ATLAND · PORTEN OCH ROTVÄGEN",new Vector2(95,100),26,Pale,true);
         Wrapped("Från den dränkta porten, genom arkivet och ut under de stora rötterna. Cisternen döljer en valfri genväg. Alla besökta rum går att återvända till.",new Vector2(95,170),1000,21,Muted,34);

@@ -17,6 +17,7 @@ public partial class Main
     }
     private void StartAtland()
     {
+        _doorSlot=false;
         _atlandSlot=true;
         if(!_testMode&&System.IO.File.Exists(SavePath)){ResumeSave();return;}
         _game=Combat.NewAtland(_order);ApplyDeveloperSettings();_particles.Clear();_floating.Clear();_radioQueue.Clear();_radio="";_sound.StopVoice();

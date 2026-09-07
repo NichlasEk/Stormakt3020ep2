@@ -55,12 +55,13 @@ public sealed partial class Combat
     public RoomRun? Rooms;
     [JsonIgnore] private bool _roomInteractHeld=true;
     [JsonIgnore] public bool InRooms=>Rooms!=null;
-    [JsonIgnore] public string RoomName=>PortRooms.Name(Rooms!.Current);
+    [JsonIgnore] public string RoomName=>InDoorTrial?(DoorTrialLayout.Side(Player)<0?"Väktarnas logement":"Förgården · dörrprov"):PortRooms.Name(Rooms!.Current);
     [JsonIgnore] public string RoomGoal
     {
         get
         {
             var r=Rooms!;
+            if(InDoorTrial)return DoorTest!.EnteredLodge?"Stäng dörren eller slå sönder den":DoorTest.KeyTaken?"Öppna dörren och gå in":"Hämta nyckeln · eller bryt upp dörren";
             if(r.Current is PortRooms.Roots or PortRooms.Grove)return RootGoal;
             if(r.Current==PortRooms.Archive)return ArchiveGoal;
             if(r.Completed&&r.Current==PortRooms.Chamber)return "Fortsätt till Minnets arkiv";

@@ -366,3 +366,5 @@ RoomAudioTests.Run(Check);
 Console.WriteLine($"PASS ROOM AUDIO CUES · {checks} assertions");
 ArchiveTests.Run(Check);
 Console.WriteLine($"PASS ARCHIVE AND RETURN · {checks} assertions");
+DoorTests.Run(Check);
+Console.WriteLine($"PASS PHYSICAL DOORS AND STANDARD ROUTE · {checks} assertions");

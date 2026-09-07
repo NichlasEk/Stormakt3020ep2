@@ -1,0 +1,21 @@
+{
+  "tool": "built-in image_gen",
+  "environment": {
+    "path": "assets/art/door-courtyard-v1.png",
+    "prompt": "Use case historical-scene. Production background for a true painted 2D isometric action RPG, 1536x1024. Dark worn Swedish seventeenth century military harbor, matte old oil painting texture, charcoal umber moss grey, restrained warm lanterns. EXACT GAME GEOMETRY: roofless cutaway of two adjoining spaces viewed fixed orthographic isometric from southeast: a broad cobbled exterior courtyard occupies lower-left half, and a weathered guardhouse interior with wooden floor occupies upper-right half. The separating stone wall runs diagonally from upper-left toward lower-right through the image center, approximately from pixel (430,280) through (770,510) to (1200,800). At the exact center (770,510) leave a clearly readable wide EMPTY DOORWAY about 145 pixels across in the wall. NO door leaf in the opening, just two rough stone jambs, NO arch or lintel across its top so characters remain visible. Both floor surfaces connect continuously at the same ground height through this opening. Front walls removed for visibility. Courtyard playable cobbles from (220,560) to (750,900); interior playable boards from (760,280) to (1250,600). Keep both rooms mostly empty and spacious, furniture only against far edges: two modest bedrolls and a small chest inside, rotting rope and barrel outside. Human scale: future characters 140px tall, door opening height 160px, ordinary furniture appropriately small. No people, no text, no interface, no circles or markers. Clear gameplay silhouettes, rich painted detail and non-glossy surfaces. No toy look, no rounded cute architecture, no 3D render. The stone wall stops at the doorway leaving a real gap through which actors will physically walk."
+  },
+  "door": {
+    "path": "assets/art/door-oak-face-v1.png",
+    "prompt": "Use case historical-scene. Game asset texture, flat FRONT ELEVATION of a single closed rectangular seventeenth-century Swedish oak door leaf, aspect ratio 2:3. The entire image is filled edge to edge by the rectangular door face, no frame, no background, no perspective, no shadows outside it. Six vertical weathered dark oak planks, two blackened forged iron horizontal strap hinges across face at quarter and three-quarter height, restrained small iron ring handle near right edge. Scarred matte wood, splintered grain, old nail heads, faint moss at bottom, worn painted oil texture, dark umber charcoal grey palette, realistic serious historic proportions. Surface map for projecting onto an animated door in a painted isometric 2D game. Readable simple structure, no decorative symbols, no text, no bright outline, no glossy highlights, no 3D render. Edges must be straight rectangular all the way to image border."
+  },
+  "animation": "Deterministic 2D textured strips; orthographic isometric hinge projection, no Blender or 3D actors.",
+  "audio": "tools/generate_door_sounds.py; deterministic synthesized Foley sketches",
+  "sha256": {
+    "assets/art/door-courtyard-v1.png": "2d04ee57cc5b468884b0bd11f3a8cbea07e673c7e45e7feb78699aa270fb7fa8",
+    "assets/art/door-oak-face-v1.png": "c498a15eb6fa342c1b1fab7ef3ed534c14f65db7d95771f14ddbbe2304604b8f",
+    "assets/audio/door-unlock.ogg": "0d723d4138b512b1bec2901146fef7435640887f761059b5e9ffab36ec3b4778",
+    "assets/audio/door-creak.ogg": "8d1f547de3883448b223219292515c33ffac36b04759892134145a12eba5c388",
+    "assets/audio/door-hit.ogg": "d98c7f4db5ded63ff54dafb27f5415c6632de452da40c920441fe4d20118a416",
+    "assets/audio/door-break.ogg": "9fbc354dea5cfbbc383b9308db39f811a0a48ac7801c0b225afc16a429cc97ee"
+  }
+}

@@ -19,9 +19,9 @@ public sealed partial class Combat
     public float RiposteTime;
     public Vector2 MoveDirection=Vector2.UnitY;
     [JsonIgnore] private static readonly Vector2[] Crate=Navigation.Expand(JourneyLayout.WarehouseObstacle,22);
-    [JsonIgnore] public Vector2[] Walkable=>Rooms?.Current==PortRooms.Roots?Rootway.Ground:Rooms?.Current==PortRooms.Grove?Rootway.GroveGround:Rooms?.Current==PortRooms.Archive?ArchiveRoom.Ground:Rooms?.Current==PortRooms.Gallery?PortRooms.GalleryGround:Rooms?.Current==PortRooms.Chamber?PortRooms.OathGround:Rooms?.Current==PortRooms.Court?PortRooms.CourtGround:Rooms?.Current==PortRooms.Pump?PortRooms.PumpGround:Rooms?.Current==PortRooms.Cistern?PortRooms.CisternGround:Region==Region.Quay?Ground:(Region==Region.Warehouse||Rooms?.Current==PortRooms.Lodge)?JourneyLayout.WarehouseGround:JourneyLayout.Ground;
+    [JsonIgnore] public Vector2[] Walkable=>InDoorTrial?DoorTrialLayout.Ground:Rooms?.Current==PortRooms.Roots?Rootway.Ground:Rooms?.Current==PortRooms.Grove?Rootway.GroveGround:Rooms?.Current==PortRooms.Archive?ArchiveRoom.Ground:Rooms?.Current==PortRooms.Gallery?PortRooms.GalleryGround:Rooms?.Current==PortRooms.Chamber?PortRooms.OathGround:Rooms?.Current==PortRooms.Court?PortRooms.CourtGround:Rooms?.Current==PortRooms.Pump?PortRooms.PumpGround:Rooms?.Current==PortRooms.Cistern?PortRooms.CisternGround:Region==Region.Quay?Ground:(Region==Region.Warehouse||Rooms?.Current==PortRooms.Lodge)?JourneyLayout.WarehouseGround:JourneyLayout.Ground;
     [JsonIgnore] public Vector2[] Obstacles=>Rooms?.Current==PortRooms.Grove?Rootway.Slab:Rooms?.Current==PortRooms.Archive?ArchiveRoom.Table:Rooms?.Current==PortRooms.Gallery?PortRooms.Lectern:Rooms?.Current==PortRooms.Pump?PortRooms.PumpBasin:Rooms?.Current==PortRooms.Cistern?PortRooms.CisternBasin:(Region==Region.Warehouse||Rooms?.Current==PortRooms.Lodge)?Crate:Array.Empty<Vector2>();
-    [JsonIgnore] public Vector2[][] SolidObstacles=>Rooms?.Current==PortRooms.Chamber?PortRooms.OathObstacles:new[]{Obstacles};
+    [JsonIgnore] public Vector2[][] SolidObstacles=>InDoorTrial?DoorObstacles:Rooms?.Current==PortRooms.Chamber?PortRooms.OathObstacles:new[]{Obstacles};
     public bool OnWalkable(Vector2 p)=>Navigation.Contains(Walkable,p)&&!SolidObstacles.Any(o=>Navigation.Contains(o,p));
     public Vector2 Bound(Vector2 p)=>Region==Region.Quay?ClampToGround(p):Navigation.Clamp(Walkable,SolidObstacles,p);
     public bool ClearPath(Vector2 a,Vector2 b)=>Region==Region.Quay||Navigation.Clear(Walkable,SolidObstacles,a,b);
@@ -40,7 +40,7 @@ public sealed partial class Combat
     }
     public bool ContinueJourney()
     {
-        if(!Dead&&!Duel&&Phase==Phase.Complete&&AtlandRevealed&&!CampaignFinished&&!InCampaign){EnterCampaign(0);return true;}
+        if(!Dead&&!Duel&&Phase==Phase.Complete&&AtlandRevealed&&!CampaignFinished&&!InCampaign){if(PreferRoomRoute)EnterRoomRoute();else EnterCampaign(0);return true;}
         if(Dead||Duel||Phase!=Phase.Complete||AtlandRevealed||!Inscriptions.All(i=>i.Read))return false;
         ExtendedJourney=true;EnterWarehouse();return true;
     }
@@ -65,6 +65,7 @@ public sealed partial class Combat
     }
     private void StepJourney(Controls input,float dt)
     {
+        if(InDoorTrial){StepDoorTrial(input,dt);return;}
         if(InRooms){StepRooms(input);return;}
         if(InCampaign){StepCampaign(input,dt);return;}
         if(Duel&&Enemies.All(e=>e.Dead)){Phase=Phase.Complete;return;}
@@ -93,7 +94,7 @@ public sealed partial class Combat
             Emit("reveal",Player);Emit("radio",Player,"atland-reveal");Emit("radio",Player,"already-here");Emit("checkpoint",Player);return;
         }
         if(AtlandRevealed&&peaceful&&use&&Near(JourneyLayout.ShoreExit))
-        {if(AtlandCampaign){EnterCampaign(0);return;}Phase=Phase.Complete;Emit("radio",Player,"journey-end");Emit("checkpoint",Player);return;}
+        {if(AtlandCampaign){if(PreferRoomRoute)EnterRoomRoute();else EnterCampaign(0);return;}Phase=Phase.Complete;Emit("radio",Player,"journey-end");Emit("checkpoint",Player);return;}
         if(!use||!peaceful||AtlandRevealed)return;
         int index=Enumerable.Range(0,3).FirstOrDefault(i=>!Surveyed[i]&&Near(JourneyLayout.Survey[i]),-1);
         if(index<0)return;

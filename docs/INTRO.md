@@ -12,7 +12,7 @@ Eller **Inställningar → Utvecklarverktyg · Videobibliotek → Expeditionen t
 
 Introt ligger efter upptäckten av kartan: det visas vid en ny Atland-kampanj eller ny rumsexpedition, samt första kampanjövergången från stranden. En befintlig sparning återupptas utan intro. Den ursprungliga kajlandstigningen får inte denna film före kartfyndet.
 
-**De nio nya rummen är fortfarande en separat rutt.** Välj huvudmenyns **Atlands förseglade rum · prov** eller `./play.sh -- --rooms`. Där finns dörrar, beständig utforskning, upptäcktsmörker, Edsväktaren, arkivet och Rotvägen. Vanlig kampanjfortsättning använder ännu den äldre åttastegsrutten. Sammanfogningen är nästa integrationsarbete, inte levererad i filmpasset.
+**Sedan 0.11 är niorumsrutten standardvalet och strandens fortsättning.** Se [fysiska dörrar och standardvägen](PHYSICAL-DOORS.md). Vid intropassets leverans låg den ännu separat bakom ett provval; äldre åttastegskampanjer finns kvar utan tyst migration. `./play.sh -- --rooms` öppnar den separata rumssparningen direkt.
 
 ## Produktionskällor
 

@@ -319,6 +319,7 @@ public sealed partial class Combat
         if(RiposteTime>0&&Weapon==Weapon.Saber){damage*=1.6f;RiposteTime=0;}
         float arc=HeavyAttack?-.1f:.05f;
         Emit("slash",Player,"",range);
+        HitPhysicalDoor(range,damage,arc);
         foreach(var e in Enemies.Where(e=>!e.Dead))
         {
             var delta=e.Position-Player;
