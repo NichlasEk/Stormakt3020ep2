@@ -60,7 +60,7 @@ public static class SaveStore
             ||(game.CampaignStage>=2&&game.ArchiveChoice==0)||(!game.CampaignFinished&&game.Phase!=Phase.Campaign)))throw new InvalidDataException("Ofullständig Atland-expedition");
         if(game.CampaignFinished&&(!game.InCampaign||game.CampaignStage!=7||game.Phase!=Phase.Complete||!game.CampaignReady))throw new InvalidDataException("Ogiltigt expeditionsslut");
         game.ValidateDoorTrial();
-        game.ValidateRooms();
+        game.ValidateRooms();game.UpgradeConnectedPassages();
         // Older port snapshots may stand beyond the restored painted courtyard bounds.
         if(game.CampaignStage==0){game.Player=game.Bound(game.Player);foreach(var foe in game.Enemies)foe.Position=game.Bound(foe.Position);}
         game.UpdateRoomSight(true);

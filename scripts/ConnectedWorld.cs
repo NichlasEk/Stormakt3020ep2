@@ -21,6 +21,7 @@ public static class ConnectedWorld
     {PortRooms.Lodge=>new[]{Navigation.Expand(JourneyLayout.WarehouseObstacle,22)},PortRooms.Pump=>new[]{PortRooms.PumpBasin},PortRooms.Cistern=>new[]{PortRooms.CisternBasin},PortRooms.Gallery=>new[]{PortRooms.Lectern},PortRooms.Chamber=>PortRooms.OathObstacles,PortRooms.Archive=>new[]{ArchiveRoom.Table},PortRooms.Grove=>new[]{Rootway.Slab},_=>Array.Empty<Vector2[]>()};
     public static Vector2[] Route(RoomLink l)
     {
+        if(l.Id=="chamber")return new[]{Origin(l.A)+new Vector2(1220,460),Origin(l.A)+new Vector2(1280,380),Origin(l.A)+new Vector2(1580,260),Origin(l.B)+new Vector2(-60,350),Origin(l.B)+new Vector2(245,390),Origin(l.B)+new Vector2(335,470)};
         // Broad masonry galleries join the measured floor edges. The lower branch
         // forms a real loop, with no overlap or accidental crossing of corridors.
         if(l.Id=="cistern")return new[]{Origin(l.A)+new Vector2(760,900),new Vector2(4960,2430),new Vector2(3840,2675),Origin(l.B)+new Vector2(1290,675)};
@@ -28,14 +29,16 @@ public static class ConnectedWorld
         var a=Ground(l.A).MaxBy(p=>p.X);var b=Ground(l.B).MinBy(p=>p.X);
         return new[]{Origin(l.A)+Vector2.Lerp(a,new(780,620),.13f),Origin(l.A)+a+new Vector2(130,65),Origin(l.B)+b-new Vector2(130,65),Origin(l.B)+Vector2.Lerp(b,new(780,620),.13f)};
     }
-    public static Vector2 Center(RoomLink l){var p=Route(l);return(p[1]+p[2])/2;}
+    public static Vector2 Center(RoomLink l){var p=Route(l);return l.Id=="chamber"?(p[0]+p[1])/2:(p[1]+p[2])/2;}
     public static Vector2 Side(Vector2 a,Vector2 b){var axis=Vector2.Normalize(new Vector2(b.X-a.X,(b.Y-a.Y)*2));return new Vector2(-axis.Y*100,axis.X*50);}
     public static Vector2[] Passage(Vector2 a,Vector2 b){var side=Side(a,b);var along=Vector2.Normalize(b-a)*3;a-=along;b+=along;return new[]{a-side,b-side,b+side,a+side};}
-    public static Vector2 Hinge(RoomLink l){var p=Route(l);return Center(l)+Side(p[1],p[2]);}
+    public static Vector2 Hinge(RoomLink l){var p=Route(l);return Center(l)+(l.Id=="chamber"?Side(p[0],p[1])*.42f:Side(p[1],p[2]));}
     public static Vector2 Tip(RoomLink l,float open)
     {var h=Hinge(l);var d=(Center(l)-h)*2;float a=open*MathF.PI/2;return h+new Vector2(d.X*MathF.Cos(a)-d.Y*2*MathF.Sin(a),d.X*.5f*MathF.Sin(a)+d.Y*MathF.Cos(a));}
     public static readonly Dictionary<string,Vector2[][]> Floors=PortRooms.Ids.ToDictionary(id=>id,id=>new[]{Ground(id).Select(p=>p+Origin(id)).ToArray()});
-    public static readonly Dictionary<string,Vector2[][]> Corridors=RoomLinks.All.ToDictionary(l=>l.Id,l=>Route(l).Zip(Route(l).Skip(1),(a,b)=>Passage(a,b)).ToArray());
+    public static Vector2[] PassageFor(RoomLink l,int segment)
+    {var route=Route(l);var a=route[segment-1];var b=route[segment];var side=Side(a,b)*(l.Id=="chamber"&&(segment==1||segment==route.Length-1)?.42f:1);var along=Vector2.Normalize(b-a)*3;return new[]{a-along-side,b+along-side,b+along+side,a-along+side};}
+    public static readonly Dictionary<string,Vector2[][]> Corridors=RoomLinks.All.ToDictionary(l=>l.Id,l=>Enumerable.Range(1,Route(l).Length-1).Select(i=>PassageFor(l,i)).ToArray());
     public sealed class Shape
     {
         public readonly Vector2[] Polygon;public readonly Vector2 Min,Max;
@@ -43,7 +46,13 @@ public static class ConnectedWorld
         public bool Contains(Vector2 p)=>p.X>=Min.X&&p.Y>=Min.Y&&p.X<=Max.X&&p.Y<=Max.Y&&Navigation.Contains(Polygon,p);
     }
     public static readonly Shape[] FloorShapes=Floors.Values.SelectMany(v=>v).Concat(Corridors.Values.SelectMany(v=>v)).Select(p=>new Shape(p)).ToArray();
-    public static readonly Vector2[][] Solids=PortRooms.Ids.SelectMany(id=>Obstacles(id).Select(poly=>poly.Select(p=>p+Origin(id)).ToArray())).ToArray();
+    public static readonly Vector2[][] ArchJambs={
+        DoorTrialLayout.Bar(Origin(PortRooms.Gallery)+new Vector2(1085,328),Origin(PortRooms.Gallery)+new Vector2(1202,398),21),
+        DoorTrialLayout.Bar(Origin(PortRooms.Gallery)+new Vector2(1290,433),Origin(PortRooms.Gallery)+new Vector2(1536,585),21),
+        DoorTrialLayout.Bar(Origin(PortRooms.Chamber)+new Vector2(0,560),Origin(PortRooms.Chamber)+new Vector2(200,440),18),
+        DoorTrialLayout.Bar(Origin(PortRooms.Chamber)+new Vector2(305,398),Origin(PortRooms.Chamber)+new Vector2(460,315),18)
+    };
+    public static readonly Vector2[][] Solids=PortRooms.Ids.SelectMany(id=>Obstacles(id).Select(poly=>poly.Select(p=>p+Origin(id)).ToArray())).Concat(ArchJambs).ToArray();
 }
 
 public sealed partial class Combat
@@ -74,7 +83,7 @@ public sealed partial class Combat
     public void EnableConnectedWorld()
     {
         if(!InRooms||InDoorTrial||InConnectedWorld)return;
-        var r=Rooms!;r.Connected=true;
+        var r=Rooms!;r.Connected=true;r.ConnectionRevision=2;
         foreach(var e in Enemies)e.HomeRoom=r.Current;
         foreach(var pair in r.Rooms)
         {
@@ -208,9 +217,22 @@ public sealed partial class Combat
             if(d.Broken){Rooms.DoorOpen=true;Emit("checkpoint",Player);}
         }
     }
+    public void UpgradeConnectedPassages()
+    {
+        if(!InConnectedWorld||Rooms!.ConnectionRevision>=2)return;
+        // The former gallery edge bridge has moved behind its painted arch.
+        // Keep old saves and dropped items usable if they occupied that bridge.
+        Vector2 Restore(string room,Vector2 at)
+        {var offset=ConnectedWorld.Origin(room)-WorldOrigin;return Navigation.Clamp(ConnectedWorld.Ground(room),ConnectedWorld.Obstacles(room),at-offset)+offset;}
+        if(!OnWalkable(Player))Player=Restore(Rooms.Current,Player);
+        foreach(var foe in Enemies)if(!OnWalkable(foe.Position))foe.Position=Restore(foe.HomeRoom,foe.Position);
+        foreach(var drop in Inventory.Drops.Where(d=>d.Room!=""))if(!OnWalkable(drop.Position))drop.Position=Restore(drop.Room,drop.Position);
+        Rooms.CorridorSeen.RemoveWhere(key=>key.StartsWith("chamber:",StringComparison.Ordinal));
+        Rooms.ConnectionRevision=2;
+    }
     private void ValidateConnectedWorld()
     {
         if(!InConnectedWorld)return;
-        if(Rooms!.CorridorSeen is null||Rooms.CorridorSeen.Count>10000||Rooms.Doors is null||Rooms.Doors.Count!=RoomLinks.All.Length||RoomLinks.All.Any(l=>!Rooms.Doors.TryGetValue(l.Id,out var d)||d is null||!float.IsFinite(d.Openness)||d.Openness<0||d.Openness>1||!float.IsFinite(d.Health)||d.Health<0||d.Health>180)||Enemies.Any(e=>!PortRooms.Known(e.HomeRoom)||!Rooms.Rooms[e.HomeRoom].Visited))throw new System.IO.InvalidDataException("Ogiltig sammanhängande expedition");
+        if(Rooms!.ConnectionRevision<1||Rooms.ConnectionRevision>2||Rooms.CorridorSeen is null||Rooms.CorridorSeen.Count>10000||Rooms.Doors is null||Rooms.Doors.Count!=RoomLinks.All.Length||RoomLinks.All.Any(l=>!Rooms.Doors.TryGetValue(l.Id,out var d)||d is null||!float.IsFinite(d.Openness)||d.Openness<0||d.Openness>1||!float.IsFinite(d.Health)||d.Health<0||d.Health>180)||Enemies.Any(e=>!PortRooms.Known(e.HomeRoom)||!Rooms.Rooms[e.HomeRoom].Visited))throw new System.IO.InvalidDataException("Ogiltig sammanhängande expedition");
     }
 }

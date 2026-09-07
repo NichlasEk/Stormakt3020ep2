@@ -34,7 +34,6 @@ public partial class Main
     private void DrawRoomMarkers()
     {
         var run=_game.Rooms!;DrawRootwayMarkers();
-        if(_game.InConnectedWorld)DrawConnectedExits();
         foreach(var link in (_game.InConnectedWorld?Array.Empty<RoomLink>():RoomLinks.From(run.Current)))
         {
             var at=link.At(run.Current);if(!_game.CanSeeRoomPoint(at))continue;

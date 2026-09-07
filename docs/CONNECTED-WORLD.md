@@ -1,5 +1,7 @@
 # Sammanhängande Atland · 0.12
 
+**Uppdatering 0.12.1:** [Vittnesgalleriets målade port](PAINTED-ARCHES.md) ersätter just den förbindelsens gamla kantbro. Alla utgångspilar är borttagna. Övriga anslutningar nedan kvarstår.
+
 Alla nio rum i huvudrutten ligger nu på samma gångbara karta. Förgården → logementet → pumphuset → vittnesgalleriet → edskammaren → arkivet → rötternas trappa → lunden. Pumphuset → cisternen → förgården är en fysisk sidoväg som sluter en krets. Gå genom passagerna med vanliga rörelsekontroller. E / B används för föremål, reglar och dörrblad.
 
 ## Spela

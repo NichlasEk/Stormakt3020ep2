@@ -1,5 +1,9 @@
 # Stormakt 3020: Atlands arv
 
+## 0.12.1 · gå genom den målade porten
+
+Vittnesgalleriets högra valv leder nu fysiskt till Edskammarens vänstra port. Bron framför galleriväggen är borttagen. Utgångs- och riktningspilar är avstängda i den sammanhängande rutten. [Omfattning och provspelning](docs/PAINTED-ARCHES.md).
+
 Episod II. Ett nytt, fristående actionrollspel i Stormakts värld: nordisk barock, karoliner, mytologi och Rudbecks Atland.
 
 [Nästa arbetsmål och nulägesanalys](docs/ROADMAP.md): sammanhängande banor med flera målade rum, dörrar, upptäcktsmörker och egna bossmekaniker. Atlands port och Rotvägen har nu nio beständiga rum.

@@ -1,5 +1,9 @@
 # Checkpoint · Vägen under vattnet · 2026-09-06
 
+## 0.12.1 · gå genom den målade porten
+
+Vittnesgalleriets högra valv leder nu fysiskt till Edskammarens vänstra port. Bron framför galleriväggen är borttagen. Utgångs- och riktningspilar är avstängda i den sammanhängande rutten. [Omfattning och provspelning](PAINTED-ARCHES.md).
+
 ## 2026-09-07 · 0.12 sammanhängande Atland
 
 Alla nio huvudrum och cisternens genväg är nu fysiskt förbundna. Kameran och striden fortsätter över rumsgränser; nyckelport, reglad genväg, öppna gångvägar, sparning och minikarta ingår. [Aktuell omfattning och nästa detaljpass](CONNECTED-WORLD.md). Nästa geografiskt åtskilda område ska nås med båt eller Karl CCLV, med originalets skepp som referens. Transporterna är ännu inte byggda. Äldre checkpoints nedan är historik.

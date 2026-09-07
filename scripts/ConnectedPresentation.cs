@@ -16,14 +16,19 @@ public partial class Main
     {
         _passageMaterials??=GD.Load<Texture2D>("res://assets/art/passage-materials-v1.png");
         DrawRect(new Rect2(-Offset/Zoom,new Vector2(1280,720)/Zoom),new Color(3/255f,5/255f,6/255f));
+        DrawConnectionFloors(true);var backWalls=new List<(float Depth,Action Draw)>();AddPassageWalls(backWalls,true);foreach(var wall in backWalls.OrderBy(w=>w.Depth))wall.Draw();
         foreach(var id in PortRooms.Ids)
         {
             var delta=G(ConnectedWorld.Origin(id)-_game.WorldOrigin);if(!WorldRectVisible(delta,new(1536,1024)))continue;
             _paintRoom=id;DrawTextureRect(RoomBackground,new Rect2(delta,new Vector2(1536,1024)),false);
         }
-        _paintRoom=null;
+        _paintRoom=null;DrawConnectionFloors(false);
+    }
+    private void DrawConnectionFloors(bool behindPaintings)
+    {
         foreach(var l in RoomLinks.All)
         {
+            if((l.Id=="chamber")!=behindPaintings)continue;
             var route=ConnectedWorld.Route(l).Select(p=>G(p-_game.WorldOrigin)).ToArray();
             for(int i=1;i<route.Length;i++)
             {
@@ -54,7 +59,7 @@ public partial class Main
             var delta=G(ConnectedWorld.Origin(id)-_game.WorldOrigin);if(!WorldRectVisible(delta,new(1536,1024)))continue;
             _paintRoom=id;var local=new List<(float Depth,Action Draw)>();
             if(id is PortRooms.Pump or PortRooms.Cistern)AddWaterLayers(local);
-            AddOathLayers(local);AddArchiveLayers(local);AddRootwayLayers(local);
+            AddOathLayers(local);AddArchiveLayers(local);AddRootwayLayers(local);AddPaintedArchLayers(local);
             if(id==PortRooms.Lodge)
             {
                 local.Add((623,()=>PaintForeground(_warehouse,new Vector2[]{new(677,513),new(720,490),new(722,466),new(753,450),new(812,454),new(874,477),new(882,572),new(791,621),new(677,566)})));
@@ -69,6 +74,7 @@ public partial class Main
         _paintRoom=null;LoadDoorArt();
         foreach(var l in RoomLinks.All)
         {
+            if(l.Id=="chamber")continue;
             var at=G(ConnectedWorld.Center(l)-_game.WorldOrigin);if(!WorldRectVisible(at-new Vector2(210,240),new(420,420)))continue;
             var center=ConnectedWorld.Center(l)-_game.WorldOrigin;
             if(NVec.Distance(center,_game.Player)>350||!(_game.CanSeeRoomPoint(center+new NVec(-45,0))||_game.CanSeeRoomPoint(center+new NVec(45,0))))continue;
@@ -106,10 +112,11 @@ public partial class Main
 
     private void StoneFace(Vector2[] polygon,float light)
     {DrawPolygon(polygon,new[]{new Color(light,light*.98f,light*.90f)},new[]{new Vector2(.51f,.01f),new Vector2(.85f,.01f),new Vector2(.85f,.49f),new Vector2(.51f,.49f)},_passageMaterials);}
-    private void AddPassageWalls(List<(float Depth,Action Draw)> layers)
+    private void AddPassageWalls(List<(float Depth,Action Draw)> layers,bool behindPaintings=false)
     {
         foreach(var l in RoomLinks.All)
         {
+            if((l.Id=="chamber")!=behindPaintings)continue;
             var route=ConnectedWorld.Route(l);
             for(int i=1;i<route.Length;i++)
             {
@@ -117,7 +124,8 @@ public partial class Main
                 int count=Math.Max(1,(int)MathF.Ceiling(NVec.Distance(a,b)/44));
                 for(int j=0;j<count;j++)foreach(int sign in new[]{-1,1})
                 {
-                    var mid=NVec.Lerp(a,b,(j+.5f)/count);if(!_game.CanSeeRoomPoint(mid-_game.WorldOrigin))continue;
+                    var mid=NVec.Lerp(a,b,(j+.5f)/count);
+                    if(!_game.CanSeeRoomPoint(mid-_game.WorldOrigin))continue;
                     var p=G(NVec.Lerp(a,b,(float)j/count)+normal*103*sign-_game.WorldOrigin);
                     var q=G(NVec.Lerp(a,b,(float)(j+1)/count)+normal*103*sign-_game.WorldOrigin);
                     var side=G(normal)*14*sign;var up=new Vector2(0,-48-(j%3)*2);
@@ -131,17 +139,31 @@ public partial class Main
             }
         }
     }
-    private void DrawConnectedExits()
+    private static bool InsideArchPainting(NVec world)
+        =>new Rect2(G(ConnectedWorld.Origin(PortRooms.Gallery)),new Vector2(1536,1024)).HasPoint(G(world))||new Rect2(G(ConnectedWorld.Origin(PortRooms.Chamber)),new Vector2(1536,1024)).HasPoint(G(world));
+    private void AddPaintedArchLayers(List<(float Depth,Action Draw)> layers)
     {
-        foreach(var link in RoomLinks.From(_game.Rooms!.Current))
+        if(PaintRoom is not (PortRooms.Gallery or PortRooms.Chamber))return;
+        var art=RoomBackground;
+        // Trace the actual stone silhouette. The open aperture is left untouched.
+        var polygons=PaintRoom==PortRooms.Gallery?new[]{
+            new Vector2[]{new(1259,0),new(1536,0),new(1536,378),new(1536,638),new(1280,466),new(1260,421),new(1266,350)},
+            new Vector2[]{new(1145,318),new(1169,279),new(1194,290),new(1208,343),new(1204,409),new(1165,430),new(1145,407)},
+            new Vector2[]{new(1160,292),new(1180,254),new(1212,226),new(1240,230),new(1273,269),new(1288,323),new(1264,351),new(1256,313),new(1238,288),new(1217,294),new(1193,324),new(1184,353)}
+        }:new[]{
+            new Vector2[]{new(0,0),new(169,0),new(169,190),new(203,293),new(205,443),new(0,571)},
+            new Vector2[]{new(290,272),new(330,224),new(462,130),new(465,315),new(300,408),new(291,377)},
+            new Vector2[]{new(175,329),new(189,290),new(238,248),new(275,235),new(303,256),new(313,302),new(290,327),new(285,293),new(270,287),new(245,303),new(217,332),new(205,366),new(182,382)}
+        };
+        foreach(var polygon in polygons)
         {
-            var route=ConnectedWorld.Route(link);bool forward=link.A==_game.Rooms.Current;
-            var at=(forward?route[0]:route[^1])-_game.WorldOrigin;
-            if(!_game.CanSeeRoomPoint(at))continue;
-            var p=G(at);var direction=G((forward?route[1]-route[0]:route[^2]-route[^1])).Normalized();
-            DrawLine(p,p+direction*25,Gold,2,true);var side=new Vector2(-direction.Y,direction.X);
-            DrawLine(p+direction*25,p+direction*15+side*5,Gold,2,true);DrawLine(p+direction*25,p+direction*15-side*5,Gold,2,true);
-            Text(PortRooms.Name(link.Other(_game.Rooms.Current)).ToUpperInvariant(),p+new Vector2(-70,36),11,Gold);
+            // Narrow slices sort each jamb against feet, so either side remains playable.
+            for(float x=polygon.Min(p=>p.X);x<polygon.Max(p=>p.X);x+=12)
+            {
+                var strip=ClipDoorStrip(ClipDoorStrip(polygon,x,true),x+12,false);if(strip.Length<3)continue;
+                float depth=PaintRoom==PortRooms.Gallery?420+(x-1250)*.58f:430-(x-230)*.57f;
+                layers.Add((depth,()=>PaintForeground(art,strip)));
+            }
         }
     }
     private void DrawConnectedJournal()
@@ -195,6 +217,7 @@ public partial class Main
         var link=RoomLinks.All.FirstOrDefault(l=>NVec.Distance(world,ConnectedWorld.Center(l))<130);
         if(link==null)return false;
         var d=_game.Rooms!.Doors[link.Id];bool open=RoomLinks.Open(_game.Rooms,link);
+        if(open&&!Combat.HasWorldDoor(link))return false;
         string label=!open?(link.Gate==PassageGate.Key&&_game.Rooms.KeyTaken?"E / B · Lås upp porten":link.Gate==PassageGate.Shortcut&&_game.Rooms.Current==PortRooms.Cistern?"E / B · Lyft regeln":RoomLinks.LockedReason(link))
             :d.Broken?"Sönderslagen port · gå igenom":Combat.HasWorldDoor(link)?$"E / B · {(d.TargetOpen?"Stäng":"Öppna")} porten":"Öppen passage · fortsätt till fots";
         Panel(new Rect2(390,475,500,53),.92f);Centered(label,640,506,17,Gold);return true;
@@ -247,6 +270,7 @@ public partial class Main
                     bool visible=_game.CanSeeRoomPoint(mid-_game.WorldOrigin)||NVec.Distance(mid,_game.Player+_game.WorldOrigin)<70;
                     if(visible)continue;
                     bool seen=_game.Rooms!.CorridorSeen.Contains(l.Id+":"+i+":"+j);
+                    if(l.Id=="chamber"&&InsideArchPainting(mid))continue;
                     var delta=_game.WorldOrigin;
                     DrawColoredPolygon(new[]{G(p-side-delta),G(q-side-delta),G(q+side-delta),G(p+side-delta)},new Color(3/255f,5/255f,6/255f,seen?.62f:1));
                 }

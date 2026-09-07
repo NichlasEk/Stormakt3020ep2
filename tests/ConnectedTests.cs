@@ -39,7 +39,7 @@ public static class ConnectedTests
         var shortcut=RoomLinks.All[3];Use(ConnectedWorld.Center(shortcut)-g.WorldOrigin+new Vector2(65,0));for(int i=0;i<75;i++)g.Step(default);
         Walk(shortcut,PortRooms.Court);Walk(shortcut,PortRooms.Cistern);Walk(RoomLinks.All[2],PortRooms.Pump);
         Walk(RoomLinks.All[4],PortRooms.Gallery);Use(PortRooms.Witness);Walk(RoomLinks.All[5],PortRooms.Chamber);
-        Clear();g.Rooms.OathDefeated=true;Use(PortRooms.OathExit);for(int i=0;i<80;i++)g.Step(default);
+        Clear();g.Rooms.OathDefeated=true;Walk(RoomLinks.All[5],PortRooms.Gallery);Walk(RoomLinks.All[5],PortRooms.Chamber);Use(PortRooms.OathExit);for(int i=0;i<80;i++)g.Step(default);
         Walk(RoomLinks.All[6],PortRooms.Archive);Use(ArchiveRoom.Desk);check(g.ChooseRoomArchive(1),"Archive choice works");Clear();Use(ArchiveRoom.Seal);for(int i=0;i<80;i++)g.Step(default);
         Walk(RoomLinks.All[7],PortRooms.Roots);Use(Rootway.Winch);for(int i=0;i<80;i++)g.Step(default);
         Walk(RoomLinks.All[8],PortRooms.Grove);check(g.Rooms.Rooms.Values.All(r=>r.Visited),"Every room is connected and visited");
@@ -49,6 +49,12 @@ public static class ConnectedTests
         check(Vector2.Distance(saved,restored.Player)<1,"Resume keeps position inside corridor");
         check(restored.Enemies.Count==g.Enemies.Count&&restored.Inventory.Drops.Count==g.Inventory.Drops.Count,"Resume preserves all room actors and drops");
         check(restored.Rooms!.CorridorSeen.SetEquals(g.Rooms.CorridorSeen),"Passage exploration persists");File.Delete(path);
+        var frame=g.WorldOrigin-ConnectedWorld.Origin(PortRooms.Gallery);foreach(var e in g.Enemies){e.Position+=frame;e.LockedAim+=frame;}foreach(var d in g.Inventory.Drops)d.Position+=frame;
+        g.Rooms.Current=PortRooms.Gallery;g.Rooms.ConnectionRevision=1;g.Player=new(1750,800);var oldHealth=g.Health;
+        var movedDrop=g.Inventory.Drops.First(d=>d.Room==PortRooms.Gallery||d.Room==PortRooms.Lodge);movedDrop.Room=PortRooms.Gallery;movedDrop.Position=g.Player;
+        SaveStore.Write(path,g);restored=SaveStore.Read(path);
+        check(restored.Rooms!.ConnectionRevision==2&&restored.OnWalkable(restored.Player),"Old bridge save migrates to walkable room floor");
+        check(restored.Health==oldHealth&&restored.Inventory.Drops.All(d=>restored.OnWalkable(d.Position)),"Moved bridge preserves wounds and reachable loot");File.Delete(path);
         // Migrate a legacy two-room save without respawning actors or changing resources.
         var old=Combat.NewRooms(Order.Artillery);old.Rooms!.KeyTaken=old.Rooms.DoorOpen=true;old.Rooms.Rooms[PortRooms.Lodge].Visited=true;
         old.Rooms.Rooms[PortRooms.Lodge].Enemies.Add(new(){Id=old.NextId++,Kind=EnemyKind.Guard,Position=new(650,735),Health=17,MaxHealth=85});old.Health=47;
@@ -68,7 +74,7 @@ public static class ConnectedTests
         // Each story gate seals the full corridor from both approaches.
         var locked=Combat.NewRooms(Order.Artillery);locked.EnableConnectedWorld();
         foreach(var l in RoomLinks.All)
-        {var route=ConnectedWorld.Route(l);var axis=Vector2.Normalize(route[2]-route[1]);var c=ConnectedWorld.Center(l);
+        {var route=ConnectedWorld.Route(l);var axis=Vector2.Normalize(l.Id=="chamber"?route[1]-route[0]:route[2]-route[1]);var c=ConnectedWorld.Center(l);
             check(!locked.ClearPath(c-axis*55,c+axis*55)&&!locked.ClearPath(c+axis*55,c-axis*55),"Story gate blocks both directions: "+l.Id);}
         locked.Rooms!.Doors["lodge"].Health=0;locked.Rooms.DoorOpen=true;locked.ValidateRooms();
         check(!locked.Rooms.KeyTaken,"Breaking a door does not invent a key");

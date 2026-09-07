@@ -41,6 +41,7 @@ public sealed class RoomSnapshot
 public sealed class RoomRun
 {
     public bool Connected;
+    public int ConnectionRevision=1;
     public HashSet<string> CorridorSeen=new();
     public Dictionary<string,PhysicalDoor> Doors=new();
     public int LayoutVersion=1;
