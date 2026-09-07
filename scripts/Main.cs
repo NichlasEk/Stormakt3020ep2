@@ -7,7 +7,7 @@ using NVec=System.Numerics.Vector2;
 
 public partial class Main : Node2D
 {
-    private enum Screen { Title, Briefing, Game, Pause, Settings, Death, Ending, Testimony, Journal, Inventory }
+    private enum Screen { Title, Briefing, Game, Pause, Settings, Death, Ending, Testimony, Journal, Inventory, Archive }
     private Screen _screen=Screen.Title;
     private Screen _settingsReturn=Screen.Title;
     private Combat _game=Combat.New(Order.Artillery);
@@ -77,7 +77,7 @@ public partial class Main : Node2D
     private static NVec N(Vector2 v)=>new(v.X,v.Y);
     public override void _Ready()
     {
-        var args=OS.GetCmdlineUserArgs();_roomAudioChecks=args.Contains("--room-audio-check");_oathChecks=args.Contains("--oath-check")||_roomAudioChecks;_waterChecks=args.Contains("--water-check");_fogChecks=args.Contains("--fog-check");_roomChecks=args.Contains("--rooms-check");_inventoryChecks=args.Contains("--inventory-check");_portChecks=args.Contains("--port-check");_sceneChecks=args.Contains("--scene-check")||_portChecks||_inventoryChecks||_roomChecks||_fogChecks||_waterChecks||_oathChecks;_uiChecks=args.Contains("--ui-check");
+        var args=OS.GetCmdlineUserArgs();_archiveChecks=args.Contains("--archive-check");_roomAudioChecks=args.Contains("--room-audio-check");_oathChecks=args.Contains("--oath-check")||_roomAudioChecks||_archiveChecks;_waterChecks=args.Contains("--water-check");_fogChecks=args.Contains("--fog-check");_roomChecks=args.Contains("--rooms-check");_inventoryChecks=args.Contains("--inventory-check");_portChecks=args.Contains("--port-check");_sceneChecks=args.Contains("--scene-check")||_portChecks||_inventoryChecks||_roomChecks||_fogChecks||_waterChecks||_oathChecks;_uiChecks=args.Contains("--ui-check");
         _serif=GD.Load<Font>("res://assets/fonts/NotoSerif-Regular.ttf");_sans=GD.Load<Font>("res://assets/fonts/NotoSans-Regular.ttf");
         _background=GD.Load<Texture2D>("res://assets/art/likvarvet-scale-v5.png");
         _radioPortraits=GD.Load<Texture2D>("res://assets/art/radio-cast-v1.png");
@@ -164,14 +164,14 @@ public partial class Main : Node2D
     }
     private void SelectMenu(int step){_menuKeyboard=true;_menuSelection=(_menuSelection+step+Math.Max(1,_buttons.Count))%Math.Max(1,_buttons.Count);}
     private void ActivateSelected(){if(_buttons.Count>0)Activate(_buttons[Math.Clamp(_menuSelection,0,_buttons.Count-1)].Id);}
-    private void ChangeScreen(Screen screen){_screen=screen;_menuSelection=0;ClearPresses();_sound.PauseVoice(screen is not (Screen.Game or Screen.Ending or Screen.Testimony));}
+    private void ChangeScreen(Screen screen){_screen=screen;_menuSelection=0;ClearPresses();_sound.PauseVoice(screen is not (Screen.Game or Screen.Ending or Screen.Testimony or Screen.Archive));}
     private void Back()
     {
         if(_screen==Screen.Game)ChangeScreen(Screen.Pause);
         else if(_screen==Screen.Pause)ChangeScreen(_game.Phase==Phase.Testimony?Screen.Testimony:Screen.Game);
         else if(_screen==Screen.Settings)ChangeScreen(_settingsReturn);
         else if(_screen==Screen.Briefing)ChangeScreen(Screen.Title);
-        else if(_screen==Screen.Journal)ChangeScreen(Screen.Game);
+        else if(_screen is Screen.Journal or Screen.Archive)ChangeScreen(Screen.Game);
         else if(_screen==Screen.Inventory){_inventoryMouseRelease=true;ChangeScreen(_inventoryReturn);}
         else if(_screen==Screen.Testimony)ChangeScreen(Screen.Pause);
         else if(_screen==Screen.Title)GetTree().Quit();
@@ -183,6 +183,8 @@ public partial class Main : Node2D
         {
             case "duel":StartDuel();break;
             case "journey":if(_game.ContinueJourney()){ChangeScreen(Screen.Game);foreach(var cue in _game.Events)HandleCue(cue);Save();}break;
+            case "archive-preserve":SelectArchiveDecision(1);break;
+            case "archive-forge":SelectArchiveDecision(2);break;
             case "rooms":StartRooms();break;
             case "port":_roomsSlot=false;_portSlot=true;StartAtland();break;
             case "atland":_roomsSlot=false;_portSlot=false;StartAtland();break;
@@ -299,6 +301,7 @@ public partial class Main : Node2D
         var p=G(cue.Position);
         switch(cue.Kind)
         {
+            case "archive-open":ChangeScreen(Screen.Archive);break;
             case "room-sound":if(NVec.Distance(_game.Player,cue.Position)<500)_sound.Play(cue.Text);break;
             case "oath-break":case "oath-wall":
                 if(NVec.Distance(_game.Player,cue.Position)<500)_sound.Play("oath-impact",cue.Kind=="oath-break"?1:.8f);
@@ -337,12 +340,12 @@ public partial class Main : Node2D
     }
     private void QueueRadio(string id)
     {
-        if(id.StartsWith("rooms-",StringComparison.Ordinal))
+        if((id.StartsWith("rooms-",StringComparison.Ordinal)||id.StartsWith("archive-",StringComparison.Ordinal)))
         {
             if(!_game.RoomRadioRelevant(id))return;
-            var retained=_radioQueue.Where(key=>!key.StartsWith("rooms-",StringComparison.Ordinal)||_game.RoomRadioRelevant(key)).ToArray();
+            var retained=_radioQueue.Where(key=>(!key.StartsWith("rooms-",StringComparison.Ordinal)&&!key.StartsWith("archive-",StringComparison.Ordinal))||_game.RoomRadioRelevant(key)).ToArray();
             _radioQueue.Clear();foreach(var key in retained)_radioQueue.Enqueue(key);
-            if((_radio.StartsWith("rooms-",StringComparison.Ordinal)&&!_game.RoomRadioRelevant(_radio))||(id=="rooms-fallen"&&_radio=="cannon"))
+            if(((_radio.StartsWith("rooms-",StringComparison.Ordinal)||_radio.StartsWith("archive-",StringComparison.Ordinal))&&!_game.RoomRadioRelevant(_radio))||(id=="rooms-fallen"&&_radio=="cannon"))
             {_sound.StopVoice();_radioTime=0;_radio="";}
             if(id=="rooms-fallen")
             {var pending=_radioQueue.Where(key=>key!="cannon").ToArray();_radioQueue.Clear();foreach(var key in pending)_radioQueue.Enqueue(key);}
@@ -366,9 +369,9 @@ public partial class Main : Node2D
     {
         float dt=(float)delta;_clock+=dt;_noticeTime=Math.Max(0,_noticeTime-dt);if(_screen==Screen.Game)_campaignTextTime=Math.Max(0,_campaignTextTime-dt);
         _sound.Boss=(_game.Phase==Phase.Collector||(_game.Phase==Phase.Extraction&&_game.Enemies.Any(e=>!e.Dead))||(_game.InCampaign&&_game.Enemies.Any(e=>!e.Dead&&e.Kind is (EnemyKind.Collector or EnemyKind.OathGuardian)&&_game.CanSeeRoomPoint(e.Position)))) && _screen is Screen.Game or Screen.Pause;
-        _sound.Discovery=_game.Phase is Phase.Names or Phase.Testimony || _game.Region==Region.Shore || _game.Rooms?.Current is PortRooms.Gallery or PortRooms.Cistern;
+        _sound.Discovery=_game.Phase is Phase.Names or Phase.Testimony || _game.Region==Region.Shore || _game.Rooms?.Current is PortRooms.Gallery or PortRooms.Cistern or PortRooms.Archive;
         _sound.Underground=_game.InRooms&&_game.Rooms!.Current!=PortRooms.Court;
-        if(_screen is Screen.Game or Screen.Ending or Screen.Testimony)
+        if(_screen is Screen.Game or Screen.Ending or Screen.Testimony or Screen.Archive)
         {
             _revealTime=Math.Max(0,_revealTime-dt);_bannerTime=Math.Max(0,_bannerTime-dt);_shake=Math.Max(0,_shake-dt*22);
             if(_screen==Screen.Game)
@@ -488,6 +491,7 @@ public partial class Main : Node2D
         else if(_screen==Screen.Briefing)DrawBriefing();
         else if(_screen==Screen.Ending)DrawEnding();
         else if(_screen==Screen.Testimony)DrawTestimony();
+        else if(_screen==Screen.Archive)DrawArchiveDocuments();
         else if(_screen==Screen.Journal)DrawJournal();
         else if(_screen==Screen.Inventory)DrawInventory();
         else
@@ -821,7 +825,7 @@ public partial class Main : Node2D
     {
         foreach(var texture in _campaignWorlds)texture?.Dispose();
         _cast?.Dispose();_animated?.Dispose();_warehouse?.Dispose();if(_shoreRevealed!=_shore)_shoreRevealed?.Dispose();_shore?.Dispose();
-        _pumpArt?.Dispose();_pumpLowArt?.Dispose();_cisternArt?.Dispose();_galleryArt?.Dispose();_chamberArt?.Dispose();_chamberOpenArt?.Dispose();_oathCast?.Dispose();_roomFog?.Dispose();_inventoryBackground?.Dispose();foreach(var texture in _inventoryItemArt.Values)texture.Dispose();
+        _pumpArt?.Dispose();_pumpLowArt?.Dispose();_cisternArt?.Dispose();_galleryArt?.Dispose();_chamberArt?.Dispose();_chamberOpenArt?.Dispose();_archiveArt?.Dispose();_archiveDocuments?.Dispose();_oathCast?.Dispose();_roomFog?.Dispose();_inventoryBackground?.Dispose();foreach(var texture in _inventoryItemArt.Values)texture.Dispose();
         _portProps?.Dispose();
         _background?.Dispose();_radioPortraits?.Dispose();_ebbaPortrait?.Dispose();_serif?.Dispose();_sans?.Dispose();
     }

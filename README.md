@@ -2,7 +2,15 @@
 
 Episod II. Ett nytt, fristående actionrollspel i Stormakts värld: nordisk barock, karoliner, mytologi och Rudbecks Atland.
 
-[Nästa arbetsmål och nulägesanalys](docs/ROADMAP.md): sammanhängande banor med flera målade rum, dörrar, upptäcktsmörker och egna bossmekaniker. Första byggmålet är Atlands port med sex rum.
+[Nästa arbetsmål och nulägesanalys](docs/ROADMAP.md): sammanhängande banor med flera målade rum, dörrar, upptäcktsmörker och egna bossmekaniker. Atlands port har nu sju beständiga rum fram till Minnets arkiv.
+
+## Nytt · Minnets arkiv · 0.8
+
+Sjunde rummet ligger bakom Edsväktarens öppnade port. E/B vid läsbordet jämför två motstridiga handlingar på en egen målad dokumentvy. Bevara vittnesmålet och möt tre vakter, eller förfalska en passersedel och möt en kontrollant. Valet och stridens resultat sparas. Fyra nya svenska radiorepliker från Ebba och Hedvig följer besöket. [Omfattning, assets och verifiering](docs/ARCHIVE.md).
+
+Starta med `./start.sh -- --rooms` och fortsätt din rumssparning. Vid den öppnade bossporten: tryck E/B igen för att gå ned. Äldre rumssparningar uppgraderas utan omstart; utrustning, stash och kvarlämnade fynd följer med. Efter arkivstriden säkrar du grinden med E/B och kan gå tillbaka. Rotvägen bortom grinden är nästa byggsteg.
+
+Linux-export: `dist/AtlandsArv-0.8-archive/AtlandsArv.x86_64 -- --rooms`.
 
 ## Nytt · Ebba, Hedvig och rumsljud · 0.7.1
 
@@ -14,7 +22,7 @@ Vittnesgalleriet och Edskammaren har egna rika målningar. Läs vittnesboken och
 
 `./start.sh -- --rooms` eller **Atlands förseglade rum · prov**. Sex rum med beständiga fiender/fynd, dörrkrav, upptäcktsmörker och utforskningskarta. Äldre rumssparningar får de nya rummen utan omstart; separat sparfil från kampanjen. Linux-export: `dist/AtlandsArv-0.7-oath/AtlandsArv.x86_64`.
 
-Rutten slutar vid den öppnade inre porten. Arkivanslutning och full bossgång återstår; rumsradion och första ljudpasset finns i 0.7.1. [Vattenmekanism](docs/WATER-ROOMS.md) · [Sikt](docs/EXPLORATION.md) · [Grundsystem](docs/ROOMS.md).
+0.7 slutade vid den öppnade inre porten; 0.8 fortsätter till arkivet. Full bossgång återstår; rumsradion och första ljudpasset finns i 0.7.1. [Vattenmekanism](docs/WATER-ROOMS.md) · [Sikt](docs/EXPLORATION.md) · [Grundsystem](docs/ROOMS.md).
 
 ## Nytt · inventarium och utrustning 0.5.1
 

@@ -26,6 +26,11 @@ public partial class Main
             string label=RoomLinks.Open(run,link)?"TILL "+PortRooms.Name(link.Other(run.Current)).ToUpperInvariant():link.Gate==PassageGate.Water?"VATTENFYLLD TRAPPA":link.Gate==PassageGate.Shortcut?"REGLAD LUCKA":"LÅST PASSAGE";
             Text(label,G(at)+new Vector2(-70,38),11,Gold);
         }
+        if(run.Current==PortRooms.Archive)
+        {
+            if(_game.CanSeeRoomPoint(ArchiveRoom.Desk))Text("LIGGAREN OCH VITTNESMÅLET",G(ArchiveRoom.Desk)+new Vector2(-90,35),12,Gold);
+            if(_game.CanSeeRoomPoint(ArchiveRoom.Seal))Text(run.ArchiveSecured?"GRINDEN ÄR SÄKRAD":"KOLLEGIETS KONTROLL",G(ArchiveRoom.Seal)+new Vector2(-85,35),12,Gold);
+        }
         if(run.Current==PortRooms.Pump)
         {
             if(_game.CanSeeRoomPoint(PortRooms.Pressure))Text(run.PressureReleased?"AVLASTAD":"TRYCKAVLASTNING",G(PortRooms.Pressure)+new Vector2(-65,35),12,Gold);
@@ -66,7 +71,8 @@ public partial class Main
         var r=_game.Rooms!;string prompt="";
         bool Near(System.Numerics.Vector2 p)=>System.Numerics.Vector2.Distance(_game.Player,p)<72&&_game.ClearPath(_game.Player,p);
         var link=RoomLinks.From(r.Current).FirstOrDefault(l=>Near(l.At(r.Current)));
-        if(link!=null)prompt=RoomLinks.Open(r,link)?"E / B · Gå till "+PortRooms.Name(link.Other(r.Current)):link.Gate==PassageGate.Key&&r.KeyTaken?"E / B · Lås upp":link.Gate==PassageGate.Shortcut&&r.Current==PortRooms.Cistern?"E / B · Lyft regeln":RoomLinks.LockedReason(link);
+        if(link?.Gate==PassageGate.InnerPort&&!r.Completed&&r.OathDefeated)prompt="E / B · Öppna den inre porten";
+        else if(link!=null)prompt=RoomLinks.Open(r,link)?"E / B · Gå till "+PortRooms.Name(link.Other(r.Current)):link.Gate==PassageGate.Key&&r.KeyTaken?"E / B · Lås upp":link.Gate==PassageGate.Shortcut&&r.Current==PortRooms.Cistern?"E / B · Lyft regeln":RoomLinks.LockedReason(link);
         else if(r.Current==PortRooms.Court&&!r.KeyTaken&&Near(PortRooms.Key))prompt="E / B · Sök väktarens packning";
         else if(r.Current==PortRooms.Lodge&&!r.CacheTaken&&Near(PortRooms.Cache))prompt="E / B · Undersök kistan";
         else if(r.Current==PortRooms.Pump&&Near(PortRooms.Pressure)&&!r.PressureReleased)prompt="E / B · Släpp övertrycket";
@@ -74,6 +80,8 @@ public partial class Main
         else if(r.Current==PortRooms.Cistern&&Near(PortRooms.Relic)&&!r.RelicTaken)prompt="E / B · Undersök altaret";
         else if(r.Current==PortRooms.Gallery&&Near(PortRooms.Witness))prompt=r.WitnessRead?"Eden löses mot de ringmärkta pelarna":"E / B · Läs vittnesboken";
         else if(r.Current==PortRooms.Chamber&&Near(PortRooms.OathExit)&&r.OathDefeated)prompt=r.Completed?"Rutten är säkrad · återvänd och hämta fynd":"E / B · Öppna den inre porten";
+        else if(r.Current==PortRooms.Archive&&Near(ArchiveRoom.Desk))prompt="E / B · Jämför handlingarna";
+        else if(r.Current==PortRooms.Archive&&Near(ArchiveRoom.Seal))prompt=r.ArchiveSecured?"Arkivet säkrat · återvägen är öppen":_game.ArchiveChoice==0?"Läs handlingarna vid bordet":"E / B · Säkra arkivets grind";
         if(prompt=="")return;
         if(_game.Enemies.Any(e=>!e.Dead))prompt=_game.Enemies.Any(e=>!e.Dead&&_game.CanSeeRoomPoint(e.Position))?"Slå tillbaka rummets väktare":"Området behöver säkras först";
         Panel(new Rect2(390,412,500,59),.94f);Centered(prompt,640,442,17,Gold);
@@ -86,9 +94,9 @@ public partial class Main
         var r=_game.Rooms!;
         int row=0;
         foreach(var id in PortRooms.Ids)
-        {Text(r.Rooms[id].Visited?PortRooms.Name(id):"Oundersökt rum",new Vector2(95+(row/3)*520,310+(row++%3)*42),20,id==r.Current?Gold:Muted);}
+        {Text(r.Rooms[id].Visited?PortRooms.Name(id):"Oundersökt rum",new Vector2(95+(row/4)*520,280+(row++%4)*42),20,id==r.Current?Gold:Muted);}
         Text($"Nyckel: {(r.KeyTaken?"säkrad":"saknas")} · Vatten: {(r.WaterLowered?"sänkt":"högt")} · Genväg: {(r.ShortcutOpen?"öppen":"reglad")}",new Vector2(95,495),18,Pale);
-        Wrapped(r.Completed?"Den inre porten är öppen. Rutten är säkrad; kvarlämnade fynd och cisternens genväg går fortfarande att besöka.":r.WitnessRead?"Locka Edsväktarens sköldrus mot en ringmärkt edspelare. Kliv undan när riktningen låsts. Angrip när skölden faller; vanlig kraft biter svagt genom eden.":r.CacheTaken?"Ritningen visar pumpens ordning: avlasta trycket på östra sidan, vrid sedan västra matarhjulet. Cisternen kan dölja en äldre väg tillbaka till förgården.":"Sök väktarens nyckel och undersök logementets kista. Återbesök minns fiender, fynd och utforskade ytor.",new Vector2(95,540),1000,18,Muted,27);
+        Wrapped(r.ArchiveRead?_game.ArchiveResult:r.Completed?"Den inre porten är öppen. Fortsätt till Minnets arkiv. Kvarlämnade fynd och cisternens genväg går fortfarande att besöka.":r.WitnessRead?"Locka Edsväktarens sköldrus mot en ringmärkt edspelare. Kliv undan när riktningen låsts. Angrip när skölden faller; vanlig kraft biter svagt genom eden.":r.CacheTaken?"Ritningen visar pumpens ordning: avlasta trycket på östra sidan, vrid sedan västra matarhjulet. Cisternen kan dölja en äldre väg tillbaka till förgården.":"Sök väktarens nyckel och undersök logementets kista. Återbesök minns fiender, fynd och utforskade ytor.",new Vector2(95,540),1000,18,Muted,27);
         Button(new Rect2(830,614,340,49),"Tillbaka","back",true);
     }
 

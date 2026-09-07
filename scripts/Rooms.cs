@@ -8,7 +8,7 @@ namespace Atland;
 
 public static class PortRooms
 {
-    public const string Court="court",Lodge="lodge",Pump="pump",Cistern="cistern",Gallery="gallery",Chamber="chamber";
+    public const string Court="court",Lodge="lodge",Pump="pump",Cistern="cistern",Gallery="gallery",Chamber="chamber",Archive="archive";
     public static readonly Vector2 CourtDoor=new(490,250),LodgeDoor=new(975,435);
     public static readonly Vector2[] CourtGround={new(400,285),new(640,176),new(1280,370),new(1340,590),new(800,956),new(225,700),new(230,440)};
     public static readonly Vector2 Key=new(520,620),Cache=new(542,650);
@@ -17,14 +17,14 @@ public static class PortRooms
     public static readonly Vector2[] CisternGround={new(340,580),new(530,330),new(960,265),new(1310,375),new(1410,570),new(1330,790),new(1050,900),new(480,875),new(340,715)};
     public static readonly Vector2[] PumpBasin=Navigation.Expand(new Vector2[]{new(604,475),new(758,400),new(916,473),new(768,581)},20);
     public static readonly Vector2[] CisternBasin=Navigation.Expand(new Vector2[]{new(537,515),new(803,390),new(1014,523),new(756,683)},20);
-    public static readonly string[] Ids={Court,Lodge,Pump,Cistern,Gallery,Chamber};
+    public static readonly string[] Ids={Court,Lodge,Pump,Cistern,Gallery,Chamber,Archive};
     public static readonly Vector2 Witness=new(785,735),OathExit=new(810,330);
     public static readonly Vector2[] GalleryGround={new(245,400),new(340,380),new(550,300),new(800,250),new(1130,380),new(1270,410),new(1390,560),new(1430,640),new(970,930),new(600,950),new(110,645),new(170,535)};
     public static readonly Vector2[] OathGround={new(240,410),new(460,315),new(690,300),new(970,300),new(1240,440),new(1430,525),new(1425,650),new(1040,890),new(980,932),new(570,932),new(70,610),new(70,520)};
     public static readonly Vector2[] Lectern=Navigation.Expand(new Vector2[]{new(730,655),new(789,620),new(880,665),new(818,706)},10);
     public static readonly Vector2[] Pillars={new(570,620),new(1000,640)};
     public static readonly Vector2[][] OathObstacles=Pillars.Select(p=>new[]{p+new Vector2(-52,-8),p+new Vector2(0,-38),p+new Vector2(52,-8),p+new Vector2(0,30)}).ToArray();
-    public static string Name(string id)=>id switch {Court=>"Den dränkta förgården",Lodge=>"Väktarnas logement",Pump=>"Pumphuset",Cistern=>"Den sänkta cisternen",Gallery=>"Vittnesgalleriet",_=>"Edskammaren"};
+    public static string Name(string id)=>id switch {Court=>"Den dränkta förgården",Lodge=>"Väktarnas logement",Pump=>"Pumphuset",Cistern=>"Den sänkta cisternen",Gallery=>"Vittnesgalleriet",Archive=>"Minnets arkiv",_=>"Edskammaren"};
     public static bool Known(string id)=>Array.IndexOf(Ids,id)>=0;
     public static Vector2 Door(string id)=>id==Court?CourtDoor:LodgeDoor;
     public static Vector2 Arrival(string id)=>id==Court?new(530,330):new(930,510);
@@ -42,7 +42,7 @@ public sealed class RoomRun
 {
     public int LayoutVersion=1;
     public string Current=PortRooms.Court;
-    public bool KeyTaken,DoorOpen,CacheTaken,PressureReleased,WaterLowered,ShortcutOpen,RelicTaken,WitnessRead,OathDefeated,Completed;
+    public bool KeyTaken,DoorOpen,CacheTaken,PressureReleased,WaterLowered,ShortcutOpen,RelicTaken,WitnessRead,OathDefeated,Completed,ArchiveRead,ArchiveSecured;
     public Dictionary<string,RoomSnapshot> Rooms=new()
     {
         [PortRooms.Court]=new(){Visited=true},[PortRooms.Lodge]=new()
@@ -60,7 +60,8 @@ public sealed partial class Combat
         get
         {
             var r=Rooms!;
-            if(r.Completed)return "Atlands inre port är öppen";
+            if(r.Current==PortRooms.Archive)return ArchiveGoal;
+            if(r.Completed&&r.Current==PortRooms.Chamber)return "Fortsätt till Minnets arkiv";
             return r.Current switch
             {
                 PortRooms.Court=>!r.KeyTaken?"Hitta väktarens nyckel":!r.DoorOpen?"Lås upp logementet":"Fortsätt genom logementet",
@@ -74,6 +75,7 @@ public sealed partial class Combat
     }
     [JsonIgnore] public Vector2 RoomObjective=>Rooms!.Current switch
     {
+        PortRooms.Archive=>!Rooms.ArchiveRead||ArchiveChoice==0?ArchiveRoom.Desk:Rooms.ArchiveSecured?ArchiveRoom.Door:ArchiveRoom.Seal,
         PortRooms.Court=>!Rooms.KeyTaken?PortRooms.Key:PortRooms.CourtDoor,
         PortRooms.Lodge=>!Rooms.CacheTaken?PortRooms.Cache:RoomLinks.All[1].AtA,
         PortRooms.Pump=>!Rooms.PressureReleased?PortRooms.Pressure:!Rooms.WaterLowered?PortRooms.Wheel:RoomLinks.All[4].AtA,
@@ -84,7 +86,7 @@ public sealed partial class Combat
 
     public static Combat NewRooms(Order order)
     {
-        var game=NewAtland(order);game.IntroPlayed=true;game.Rooms=new(){LayoutVersion=3};foreach(var id in PortRooms.Ids.Skip(2))game.Rooms.Rooms.Add(id,new());game.Enemies.Clear();game.Events.Clear();
+        var game=NewAtland(order);game.IntroPlayed=true;game.Rooms=new(){LayoutVersion=4};foreach(var id in PortRooms.Ids.Skip(2))game.Rooms.Rooms.Add(id,new());game.Enemies.Clear();game.Events.Clear();
         game.Spawn(EnemyKind.Guard,new(650,625));game.Player=new(768,805);
         game.UpdateRoomSight(true);
         game.Emit("region",game.Player,game.RoomName);game.Emit("radio",game.Player,"rooms-entry");game.Emit("campaign",game.Player,"Väktaren bar nyckeln till logementet. Hans packning ligger kvar i förgården.");
@@ -110,6 +112,7 @@ public sealed partial class Combat
             Emit("checkpoint",Player);return;
         }
         bool peaceful=Enemies.All(e=>e.Dead)&&Shots.All(s=>s.Reflected)&&Hazards.All(h=>h.Friendly);
+        if(StepArchiveRoom(Near,peaceful))return;
         if(Rooms.Current==PortRooms.Pump&&(Near(PortRooms.Pressure)||Near(PortRooms.Wheel)))
         {
             if(!peaceful){Emit("room-notice",Player,"Säkra pumphuset först.");return;}
@@ -137,7 +140,7 @@ public sealed partial class Combat
         if(Rooms.Current==PortRooms.Chamber&&Near(PortRooms.OathExit)&&Rooms.OathDefeated&&!Rooms.Completed)
         {
             Rooms.Completed=true;Emit("room-sound",Player,"stone-door");Emit("radio",Player,"rooms-port");Emit("inscription",Player,"ATLANDS INRE PORT ÄR ÖPPEN");
-            Emit("campaign",Player,"Bakom porten ligger Minnets arkivs nedre trappa. Rötter grövre än skeppsmaster har sprängt muren. På kartans baksida finns samma kust igen — men havet ligger åt fel håll. Första rutten är säkrad. Du kan återvända och hämta kvarlämnade fynd.");
+            Emit("campaign",Player,"Bakom porten ligger Minnets arkivs nedre trappa. Rötter grövre än skeppsmaster har sprängt muren. På kartans baksida finns samma kust igen — men havet ligger åt fel håll. Tryck E igen vid porten för att gå ned. Du kan återvända och hämta kvarlämnade fynd.");
             Emit("checkpoint",Player);return;
         }
         var link=RoomLinks.From(Rooms.Current).FirstOrDefault(l=>Near(l.At(Rooms.Current)));if(link is null)return;
@@ -176,6 +179,8 @@ public sealed partial class Combat
 
     public bool RoomRadioRelevant(string id)=>id switch
     {
+        "archive-read"=>InRooms&&Rooms!.ArchiveRead&&ArchiveChoice==0,
+        "archive-preserve" or "archive-forge" or "archive-secured"=>InRooms,
         "rooms-entry"=>InRooms&&!Rooms!.DoorOpen,
         "rooms-pump"=>Rooms?.Current==PortRooms.Pump&&!Rooms.WaterLowered,
         "rooms-drained"=>InRooms&&!Rooms!.WitnessRead,
@@ -198,8 +203,13 @@ public sealed partial class Combat
             if(r.Rooms is null||r.Rooms.Count!=4||PortRooms.Ids.Take(4).Any(id=>!r.Rooms.ContainsKey(id)))throw new System.IO.InvalidDataException("Ogiltig äldre vattenkarta");
             r.Rooms.Add(PortRooms.Gallery,new());r.Rooms.Add(PortRooms.Chamber,new());r.LayoutVersion=3;
         }
+        if(r.LayoutVersion==3)
+        {
+            if(r.Rooms is null||r.Rooms.Count!=6||PortRooms.Ids.Take(6).Any(id=>!r.Rooms.ContainsKey(id)))throw new System.IO.InvalidDataException("Ogiltig äldre edskarta");
+            r.Rooms.Add(PortRooms.Archive,new());r.LayoutVersion=4;
+        }
         if(!InCampaign||CampaignStage!=0||Region!=Region.Atland||CampaignFinished||!PortRooms.Known(r.Current)
-            ||r.Rooms is null||r.LayoutVersion!=3||r.Rooms.Count!=6||PortRooms.Ids.Any(id=>!r.Rooms.ContainsKey(id))
+            ||r.Rooms is null||r.LayoutVersion!=4||r.Rooms.Count!=7||PortRooms.Ids.Any(id=>!r.Rooms.ContainsKey(id))
             ||r.Rooms.Any(p=>p.Value is null||p.Value.Enemies is null||p.Value.Enemies.Count>100||p.Value.Explored is null||p.Value.Explored.Length!=RoomSight.Bytes||(!p.Value.Visited&&p.Value.Explored.Any(b=>b!=0)))
             ||!r.Rooms[PortRooms.Court].Visited||!r.Rooms[r.Current].Visited||r.Rooms[r.Current].Enemies.Count!=0
             ||(r.DoorOpen&&!r.KeyTaken)||(r.Rooms[PortRooms.Lodge].Visited&&!r.DoorOpen)||(r.CacheTaken&&!r.Rooms[PortRooms.Lodge].Visited)
@@ -207,6 +217,7 @@ public sealed partial class Combat
             ||(r.WaterLowered&&!r.PressureReleased)||(r.Rooms[PortRooms.Cistern].Visited&&!r.WaterLowered)
             ||(r.Rooms[PortRooms.Gallery].Visited&&!r.WaterLowered)||(r.WitnessRead&&!r.Rooms[PortRooms.Gallery].Visited)
             ||(r.Rooms[PortRooms.Chamber].Visited&&!r.WitnessRead)||(r.OathDefeated&&!r.Rooms[PortRooms.Chamber].Visited)||(r.Completed&&!r.OathDefeated)
+            ||(r.Rooms[PortRooms.Archive].Visited&&!r.Completed)||(r.ArchiveRead&&!r.Rooms[PortRooms.Archive].Visited)||(ArchiveChoice!=0&&!r.ArchiveRead)||(r.ArchiveSecured&&ArchiveChoice==0)
             ||((r.ShortcutOpen||r.RelicTaken)&&!r.Rooms[PortRooms.Cistern].Visited))
             throw new System.IO.InvalidDataException("Ogiltig rumsexpedition");
         var actors=Enemies.Concat(r.Rooms.Values.SelectMany(s=>s.Enemies)).ToArray();
@@ -219,6 +230,9 @@ public sealed partial class Combat
             ||!float.IsFinite(e.Facing.X)||!float.IsFinite(e.Facing.Y)||!float.IsFinite(e.LockedAim.X)||!float.IsFinite(e.LockedAim.Y))
             ||(r.Rooms[PortRooms.Chamber].Visited&&(guardians.Length!=1||guardians[0].Dead!=r.OathDefeated))
             ||(!r.Rooms[PortRooms.Chamber].Visited&&guardians.Length!=0))throw new System.IO.InvalidDataException("Ogiltig edsväktare");
+        var archiveActors=r.Current==PortRooms.Archive?Enemies:r.Rooms[PortRooms.Archive].Enemies;
+        if((ArchiveChoice==0&&archiveActors.Count!=0)||(ArchiveChoice!=0&&archiveActors.Count!=(ArchiveChoice==1?3:1))
+            ||(r.ArchiveSecured&&archiveActors.Any(e=>!e.Dead)))throw new System.IO.InvalidDataException("Ogiltig arkivkontroll");
         if(Inventory.Drops.Any(d=>d.Room!=""&&!PortRooms.Known(d.Room)))throw new System.IO.InvalidDataException("Ogiltigt fyndrum");
     }
 }

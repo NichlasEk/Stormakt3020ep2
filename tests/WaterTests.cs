@@ -38,9 +38,9 @@ static class WaterTests
             Use(game,RoomLinks.All[3].AtB);check(game.LocalDrops.Single().Item.Id==id,"Optional reward stays available on return");
             var old=Combat.NewRooms(Order.Artillery);old.Enemies[0].Health=42;
             var options=new JsonSerializerOptions{IncludeFields=true};var node=JsonSerializer.SerializeToNode(old,options)!;
-            node["Rooms"]!.AsObject().Remove("LayoutVersion");var dict=node["Rooms"]!["Rooms"]!.AsObject();dict.Remove(PortRooms.Pump);dict.Remove(PortRooms.Cistern);dict.Remove(PortRooms.Gallery);dict.Remove(PortRooms.Chamber);
+            node["Rooms"]!.AsObject().Remove("LayoutVersion");var dict=node["Rooms"]!["Rooms"]!.AsObject();dict.Remove(PortRooms.Pump);dict.Remove(PortRooms.Cistern);dict.Remove(PortRooms.Gallery);dict.Remove(PortRooms.Chamber);dict.Remove(PortRooms.Archive);
             var migrated=Save(node.Deserialize<Combat>(options)!,"legacy");
-            check(migrated.Rooms!.LayoutVersion==3&&migrated.Rooms.Rooms.Count==6&&migrated.Enemies[0].Health==42&&!migrated.Rooms.Rooms[PortRooms.Pump].Visited,"Old two-room save gains unopened rooms without resetting progress");
+            check(migrated.Rooms!.LayoutVersion==4&&migrated.Rooms.Rooms.Count==7&&migrated.Enemies[0].Health==42&&!migrated.Rooms.Rooms[PortRooms.Pump].Visited,"Old two-room save gains unopened rooms without resetting progress");
             foreach(var order in Enum.GetValues<Order>())
             {
                 var run=Combat.NewRooms(order);int ticks=0;

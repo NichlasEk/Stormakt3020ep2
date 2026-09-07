@@ -1,0 +1,9 @@
+{
+  "method": "faster-whisper-small CPU int8 Swedish beam5; automatic screening, no human listening claim",
+  "transcripts": {
+    "voice-archive-forge": "Ditt papper blev godkänt, två vakter vänder om, en kontroll anstannar kvar, det var nästan smidigt.",
+    "voice-archive-preserve": "Vi behåller vittnesmålet. Hela padrullen är på väg. De verkar ta fel summeringar personligt.",
+    "voice-archive-read": "Liggaren räknar stenarna, vittnet räknar människorna, flera namn saknas i den officiella berättelsen, läs båda handlingarna innan du väljer.",
+    "voice-archive-secured": "Arkivet är säkrat, ta med handlingarna, bakom nästa grind börjar rotvägen, vi kommer behöva namnen där också."
+  }
+}

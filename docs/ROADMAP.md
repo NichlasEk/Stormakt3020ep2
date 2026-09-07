@@ -12,6 +12,8 @@
 
 **Femte checkpointen:** åtta nya radiorepliker, pump-/port-/bossljud och underjordiskt miljöljud finns. Se `ROOM-AUDIO.md`. Arkivanslutningen är granskad och planerad i `ARCHIVE-CONNECTION.md`.
 
+**Sjätte checkpointen:** Minnets arkiv är sjunde beständiga rummet. Egen målning och dokumentvy, två beslut med olika patruller, fyra nya radiorepliker och sparad återväg finns. Äldre layoutversion 3 får arkivet utan omstart. Se `ARCHIVE.md`. Nästa steg är en första sammanhängande rotmarksrutt med bevarad återväg; den gamla åttastegskampanjen är ännu separat. Animation, mänsklig balansbedömning och senare detaljpass återstår.
+
 ## Nuläge före rumsarbetet
 
 - Spelbar inledning med kaj, magasin och strand, därefter åtta kampanjsteg i fyra målade miljöer. Understöd och arkivval har faktiska följder.

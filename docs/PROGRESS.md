@@ -1,5 +1,14 @@
 # Checkpoint · Vägen under vattnet · 2026-09-06
 
+## Senast · Minnets arkiv · 0.8 · 2026-09-07
+
+Sju beständiga rum. Arkivet har en egen rik målning, läsbord med kollision/förgrund och en målad dokumentvy. Två motstridiga handlingar ger ett permanent val: bevarat vittnesmål kallar tre vakter, falsk passersedel lämnar en kontrollant. Fyra nya svenska Ebba-/Hedvig-repliker. Layoutversion 4 migrerar äldre rumssparningar; beslut, fiender, utforskning, stash och återväg består. Ingen läkning eller duplicering vid dörren.
+
+29 442 regelassertions passerar, inklusive åtta kombinationer av vapen, understöd och beslut utan utvecklarskydd. Godot `--archive-check` verifierar dokumentknappar, paus, Esc/återöppning, båda striderna, sparade resultat, röster och sjurumskarta. Linux-export och slutkontroll beskrivs i `ARCHIVE.md`.
+
+Prova `./start.sh -- --rooms`. Fortsätt genom den öppnade bossporten med ett nytt E/B-tryck. Slutpunkten är arkivets säkrade grind, med återväg till alla tidigare rum. Rotvägen är ännu inte spelbar i denna rutt. Nästa steg: första rotmarksrummen och deras anslutning; gånganimation och mänsklig balans-/röstbedömning återstår.
+
+
 ## Senast · rumsradio och underjordiskt ljud · 2026-09-07
 
 0.7.1 levererar åtta nya svenska Ebba-/Hedvig-repliker från lokal EutherLink/dots.tts-mf, sju egna syntetiserade effekt-/miljöljud och mjuk övergång från hamn till underjord. Porträtt och musik återanvänds. Vittnesboken kan fortsätta över en dörr; inaktuella råd/artilleri rensas efter bossen. Första rådet spelas en gång via sparad attackräknare. Den gamla kajbriefingen spelas inte längre i rumsrutten, och laddning visar aktuellt rumsmål. Manus, jobb, källor, hashvärden och automatisk uttalskontroll finns i `ROOM-AUDIO.md`.

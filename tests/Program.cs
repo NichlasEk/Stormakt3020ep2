@@ -364,3 +364,5 @@ OathTests.Run(Check);
 Console.WriteLine($"PASS OATH AND SIX ROOMS · {checks} assertions");
 RoomAudioTests.Run(Check);
 Console.WriteLine($"PASS ROOM AUDIO CUES · {checks} assertions");
+ArchiveTests.Run(Check);
+Console.WriteLine($"PASS ARCHIVE AND RETURN · {checks} assertions");

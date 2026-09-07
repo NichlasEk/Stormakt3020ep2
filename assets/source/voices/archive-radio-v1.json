@@ -1,0 +1,54 @@
+{
+  "lines": [
+    {
+      "id": "archive-read",
+      "role": "hedvig",
+      "text": "Liggaren räknar stenarna. Vittnet räknar människorna. Flera namn saknas i den officiella berättelsen. Läs båda handlingarna innan du väljer.",
+      "asset": "assets/audio/voice-archive-read.ogg",
+      "source": "assets/source/voices/archive-read.wav",
+      "job": "418bd5518e654b38816a48b630095760",
+      "backend": "dots.tts-mf",
+      "synthetic_reference": true,
+      "sha256": "44c908bda5a7ac354bf9805882bac4c1c1897f1a6ad8f22b92cb5eb84e28d0c9",
+      "duration_seconds": 9.3
+    },
+    {
+      "id": "archive-preserve",
+      "role": "ebba",
+      "text": "Vi behåller vittnesmålet. Hela patrullen är på väg. De verkar ta felsummeringar personligt.",
+      "asset": "assets/audio/voice-archive-preserve.ogg",
+      "source": "assets/source/voices/archive-preserve.wav",
+      "job": "90eddd60c31544639f2b2210d5463a0e",
+      "backend": "dots.tts-mf",
+      "synthetic_reference": true,
+      "sha256": "18d9d55c3fe7b4b339f9fb8c3d20300568e5f5e2cf9e8aae7c59cad4b08ae338",
+      "duration_seconds": 6.1
+    },
+    {
+      "id": "archive-forge",
+      "role": "ebba",
+      "text": "Ditt papper blev godkänt. Två vakter vänder om. En kontrollant stannar kvar. Det var nästan smidigt.",
+      "asset": "assets/audio/voice-archive-forge.ogg",
+      "source": "assets/source/voices/archive-forge.wav",
+      "job": "8aae4c90cf7c4771b29237c79f92892b",
+      "backend": "dots.tts-mf",
+      "synthetic_reference": true,
+      "sha256": "0eb7932a06b6f7ac4620292c3ea6a8dc1ba683afa996780c10287bd7593c1f1d",
+      "duration_seconds": 6.6
+    },
+    {
+      "id": "archive-secured",
+      "role": "hedvig",
+      "text": "Arkivet är säkrat. Ta med handlingarna. Bakom nästa grind börjar rotvägen. Vi kommer att behöva namnen där också.",
+      "asset": "assets/audio/voice-archive-secured.ogg",
+      "source": "assets/source/voices/archive-secured.wav",
+      "job": "cb7c6a8a01714120a70c9fe33dbd7f27",
+      "backend": "dots.tts-mf",
+      "synthetic_reference": true,
+      "sha256": "6d39d2e41fba24d20d23f16e2234e4f7c60578297a3ba7a2d4257dbf8c9a63ac",
+      "duration_seconds": 7.7
+    }
+  ],
+  "processing": "ffmpeg highpass=110, lowpass=7500, loudnorm I=-18 TP=-2 LRA=8; 48kHz mono Vorbis q5",
+  "qa": "CPU Whisper screening; archive-forge and archive-read retaken with simpler phrasing. See ARCHIVE.md for remaining pronunciation uncertainty."
+}

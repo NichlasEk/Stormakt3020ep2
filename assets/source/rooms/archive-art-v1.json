@@ -1,0 +1,19 @@
+{
+  "tool": "built-in image_gen",
+  "assets": [
+    {
+      "asset": "assets/art/room-archive-v1.png",
+      "source": "/home/nichlas/.codex/generated_images/01a07608-36a4-7850-ba4d-824cc60ab5aa/exec-34df2c22-75e1-467d-8ef6-22cefc7f6f7e.png",
+      "prompt": "Use case: historical-scene. Production background for true 2D isometric action game Stormakt 3020. Not concept art, not 3D, not Blender, not a render. 1536x1024 landscape. Fixed orthographic isometric high camera, no horizon or vanishing point. Dark worn oil-painted Swedish baroque subterranean Atlantis archive. Adult gameplay sprite is150px high, individual furniture at human scale. Restrained charcoal granite, dry walnut wood, antique vellum, muted bronze and indigo. Rich painted texture, matte surfaces, serious archaeological atmosphere. A broad walkable floor with clear connected paths occupies most image. Open arched doorway in far LEFT wall at floor approx (320,440), entrance from oath chamber. A second closed small stone service door in far RIGHT wall at floor (1200,440), for an arriving patrol. Far walls densely lined with battered bookcases, rolled maps, brass catalogue drawers, ancient sun-disc engravings; furniture remains along walls, avoid freestanding obstacles except the table. Exactly one low rectangular reading table at center, footprint corners about (620,580),(780,490),(930,580),(775,680), table top rises90px. On tabletop: two opened folios, one crisp official ledger with red wax seal, one rough handwritten witness account; NO readable lettering. Walkable space in front of table from(500,720)to(1100,800), wide lanes on BOTH sides. Floor borders approx (180,525),(520,330),(800,240),(1270,430),(1420,610),(1030,870),(780,950),(300,760). Front walls cut low so figures not hidden; distant upper walls may rise. Quiet light from high slit left, small candles only, scale appropriate. No people, no UI, no text, no glowing magic, no oversized props, no toy forms.",
+      "sha256": "ac9846cc6c1b3d463e80d60393cfc2662b8ccc60c509188cf610e898935f7465",
+      "processing": "Copied unchanged; collision, foreground and text are defined in game code."
+    },
+    {
+      "asset": "assets/art/archive-documents-v1.png",
+      "source": "/home/nichlas/.codex/generated_images/01a07608-36a4-7850-ba4d-824cc60ab5aa/exec-396c6548-efad-48c4-8c99-d23f85e93868.png",
+      "prompt": "Use case: historical-scene. Production 2D game interface background1536x1024. Dark worn Swedish seventeenth century oil-painted archive writing desk viewed straight from above, full image is its surface. Two separate large BLANK antique paper sheets side by side, left sheet x110..710 y120..820, right sheet x820..1425 y120..820. Sheets perfectly front-facing and flat to screen, warm pale desaturated parchment, subtly different paper: left official orderly folio with faint ruled margins and a SMALL burgundy wax seal near bottom left, right rough salt-stained handmade witness sheet, simple folded corner. Central divider120px of dark dry wood. Wide empty lower wood margin for two game choice buttons. Crucial large central areas of both sheets MUST be entirely blank light parchment, absolutely no writing, no symbols, no decorative clutter where gameplay text will be overlaid. Small dried feather quill in extreme top outer margin only, thin bronze edge fittings on desk. Serious rich understated painterly texture, no glossy highlights, no 3D render, no concept art, no perspective tilt, no labels or UI embedded.",
+      "sha256": "f663a1aacc264a07001916295ae233b436c1180499a64b9f2825acef9287b323",
+      "processing": "Copied unchanged; collision, foreground and text are defined in game code."
+    }
+  ]
+}

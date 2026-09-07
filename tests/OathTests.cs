@@ -39,8 +39,8 @@ static class OathTests
             boss.State=1;boss.Timer=.01f;boss.Position=new(800,450);boss.Facing=Vector2.UnitY;boss.ChargeHit=false;g.Player=new(800,560);g.Invulnerable=0;g.Health=100;g.HitStop=0;
             for(int i=0;i<80;i++)g.Step(default);
             check(g.Health<100&&g.Health>=70,"A missed bait causes at most one shield impact per rush");
-            var old=Combat.NewRooms(Order.Artillery);old.Rooms!.LayoutVersion=2;old.Rooms.Rooms.Remove(PortRooms.Gallery);old.Rooms.Rooms.Remove(PortRooms.Chamber);
-            old.Enemies[0].Health=31;old=Save(old,"water-migration");check(old.Rooms!.LayoutVersion==3&&old.Rooms.Rooms.Count==6&&old.Enemies[0].Health==31,"Four-room saves gain the last two rooms without resetting guards");
+            var old=Combat.NewRooms(Order.Artillery);old.Rooms!.LayoutVersion=2;old.Rooms.Rooms.Remove(PortRooms.Gallery);old.Rooms.Rooms.Remove(PortRooms.Chamber);old.Rooms.Rooms.Remove(PortRooms.Archive);
+            old.Enemies[0].Health=31;old=Save(old,"water-migration");check(old.Rooms!.LayoutVersion==4&&old.Rooms.Rooms.Count==7&&old.Enemies[0].Health==31,"Four-room saves gain the last two rooms without resetting guards");
             foreach(var weapon in Enum.GetValues<Weapon>())foreach(var order in Enum.GetValues<Order>())foreach(bool optional in new[]{false,true})
             {
                 var run=Combat.NewRooms(order);run.Weapon=weapon;int ticks=0,exposures=0,previous=0;
