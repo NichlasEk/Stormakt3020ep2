@@ -355,3 +355,5 @@ Check(equippedHit.TransferItem(heldItem,true)!=""&&equippedHit.Inventory.Bag.Any
 Console.WriteLine($"PASS INVENTORY COMBAT AND CAPACITY · {checks} assertions");
 RoomTests.Run(Check);
 Console.WriteLine($"PASS PERSISTENT ROOMS · {checks} assertions");
+SightTests.Run(Check);
+Console.WriteLine($"PASS EXPLORATION AND SIGHT · {checks} assertions");

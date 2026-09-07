@@ -1,6 +1,6 @@
 # Förseglade rum · första checkpointen
 
-2026-09-07. Första tekniska delen av mål 1 i `ROADMAP.md`. Två sammankopplade provrum: Den dränkta förgården och Väktarnas logement. Detta är inte den färdiga sexrumsbanan.
+2026-09-07. Första tekniska delen av mål 1 i `ROADMAP.md`. Två sammankopplade provrum: Den dränkta förgården och Väktarnas logement. Detta är inte den färdiga sexrumsbanan. **Uppdatering:** sparat upptäcktsmörker, sikt och utforskningskarta finns nu i rumsprovet; se `EXPLORATION.md` för senaste funktioner och export. Verifieringen nedan beskriver första rumscheckpointen.
 
 ## Prova
 
@@ -25,7 +25,7 @@ Den här versionen kräver att rummet är säkrat före passage, inklusive inkom
 
 Provet återanvänder `world-atland-v1.png` och `warehouse-v1.png` utan ändringar på disk. Bronsportens lås har en liten statusikon; dess rörliga dörrblad är ännu inte animerade. Logementets öppning finns i målningen. Alla aktörer är samma målade 2D-sprites. Ingen ny bild-/röstgeneration i denna tekniska checkpoint.
 
-Nästa del: upptäcktsmask och gemensamma siktregler, därefter särskilt målade rum/dörrlägen, fler passager och genvägar. Nyckel/fyndmarkeringar och rummens återbrukade innehåll är fortfarande ett prov. Sex rum, nya bossen, förladdning/övergångseffekt och integration i den långa kampanjen återstår. Det här provet ändrar inte gamla sparningar till den framtida rutten.
+Upptäcktsmask och siktregler finns nu. Nästa del är särskilt målade rum/dörrlägen, fler passager och genvägar. Nyckel/fyndmarkeringar och rummens återbrukade innehåll är fortfarande ett prov. Sex rum, nya bossen, förladdning/övergångseffekt och integration i den långa kampanjen återstår. Det här provet ändrar inte gamla sparningar till den framtida rutten.
 
 ## Verifiering
 

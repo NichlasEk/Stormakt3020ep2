@@ -6,6 +6,8 @@ Episod II. Ett nytt, fristående actionrollspel i Stormakts värld: nordisk baro
 
 ## Nytt · två beständiga rum
 
+Rumsprovet har nu **upptäcktsmörker och en utforskningskarta**. Väggar/last stoppar sikten, besökta ytor blir kvar dämpade och osedda fiender/fynd döljs. Utforskningen sparas per rum. [Sikt och verifiering](docs/EXPLORATION.md).
+
 `./start.sh -- --rooms` eller **Atlands förseglade rum · prov**. Hitta nyckeln, lås upp logementet, besegra vakterna och återvänd med ett fynd. Dörr, fiender och kvarlämnade föremål minns sitt tillstånd. E/B interagerar; separat sparfil. Första tekniska checkpointen använder två befintliga målningar; mörker, fler rum och egen boss kommer senare. [Detaljer och verifiering](docs/ROOMS.md).
 
 ## Nytt · inventarium och utrustning 0.5.1

@@ -20,6 +20,7 @@ public static class PortRooms
 public sealed class RoomSnapshot
 {
     public bool Visited;
+    public byte[] Explored=new byte[RoomSight.Bytes];
     // Only inactive rooms own actors here. The current room uses Combat.Enemies.
     public List<Fighter> Enemies=new();
 }
@@ -47,12 +48,14 @@ public sealed partial class Combat
     {
         var game=NewAtland(order);game.Rooms=new();game.Enemies.Clear();game.Events.Clear();
         game.Spawn(EnemyKind.Guard,new(650,625));game.Player=new(768,805);
+        game.UpdateRoomSight(true);
         game.Emit("region",game.Player,game.RoomName);game.Emit("campaign",game.Player,"Väktaren bar nyckeln till logementet. Hans packning ligger kvar i förgården.");
         return game;
     }
 
     private void StepRooms(Controls input)
     {
+        UpdateRoomSight();
         bool pressed=input.Interact&&!_roomInteractHeld;_roomInteractHeld=input.Interact;
         if(!pressed||Dead||Moving||AttackTime>0||DodgeTime>0||Guarding||Hurt>0)return;
         bool Near(Vector2 at)=>Vector2.Distance(Player,at)<72&&ClearPath(Player,at);
@@ -94,6 +97,7 @@ public sealed partial class Combat
         Shots.Clear();Hazards.Clear();AttackTime=AttackBuffer=DodgeTime=HitStop=Hurt=GuardTime=0;
         Guarding=Moving=false;
         // No healing, potion award, loot respawn or stamina refill on a doorway.
+        UpdateRoomSight(true);
         Emit("region",Player,RoomName);Emit("checkpoint",Player);
     }
 
@@ -103,7 +107,7 @@ public sealed partial class Combat
         var r=Rooms;
         if(!InCampaign||CampaignStage!=0||Region!=Region.Atland||CampaignFinished||!PortRooms.Known(r.Current)
             ||r.Rooms is null||r.Rooms.Count!=2||!r.Rooms.ContainsKey(PortRooms.Court)||!r.Rooms.ContainsKey(PortRooms.Lodge)
-            ||r.Rooms.Any(p=>p.Value is null||p.Value.Enemies is null||p.Value.Enemies.Count>100)
+            ||r.Rooms.Any(p=>p.Value is null||p.Value.Enemies is null||p.Value.Enemies.Count>100||p.Value.Explored is null||p.Value.Explored.Length!=RoomSight.Bytes||(!p.Value.Visited&&p.Value.Explored.Any(b=>b!=0)))
             ||!r.Rooms[PortRooms.Court].Visited||!r.Rooms[r.Current].Visited||r.Rooms[r.Current].Enemies.Count!=0
             ||(r.DoorOpen&&!r.KeyTaken)||(r.Rooms[PortRooms.Lodge].Visited&&!r.DoorOpen)||(r.CacheTaken&&!r.Rooms[PortRooms.Lodge].Visited))
             throw new System.IO.InvalidDataException("Ogiltig rumsexpedition");

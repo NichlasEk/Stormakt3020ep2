@@ -62,6 +62,7 @@ public static class SaveStore
         game.ValidateRooms();
         // Older port snapshots may stand beyond the restored painted courtyard bounds.
         if(game.CampaignStage==0){game.Player=game.Bound(game.Player);foreach(var foe in game.Enemies)foe.Position=game.Bound(foe.Position);}
+        game.UpdateRoomSight(true);
         return game;
     }
 }

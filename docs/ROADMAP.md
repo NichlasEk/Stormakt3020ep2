@@ -4,6 +4,8 @@
 
 **Första checkpointen finns nu:** två sammankopplade provrum med nyckel/lås, separata beständiga fiender och fynd, återbesök och sparning. Se `ROOMS.md`. Mål 1 som helhet är fortfarande pågående; sex nya målade rum och bossen är inte klara.
 
+**Andra checkpointen:** upptäcktsmask, sparad utforskning, sikt bakom last, dold fiende-/fyndvisning och utforskningskarta finns i de två provrummen. Se `EXPLORATION.md`. Mål 2 är provat i denna begränsade geometri, inte i en hel sexrumsbana.
+
 ## Nuläge
 
 - Spelbar inledning med kaj, magasin och strand, därefter åtta kampanjsteg i fyra målade miljöer. Understöd och arkivval har faktiska följder.
@@ -88,4 +90,4 @@ Leverera ett granskbart delmål per checkpoint: aktuell status, testresultat, sk
 
 ## Nästa konkreta arbetssteg
 
-Den sparbara rums-/dörrmodellen och två sammankopplade provrum är byggda och provade. Fortsätt med upptäcktsmask och siktregler, därefter rumsmålningar, kvarvarande rum och Edsväktaren. Den långa kampanjen använder ännu sin befintliga rutt; rumsprovet startas separat.
+Rumsgrund, upptäcktsmask och sikt är byggda och provade i två rum. Fortsätt med rumsmålningar, fler hinder och passager, kvarvarande rum och Edsväktaren. Den långa kampanjen använder ännu sin befintliga rutt; rumsprovet startas separat.

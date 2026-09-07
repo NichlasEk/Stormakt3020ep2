@@ -19,17 +19,17 @@ public partial class Main
     private void DrawRoomMarkers()
     {
         var run=_game.Rooms!;var door=G(PortRooms.Door(run.Current));
-        Text(run.DoorOpen?run.Current==PortRooms.Court?"TILL LOGEMENTET":"TILL FÖRGÅRDEN":"LÅST DÖRR",door+new Vector2(-70,38),12,Gold);
-        if(run.Current==PortRooms.Court&&!run.KeyTaken)
+        if(_game.CanSeeRoomPoint(PortRooms.Door(run.Current)))Text(run.DoorOpen?run.Current==PortRooms.Court?"TILL LOGEMENTET":"TILL FÖRGÅRDEN":"LÅST DÖRR",door+new Vector2(-70,38),12,Gold);
+        if(run.Current==PortRooms.Court&&!run.KeyTaken&&_game.CanSeeRoomPoint(PortRooms.Key))
         {var p=G(PortRooms.Key);DrawCircle(p,17,new Color(.03f,.04f,.03f,.9f));DrawArc(p,7,0,Mathf.Tau,20,Gold,2,true);DrawLine(p+new Vector2(5,5),p+new Vector2(17,17),Gold,3,true);Text("VÄKTARENS PACKNING",p+new Vector2(-80,38),12,Gold);}
-        if(run.Current==PortRooms.Lodge&&!run.CacheTaken)Text("FÖRSEGLAD KISTA",G(PortRooms.Cache)+new Vector2(-60,38),12,Gold);
+        if(run.Current==PortRooms.Lodge&&!run.CacheTaken&&_game.CanSeeRoomPoint(PortRooms.Cache))Text("FÖRSEGLAD KISTA",G(PortRooms.Cache)+new Vector2(-60,38),12,Gold);
     }
     private void AddRoomLayers(List<(float Depth,Action Draw)> layers)
     {
         var run=_game.Rooms!;var door=G(PortRooms.Door(run.Current));
         // Use the architectural doorways already present in the paintings.
         // The bronze gate has an explicit lock indicator; final moving leaves are a later art pass.
-        if(run.Current==PortRooms.Court)
+        if(run.Current==PortRooms.Court&&_game.CanSeeRoomPoint(PortRooms.CourtDoor))
         {
             layers.Add((door.Y-100,()=>
             {
@@ -39,7 +39,7 @@ public partial class Main
                 DrawRect(new Rect2(lockAt+new Vector2(-6,-5),new Vector2(12,12)),run.DoorOpen?Teal:Gold,false,2);
             }));
         }
-        if(run.Current==PortRooms.Lodge)
+        if(run.Current==PortRooms.Lodge&&_game.CanSeeRoomPoint(PortRooms.Cache))
         {
             var at=G(PortRooms.Cache);layers.Add((at.Y,()=>
             {var source=new Rect2(671,895,225,212);var size=source.Size*(55/source.Size.Y);
@@ -55,7 +55,7 @@ public partial class Main
         else if(r.Current==PortRooms.Court&&!r.KeyTaken&&Near(PortRooms.Key))prompt="E / B · Sök väktarens packning";
         else if(r.Current==PortRooms.Lodge&&!r.CacheTaken&&Near(PortRooms.Cache))prompt="E / B · Undersök kistan";
         if(prompt=="")return;
-        if(_game.Enemies.Any(e=>!e.Dead))prompt="Slå tillbaka rummets väktare";
+        if(_game.Enemies.Any(e=>!e.Dead))prompt=_game.Enemies.Any(e=>!e.Dead&&_game.CanSeeRoomPoint(e.Position))?"Slå tillbaka rummets väktare":"Området behöver säkras först";
         Panel(new Rect2(390,412,500,59),.94f);Centered(prompt,640,442,17,Gold);
     }
     private void DrawRoomJournal()

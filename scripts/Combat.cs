@@ -32,6 +32,7 @@ public sealed class Fighter
     [JsonIgnore] public Vector2 MoveDirection;
     public int State; // 0 approach, 1 telegraph, 2 recovery, 3 stagger
     public int Pattern;
+    public bool Alerted;
     public bool Dead => Health <= 0;
 }
 public sealed class Shot
@@ -338,6 +339,11 @@ public sealed partial class Combat
     {
         e.Moving=false;
         if(e.Dead)return;
+        if(InRooms&&!e.Alerted)
+        {
+            if(e.Health>=e.MaxHealth&&!CanSeeRoomPoint(e.Position))return;
+            e.Alerted=true;e.Cooldown=Math.Max(e.Cooldown,.8f);
+        }
         e.Hurt=Math.Max(0,e.Hurt-dt);e.Cooldown=Math.Max(0,e.Cooldown-dt);
         var to=Player-e.Position;float distance=to.Length();
         if(e.State==0)

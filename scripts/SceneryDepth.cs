@@ -13,7 +13,7 @@ public partial class Main
     private void DrawDepthSortedActors()
     {
         var layers=new List<(float Depth,Action Draw)>();
-        foreach(var enemy in _game.Enemies){var e=enemy;layers.Add((e.Position.Y,()=>Actor(e,e.Dead)));}
+        foreach(var enemy in _game.Enemies.Where(e=>_game.CanSeeRoomPoint(e.Position))){var e=enemy;layers.Add((e.Position.Y,()=>Actor(e,e.Dead)));}
         layers.Add((_game.Player.Y,DrawPlayer));
         if((_game.Region==Region.Warehouse||_game.Rooms?.Current==PortRooms.Lodge))
         {

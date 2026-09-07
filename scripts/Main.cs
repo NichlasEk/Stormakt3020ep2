@@ -77,7 +77,7 @@ public partial class Main : Node2D
     private static NVec N(Vector2 v)=>new(v.X,v.Y);
     public override void _Ready()
     {
-        var args=OS.GetCmdlineUserArgs();_roomChecks=args.Contains("--rooms-check");_inventoryChecks=args.Contains("--inventory-check");_portChecks=args.Contains("--port-check");_sceneChecks=args.Contains("--scene-check")||_portChecks||_inventoryChecks||_roomChecks;_uiChecks=args.Contains("--ui-check");
+        var args=OS.GetCmdlineUserArgs();_fogChecks=args.Contains("--fog-check");_roomChecks=args.Contains("--rooms-check");_inventoryChecks=args.Contains("--inventory-check");_portChecks=args.Contains("--port-check");_sceneChecks=args.Contains("--scene-check")||_portChecks||_inventoryChecks||_roomChecks||_fogChecks;_uiChecks=args.Contains("--ui-check");
         _serif=GD.Load<Font>("res://assets/fonts/NotoSerif-Regular.ttf");_sans=GD.Load<Font>("res://assets/fonts/NotoSans-Regular.ttf");
         _background=GD.Load<Texture2D>("res://assets/art/likvarvet-scale-v5.png");
         _radioPortraits=GD.Load<Texture2D>("res://assets/art/radio-cast-v1.png");
@@ -92,9 +92,9 @@ public partial class Main : Node2D
         if(args.Contains("--duel"))StartDuel();
         if(args.Contains("--port")||_portChecks||_inventoryChecks){_portSlot=true;StartAtland();}
         else if(args.Contains("--atland")||_campaignCheck)StartAtland();
-        if(args.Contains("--rooms")||_roomChecks)StartRooms();
+        if(args.Contains("--rooms")||_roomChecks||_fogChecks)StartRooms();
         if(args.Contains("--capture-title"))_smokeCapture=true;
-        if(_roomChecks)RunRoomChecks();else if(_inventoryChecks)RunInventoryChecks();else if(_portChecks)RunPortChecks();else if(_sceneChecks)RunSceneChecks();
+        if(_fogChecks)RunSightChecks();else if(_roomChecks)RunRoomChecks();else if(_inventoryChecks)RunInventoryChecks();else if(_portChecks)RunPortChecks();else if(_sceneChecks)RunSceneChecks();
     }
     public override void _Input(InputEvent ev)
     {
@@ -295,6 +295,7 @@ public partial class Main : Node2D
     }
     private void HandleCue(Cue cue)
     {
+        if(_game.InRooms&&!_game.CanSeeRoomPoint(cue.Position)&&cue.Kind is "loot" or "warning" or "shot" or "hit" or "scrape" or "swing" or "death" or "block")return;
         var p=G(cue.Position);
         switch(cue.Kind)
         {
@@ -343,7 +344,7 @@ public partial class Main : Node2D
     public override void _Process(double delta)
     {
         float dt=(float)delta;_clock+=dt;_noticeTime=Math.Max(0,_noticeTime-dt);if(_screen==Screen.Game)_campaignTextTime=Math.Max(0,_campaignTextTime-dt);
-        _sound.Boss=(_game.Phase==Phase.Collector||(_game.Phase==Phase.Extraction&&_game.Enemies.Any(e=>!e.Dead))||(_game.InCampaign&&_game.Enemies.Any(e=>!e.Dead&&e.Kind==EnemyKind.Collector))) && _screen is Screen.Game or Screen.Pause;
+        _sound.Boss=(_game.Phase==Phase.Collector||(_game.Phase==Phase.Extraction&&_game.Enemies.Any(e=>!e.Dead))||(_game.InCampaign&&_game.Enemies.Any(e=>!e.Dead&&e.Kind==EnemyKind.Collector&&_game.CanSeeRoomPoint(e.Position)))) && _screen is Screen.Game or Screen.Pause;
         _sound.Discovery=_game.Phase is Phase.Names or Phase.Testimony || _game.Region==Region.Shore;
         if(_screen is Screen.Game or Screen.Ending or Screen.Testimony)
         {
@@ -500,12 +501,12 @@ public partial class Main : Node2D
             DrawArc(p,31,0,Mathf.Tau,60,new Color(c,alive?.75f:.25f),2,true);
             if(alive){DrawArc(p,38,_clock*.4f,_clock*.4f+Mathf.Pi*1.5f,40,new Color(Teal,.45f),1.5f,true);DrawLine(p-new Vector2(0,10),p-new Vector2(0,49),Teal,2,true);DrawLine(p-new Vector2(0,42),p+new Vector2(12,-32),Teal,2,true);DrawLine(p-new Vector2(0,30),p+new Vector2(-12,-20),Teal,2,true);WorldBar(p+new Vector2(-24,15),48,seal.Health/80,Teal);}
         }
-        foreach(var h in _game.Hazards)
+        foreach(var h in _game.Hazards.Where(h=>_game.CanSeeRoomPoint(h.Position)||(_game.InRooms&&NVec.Distance(h.Position,_game.Player)<h.Radius+60&&_game.ClearPath(_game.Player,h.Position))))
         {var c=h.Friendly?Gold:Red;DrawCircle(G(h.Position),h.Radius,new Color(c,.10f));DrawArc(G(h.Position),h.Radius,0,Mathf.Tau,70,c,2,true);DrawArc(G(h.Position),h.Radius*Math.Clamp(1-h.Timer/1.5f,0,1),0,Mathf.Tau,60,new Color(c,.5f),2,true);}
-        foreach(var e in _game.Enemies.Where(e=>!e.Dead && e.State==1))DrawTelegraph(e);
+        foreach(var e in _game.Enemies.Where(e=>!e.Dead && e.State==1&&_game.CanSeeRoomPoint(e.Position)))DrawTelegraph(e);
         DrawDepthSortedActors();
         DrawDroppedItems();
-        foreach(var shot in _game.Shots){var p=G(shot.Position);var v=G(shot.Velocity).Normalized();DrawLine(p-v*17,p,shot.Reflected?Teal:Gold,3,true);DrawCircle(p,3,Pale);}
+        foreach(var shot in _game.Shots.Where(s=>_game.CanSeeRoomPoint(s.Position))){var p=G(shot.Position);var v=G(shot.Velocity).Normalized();DrawLine(p-v*17,p,shot.Reflected?Teal:Gold,3,true);DrawCircle(p,3,Pale);}
         if(_game.Phase==Phase.Discovery)
         {var p=G(Combat.ChartPosition);DrawCircle(p,30,new Color(Gold,.13f));DrawArc(p,25,0,Mathf.Tau,40,Gold,1.5f,true);DrawRect(new Rect2(p-new Vector2(14,18),new Vector2(28,24)),Gold);DrawLine(p-new Vector2(10,4),p+new Vector2(10,-10),new Color(.15f,.23f,.24f),2,true);}
         if(_game.Phase is Phase.Names or Phase.Testimony or Phase.Extraction)
@@ -522,6 +523,7 @@ public partial class Main : Node2D
         {var p=G(_game.ObjectivePosition);DrawArc(p,40,0,Mathf.Tau,48,Gold,2,true);Text(_game.ExtendedJourney?"MAGASINET":"BÅTEN",p+new Vector2(-22,58),12,Gold);}
         foreach(var p in _particles)DrawCircle(p.P,p.Size,new Color(p.C,Math.Clamp(p.Life/p.Max,0,1)));
         foreach(var f in _floating)Text(f.Text,f.P,15,new Color(f.C,Math.Clamp(f.Life*2,0,1)));
+        if(_game.InRooms)DrawRoomFog();
         DrawSetTransform(Vector2.Zero);
         // Restrained edge framing.
         DrawRect(new Rect2(0,0,1280,6),new Color(.015f,.035f,.04f,.8f));
@@ -599,12 +601,13 @@ public partial class Main : Node2D
             _=>"Undersök bronskartan vid porten"
         };
         Text(objective,new Vector2(946,69),17,Pale);
-        int foes=_game.Enemies.Count(e=>!e.Dead);
-        Text(foes>0?$"Vakter kvar: {foes}":_game.Phase==Phase.Names?"Håll E vid en sten  ·  R Fynd":"E Undersök  ·  R Fynd",new Vector2(946,96),14,Muted);
+        int foes=_game.Enemies.Count(e=>!e.Dead&&_game.CanSeeRoomPoint(e.Position));
+        Text(foes>0?(_game.InRooms?$"Vakter i sikte: {foes}":$"Vakter kvar: {foes}"):_game.Phase==Phase.Names?"Håll E vid en sten  ·  R Fynd":"E Undersök  ·  R Fynd",new Vector2(946,96),14,Muted);
         if(_game.Phase is Phase.Names or Phase.Extraction || _game.Region!=Region.Quay)DrawObjectiveDirection();
+        if(_game.InRooms)DrawExplorationMap();
         DrawJourneyPrompt(foes);
         if(_game.InCampaign)DrawCampaignStory();
-        var boss=_game.Enemies.FirstOrDefault(e=>e.Kind==EnemyKind.Collector&&!e.Dead);
+        var boss=_game.Enemies.FirstOrDefault(e=>e.Kind==EnemyKind.Collector&&!e.Dead&&_game.CanSeeRoomPoint(e.Position));
         if(boss!=null){Panel(new Rect2(354,20,542,59),.91f);Centered(_game.InCampaign?(_game.CampaignStage==7?"KOLLEGIETS VÄKTARE":"KRONFOGDEN"):"VARVETS INDRIVARE",625,42,14,Gold);WorldBar(new Vector2(378,56),490,boss.Health/boss.MaxHealth,Red);}
         Panel(new Rect2(20,623,381,77),.96f);Text("KARL CCLV",new Vector2(38,646),13,Gold);Text($"{Math.Ceiling(_game.Health)} / 100",new Vector2(302,646),13,Pale);
         WorldBar(new Vector2(38,657),345,_game.Health/100,new Color("b6574d"),11);WorldBar(new Vector2(38,677),345,_game.Stamina/100,Teal,5);
@@ -637,6 +640,7 @@ public partial class Main : Node2D
     }
     private void DrawObjectiveDirection()
     {
+        if(_game.InRooms&&!_game.ExploredRoomPoint(_game.ObjectivePosition))return;
         var world=G(_game.ObjectivePosition);var p=world*Zoom+Offset;
         if(new Rect2(130,150,1020,295).HasPoint(p))return;
         var pin=new Vector2(Math.Clamp(p.X,58,1222),Math.Clamp(p.Y,150,390));
@@ -793,7 +797,7 @@ public partial class Main : Node2D
     {
         foreach(var texture in _campaignWorlds)texture?.Dispose();
         _cast?.Dispose();_animated?.Dispose();_warehouse?.Dispose();if(_shoreRevealed!=_shore)_shoreRevealed?.Dispose();_shore?.Dispose();
-        _inventoryBackground?.Dispose();foreach(var texture in _inventoryItemArt.Values)texture.Dispose();
+        _roomFog?.Dispose();_inventoryBackground?.Dispose();foreach(var texture in _inventoryItemArt.Values)texture.Dispose();
         _portProps?.Dispose();
         _background?.Dispose();_radioPortraits?.Dispose();_ebbaPortrait?.Dispose();_serif?.Dispose();_sans?.Dispose();
     }

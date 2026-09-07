@@ -1,5 +1,11 @@
 # Checkpoint · Vägen under vattnet · 2026-09-06
 
+## Senast · upptäcktsmörker och sikt · 2026-09-07
+
+Rumsprovet har nu sparad utforskning, dämpad mark vid återbesök, aktuell sikt, hinderstyrd fiendeupptäckt och en liten utforskningskarta. Dolda fiender, lik, loot, etiketter, riktningspilar och bossmätare avslöjas inte av UI. Målningar och 2D-figurer består. Sikt använder samma gång-/hindergeometri som rörelse och projektiler; mörkermasken förlängs uppåt över synliga figurer så huvuden/ben inte kapas vid cellkanter. Se `EXPLORATION.md` för omfattning och nästa steg.
+
+Regeltester: 29 207 assertions, inklusive äldre rumssparning, maskvalidering, hinder, vaktupptäckt, sparning och båda understöden genom rumsprovet. Bildtestet jämför hela renderade bildens pixlar med/utan en dold boss och loot; de är identiska. Fler rum, flera hinder och nya bossen återstår. Ny Linux-export: `dist/AtlandsArv-0.6.1-fog/AtlandsArv.x86_64`.
+
 ## Senast · två beständiga rum · 2026-09-07
 
 Första kodcheckpointen mot `ROADMAP.md` mål 1: `./start.sh -- --rooms`, egen menyknapp och `rooms-save.json`. Förgård och logement binds av en nyckellåst passage. Fiender och markfynd bevaras per rum, nedhållen E/B ger inte återstuds och dörrbyten ger inga resurser. R visar besöks-/fyndstatus. Nuvarande målningar återanvänds och deras faktiska öppningar används; ingen ny 3D eller ny assetgeneration. Sexrumsbanan, upptäcktsmasken och nya bossen återstår. Exakt omfattning, begränsningar och testrecept i `ROOMS.md`.

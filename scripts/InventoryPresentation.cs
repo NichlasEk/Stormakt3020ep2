@@ -147,7 +147,7 @@ public partial class Main
     }
     private void DrawDroppedItems()
     {
-        foreach(var drop in _game.LocalDrops)
+        foreach(var drop in _game.LocalDrops.Where(d=>_game.CanSeeRoomPoint(d.Position)))
         {
             var p=G(drop.Position);DrawCircle(p,14,new Color(.04f,.05f,.04f,.85f));ItemIcon(drop.Item.Data.Slot,p,22,Gold);
             if(System.Numerics.Vector2.Distance(_game.Player,drop.Position)<85)
