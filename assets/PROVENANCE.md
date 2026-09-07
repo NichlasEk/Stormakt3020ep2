@@ -68,3 +68,7 @@ Den tidigare helt täckande `ebba-radio-v2.png` bevaras som föregående variant
 ## Inventariegrafik · 2026-09-07
 
 `art/inventory-background-v1.png` och `art/inventory-item-*-v1.png` (14 föremål) är nya originalbilder genererade med OpenAI imagegen. Mörk målad trä-/läderram och individuella matta föremålskort; originalfilerna är kopierade utan bildbearbetning. Fullständiga promptar, genereringskällor och destinationsfiler finns i [manifestet](source/inventory/art-v1.json). Bilderna används i inventarium, utrustning, stash och detaljpanel.
+
+## Pumphus och cistern · 2026-09-07
+
+`art/room-pump-v1.png`, `art/room-pump-low-v1.png` och `art/room-cistern-v1.png` är nya originalbilder från det inbyggda OpenAI-bildverktyget. Den låga vattennivån är en redigering av pumphusbilden. Alla valda filer kopieras oförändrade. Fulla promptar och källor: [manifest](source/rooms/water-art-v1.json). Gångytor och bassänger kalibreras efter målningarna i `PortRooms`; befintliga rum och aktörsbilder ändras inte.

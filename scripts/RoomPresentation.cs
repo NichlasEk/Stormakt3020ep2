@@ -10,6 +10,7 @@ public partial class Main
     private bool _roomsSlot,_roomChecks;
     private void StartRooms()
     {
+        LoadWaterArt();
         _roomsSlot=true;_atlandSlot=_portSlot=false;
         if(!_testMode&&System.IO.File.Exists(SavePath)){ResumeSave();return;}
         _game=Combat.NewRooms(_order);ApplyDeveloperSettings();_particles.Clear();_floating.Clear();_radioQueue.Clear();_radio="";_sound.StopVoice();
@@ -18,8 +19,19 @@ public partial class Main
     }
     private void DrawRoomMarkers()
     {
-        var run=_game.Rooms!;var door=G(PortRooms.Door(run.Current));
-        if(_game.CanSeeRoomPoint(PortRooms.Door(run.Current)))Text(run.DoorOpen?run.Current==PortRooms.Court?"TILL LOGEMENTET":"TILL FÖRGÅRDEN":"LÅST DÖRR",door+new Vector2(-70,38),12,Gold);
+        var run=_game.Rooms!;
+        foreach(var link in RoomLinks.From(run.Current))
+        {
+            var at=link.At(run.Current);if(!_game.CanSeeRoomPoint(at))continue;
+            string label=RoomLinks.Open(run,link)?"TILL "+PortRooms.Name(link.Other(run.Current)).ToUpperInvariant():link.Gate==PassageGate.Water?"VATTENFYLLD TRAPPA":link.Gate==PassageGate.Shortcut?"REGLAD LUCKA":"LÅST PASSAGE";
+            Text(label,G(at)+new Vector2(-70,38),11,Gold);
+        }
+        if(run.Current==PortRooms.Pump)
+        {
+            if(_game.CanSeeRoomPoint(PortRooms.Pressure))Text(run.PressureReleased?"AVLASTAD":"TRYCKAVLASTNING",G(PortRooms.Pressure)+new Vector2(-65,35),12,Gold);
+            if(_game.CanSeeRoomPoint(PortRooms.Wheel))Text(run.WaterLowered?"PUMPEN ÄR TÖMD":"MATARHJUL",G(PortRooms.Wheel)+new Vector2(-50,35),12,Gold);
+        }
+        if(run.Current==PortRooms.Cistern&&!run.RelicTaken&&_game.CanSeeRoomPoint(PortRooms.Relic))Text("SALTETS VITTNESMÅL",G(PortRooms.Relic)+new Vector2(-65,35),12,Gold);
         if(run.Current==PortRooms.Court&&!run.KeyTaken&&_game.CanSeeRoomPoint(PortRooms.Key))
         {var p=G(PortRooms.Key);DrawCircle(p,17,new Color(.03f,.04f,.03f,.9f));DrawArc(p,7,0,Mathf.Tau,20,Gold,2,true);DrawLine(p+new Vector2(5,5),p+new Vector2(17,17),Gold,3,true);Text("VÄKTARENS PACKNING",p+new Vector2(-80,38),12,Gold);}
         if(run.Current==PortRooms.Lodge&&!run.CacheTaken&&_game.CanSeeRoomPoint(PortRooms.Cache))Text("FÖRSEGLAD KISTA",G(PortRooms.Cache)+new Vector2(-60,38),12,Gold);
@@ -51,9 +63,13 @@ public partial class Main
     {
         var r=_game.Rooms!;string prompt="";
         bool Near(System.Numerics.Vector2 p)=>System.Numerics.Vector2.Distance(_game.Player,p)<72&&_game.ClearPath(_game.Player,p);
-        if(Near(PortRooms.Door(r.Current)))prompt=!r.KeyTaken?"Låst · sök väktarens nyckel":!r.DoorOpen?"E / B · Lås upp dörren":"E / B · Gå genom dörren";
+        var link=RoomLinks.From(r.Current).FirstOrDefault(l=>Near(l.At(r.Current)));
+        if(link!=null)prompt=RoomLinks.Open(r,link)?"E / B · Gå till "+PortRooms.Name(link.Other(r.Current)):link.Gate==PassageGate.Key&&r.KeyTaken?"E / B · Lås upp":link.Gate==PassageGate.Shortcut&&r.Current==PortRooms.Cistern?"E / B · Lyft regeln":RoomLinks.LockedReason(link);
         else if(r.Current==PortRooms.Court&&!r.KeyTaken&&Near(PortRooms.Key))prompt="E / B · Sök väktarens packning";
         else if(r.Current==PortRooms.Lodge&&!r.CacheTaken&&Near(PortRooms.Cache))prompt="E / B · Undersök kistan";
+        else if(r.Current==PortRooms.Pump&&Near(PortRooms.Pressure)&&!r.PressureReleased)prompt="E / B · Släpp övertrycket";
+        else if(r.Current==PortRooms.Pump&&Near(PortRooms.Wheel)&&!r.WaterLowered)prompt=r.PressureReleased?"E / B · Vrid matarhjulet":"Matarhjulet är trycklåst";
+        else if(r.Current==PortRooms.Cistern&&Near(PortRooms.Relic)&&!r.RelicTaken)prompt="E / B · Undersök altaret";
         if(prompt=="")return;
         if(_game.Enemies.Any(e=>!e.Dead))prompt=_game.Enemies.Any(e=>!e.Dead&&_game.CanSeeRoomPoint(e.Position))?"Slå tillbaka rummets väktare":"Området behöver säkras först";
         Panel(new Rect2(390,412,500,59),.94f);Centered(prompt,640,442,17,Gold);
@@ -64,9 +80,11 @@ public partial class Main
         Text("ATLAND · DE FÖRSEGLADE RUMMEN",new Vector2(95,100),26,Pale,true);
         Wrapped("En gammal logementdörr leder in under porten. Väktarens packning i förgården kan innehålla nyckeln. Säkra rummet och undersök kistan innanför.",new Vector2(95,170),1000,21,Muted,34);
         var r=_game.Rooms!;
-        Text("Förgården  ↔  "+(r.Rooms[PortRooms.Lodge].Visited?"Väktarnas logement":"Oundersökt rum"),new Vector2(95,340),24,Gold);
-        Text($"Nyckel: {(r.KeyTaken?"säkrad":"saknas")} · Dörr: {(r.DoorOpen?"öppen":"låst")} · Vittnessigill: {(r.CacheTaken?"funnet":"återstår")}",new Vector2(95,400),19,Pale);
-        Wrapped(r.CacheTaken?"Ritningen visar en cistern under logementet. Den delen av expeditionen återstår i nästa byggpass. Du kan återvända mellan de två rummen och hämta kvarlämnade fynd.":"Återbesök minns besegrade vakter och kvarlämnade fynd. Nyckeln förvaras tillsammans med expeditionens handlingar och tar ingen väskplats.",new Vector2(95,480),1000,19,Muted,30);
+        int row=0;
+        foreach(var id in new[]{PortRooms.Court,PortRooms.Lodge,PortRooms.Pump,PortRooms.Cistern})
+        {Text(r.Rooms[id].Visited?PortRooms.Name(id):"Oundersökt rum",new Vector2(95,310+row++*38),20,id==r.Current?Gold:Muted);}
+        Text($"Nyckel: {(r.KeyTaken?"säkrad":"saknas")} · Vatten: {(r.WaterLowered?"sänkt":"högt")} · Genväg: {(r.ShortcutOpen?"öppen":"reglad")}",new Vector2(95,495),18,Pale);
+        Wrapped(r.CacheTaken?"Ritningen visar pumpens ordning: avlasta trycket på östra sidan, vrid sedan västra matarhjulet. Cisternen kan dölja en äldre väg tillbaka till förgården.":"Sök väktarens nyckel och undersök logementets kista. Återbesök minns fiender, fynd och utforskade ytor.",new Vector2(95,540),1000,18,Muted,27);
         Button(new Rect2(830,614,340,49),"Tillbaka","back",true);
     }
 

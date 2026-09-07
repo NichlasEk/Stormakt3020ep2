@@ -64,7 +64,7 @@ static class RoomTests
                 {
                     if(run.Rooms!.CacheTaken&&run.Rooms.Current==PortRooms.Court)break;
                     var foe=run.Enemies.Where(e=>!e.Dead).OrderBy(e=>Vector2.DistanceSquared(e.Position,run.Player)).FirstOrDefault();
-                    var target=foe?.Position??run.RoomObjective;var delta=target-run.Player;float distance=delta.Length();
+                    var target=foe?.Position??(run.Rooms!.CacheTaken&&run.Rooms.Current==PortRooms.Lodge?PortRooms.LodgeDoor:run.RoomObjective);var delta=target-run.Player;float distance=delta.Length();
                     bool guard=foe is not null&&foe.State==1&&foe.Timer<.16f&&distance<150;
                     var waypoint=run.NextWaypoint(run.Player,target)-run.Player;
                     var move=distance>55||!run.ClearPath(run.Player,target)?Combat.Normal(waypoint,Vector2.UnitX):Vector2.Zero;

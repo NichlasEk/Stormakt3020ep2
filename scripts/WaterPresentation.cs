@@ -1,0 +1,25 @@
+using Godot;
+using Atland;
+using System;
+using System.Collections.Generic;
+
+public partial class Main
+{
+    private Texture2D? _pumpArt,_pumpLowArt,_cisternArt;
+    private void LoadWaterArt()
+    {
+        if(_pumpArt!=null)return;
+        _pumpArt=GD.Load<Texture2D>("res://assets/art/room-pump-v1.png");
+        _pumpLowArt=GD.Load<Texture2D>("res://assets/art/room-pump-low-v1.png");
+        _cisternArt=GD.Load<Texture2D>("res://assets/art/room-cistern-v1.png");
+    }
+    private Texture2D RoomBackground=>_game.Rooms!.Current switch
+    {PortRooms.Lodge=>_warehouse,PortRooms.Pump=>_game.Rooms.WaterLowered?_pumpLowArt!:_pumpArt!,PortRooms.Cistern=>_cisternArt!,_=>_campaignWorlds[0]};
+    private void AddWaterLayers(List<(float Depth,Action Draw)> layers)
+    {
+        bool pump=_game.Rooms!.Current==PortRooms.Pump;
+        var rim=pump?new Vector2[]{new(596,467),new(760,385),new(926,467),new(922,489),new(766,589),new(599,489)}
+            :new Vector2[]{new(532,511),new(803,378),new(1019,513),new(1015,545),new(757,689),new(535,540)};
+        layers.Add((pump?585:685,()=>PaintForeground(RoomBackground,rim)));
+    }
+}

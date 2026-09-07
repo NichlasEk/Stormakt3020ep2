@@ -4,11 +4,13 @@ Episod II. Ett nytt, fristående actionrollspel i Stormakts värld: nordisk baro
 
 [Nästa arbetsmål och nulägesanalys](docs/ROADMAP.md): sammanhängande banor med flera målade rum, dörrar, upptäcktsmörker och egna bossmekaniker. Första byggmålet är Atlands port med sex rum.
 
-## Nytt · två beständiga rum
+## Nytt · fyra beständiga rum
+
+Pumphuset och cisternen har egna målningar. Följ ritningen, avlasta trycket och töm bassängen för att nå cisternens valfria fynd och öppna en genväg tillbaka. Äldre rumssparningar fortsätter fungera. [Nya rum och vattenmekanism](docs/WATER-ROOMS.md).
 
 Rumsprovet har nu **upptäcktsmörker och en utforskningskarta**. Väggar/last stoppar sikten, besökta ytor blir kvar dämpade och osedda fiender/fynd döljs. Utforskningen sparas per rum. [Sikt och verifiering](docs/EXPLORATION.md).
 
-`./start.sh -- --rooms` eller **Atlands förseglade rum · prov**. Hitta nyckeln, lås upp logementet, besegra vakterna och återvänd med ett fynd. Dörr, fiender och kvarlämnade föremål minns sitt tillstånd. E/B interagerar; separat sparfil. Första tekniska checkpointen använder två befintliga målningar; mörker, fler rum och egen boss kommer senare. [Detaljer och verifiering](docs/ROOMS.md).
+`./start.sh -- --rooms` eller **Atlands förseglade rum · prov**. Hitta nyckeln, lås upp logementet, besegra vakterna och återvänd med ett fynd. Dörr, fiender och kvarlämnade föremål minns sitt tillstånd. E/B interagerar; separat sparfil. Förgård/logement använder befintliga målningar; pumphus och cistern har egna. Två ytterligare rum och den egna bossen återstår. [Detaljer och verifiering](docs/ROOMS.md).
 
 ## Nytt · inventarium och utrustning 0.5.1
 

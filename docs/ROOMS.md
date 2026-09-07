@@ -1,5 +1,7 @@
 # Förseglade rum · första checkpointen
 
+**Senare utbyggnad:** sikt och sparad utforskning används nu även i pumphus och cistern. Se `WATER-ROOMS.md` för fyrarumsrutten och senaste export. Två-rumsbeskrivningen nedan är historik och dess prov behålls som regressionstester.
+
 2026-09-07. Första tekniska delen av mål 1 i `ROADMAP.md`. Två sammankopplade provrum: Den dränkta förgården och Väktarnas logement. Detta är inte den färdiga sexrumsbanan. **Uppdatering:** sparat upptäcktsmörker, sikt och utforskningskarta finns nu i rumsprovet; se `EXPLORATION.md` för senaste funktioner och export. Verifieringen nedan beskriver första rumscheckpointen.
 
 ## Prova

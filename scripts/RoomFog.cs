@@ -14,6 +14,9 @@ public partial class Main
         {
             var data=new byte[RoomSight.Count*4];var seen=_game.Rooms!.Rooms[_game.Rooms.Current].Explored;
             var feet=_game.Enemies.Where(e=>_game.CanSeeRoomPoint(e.Position)).Select(e=>e.Position).Append(_game.Player).ToArray();
+            var props=_game.Rooms.Current==PortRooms.Pump
+                ?new[]{(Access:PortRooms.Wheel,Foot:new System.Numerics.Vector2(300,565)),(Access:PortRooms.Pressure,Foot:new System.Numerics.Vector2(1250,595))}
+                :_game.Rooms.Current==PortRooms.Cistern?new[]{(Access:PortRooms.Relic,Foot:new System.Numerics.Vector2(230,675))}:Array.Empty<(System.Numerics.Vector2 Access,System.Numerics.Vector2 Foot)>();
             for(int y=0;y<RoomSight.Rows;y++)for(int x=0;x<RoomSight.Columns;x++)
             {
                 // Ground visibility projects upwards over painted actors/walls, avoiding cut-off heads.
@@ -29,6 +32,13 @@ public partial class Main
                 // Preserve complete visible silhouettes even at those sub-cell boundaries.
                 var pixel=RoomSight.Center(y*RoomSight.Columns+x);
                 if(feet.Any(p=>Math.Abs(pixel.X-p.X)<64&&pixel.Y>=p.Y-190&&pixel.Y<=p.Y+40))alpha=0;
+                // Controls sit outside the walk polygon; reveal their painted bodies from the accessible interaction point.
+                foreach(var prop in props)
+                    if(Math.Abs(pixel.X-prop.Foot.X)<96&&pixel.Y>=prop.Foot.Y-190&&pixel.Y<=prop.Foot.Y+30)
+                    {
+                        if(_game.CanSeeRoomPoint(prop.Access))alpha=0;
+                        else if(_game.ExploredRoomPoint(prop.Access))alpha=Math.Min(alpha,(byte)158);
+                    }
                 int at=(y*RoomSight.Columns+x)*4;
                 data[at]=3;data[at+1]=5;data[at+2]=6;data[at+3]=alpha;
             }
@@ -47,8 +57,8 @@ public partial class Main
         for(int i=0;i<RoomSight.Count;i++)if(RoomSight.Seen(seen,i))
             DrawRect(new Rect2(origin+new Vector2(i%RoomSight.Columns,i/RoomSight.Columns)*cell,new Vector2(cell,cell)),_game.RoomVisible[i]?new Color("77735e"):new Color("383d35"));
         Vector2 Point(System.Numerics.Vector2 p)=>origin+G(p)*(cell/RoomSight.Cell);
-        var door=PortRooms.Door(_game.Rooms.Current);
-        if(_game.ExploredRoomPoint(door))DrawCircle(Point(door),3,_game.Rooms.DoorOpen?Teal:Gold);
+        foreach(var link in RoomLinks.From(_game.Rooms.Current))
+        {var door=link.At(_game.Rooms.Current);if(_game.ExploredRoomPoint(door))DrawCircle(Point(door),3,RoomLinks.Open(_game.Rooms,link)?Teal:Gold);}
         DrawCircle(Point(_game.Player),3,Pale);
     }
 }

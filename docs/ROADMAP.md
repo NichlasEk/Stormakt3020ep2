@@ -6,6 +6,8 @@
 
 **Andra checkpointen:** upptäcktsmask, sparad utforskning, sikt bakom last, dold fiende-/fyndvisning och utforskningskarta finns i de två provrummen. Se `EXPLORATION.md`. Mål 2 är provat i denna begränsade geometri, inte i en hel sexrumsbana.
 
+**Tredje checkpointen:** fyra rum, egna målningar för pumphus/cistern, tryckavlastning och synlig tömning, ett valfritt fynd och en beständig genväg till förgården. Äldre två-rumssparningar migrerar. Se `WATER-ROOMS.md`. Vittnesgalleriet och Edskammaren med bossen återstår.
+
 ## Nuläge
 
 - Spelbar inledning med kaj, magasin och strand, därefter åtta kampanjsteg i fyra målade miljöer. Understöd och arkivval har faktiska följder.
@@ -90,4 +92,4 @@ Leverera ett granskbart delmål per checkpoint: aktuell status, testresultat, sk
 
 ## Nästa konkreta arbetssteg
 
-Rumsgrund, upptäcktsmask och sikt är byggda och provade i två rum. Fortsätt med rumsmålningar, fler hinder och passager, kvarvarande rum och Edsväktaren. Den långa kampanjen använder ännu sin befintliga rutt; rumsprovet startas separat.
+Rumsgrund, upptäcktsmask, sikt och vatten-/genvägsloopen är byggda och provade i fyra rum. Fortsätt med Vittnesgalleriet, Edskammaren och Edsväktaren. Den långa kampanjen använder ännu sin befintliga rutt; rumsprovet startas separat.

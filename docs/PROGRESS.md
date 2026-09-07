@@ -1,5 +1,11 @@
 # Checkpoint · Vägen under vattnet · 2026-09-06
 
+## Senast · pumphus, cistern och genväg · 2026-09-07
+
+Rumsprovet är nu fyra rum. Tre nya genererade bilder: pumphus högt/lågt vatten och cistern. De två första målningarna består. Logementets ritning öppnar vägen till pumphuset; avlasta östra trycket och vrid västra matarhjulet. Cisternens fynd är valfritt, och dess regel öppnar en återvändbar genväg till förgården. Rumslayout version 2 migrerar gamla två-rumssparningar utan omstart. Geometri och sikt följer granskade gångytor/bassänger. Reglage/altare visas från sina åtkomliga interaktionspunkter. Detaljer och promptmanifest i `WATER-ROOMS.md`.
+
+29 228 regelassertions passerar inklusive fyra kampanjrutter och fyrarumsloopen med båda understöden utan utvecklarskydd. Export: `dist/AtlandsArv-0.6.2-water/AtlandsArv.x86_64`. Nästa arbete: Vittnesgalleriet och Edskammaren med Edsväktaren; nya röster/ljud och rörliga dörrblad återstår.
+
 ## Senast · upptäcktsmörker och sikt · 2026-09-07
 
 Rumsprovet har nu sparad utforskning, dämpad mark vid återbesök, aktuell sikt, hinderstyrd fiendeupptäckt och en liten utforskningskarta. Dolda fiender, lik, loot, etiketter, riktningspilar och bossmätare avslöjas inte av UI. Målningar och 2D-figurer består. Sikt använder samma gång-/hindergeometri som rörelse och projektiler; mörkermasken förlängs uppåt över synliga figurer så huvuden/ben inte kapas vid cellkanter. Se `EXPLORATION.md` för omfattning och nästa steg.

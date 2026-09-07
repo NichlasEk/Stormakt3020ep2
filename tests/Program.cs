@@ -357,3 +357,5 @@ RoomTests.Run(Check);
 Console.WriteLine($"PASS PERSISTENT ROOMS · {checks} assertions");
 SightTests.Run(Check);
 Console.WriteLine($"PASS EXPLORATION AND SIGHT · {checks} assertions");
+WaterTests.Run(Check);
+Console.WriteLine($"PASS WATER AND SHORTCUT · {checks} assertions");

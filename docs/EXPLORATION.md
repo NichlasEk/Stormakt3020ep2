@@ -1,5 +1,7 @@
 # Upptäcktsmörker och sikt · rumsprovet
 
+**Senare utbyggnad:** sikt och sparad utforskning används nu även i pumphus och cistern. Se `WATER-ROOMS.md` för fyrarumsrutten och senaste export. Två-rumsbeskrivningen nedan är historik och dess prov behålls som regressionstester.
+
 2026-09-07. Nästa checkpoint efter de två beständiga rummen. Kör `./start.sh -- --rooms`; befintlig rumssparning fungerar.
 
 ## Spelbeteende

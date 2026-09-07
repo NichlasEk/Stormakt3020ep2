@@ -1,5 +1,6 @@
 using System;
 using System.Numerics;
+using System.Linq;
 using System.Text.Json.Serialization;
 
 namespace Atland;
@@ -36,7 +37,7 @@ public sealed partial class Combat
             if(RoomVisible[i])RoomSight.Reveal(seen,i);
         }
         // Preserve landmarks at polygon edges even if their cell center lies just outside.
-        foreach(var at in new[]{Player,PortRooms.Door(Rooms.Current),Rooms.Current==PortRooms.Court?PortRooms.Key:PortRooms.Cache})
+        foreach(var at in RoomLinks.From(Rooms.Current).Select(l=>l.At(Rooms.Current)).Concat(new[]{Player,RoomObjective,Rooms.Current==PortRooms.Pump?PortRooms.Wheel:RoomObjective}))
         {
             int index=RoomSight.Index(at);
             if(index>=0&&CanSeeRoomPoint(at)){RoomSight.Reveal(seen,index);RoomVisible[index]=true;}

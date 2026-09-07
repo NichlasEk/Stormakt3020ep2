@@ -77,7 +77,7 @@ public partial class Main : Node2D
     private static NVec N(Vector2 v)=>new(v.X,v.Y);
     public override void _Ready()
     {
-        var args=OS.GetCmdlineUserArgs();_fogChecks=args.Contains("--fog-check");_roomChecks=args.Contains("--rooms-check");_inventoryChecks=args.Contains("--inventory-check");_portChecks=args.Contains("--port-check");_sceneChecks=args.Contains("--scene-check")||_portChecks||_inventoryChecks||_roomChecks||_fogChecks;_uiChecks=args.Contains("--ui-check");
+        var args=OS.GetCmdlineUserArgs();_waterChecks=args.Contains("--water-check");_fogChecks=args.Contains("--fog-check");_roomChecks=args.Contains("--rooms-check");_inventoryChecks=args.Contains("--inventory-check");_portChecks=args.Contains("--port-check");_sceneChecks=args.Contains("--scene-check")||_portChecks||_inventoryChecks||_roomChecks||_fogChecks||_waterChecks;_uiChecks=args.Contains("--ui-check");
         _serif=GD.Load<Font>("res://assets/fonts/NotoSerif-Regular.ttf");_sans=GD.Load<Font>("res://assets/fonts/NotoSans-Regular.ttf");
         _background=GD.Load<Texture2D>("res://assets/art/likvarvet-scale-v5.png");
         _radioPortraits=GD.Load<Texture2D>("res://assets/art/radio-cast-v1.png");
@@ -92,9 +92,9 @@ public partial class Main : Node2D
         if(args.Contains("--duel"))StartDuel();
         if(args.Contains("--port")||_portChecks||_inventoryChecks){_portSlot=true;StartAtland();}
         else if(args.Contains("--atland")||_campaignCheck)StartAtland();
-        if(args.Contains("--rooms")||_roomChecks||_fogChecks)StartRooms();
+        if(args.Contains("--rooms")||_roomChecks||_fogChecks||_waterChecks)StartRooms();
         if(args.Contains("--capture-title"))_smokeCapture=true;
-        if(_fogChecks)RunSightChecks();else if(_roomChecks)RunRoomChecks();else if(_inventoryChecks)RunInventoryChecks();else if(_portChecks)RunPortChecks();else if(_sceneChecks)RunSceneChecks();
+        if(_waterChecks)RunWaterChecks();else if(_fogChecks)RunSightChecks();else if(_roomChecks)RunRoomChecks();else if(_inventoryChecks)RunInventoryChecks();else if(_portChecks)RunPortChecks();else if(_sceneChecks)RunSceneChecks();
     }
     public override void _Input(InputEvent ev)
     {
@@ -494,7 +494,7 @@ public partial class Main : Node2D
     {
         DrawSetTransform(Offset,0,Vector2.One*Zoom);
         if(_game.Region==Region.Quay)DrawTextureRectRegion(_background,new Rect2(18,30,1500,946),new Rect2(18,30,1500,946),Colors.White);
-        else {DrawTextureRect(_game.InRooms?(_game.Rooms!.Current==PortRooms.Lodge?_warehouse:_campaignWorlds[0]):_game.InCampaign?_campaignWorlds[_game.Stage.World]:_game.Region==Region.Warehouse?_warehouse:_game.AtlandRevealed?_shoreRevealed:_shore,new Rect2(0,0,1536,1024),false);if(_game.InRooms)DrawRoomMarkers();else if(_game.InCampaign)DrawCampaignMarkers();else DrawJourneyMarkers();}
+        else {DrawTextureRect(_game.InRooms?RoomBackground:_game.InCampaign?_campaignWorlds[_game.Stage.World]:_game.Region==Region.Warehouse?_warehouse:_game.AtlandRevealed?_shoreRevealed:_shore,new Rect2(0,0,1536,1024),false);if(_game.InRooms)DrawRoomMarkers();else if(_game.InCampaign)DrawCampaignMarkers();else DrawJourneyMarkers();}
         foreach(var seal in _game.Seals)
         {
             var p=G(seal.Position);bool alive=seal.Health>0;var c=alive?Teal:Muted;
@@ -797,7 +797,7 @@ public partial class Main : Node2D
     {
         foreach(var texture in _campaignWorlds)texture?.Dispose();
         _cast?.Dispose();_animated?.Dispose();_warehouse?.Dispose();if(_shoreRevealed!=_shore)_shoreRevealed?.Dispose();_shore?.Dispose();
-        _roomFog?.Dispose();_inventoryBackground?.Dispose();foreach(var texture in _inventoryItemArt.Values)texture.Dispose();
+        _pumpArt?.Dispose();_pumpLowArt?.Dispose();_cisternArt?.Dispose();_roomFog?.Dispose();_inventoryBackground?.Dispose();foreach(var texture in _inventoryItemArt.Values)texture.Dispose();
         _portProps?.Dispose();
         _background?.Dispose();_radioPortraits?.Dispose();_ebbaPortrait?.Dispose();_serif?.Dispose();_sans?.Dispose();
     }
