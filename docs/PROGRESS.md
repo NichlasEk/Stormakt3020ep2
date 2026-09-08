@@ -1,5 +1,10 @@
 # Checkpoint · Vägen under vattnet · 2026-09-06
 
+## 0.16 · Karl CCLV till Uppsala
+
+Skeppsresa och återresa, ny målad Uppsalagård med tre instrument, strid och beständigt datumfynd. Nio nya radiorepliker och motorljud. Tjugo platser; Meridiansalen är nästa byggmål. Separat direktprov: `./play.sh -- --uppsala`. [Leverans och verifiering](UPPSALA.md).
+
+
 ## 0.15.1 · Gångputs
 
 Kortare bildhållning och stabilare riktningsbyten för gången, samt separat målat gångkort för Kronfogden med fram- och bakvy. [Omfattning, begränsningar och provspelning](GAIT-POLISH.md).

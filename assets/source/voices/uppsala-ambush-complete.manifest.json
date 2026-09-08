@@ -1,0 +1,10 @@
+{
+  "parts": [
+    "uppsala-ambush-sentence-0.wav",
+    "uppsala-ambush-sentence-1.wav",
+    "uppsala-ambush-sentence-2.wav"
+  ],
+  "sha256": "5e007fd9c7ebfc2b7129071482561c841d5ac98e2f460eeb5cdf5c5d7e357a16",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

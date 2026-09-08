@@ -1,0 +1,10 @@
+{
+  "parts": [
+    "uppsala-secured-sentence-0.wav",
+    "uppsala-secured-sentence-1.wav",
+    "uppsala-secured-sentence-2.wav"
+  ],
+  "sha256": "5766fa69668a289fd61ca6e364cb35cec817da99e76ab7dd03940c5289c7fe81",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

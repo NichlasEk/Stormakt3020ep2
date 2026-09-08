@@ -1,0 +1,5 @@
+# flight-uppsala-v1
+
+Built-in imagegen. Original ship reference: /home/nichlas/WaylandForge/assets/stormakt3020/karl-cclv-dark-frigate-v1.png. Matte painted 2D Episode II production asset.
+
+Use case: historical-scene. Cinematic matte oil painting 1536x1024, serious dark Swedish national romantic science-fantasy. The EXACT spear-shaped dark navy armored royal frigate with gilt edge strips and three gold crown emblems, wide rear twin engines, from reference, in full three-quarter side view flying from lower left to upper right above the black forests and misty rivers of Uppland. Ship dominates center, small blue engine exhausts, huge worn mass, crisp adult serious shapes. Uppsala's distant twin cathedral towers on the right horizon below an unsettling pale sun and faint concentric astronomical cloud rings. Dawn in ochre, charcoal, muted cold slate; rich 17th-century oil painting, matte battered metal, no shiny plastic or comic/cartoon style. No text, no labels, no people, no borders, no starscape, no 3D render. Wide cinematic composition that can be slowly panned in a 16:9 viewport. Original game ship identity must be recognizable.

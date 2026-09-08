@@ -1,0 +1,11 @@
+{
+  "parts": [
+    "uppsala-arrival-sentence-0.wav",
+    "uppsala-arrival-sentence-1.wav",
+    "uppsala-arrival-sentence-2.wav",
+    "uppsala-arrival-sentence-3.wav"
+  ],
+  "sha256": "274dd55b0099adc7bd366676b6b3cfcdc5c45eaf90f5b72148f8111ba092eefb",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

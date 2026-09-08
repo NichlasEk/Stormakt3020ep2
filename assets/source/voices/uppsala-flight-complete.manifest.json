@@ -1,0 +1,11 @@
+{
+  "parts": [
+    "uppsala-flight-sentence-0.wav",
+    "uppsala-flight-sentence-1.wav",
+    "uppsala-flight-sentence-2.wav",
+    "uppsala-flight-sentence-3.wav"
+  ],
+  "sha256": "60e1f38f24adfa6483f0f790451f35783dee803d4f5692fb71344eeefb3d8154",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

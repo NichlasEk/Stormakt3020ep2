@@ -23,7 +23,7 @@ public partial class Main
     }
     private void StartRegiment(bool fresh=false)
     {
-        LoadWaterArt();_foundrySlot=false;_mineSlot=false;_regimentSlot=true;_doorSlot=_roomsSlot=_portSlot=_atlandSlot=false;
+        LoadWaterArt();_uppsalaSlot=false;_shipTime=0;_foundrySlot=false;_mineSlot=false;_regimentSlot=true;_doorSlot=_roomsSlot=_portSlot=_atlandSlot=false;
         if(!fresh&&!_testMode&&System.IO.File.Exists(SavePath)){ResumeSave();return;}
         _game=Combat.NewRegimentPreview(_order);ApplyDeveloperSettings();_particles.Clear();_floating.Clear();_radioQueue.Clear();_radio="";_sound.StopVoice();
         _camera=G(_game.Player)+new Vector2(0,-60);RememberRenderPositions();ChangeScreen(Screen.Game);Save();Notice("Separat provexpedition · följ stigen från lunden");

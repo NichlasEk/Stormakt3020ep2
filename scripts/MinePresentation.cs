@@ -19,7 +19,7 @@ public partial class Main
     }
     private void StartMine(bool fresh=false)
     {
-        LoadWaterArt();_foundrySlot=false;_mineSlot=true;_regimentSlot=_doorSlot=_roomsSlot=_portSlot=_atlandSlot=false;_boatTime=0;
+        LoadWaterArt();_uppsalaSlot=false;_shipTime=0;_foundrySlot=false;_mineSlot=true;_regimentSlot=_doorSlot=_roomsSlot=_portSlot=_atlandSlot=false;_boatTime=0;
         if(!fresh&&!_testMode&&System.IO.File.Exists(SavePath)){ResumeSave();return;}
         _game=Combat.NewMinePreview(_order);ApplyDeveloperSettings();_particles.Clear();_floating.Clear();_radioQueue.Clear();_radio="";_sound.StopVoice();
         _bannerTime=_campaignTextTime=_revealTime=0;_camera=G(_game.Player)+new Vector2(0,-60);RememberRenderPositions();ChangeScreen(Screen.Game);Save();Notice("Separat gruvexpedition · följ trappan från kajen");

@@ -1,0 +1,10 @@
+{
+  "parts": [
+    "uppsala-return-sentence-0.wav",
+    "uppsala-return-sentence-1.wav",
+    "uppsala-return-sentence-2.wav"
+  ],
+  "sha256": "2ad8618fe1bd53c1accc64df7d5053046938f56454630456afdd14f9de7bf799",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

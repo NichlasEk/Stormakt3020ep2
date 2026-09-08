@@ -1,5 +1,10 @@
 # Stormakt 3020: Atlands arv
 
+## 0.16 · Karl CCLV till Uppsala
+
+Skeppsresa och återresa, ny målad Uppsalagård med tre instrument, strid och beständigt datumfynd. Nio nya radiorepliker och motorljud. Tjugo platser; Meridiansalen är nästa byggmål. Separat direktprov: `./play.sh -- --uppsala`. [Leverans och verifiering](docs/UPPSALA.md).
+
+
 ## 0.15.1 · Gångputs
 
 Kortare bildhållning och stabilare riktningsbyten för gången, samt separat målat gångkort för Kronfogden med fram- och bakvy. [Omfattning, begränsningar och provspelning](docs/GAIT-POLISH.md).
@@ -28,7 +33,7 @@ Vittnesgalleriets högra valv leder nu fysiskt till Edskammarens vänstra port. 
 
 Episod II. Ett nytt, fristående actionrollspel i Stormakts värld: nordisk barock, karoliner, mytologi och Rudbecks Atland.
 
-[Nästa arbetsmål och nulägesanalys](docs/ROADMAP.md): sammanhängande banor med flera målade rum, dörrar, upptäcktsmörker och egna bossmekaniker. Huvudrutten har nu nitton beständiga platser, inklusive regementet, gruvan och Kronfogdens gjuteri.
+[Nästa arbetsmål och nulägesanalys](docs/ROADMAP.md): sammanhängande banor med flera målade rum, dörrar, upptäcktsmörker och egna bossmekaniker. Huvudrutten har nu tjugo beständiga platser, inklusive regementet, gruvan, gjuteriet och Uppsalagården.
 
 Starta senaste verifierade Linux-versionen med `./play.sh` (ingen ombyggnad). `./play.sh -- --gate-film` visar filmprovet direkt. Exportens programfil, `.pck` och `data_AtlandsArv_linuxbsd_x86_64` måste ligga tillsammans; `play.sh` kontrollerar detta innan start. `./start.sh` bygger och kör från källkoden.
 

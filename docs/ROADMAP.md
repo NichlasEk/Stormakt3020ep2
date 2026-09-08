@@ -1,5 +1,10 @@
 # Från arenor till expeditioner
 
+## 0.16 · Karl CCLV till Uppsala
+
+Skeppsresa och återresa, ny målad Uppsalagård med tre instrument, strid och beständigt datumfynd. Nio nya radiorepliker och motorljud. Tjugo platser; Meridiansalen är nästa byggmål. Separat direktprov: `./play.sh -- --uppsala`. [Leverans och verifiering](UPPSALA.md).
+
+
 ## 0.15 · Kronfogdens gjuteri · 2026-09-08
 
 Nittonde platsen fortsätter genom svalgångens målade port. Egen boss med hammarnedslag, kylvatten och en andra stridsfas; åtta nya radiorepliker, nytt porträtt och kronans stjärnplatta pekar vidare mot Uppsala. Direktprov med separat sparning: `./play.sh -- --foundry`. [Leverans, assets och nästa steg](FOUNDRY.md). Uppsalaområdet återstår.

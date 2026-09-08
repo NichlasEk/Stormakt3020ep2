@@ -6,14 +6,14 @@ public static class RegimentTests
     public static void Run(Action<bool,string> check)
     {
         var legacy=Combat.NewRegimentPreview(Order.Medicine);
-        foreach(var id in Regiment.Ids.Concat(Mine.Ids))legacy.Rooms!.Rooms.Remove(id);
+        foreach(var id in Regiment.Ids.Concat(Mine.Ids).Concat(Uppsala.Ids))legacy.Rooms!.Rooms.Remove(id);
         foreach(var link in RoomLinks.All.Where(l=>Regiment.Known(l.A)||Regiment.Known(l.B)||Mine.Known(l.A)||Mine.Known(l.B)))legacy.Rooms!.Doors.Remove(link.Id);
         legacy.Rooms!.LayoutVersion=5;legacy.Rooms.ConnectionRevision=3;legacy.Health=61;
         var migration=Path.Combine(Path.GetTempPath(),"regiment-migration-"+Guid.NewGuid()+".json");
         try
         {
             SaveStore.Write(migration,legacy);var restored=SaveStore.Read(migration);
-            check(restored.Rooms!.LayoutVersion==8&&restored.Rooms.Rooms.Count==19,"Published nine-room saves gain six unvisited rooms");
+            check(restored.Rooms!.LayoutVersion==9&&restored.Rooms.Rooms.Count==20,"Published nine-room saves gain six unvisited rooms");
             check(Regiment.Ids.All(id=>!restored.Rooms.Rooms[id].Visited)&&restored.Health==61&&restored.Rooms.GroveSecured,"Migration preserves earlier story and wounds");
         }
         finally{File.Delete(migration);}

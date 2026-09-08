@@ -1,0 +1,11 @@
+{
+ "uppsala-ready": ["ebba", "Stjärnplattan är ombord. Karl CCLV ligger vid bryggans yttre fäste. Vi tar luftvägen till Uppsala."],
+ "uppsala-depart": ["ebba", "Lastrampen är stängd. Karl, håll plåten borta från kompassen. Den har redan vänt oss åt fel håll två gånger."],
+ "uppsala-flight": ["hedvig", "Se på ån där nere. Den följer linjen i gjutformen. Det här är ingen karta över stjärnorna. Det är en ritning för att flytta dem."],
+ "uppsala-arrival": ["ebba", "Uppsala. Motorerna stannar varma. Undersök gården, Karl. Jag tänker inte låta någon skriva in skeppet i deras liggare."],
+ "uppsala-clue": ["hedvig", "Sol mot söder. Äpple mot norr. Nyckel mot väster. De har vänt himlen men glömt att ändra anvisningen. Ställ ringarna som det står."],
+ "uppsala-aligned": ["hedvig", "Där. Plåten svarar. Någon har låst stjärnhimlen vid ett enda datum. Samma morgon, om och om igen."],
+ "uppsala-ambush": ["ebba", "Vakter vid porten. De kommer för plåten. Håll dig undan skyttens linje, Karl."],
+ "uppsala-secured": ["hedvig", "Nyckeln bär ett datum som inte finns i almanackan. Den hör till meridiansalen. Där inne håller de morgonen kvar."],
+ "uppsala-return": ["ebba", "Vi lämnar en signal vid gården och återvänder till bryggan. Fynden är säkrade. Uppsala ligger kvar på vår färdplan."]
+}

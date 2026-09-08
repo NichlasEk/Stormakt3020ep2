@@ -1,0 +1,11 @@
+{
+  "parts": [
+    "uppsala-aligned-sentence-0.wav",
+    "uppsala-aligned-sentence-1.wav",
+    "uppsala-aligned-sentence-2.wav",
+    "uppsala-aligned-sentence-3.wav"
+  ],
+  "sha256": "dca601a38d1808161c34573edb2c8c6ac2e255e0006d59500bc3bb5dc466f46c",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

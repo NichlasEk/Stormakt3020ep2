@@ -1,0 +1,12 @@
+{
+  "parts": [
+    "uppsala-clue-sentence-0.wav",
+    "uppsala-clue-sentence-1.wav",
+    "uppsala-clue-sentence-2.wav",
+    "uppsala-clue-sentence-3.wav",
+    "uppsala-clue-sentence-4.wav"
+  ],
+  "sha256": "e28f1eb2b203b87a327bfddd1d20a53f8c60589b93c2dca43aa8a7e67fc76063",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

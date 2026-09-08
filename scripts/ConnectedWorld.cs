@@ -9,19 +9,19 @@ namespace Atland;
 // current room's frame; a frame change translates every live object, never time.
 public static class ConnectedWorld
 {
-    public static readonly string[] RoomIds=PortRooms.Ids.Concat(Regiment.Ids).Concat(Mine.Ids).ToArray();
+    public static readonly string[] RoomIds=PortRooms.Ids.Concat(Regiment.Ids).Concat(Mine.Ids).Concat(Uppsala.Ids).ToArray();
     public const int Revision=5;
     public static bool Painted(RoomLink link)=>true;
     public static float MouthWidth(RoomLink link)=>link.Id switch{"lodge"=>.8f,"pump" or "cistern"=>.75f,"archive"=>1.15f,"gallery"=>.42f,"shortcut"=>.38f,"chamber"=>.42f,_=>.36f};
-    public static Vector2 Origin(string id)=>Mine.Known(id)?Mine.Origin(id):Regiment.Known(id)?Regiment.Origin(id):id switch
+    public static Vector2 Origin(string id)=>Uppsala.Known(id)?Uppsala.Origin:Mine.Known(id)?Mine.Origin(id):Regiment.Known(id)?Regiment.Origin(id):id switch
     {
         PortRooms.Court=>new(0,0),PortRooms.Lodge=>new(2100,482.5f),PortRooms.Pump=>new(4200,1275),
         PortRooms.Cistern=>new(2100,1950),PortRooms.Gallery=>new(6300,1515),PortRooms.Chamber=>new(8400,2005),
         PortRooms.Archive=>new(10500,2365),PortRooms.Roots=>new(12600,2795),_=>new(14700,3172.5f)
     };
-    public static Vector2[] Ground(string id)=>Mine.Known(id)?Mine.Ground(id):Regiment.Known(id)?Regiment.Ground(id):id switch
+    public static Vector2[] Ground(string id)=>Uppsala.Known(id)?Uppsala.Ground:Mine.Known(id)?Mine.Ground(id):Regiment.Known(id)?Regiment.Ground(id):id switch
     {PortRooms.Court=>PortRooms.CourtGround,PortRooms.Lodge=>JourneyLayout.WarehouseGround,PortRooms.Pump=>PortRooms.PumpGround,PortRooms.Cistern=>PortRooms.CisternGround,PortRooms.Gallery=>PortRooms.GalleryGround,PortRooms.Chamber=>PortRooms.OathGround,PortRooms.Archive=>ArchiveRoom.Ground,PortRooms.Roots=>Rootway.Ground,_=>Rootway.GroveGround};
-    public static Vector2[][] Obstacles(string id)=>Mine.Known(id)?Mine.Obstacles(id):Regiment.Known(id)?Regiment.Obstacles(id):id switch
+    public static Vector2[][] Obstacles(string id)=>Uppsala.Known(id)?Uppsala.Obstacles:Mine.Known(id)?Mine.Obstacles(id):Regiment.Known(id)?Regiment.Obstacles(id):id switch
     {PortRooms.Lodge=>new[]{Navigation.Expand(JourneyLayout.WarehouseObstacle,22)},PortRooms.Pump=>new[]{PortRooms.PumpBasin},PortRooms.Cistern=>new[]{PortRooms.CisternBasin},PortRooms.Gallery=>new[]{PortRooms.Lectern},PortRooms.Chamber=>PortRooms.OathObstacles,PortRooms.Archive=>new[]{ArchiveRoom.Table},PortRooms.Grove=>new[]{Rootway.Slab},_=>Array.Empty<Vector2[]>()};
     public static Vector2[] Route(RoomLink l)
     {
@@ -81,6 +81,10 @@ public sealed partial class Combat
     {
         get
         {
+            if(InUppsala)return UppsalaObjective;
+            if(InMine&&FoundryState.PlateTaken)return new Vector2(240,480);
+            if(InRegiment&&Rooms!.Current==Regiment.Farled&&FoundryState.PlateTaken)return Regiment.LandingBoat;
+            if(InRegiment&&Rooms!.Current==Regiment.Quay&&FoundryState.PlateTaken)return Uppsala.Board;
             if(InFoundry)return FoundryObjective;
             if(InMine)return MineObjective;
             if(InRegiment)return RegimentObjective;
@@ -104,7 +108,7 @@ public sealed partial class Combat
     public void EnableConnectedWorld()
     {
         if(!InRooms||InDoorTrial||InConnectedWorld)return;
-        var r=Rooms!;foreach(var id in Regiment.Ids.Concat(Mine.Ids))r.Rooms.TryAdd(id,new());r.LayoutVersion=8;r.Connected=true;r.ConnectionRevision=ConnectedWorld.Revision;
+        var r=Rooms!;foreach(var id in Regiment.Ids.Concat(Mine.Ids).Concat(Uppsala.Ids))r.Rooms.TryAdd(id,new());r.LayoutVersion=9;r.Connected=true;r.ConnectionRevision=ConnectedWorld.Revision;
         foreach(var e in Enemies)e.HomeRoom=r.Current;
         foreach(var pair in r.Rooms)
         {
