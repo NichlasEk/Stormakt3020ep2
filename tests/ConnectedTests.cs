@@ -42,7 +42,7 @@ public static class ConnectedTests
         Clear();g.Rooms.OathDefeated=true;Walk(RoomLinks.All[5],PortRooms.Gallery);Walk(RoomLinks.All[5],PortRooms.Chamber);Use(PortRooms.OathExit);for(int i=0;i<80;i++)g.Step(default);
         Walk(RoomLinks.All[6],PortRooms.Archive);Use(ArchiveRoom.Desk);check(g.ChooseRoomArchive(1),"Archive choice works");Clear();Use(ArchiveRoom.Seal);for(int i=0;i<80;i++)g.Step(default);
         Walk(RoomLinks.All[7],PortRooms.Roots);Use(Rootway.Winch);for(int i=0;i<80;i++)g.Step(default);
-        Walk(RoomLinks.All[8],PortRooms.Grove);check(g.Rooms.Rooms.Values.All(r=>r.Visited),"Every room is connected and visited");
+        Walk(RoomLinks.All[8],PortRooms.Grove);Clear();Walk(RoomLinks.All[8],PortRooms.Roots);Walk(RoomLinks.All[7],PortRooms.Archive);Walk(RoomLinks.All[7],PortRooms.Roots);Walk(RoomLinks.All[8],PortRooms.Grove);check(g.Rooms.Rooms.Values.All(r=>r.Visited),"Every room is connected and visited");
         // Save halfway along a passage, with actors and loot belonging to distant rooms.
         var path=Path.Combine(Path.GetTempPath(),"atland-connected-"+Guid.NewGuid()+".json");
         g.Player=ConnectedWorld.Center(RoomLinks.All[8])-g.WorldOrigin;var saved=g.Player;SaveStore.Write(path,g);var restored=SaveStore.Read(path);
@@ -53,8 +53,20 @@ public static class ConnectedTests
         g.Rooms.Current=PortRooms.Gallery;g.Rooms.ConnectionRevision=1;g.Player=new(1750,800);var oldHealth=g.Health;
         var movedDrop=g.Inventory.Drops.First(d=>d.Room==PortRooms.Gallery||d.Room==PortRooms.Lodge);movedDrop.Room=PortRooms.Gallery;movedDrop.Position=g.Player;
         SaveStore.Write(path,g);restored=SaveStore.Read(path);
-        check(restored.Rooms!.ConnectionRevision==2&&restored.OnWalkable(restored.Player),"Old bridge save migrates to walkable room floor");
+        check(restored.Rooms!.ConnectionRevision==ConnectedWorld.Revision&&restored.OnWalkable(restored.Player),"Old bridge save migrates to walkable room floor");
         check(restored.Health==oldHealth&&restored.Inventory.Drops.All(d=>restored.OnWalkable(d.Position)),"Moved bridge preserves wounds and reachable loot");File.Delete(path);
+        // Revision two moved only the first arch. Moving the later passages must
+        // preserve its exploration while recovering a player and loot on the old bridge.
+        var oldFrame=g.WorldOrigin-ConnectedWorld.Origin(PortRooms.Archive);
+        foreach(var foe in g.Enemies){foe.Position+=oldFrame;foe.LockedAim+=oldFrame;}
+        foreach(var drop in g.Inventory.Drops)drop.Position+=oldFrame;
+        g.Rooms.Current=PortRooms.Archive;g.Rooms.ConnectionRevision=2;
+        g.Player=new Vector2(12355,3092.5f)-g.WorldOrigin;
+        movedDrop.Room=PortRooms.Archive;movedDrop.Position=g.Player;
+        g.Rooms.CorridorSeen.Add("chamber:2:0");g.Rooms.CorridorSeen.Add("roots:2:0");
+        SaveStore.Write(path,g);restored=SaveStore.Read(path);
+        check(restored.OnWalkable(restored.Player)&&restored.Inventory.Drops.All(d=>restored.OnWalkable(d.Position)),"Revision two recovers player and loot from removed root bridge");
+        check(restored.Rooms!.CorridorSeen.Contains("chamber:2:0")&&!restored.Rooms.CorridorSeen.Contains("roots:2:0"),"Migration preserves unchanged arch exploration");File.Delete(path);
         // Migrate a legacy two-room save without respawning actors or changing resources.
         var old=Combat.NewRooms(Order.Artillery);old.Rooms!.KeyTaken=old.Rooms.DoorOpen=true;old.Rooms.Rooms[PortRooms.Lodge].Visited=true;
         old.Rooms.Rooms[PortRooms.Lodge].Enemies.Add(new(){Id=old.NextId++,Kind=EnemyKind.Guard,Position=new(650,735),Health=17,MaxHealth=85});old.Health=47;
@@ -74,8 +86,36 @@ public static class ConnectedTests
         // Each story gate seals the full corridor from both approaches.
         var locked=Combat.NewRooms(Order.Artillery);locked.EnableConnectedWorld();
         foreach(var l in RoomLinks.All)
-        {var route=ConnectedWorld.Route(l);var axis=Vector2.Normalize(l.Id=="chamber"?route[1]-route[0]:route[2]-route[1]);var c=ConnectedWorld.Center(l);
+        {var route=ConnectedWorld.Route(l);var axis=Vector2.Normalize(ConnectedWorld.Painted(l)?route[1]-route[0]:route[2]-route[1]);var c=ConnectedWorld.Center(l);
             check(!locked.ClearPath(c-axis*55,c+axis*55)&&!locked.ClearPath(c+axis*55,c-axis*55),"Story gate blocks both directions: "+l.Id);}
+        foreach(var link in RoomLinks.All.Where(l=>l.Id is "roots" or "grove"))
+        {
+            var route=ConnectedWorld.Route(link);var axis=Vector2.Normalize(route[1]-route[0]);
+            var c=ConnectedWorld.Center(link);var side=ConnectedWorld.Side(route[0],route[1])*ConnectedWorld.MouthWidth(link);
+            for(int lane=-8;lane<=8;lane++)
+            {
+                var offset=side*(lane/4f);
+                check(!locked.ClearPath(c+offset-axis*45,c+offset+axis*45),"Painted gate blocks offset approach: "+link.Id+" "+lane);
+                check(!locked.ClearPath(c+offset+axis*45,c+offset-axis*45),"Painted gate blocks reverse offset approach: "+link.Id+" "+lane);
+            }
+        }
+        foreach(var link in RoomLinks.All.Where(l=>l.Id is "roots" or "grove"))foreach(int direction in new[]{-1,1})
+        {
+            var route=ConnectedWorld.Route(link);var axis=Vector2.Normalize(route[1]-route[0])*direction;
+            var c=ConnectedWorld.Center(link);g.Enemies.Clear();g.Shots.Clear();g.Hazards.Clear();
+            g.Player=c+axis*155-g.WorldOrigin;g.Health=100;g.DeveloperSurvival=true;
+            var leaf=g.Rooms.Doors[link.Id];leaf.Locked=false;leaf.TargetOpen=false;leaf.Openness=0;
+            g.Spawn(EnemyKind.Guard,c-axis*85-g.WorldOrigin);var guard=g.Enemies[^1];guard.Alerted=true;
+            for(int tick=0;tick<110;tick++)g.Step(default);
+            check(Vector2.Dot(guard.Position+g.WorldOrigin-c,axis)<0,"Guard cannot cross closed painted door from side "+direction+": "+link.Id);
+            // Give the leaf its physical clearance; an actor pressed against it
+            // correctly stops the sweep, just as in the original door study.
+            guard.Position=c-axis*110-g.WorldOrigin;guard.State=2;guard.Timer=1.1f;
+            leaf.TargetOpen=true;
+            for(int tick=0;tick<420;tick++)g.Step(default);
+            Console.WriteLine($"ARCH CHASE {link.Id}/{direction} door={leaf.Openness} guard={guard.Position+g.WorldOrigin-c} player={g.Player+g.WorldOrigin-c} state={guard.State} walk={g.OnWalkable(guard.Position)} clear={g.ClearPath(guard.Position,g.Player)}");
+            check(Vector2.Dot(guard.Position+g.WorldOrigin-c,axis)>15,"Guard follows through open painted door from side "+direction+": "+link.Id);
+        }
         locked.Rooms!.Doors["lodge"].Health=0;locked.Rooms.DoorOpen=true;locked.ValidateRooms();
         check(!locked.Rooms.KeyTaken,"Breaking a door does not invent a key");
     }

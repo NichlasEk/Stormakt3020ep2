@@ -1,5 +1,7 @@
 # Målade portar · 0.12.1
 
+Historik för det första portparet. **Aktuell fortsättning: [0.12.2, Arkivet och Rotvägen](ROOT-ARCHES.md).**
+
 Första ombyggda förbindelsen är **Vittnesgalleriet → Edskammaren**, porten i användarens bild. Utgången vid galleriets högra golvkant har ersatts av en gångväg genom den befintliga målade dörröppningen. Återvägen går genom Edskammarens vänstra valv. Ingen scenövergång eller teleport används.
 
 - Läs vittnesboken som tidigare. Gå sedan uppåt/höger in genom galleriets högra valv. E används inte för själva förflyttningen.

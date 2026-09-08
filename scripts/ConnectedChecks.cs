@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using NVec=System.Numerics.Vector2;
 public partial class Main
 {
-    private async void RunConnectedChecks(bool arch=false)
+    private async void RunConnectedChecks(bool arch=false,bool rootArches=false)
     {
         try
         {
@@ -27,6 +27,33 @@ public partial class Main
                 await ToSignal(GetTree(),SceneTree.SignalName.ProcessFrame);await ToSignal(RenderingServer.Singleton,RenderingServer.SignalName.FramePostDraw);
                 using var image=GetViewport().GetTexture().GetImage();var p=ProjectSettings.GlobalizePath("res://artifacts/"+name+".png");System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(p)!);
                 if(image.SavePng(p)!=Error.Ok)throw new Exception("Capture failed");
+            }
+            if(rootArches)
+            {
+                _game.Enemies.Clear();_game.Rooms.ArchiveSecured=_game.Rooms.RootGateOpen=true;
+                foreach(var snapshot in _game.Rooms.Rooms.Values)snapshot.Visited=true;
+                foreach(var id in new[]{"roots","grove"})
+                {
+                    var link=RoomLinks.All.First(l=>l.Id==id);var leaf=_game.Rooms.Doors[id];
+                    leaf.Locked=false;leaf.TargetOpen=false;leaf.Openness=0;
+                    _game.Rooms.Current=link.A;var route=ConnectedWorld.Route(link);
+                    _game.Player=route[0]-_game.WorldOrigin;_game.UpdateRoomSight(true);
+                    await Capture(id+"-arch-closed");
+                    leaf.TargetOpen=true;
+                    for(int tick=0;tick<80;tick++)_game.Step(default);
+                    if(leaf.Openness<.99f)throw new Exception("Door failed to open: "+id);
+                    await Capture(id+"-arch-open");
+                    foreach(var target in route.Skip(1))
+                    {
+                        int steps=0;while(NVec.Distance(_game.Player+_game.WorldOrigin,target)>5&&steps++<2000)
+                        {var move=NVec.Normalize(target-_game.WorldOrigin-_game.Player);_game.Step(new(move,move,false,false,false,false,false,false,false,false));foreach(var cue in _game.Events.Where(c=>c.Kind=="world-frame"))HandleCue(cue);}
+                        if(steps>=2000)throw new Exception("Blocked root arch: "+id+" at "+target);
+                        if(target==route[1])await Capture(id+"-arch-under-vault");
+                    }
+                    if(_game.Rooms.Current!=link.B)throw new Exception("Wrong room after arch: "+id);
+                    await Capture(id+"-arch-arrival");
+                }
+                await SettleAudio();GD.Print("ROOT ARCH CHECK PASS: archive and root doors, opening, vaults and continuous arrivals");GetTree().Quit();return;
             }
             if(arch)
             {

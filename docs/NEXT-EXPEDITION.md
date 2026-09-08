@@ -2,6 +2,10 @@
 
 2026-09-07. Berättelse- och byggplan efter användarens provspelning av 0.12.1. Förslagen nedan är nästa produktion, inte nya spelbara rum eller färdiga radioassets.
 
+## Produktion 2026-09-08
+
+Planen är godkänd. Första implementationen, 0.12.2, passar in **Arkiv–Rotvägen** och **Rotvägen–lunden** i de målade öppningarna med nya öppna bildvarianter, rörliga dörrblad och förgrundsmasker. Tre av nio förbindelser använder nu sina målade portar; sex återstår. [Leverans, kontroller och kvarstående detaljarbete](ROOT-ARCHES.md). Regementeskapitlet och båtfärden är fortfarande kommande arbete.
+
 ## Vad som finns nu
 
 Den nya huvudrutten har nio beständiga rum, två arkivval, Edsväktaren, Rotvägen, De namnlösas lund och radio med porträtt/röster. `Rootway.StepRootway` avslutar just nu den spelbara fortsättningen vid det återfunna avtrycket: vägen mot berget och solen som går upp i norr. Därefter finns återbesök, fynd och sigill, men ingen anslutning till nästa region.
@@ -27,10 +31,10 @@ Den nya huvudrutten har nio beständiga rum, två arkivval, Edsväktaren, Rotvä
 | Cistern–förgård | Behåll den reglade genvägen och hela slingan; en ny anslutning får inte gå genom en annan förbindelses lås. |
 | Pumphus–galleri | Använd galleriets vänstra valv med egna karmmasker och motsvarande anslutning från pumphuset. |
 | Edskammare–arkiv | Utgå från den stora inre porten och arkivets målade ingång. Använd kammarens befintliga öppna bildvariant. |
-| Arkiv–Rotvägen | Skapa en öppen variant av arkivets högra dörr och Rotvägens vänstra dörr. Bevara handlingarna, grindens villkor och filmen. |
-| Rotvägen–lunden | Skapa rätt öppet/stängt läge för motviktsporten och koppla den till lundens befintliga mörka valv. |
+| Arkiv–Rotvägen | **Inkopplad i 0.12.2:** nya öppna bildvarianter, ekblad i arkivets karm, båda riktningarna och sparmigrering. Mellangången behöver fortsatt miljöpolering. |
+| Rotvägen–lunden | **Inkopplad i 0.12.2:** motvikten frigör dörrbladet i östra valvet; passage till lundens vänstra valv. Mellangången behöver fortsatt miljöpolering. |
 
-Arkivets högra dörr samt Rotvägens båda dörrar är målade stängda i nuvarande originalbilder. Kollision genom träet räcker därför inte. Nya öppna bildvarianter ska bevara resten av respektive målning. För varje par: provgå båda riktningarna, granska Karl framför/under valvet, prova fiendeförföljelse och migrera sparade positioner/fynd när gångytan flyttas.
+Arkivets högra dörr och Rotvägens öppningar har nu separata öppna bakgrundsvarianter. Det rörliga bladet ritas av spelet, så stängt målat trä inte ligger kvar bakom den öppnade dörren. Originalbilderna bevaras. För varje par: provgå båda riktningarna, granska Karl framför/under valvet, prova fiendeförföljelse och migrera sparade positioner/fynd när gångytan flyttas.
 
 ## Berättelsens nästa steg
 

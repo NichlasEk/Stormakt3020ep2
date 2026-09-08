@@ -28,7 +28,7 @@ public partial class Main
     {
         foreach(var l in RoomLinks.All)
         {
-            if((l.Id=="chamber")!=behindPaintings)continue;
+            if(ConnectedWorld.Painted(l)!=behindPaintings)continue;
             var route=ConnectedWorld.Route(l).Select(p=>G(p-_game.WorldOrigin)).ToArray();
             for(int i=1;i<route.Length;i++)
             {
@@ -77,12 +77,15 @@ public partial class Main
             if(l.Id=="chamber")continue;
             var at=G(ConnectedWorld.Center(l)-_game.WorldOrigin);if(!WorldRectVisible(at-new Vector2(210,240),new(420,420)))continue;
             var center=ConnectedWorld.Center(l)-_game.WorldOrigin;
-            if(NVec.Distance(center,_game.Player)>350||!(_game.CanSeeRoomPoint(center+new NVec(-45,0))||_game.CanSeeRoomPoint(center+new NVec(45,0))))continue;
+            var path=ConnectedWorld.Route(l);var approach=NVec.Normalize(ConnectedWorld.Painted(l)?path[1]-path[0]:path[2]-path[1])*65;
+            // Sight stops at a closed leaf; sample the floor on either side rather
+            // than hiding the very obstacle that blocked the sight ray.
+            if(NVec.Distance(center,_game.Player)>350||!(_game.CanSeeRoomPoint(center-approach)||_game.CanSeeRoomPoint(center+approach)))continue;
             var door=_game.Rooms!.Doors[l.Id];bool blocked=!RoomLinks.Open(_game.Rooms,l);
             if(!blocked&&!Combat.HasWorldDoor(l))continue;
             var h=G(ConnectedWorld.Hinge(l)-_game.WorldOrigin);var end=G(ConnectedWorld.Tip(l,blocked?0:door.Openness)-_game.WorldOrigin);
             var closed=G(ConnectedWorld.Tip(l,0)-_game.WorldOrigin);
-            foreach(var foot in new[]{h,closed})
+            foreach(var foot in ConnectedWorld.Painted(l)?Array.Empty<Vector2>():new[]{h,closed})
             {
                 var f=foot;
                 layers.Add((f.Y+8,()=>
@@ -116,7 +119,7 @@ public partial class Main
     {
         foreach(var l in RoomLinks.All)
         {
-            if((l.Id=="chamber")!=behindPaintings)continue;
+            if(ConnectedWorld.Painted(l)!=behindPaintings)continue;
             var route=ConnectedWorld.Route(l);
             for(int i=1;i<route.Length;i++)
             {
@@ -139,10 +142,11 @@ public partial class Main
             }
         }
     }
-    private static bool InsideArchPainting(NVec world)
-        =>new Rect2(G(ConnectedWorld.Origin(PortRooms.Gallery)),new Vector2(1536,1024)).HasPoint(G(world))||new Rect2(G(ConnectedWorld.Origin(PortRooms.Chamber)),new Vector2(1536,1024)).HasPoint(G(world));
+    private static bool InsideArchPainting(RoomLink link,NVec world)
+        =>new Rect2(G(ConnectedWorld.Origin(link.A)),new Vector2(1536,1024)).HasPoint(G(world))||new Rect2(G(ConnectedWorld.Origin(link.B)),new Vector2(1536,1024)).HasPoint(G(world));
     private void AddPaintedArchLayers(List<(float Depth,Action Draw)> layers)
     {
+        AddRootArchLayers(layers);
         if(PaintRoom is not (PortRooms.Gallery or PortRooms.Chamber))return;
         var art=RoomBackground;
         // Trace the actual stone silhouette. The open aperture is left untouched.
@@ -216,6 +220,7 @@ public partial class Main
         var world=_game.Player+_game.WorldOrigin;
         var link=RoomLinks.All.FirstOrDefault(l=>NVec.Distance(world,ConnectedWorld.Center(l))<130);
         if(link==null)return false;
+        if(_game.Rooms!.Current==PortRooms.Archive&&!_game.Rooms.ArchiveSecured&&NVec.Distance(_game.Player,ArchiveRoom.Seal)<72)return false;
         var d=_game.Rooms!.Doors[link.Id];bool open=RoomLinks.Open(_game.Rooms,link);
         if(open&&!Combat.HasWorldDoor(link))return false;
         string label=!open?(link.Gate==PassageGate.Key&&_game.Rooms.KeyTaken?"E / B · Lås upp porten":link.Gate==PassageGate.Shortcut&&_game.Rooms.Current==PortRooms.Cistern?"E / B · Lyft regeln":RoomLinks.LockedReason(link))
@@ -270,7 +275,7 @@ public partial class Main
                     bool visible=_game.CanSeeRoomPoint(mid-_game.WorldOrigin)||NVec.Distance(mid,_game.Player+_game.WorldOrigin)<70;
                     if(visible)continue;
                     bool seen=_game.Rooms!.CorridorSeen.Contains(l.Id+":"+i+":"+j);
-                    if(l.Id=="chamber"&&InsideArchPainting(mid))continue;
+                    if(ConnectedWorld.Painted(l)&&InsideArchPainting(l,mid))continue;
                     var delta=_game.WorldOrigin;
                     DrawColoredPolygon(new[]{G(p-side-delta),G(q-side-delta),G(q+side-delta),G(p+side-delta)},new Color(3/255f,5/255f,6/255f,seen?.62f:1));
                 }

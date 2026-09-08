@@ -1,8 +1,8 @@
 # Från arenor till expeditioner
 
-## Aktuell fortsättning efter 0.12.1
+## Aktuell fortsättning efter 0.12.2
 
-Huvudrutten slutar fortfarande vid De namnlösas lund. Galleriet–Edskammaren använder nu de målade valven; övriga anslutningar behöver individuell inpassning. Nästa kapitel är **Regementet som stannar**, därefter båtfärden mot **Järnets lungor**. [Aktuellt kapitelupplägg, portpass och leveranskrav](NEXT-EXPEDITION.md). Detta är en produktionsplan; inga ytterligare spelbara rum eller radioassets ingår ännu. Äldre arbetssteg nedan är historik.
+Huvudrutten slutar fortfarande vid De namnlösas lund. Galleriet–Edskammaren, Arkivet–Rotvägen och Rotvägen–lunden använder nu de målade valven. Sex anslutningar återstår, och mellangångarna behöver mer miljöarbete. [Senaste portpasset](ROOT-ARCHES.md). Nästa kapitel är **Regementet som stannar**, därefter båtfärden mot **Järnets lungor**. [Aktuellt kapitelupplägg, portpass och leveranskrav](NEXT-EXPEDITION.md). Detta är en produktionsplan; inga ytterligare spelbara rum eller radioassets ingår ännu. Äldre arbetssteg nedan är historik.
 
 ## 2026-09-07 · 0.12 sammanhängande Atland
 

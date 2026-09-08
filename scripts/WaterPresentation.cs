@@ -5,12 +5,14 @@ using System.Collections.Generic;
 
 public partial class Main
 {
-    private Texture2D? _pumpArt,_pumpLowArt,_cisternArt,_galleryArt,_chamberArt,_chamberOpenArt,_archiveArt,_archiveDocuments,_rootwayArt,_groveArt;
+    private Texture2D? _pumpArt,_pumpLowArt,_cisternArt,_galleryArt,_chamberArt,_chamberOpenArt,_archiveArt,_archiveOpenArt,_archiveDocuments,_rootwayArt,_rootwayOpenArt,_groveArt;
     private void LoadWaterArt()
     {
         if(_pumpArt!=null)return;
         _pumpArt=GD.Load<Texture2D>("res://assets/art/room-pump-v1.png");
         _pumpLowArt=GD.Load<Texture2D>("res://assets/art/room-pump-low-v2.png");
+        _archiveOpenArt=GD.Load<Texture2D>("res://assets/art/room-archive-open-v1.png");
+        _rootwayOpenArt=GD.Load<Texture2D>("res://assets/art/room-rootway-open-v1.png");
         _rootwayArt=GD.Load<Texture2D>("res://assets/art/room-rootway-v1.png");
         _groveArt=GD.Load<Texture2D>("res://assets/art/room-grove-v1.png");
         _archiveArt=GD.Load<Texture2D>("res://assets/art/room-archive-v1.png");
@@ -24,7 +26,7 @@ public partial class Main
     private string? _paintRoom;
     private string PaintRoom=>_paintRoom??_game.Rooms!.Current;
     private Texture2D RoomBackground=>_game.InDoorTrial?_doorGround!:PaintRoom switch
-    {PortRooms.Roots=>_rootwayArt!,PortRooms.Grove=>_groveArt!,PortRooms.Archive=>_archiveArt!,PortRooms.Gallery=>_galleryArt!,PortRooms.Chamber=>_game.Rooms!.Completed?_chamberOpenArt!:_chamberArt!,PortRooms.Lodge=>_warehouse,PortRooms.Pump=>_game.Rooms!.WaterLowered?_pumpLowArt!:_pumpArt!,PortRooms.Cistern=>_cisternArt!,_=>_campaignWorlds[0]};
+    {PortRooms.Roots=>_game.InConnectedWorld?_rootwayOpenArt!:_rootwayArt!,PortRooms.Grove=>_groveArt!,PortRooms.Archive=>_game.InConnectedWorld?_archiveOpenArt!:_archiveArt!,PortRooms.Gallery=>_galleryArt!,PortRooms.Chamber=>_game.Rooms!.Completed?_chamberOpenArt!:_chamberArt!,PortRooms.Lodge=>_warehouse,PortRooms.Pump=>_game.Rooms!.WaterLowered?_pumpLowArt!:_pumpArt!,PortRooms.Cistern=>_cisternArt!,_=>_campaignWorlds[0]};
     private void AddWaterLayers(List<(float Depth,Action Draw)> layers)
     {
         bool pump=PaintRoom==PortRooms.Pump;

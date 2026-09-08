@@ -1,8 +1,12 @@
 # Checkpoint · Vägen under vattnet · 2026-09-06
 
+## 0.12.2 · Arkivets och Rotvägens målade portar
+
+Nästa del av portpasset är byggd: Arkivet → Rotvägen → Lunden använder nu de befintliga målade öppningarna. Nya öppna bakgrunder, fysiska ekblad, förgrundsmasker, fiendeförföljelse åt båda håll och sparmigrering till anslutningsrevision 3. [Leverans och återstående arbete](ROOT-ARCHES.md).
+
 ## Nästa kapitel · plan efter provspelning
 
-Användaren uppskattar den sammanhängande världen och berättelsen med radio-/porträttkort. Fortsättningen är nu konkretiserad i [NEXT-EXPEDITION.md](NEXT-EXPEDITION.md): återstående målade portanslutningar, fem föreslagna platser i regementets marker, Rotmarskalken, arkivvalets följder och båtfärden mot berget. Detta är planarbete; spelbar version är fortfarande 0.12.1.
+Användaren uppskattar den sammanhängande världen och berättelsen med radio-/porträttkort. Fortsättningen är nu konkretiserad i [NEXT-EXPEDITION.md](NEXT-EXPEDITION.md): återstående målade portanslutningar, fem föreslagna platser i regementets marker, Rotmarskalken, arkivvalets följder och båtfärden mot berget. Kapitelinnehållet är fortfarande planarbete; portpasset fortsätter i 0.12.2.
 
 ## 0.12.1 · gå genom den målade porten
 
