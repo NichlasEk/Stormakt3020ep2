@@ -1,8 +1,11 @@
 # Från arenor till expeditioner
 
-## Aktuell fortsättning efter 0.12.2
+## 0.13 · Regementet som stannar · 2026-09-08
 
-Huvudrutten slutar fortfarande vid De namnlösas lund. Galleriet–Edskammaren, Arkivet–Rotvägen och Rotvägen–lunden använder nu de målade valven. Sex anslutningar återstår, och mellangångarna behöver mer miljöarbete. [Senaste portpasset](ROOT-ARCHES.md). Nästa kapitel är **Regementet som stannar**, därefter båtfärden mot **Järnets lungor**. [Aktuellt kapitelupplägg, portpass och leveranskrav](NEXT-EXPEDITION.md). Detta är en produktionsplan; inga ytterligare spelbara rum eller radioassets ingår ännu. Äldre arbetssteg nedan är historik.
+Den sammanhängande huvudrutten fortsätter från lunden genom fem nya platser till Rotmarskalken och regementets avlösning. Båtresa och återresa leder till en sjätte ny målning vid berget. Kapten Arvid Silfvergren, målade rotkaroliner, nio radiorepliker och arkivberoende fanvakter ingår. De sex återstående äldre anslutningarna går genom målade öppningar; mellangångarnas murverk behöver fortfarande ett detaljpass.
+
+Direktprov med separat sparning: `./play.sh -- --regiment`. [Leverans, assets, begränsningar och testning](REGIMENT.md). **Järnets lungors inre är nästa kapitel att bygga.**
+
 
 ## 2026-09-07 · 0.12 sammanhängande Atland
 

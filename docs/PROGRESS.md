@@ -1,12 +1,19 @@
 # Checkpoint · Vägen under vattnet · 2026-09-06
 
+## 0.13 · Regementet som stannar · 2026-09-08
+
+Den sammanhängande huvudrutten fortsätter från lunden genom fem nya platser till Rotmarskalken och regementets avlösning. Båtresa och återresa leder till en sjätte ny målning vid berget. Kapten Arvid Silfvergren, målade rotkaroliner, nio radiorepliker och arkivberoende fanvakter ingår. De sex återstående äldre anslutningarna går genom målade öppningar; mellangångarnas murverk behöver fortfarande ett detaljpass.
+
+Direktprov med separat sparning: `./play.sh -- --regiment`. [Leverans, assets, begränsningar och testning](REGIMENT.md). **Järnets lungors inre är nästa kapitel att bygga.**
+
+
 ## 0.12.2 · Arkivets och Rotvägens målade portar
 
 Nästa del av portpasset är byggd: Arkivet → Rotvägen → Lunden använder nu de befintliga målade öppningarna. Nya öppna bakgrunder, fysiska ekblad, förgrundsmasker, fiendeförföljelse åt båda håll och sparmigrering till anslutningsrevision 3. [Leverans och återstående arbete](ROOT-ARCHES.md).
 
 ## Nästa kapitel · plan efter provspelning
 
-Användaren uppskattar den sammanhängande världen och berättelsen med radio-/porträttkort. Fortsättningen är nu konkretiserad i [NEXT-EXPEDITION.md](NEXT-EXPEDITION.md): återstående målade portanslutningar, fem föreslagna platser i regementets marker, Rotmarskalken, arkivvalets följder och båtfärden mot berget. Kapitelinnehållet är fortfarande planarbete; portpasset fortsätter i 0.12.2.
+Användaren uppskattar den sammanhängande världen och berättelsen med radio-/porträttkort. Fortsättningen är nu konkretiserad i [NEXT-EXPEDITION.md](NEXT-EXPEDITION.md): återstående målade portanslutningar, fem föreslagna platser i regementets marker, Rotmarskalken, arkivvalets följder och båtfärden mot berget. Den planen har därefter genomförts som den spelbara 0.13-checkpointen ovan.
 
 ## 0.12.1 · gå genom den målade porten
 

@@ -1,0 +1,12 @@
+{
+  "parts": [
+    "regiment-captain-sentence-0.wav",
+    "regiment-captain-sentence-1.wav",
+    "regiment-captain-sentence-2.wav",
+    "regiment-captain-sentence-3.wav",
+    "regiment-captain-sentence-4.wav"
+  ],
+  "sha256": "009307921214917838583af4164fa5d5263c0ac75cefc4f1a9f52a641684cc98",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

@@ -1,0 +1,12 @@
+{
+  "parts": [
+    "regiment-freed-sentence-0.wav",
+    "regiment-freed-sentence-1.wav",
+    "regiment-freed-sentence-2.wav",
+    "regiment-freed-sentence-3.wav",
+    "regiment-freed-sentence-4.wav"
+  ],
+  "sha256": "0bdd1106c7cd7dcacafe7d4e81040592dd99fd68af5414c356919fa933269708",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

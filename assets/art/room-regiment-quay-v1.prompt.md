@@ -1,0 +1,5 @@
+# regiment-quay
+
+Generated with the built-in imagegen tool, 2026-09-08.
+
+Create a new final 2D isometric game background, 1536x1024. Reference is STYLE ONLY, dark matte oil painted Swedish baroque world, not 3D or concept art. THE ABANDONED JETTY: sheltered forest river landing, broad worn stone ground and weathered oak planks, entrance as open stone arch at left (150,440). Main walkable ground runs from (180,500) through (760,620) to a boarding point at (1170,650). A modest real wooden 17th century row-and-sail boat moored beyond that point at right, roughly350px long, fitted for six humans; no giant ship. Right and lower right edges are black water with faint reflections, land upper and left. Ragged regiment flag hangs limply beside a small abandoned supply chest near(640,510). Ruined watchhouse upper left, old ropes scaled correctly, lanterns tiny. Evening mist, distant mountains faintly visible across water. No people, no text, no UI, no arrows. Readable floor and strong silhouettes, no gloss.

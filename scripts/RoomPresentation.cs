@@ -23,7 +23,7 @@ public partial class Main
     }
     private void StartRooms()
     {
-        _doorSlot=false;
+        _regimentSlot=false;_doorSlot=false;
         LoadWaterArt();
         _roomsSlot=true;_atlandSlot=_portSlot=false;
         if(!_testMode&&System.IO.File.Exists(SavePath)){ResumeSave();return;}
@@ -83,6 +83,7 @@ public partial class Main
     }
     private void DrawRoomPrompt()
     {
+        if(DrawRegimentPrompt())return;
         var r=_game.Rooms!;string prompt="";
         bool Near(System.Numerics.Vector2 p)=>System.Numerics.Vector2.Distance(_game.Player,p)<72&&_game.ClearPath(_game.Player,p);
         var link=(_game.InConnectedWorld?Array.Empty<RoomLink>():RoomLinks.From(r.Current)).FirstOrDefault(l=>Near(l.At(r.Current)));

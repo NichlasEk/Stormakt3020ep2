@@ -1,0 +1,10 @@
+{
+  "parts": [
+    "regiment-marshal-sentence-0.wav",
+    "regiment-marshal-sentence-1.wav",
+    "regiment-marshal-sentence-2.wav"
+  ],
+  "sha256": "1aa842d976e9429e7ccc11e9bffd2b62144275efcaf1e87d36ed0424310fbeef",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

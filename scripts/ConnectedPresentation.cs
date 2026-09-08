@@ -17,7 +17,7 @@ public partial class Main
         _passageMaterials??=GD.Load<Texture2D>("res://assets/art/passage-materials-v1.png");
         DrawRect(new Rect2(-Offset/Zoom,new Vector2(1280,720)/Zoom),new Color(3/255f,5/255f,6/255f));
         DrawConnectionFloors(true);var backWalls=new List<(float Depth,Action Draw)>();AddPassageWalls(backWalls,true);foreach(var wall in backWalls.OrderBy(w=>w.Depth))wall.Draw();
-        foreach(var id in PortRooms.Ids)
+        foreach(var id in ConnectedWorld.RoomIds)
         {
             var delta=G(ConnectedWorld.Origin(id)-_game.WorldOrigin);if(!WorldRectVisible(delta,new(1536,1024)))continue;
             _paintRoom=id;DrawTextureRect(RoomBackground,new Rect2(delta,new Vector2(1536,1024)),false);
@@ -54,16 +54,16 @@ public partial class Main
         var layers=new List<(float Depth,Action Draw)>();
         foreach(var enemy in _game.Enemies.Where(e=>_game.CanSeeRoomPoint(e.Position))){var actor=enemy;layers.Add((actor.Position.Y,()=>Actor(actor,actor.Dead)));}
         layers.Add((_game.Player.Y,DrawPlayer));
-        foreach(var id in PortRooms.Ids)
+        foreach(var id in ConnectedWorld.RoomIds)
         {
             var delta=G(ConnectedWorld.Origin(id)-_game.WorldOrigin);if(!WorldRectVisible(delta,new(1536,1024)))continue;
             _paintRoom=id;var local=new List<(float Depth,Action Draw)>();
             if(id is PortRooms.Pump or PortRooms.Cistern)AddWaterLayers(local);
-            AddOathLayers(local);AddArchiveLayers(local);AddRootwayLayers(local);AddPaintedArchLayers(local);
+            AddOathLayers(local);AddArchiveLayers(local);AddRootwayLayers(local);AddRegimentLayers(local);AddOlderArchLayers(local);AddPaintedArchLayers(local);
             if(id==PortRooms.Lodge)
             {
-                local.Add((623,()=>PaintForeground(_warehouse,new Vector2[]{new(677,513),new(720,490),new(722,466),new(753,450),new(812,454),new(874,477),new(882,572),new(791,621),new(677,566)})));
-                local.Add((647,()=>PaintForeground(_warehouse,new Vector2[]{new(493,580),new(517,556),new(568,574),new(597,592),new(594,626),new(548,647),new(494,617)})));
+                local.Add((623,()=>PaintForeground(_lodgePassageArt!,new Vector2[]{new(677,513),new(720,490),new(722,466),new(753,450),new(812,454),new(874,477),new(882,572),new(791,621),new(677,566)})));
+                local.Add((647,()=>PaintForeground(_lodgePassageArt!,new Vector2[]{new(493,580),new(517,556),new(568,574),new(597,592),new(594,626),new(548,647),new(494,617)})));
             }
             foreach(var item in local)
             {
@@ -74,7 +74,7 @@ public partial class Main
         _paintRoom=null;LoadDoorArt();
         foreach(var l in RoomLinks.All)
         {
-            if(l.Id=="chamber")continue;
+            if(l.Id is "chamber" or "archive")continue;
             var at=G(ConnectedWorld.Center(l)-_game.WorldOrigin);if(!WorldRectVisible(at-new Vector2(210,240),new(420,420)))continue;
             var center=ConnectedWorld.Center(l)-_game.WorldOrigin;
             var path=ConnectedWorld.Route(l);var approach=NVec.Normalize(ConnectedWorld.Painted(l)?path[1]-path[0]:path[2]-path[1])*65;
@@ -175,7 +175,11 @@ public partial class Main
         DrawRect(new Rect2(0,0,1280,720),new Color(.025f,.023f,.019f,.97f));
         Text("ATLAND · GÅNGVÄGARNA",new Vector2(80,90),28,Pale,true);
         Wrapped("Förgården, logementet och de inre rummen hör till samma anläggning. Följ passagerna till fots. E / B manövrerar portarna; cisternens sidoväg sluter kretsen tillbaka till förgården.",new Vector2(80,132),1100,19,Muted,28);
-        Vector2 At(string id)=>new Vector2(115,272)+G(ConnectedWorld.Origin(id))*new Vector2(.067f,.057f);
+        Vector2 At(string id)
+        {
+            int index=Array.IndexOf(ConnectedWorld.RoomIds,id), row=index/5, column=index%5;
+            return new Vector2(155+(row%2==0?column:4-column)*225,250+row*115);
+        }
         var r=_game.Rooms!;
         foreach(var l in RoomLinks.All)
         {
@@ -183,7 +187,7 @@ public partial class Main
             var a=At(l.A);var b=At(l.B);DrawLine(a,b,RoomLinks.Open(r,l)?new Color("706c53"):new Color("383b32"),3,true);
             if(!RoomLinks.Open(r,l))DrawCircle((a+b)/2,5,Gold);
         }
-        foreach(var id in PortRooms.Ids)
+        foreach(var id in ConnectedWorld.RoomIds)
         {
             bool visited=r.Rooms[id].Visited;var at=At(id);
             DrawCircle(at,9,id==r.Current?Gold:visited?Teal:new Color("34392f"));
@@ -198,7 +202,7 @@ public partial class Main
         var rect=new Rect2(1048,154,192,132);Panel(new Rect2(1038,128,212,168),.87f);Text("NÄROMRÅDE",new Vector2(1048,144),11,Gold);
         const float scale=.12f;var center=rect.GetCenter();var player=_game.Player+_game.WorldOrigin;
         Vector2 Point(NVec world)=>center+G(world-player)*scale;
-        foreach(var id in PortRooms.Ids)
+        foreach(var id in ConnectedWorld.RoomIds)
         {
             var seen=_game.Rooms!.Rooms[id].Explored;
             for(int i=0;i<RoomSight.Count;i++)if(RoomSight.Seen(seen,i))
@@ -220,6 +224,7 @@ public partial class Main
         var world=_game.Player+_game.WorldOrigin;
         var link=RoomLinks.All.FirstOrDefault(l=>NVec.Distance(world,ConnectedWorld.Center(l))<130);
         if(link==null)return false;
+        if(_game.Rooms!.Current==PortRooms.Chamber&&!_game.Rooms.Completed&&NVec.Distance(_game.Player,PortRooms.OathExit)<72)return false;
         if(_game.Rooms!.Current==PortRooms.Archive&&!_game.Rooms.ArchiveSecured&&NVec.Distance(_game.Player,ArchiveRoom.Seal)<72)return false;
         var d=_game.Rooms!.Doors[link.Id];bool open=RoomLinks.Open(_game.Rooms,link);
         if(open&&!Combat.HasWorldDoor(link))return false;
@@ -232,7 +237,7 @@ public partial class Main
         if(_worldFogGame!=_game||_worldFogRevision!=_game.SightRevision)
         {
             _worldFogGame=_game;_worldFogRevision=_game.SightRevision;
-            foreach(var id in PortRooms.Ids)
+            foreach(var id in ConnectedWorld.RoomIds)
             {
                 var shift=ConnectedWorld.Origin(id)-_game.WorldOrigin;
                 if(!WorldRectVisible(G(shift),new(1536,1024)))continue;
@@ -255,7 +260,7 @@ public partial class Main
                 if(_worldFog.TryGetValue(id,out var texture))texture.Update(img);else _worldFog[id]=ImageTexture.CreateFromImage(img);
             }
         }
-        foreach(var id in PortRooms.Ids)
+        foreach(var id in ConnectedWorld.RoomIds)
         {
             var at=G(ConnectedWorld.Origin(id)-_game.WorldOrigin);if(!WorldRectVisible(at,new(1536,1024)))continue;
             if(_worldFog.TryGetValue(id,out var fog))DrawTextureRect(fog,new Rect2(at,new Vector2(1536,1024)),false);

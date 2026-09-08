@@ -1,0 +1,5 @@
+# regiment-barracks
+
+Generated with the built-in imagegen tool, 2026-09-08.
+
+Create a NEW finished gameplay background for a true 2D isometric action RPG, not concept art, not a 3D render. Reference image is STYLE ONLY: sombre Swedish baroque, ancient roots, serious matte oil painting, dense worn material detail, readable flat gameplay floor, fixed isometric projection. 1536x1024. No characters, text, UI, arrows or giant props. Human doorways 140px tall. Ground fills central lower space approximately diamond with corners (160,500),(760,300),(1390,520),(820,910). All movement areas visible, no overhead canopy over paths. The interior of a ruined Swedish 17th century military sick barrack, wooden plank floor, stone fireplace and small candles, empty narrow straw beds against the rear walls ONLY, a table with folded papers around (760,440). A broad OPEN doorway in the LEFT wall at (150,460) and a broad OPEN doorway in RIGHT wall at (1390,490), visible thresholds. Main central floor clear for walking. Quiet solemn human scale, worn blankets, abandoned boots near beds, sparse warm amber firelight. No bodies or people. Thick worn oak beams along back walls.

@@ -1,0 +1,5 @@
+# captain-arvid
+
+Generated with the built-in imagegen tool, 2026-09-08.
+
+A finished TRUE 2D hand painted game character sprite, single full body,1024x1024. Kapten Arvid Silfvergren, a serious Swedish 17th century military captain, age55, tired dignified human face, grey moustache and short grey hair, worn dark blue coat with faded ochre cuffs, battered unadorned breastplate, simple tricorn held respectfully under left arm, right hand rests on sheathed sword. He has waited centuries but remains recognisably human: subtly pallid skin, no skull, no gore, no glowing eyes, no cartoon proportions. Fixed isometric angle looking down on man facing down-right. Full body from head near y100 to boots near y900, centered x500. Matte restrained oil painted texture, clean readable silhouette, no 3D look, no glossy surfaces. Flat pure MAGENTA #ff00ff background, no shadow, no ground, no text, no extra props. Keep face carefully drawn with calm natural eyes and realistic anatomy. This asset serves both the world NPC and a crop of the head for radio portrait.

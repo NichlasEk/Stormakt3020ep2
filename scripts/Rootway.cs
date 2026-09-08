@@ -19,7 +19,7 @@ public sealed partial class Combat
     [JsonIgnore] public int GroveWaves=>ArchiveChoice==1?1:2;
     [JsonIgnore] public string RootGoal=>Rooms!.Current==PortRooms.Roots
         ?Rooms.RootGateOpen?"Följ kedjan till lunden":"Lossa motviktsportens spärr"
-        :Rooms.GroveSecured?"Lundens namn är återfunna · återväg öppen":Rooms.GroveWave>0&&EncounterEnemies.Any(e=>!e.Dead)?$"Skydda avtrycket · eftertrupp {Rooms.GroveWave}/{GroveWaves}":Rooms.GroveWave>0?"Ta sigillet vid minnesstenen":"Lägg arkivets handling mot stenen";
+        :Rooms.GroveSecured?(InConnectedWorld?"Följ trappan mot regementet":"Lundens namn är återfunna · återväg öppen"):Rooms.GroveWave>0&&EncounterEnemies.Any(e=>!e.Dead)?$"Skydda avtrycket · eftertrupp {Rooms.GroveWave}/{GroveWaves}":Rooms.GroveWave>0?"Ta sigillet vid minnesstenen":"Lägg arkivets handling mot stenen";
     [JsonIgnore] public string GroveClue=>ArchiveChoice==1
         ?"Vittnesmålets namn passar stenens märken. Ett snabbt avtryck räcker; en eftertrupp hinner fram."
         :"Passersedeln saknar namnen. Hedvig måste tyda stenen på nytt; två eftertrupper hinner fram.";

@@ -1,0 +1,11 @@
+{
+  "regiment-entry": ["ebba", "Karl. Vi hör trummor från skogen, men ingen av våra poster har sett ett förband. Följ stigen. Jag håller radion öppen."],
+  "regiment-captain": ["arvid", "Kapten Arvid Silfvergren. Tjugosjunde kompaniet. Vi begär inte förstärkning. Vi begär avlösning. Mina män har stått här länge nog."],
+  "regiment-orders": ["ebba", "Uppfattat, kapten. Karl, ta hans order till mönstringsvallen. Se till att de får komma hem."],
+  "regiment-proof": ["hedvig", "Namnen i sjukrullan finns också i avtrycket. Det är samma människor. Nu kan vi styrka vilka som omfattas av avlösningen."],
+  "regiment-names": ["arvid", "Jag känner igen namnen. Låt fanorna sjunka. De här männen har fullgjort sin tjänst."],
+  "regiment-pass": ["ebba", "Passersedeln håller vid kontrollen. Gå igenom lugnt, Karl. Vi behöver fortfarande avlösningsordern vid vallen."],
+  "regiment-marshal": ["hedvig", "Fanornas rötter håller eden samman. Bryt förbindelserna när de sluter sig. Då måste marskalken möta dig utan deras skydd."],
+  "regiment-freed": ["arvid", "Avlösningen är erkänd. Tack, Karl. Vid bryggan ligger vår båt. Vi har inte längre någon färd kvar. Ta den."],
+  "regiment-boat": ["ebba", "Båten är sjöduglig. Farleden leder mot berget. Karl, hör du det där? Det låter som en hammare. Under vattnet."]
+}

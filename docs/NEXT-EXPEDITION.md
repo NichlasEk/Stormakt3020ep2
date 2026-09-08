@@ -1,10 +1,10 @@
 # Nästa expedition: Regementet som stannar
 
-2026-09-07. Berättelse- och byggplan efter användarens provspelning av 0.12.1. Förslagen nedan är nästa produktion, inte nya spelbara rum eller färdiga radioassets.
+2026-09-07. Berättelse- och byggplan efter användarens provspelning av 0.12.1. Originalplanen nedan bevaras som designunderlag. Aktuell leveransstatus finns i [REGIMENT.md](REGIMENT.md).
 
 ## Produktion 2026-09-08
 
-Planen är godkänd. Första implementationen, 0.12.2, passar in **Arkiv–Rotvägen** och **Rotvägen–lunden** i de målade öppningarna med nya öppna bildvarianter, rörliga dörrblad och förgrundsmasker. Tre av nio förbindelser använder nu sina målade portar; sex återstår. [Leverans, kontroller och kvarstående detaljarbete](ROOT-ARCHES.md). Regementeskapitlet och båtfärden är fortfarande kommande arbete.
+0.13 genomför regementets fem platser, kaptenens radio och porträtt, arkivvalets följder, Rotmarskalken, återtågsvägen och båtresan till bergets farled. Alla nio äldre rumsförbindelser använder målade öppningar. Mellangångarnas material och figurernas fullständiga riktningsanimationer återstår att polera. [Leverans och verifiering](REGIMENT.md).
 
 ## Vad som finns nu
 
@@ -84,7 +84,7 @@ Kort tonalitetsexempel, ännu inte inspelat:
 
 Humorn får senare komma ur en orimlig rutin eller order. De dödas utsatthet ska inte vara skämtet. Undvik en radiokommentar efter varje litet steg; låt fotsteg, vind och avlägsna kommandon bära utforskningen.
 
-Varje ny talande roll behöver ett granskat porträttkort och producerade röster innan kapitlet levereras som färdig radioscen. Dialog, porträtt, syntetisk röst, textning och ljudnivå granskas tillsammans i spelet. Dessa assets finns inte ännu.
+Varje ny talande roll behöver ett granskat porträttkort och producerade röster innan kapitlet levereras som färdig radioscen. Dialog, porträtt, syntetisk röst, textning och ljudnivå granskas tillsammans i spelet. Dessa assets ingår nu i 0.13; uttal och dramatisk tajming behöver fortsatt mänsklig bedömning.
 
 ## Mot berget och Uppsala
 

@@ -9,28 +9,37 @@ namespace Atland;
 // current room's frame; a frame change translates every live object, never time.
 public static class ConnectedWorld
 {
-    public const int Revision=3;
-    public static bool Painted(RoomLink link)=>link.Id is "chamber" or "roots" or "grove";
-    public static float MouthWidth(RoomLink link)=>link.Id=="chamber"?.42f:.36f;
-    public static Vector2 Origin(string id)=>id switch
+    public static readonly string[] RoomIds=PortRooms.Ids.Concat(Regiment.Ids).ToArray();
+    public const int Revision=4;
+    public static bool Painted(RoomLink link)=>true;
+    public static float MouthWidth(RoomLink link)=>link.Id switch{"lodge"=>.8f,"pump" or "cistern"=>.75f,"archive"=>1.15f,"gallery"=>.42f,"shortcut"=>.38f,"chamber"=>.42f,_=>.36f};
+    public static Vector2 Origin(string id)=>Regiment.Known(id)?Regiment.Origin(id):id switch
     {
         PortRooms.Court=>new(0,0),PortRooms.Lodge=>new(2100,482.5f),PortRooms.Pump=>new(4200,1275),
         PortRooms.Cistern=>new(2100,1950),PortRooms.Gallery=>new(6300,1515),PortRooms.Chamber=>new(8400,2005),
         PortRooms.Archive=>new(10500,2365),PortRooms.Roots=>new(12600,2795),_=>new(14700,3172.5f)
     };
-    public static Vector2[] Ground(string id)=>id switch
+    public static Vector2[] Ground(string id)=>Regiment.Known(id)?Regiment.Ground(id):id switch
     {PortRooms.Court=>PortRooms.CourtGround,PortRooms.Lodge=>JourneyLayout.WarehouseGround,PortRooms.Pump=>PortRooms.PumpGround,PortRooms.Cistern=>PortRooms.CisternGround,PortRooms.Gallery=>PortRooms.GalleryGround,PortRooms.Chamber=>PortRooms.OathGround,PortRooms.Archive=>ArchiveRoom.Ground,PortRooms.Roots=>Rootway.Ground,_=>Rootway.GroveGround};
-    public static Vector2[][] Obstacles(string id)=>id switch
+    public static Vector2[][] Obstacles(string id)=>Regiment.Known(id)?Regiment.Obstacles(id):id switch
     {PortRooms.Lodge=>new[]{Navigation.Expand(JourneyLayout.WarehouseObstacle,22)},PortRooms.Pump=>new[]{PortRooms.PumpBasin},PortRooms.Cistern=>new[]{PortRooms.CisternBasin},PortRooms.Gallery=>new[]{PortRooms.Lectern},PortRooms.Chamber=>PortRooms.OathObstacles,PortRooms.Archive=>new[]{ArchiveRoom.Table},PortRooms.Grove=>new[]{Rootway.Slab},_=>Array.Empty<Vector2[]>()};
     public static Vector2[] Route(RoomLink l)
     {
+        if(l.Id=="regiment")return new[]{Origin(l.A)+new Vector2(800,830),Origin(l.A)+new Vector2(800,1030),new Vector2(16400,4450),Origin(l.B)+new Vector2(0,450),Origin(l.B)+new Vector2(180,465)};
+        if(l.Id=="barracks")return new[]{Origin(l.A)+new Vector2(1400,550),Origin(l.A)+new Vector2(1590,570),Origin(l.B)+new Vector2(-60,360),Origin(l.B)+new Vector2(120,400),Origin(l.B)+new Vector2(230,470)};
+        if(l.Id=="flags")return new[]{Origin(l.A)+new Vector2(1400,490),Origin(l.A)+new Vector2(1510,405),Origin(l.A)+new Vector2(1640,365),Origin(l.B)+new Vector2(-60,390),Origin(l.B)+new Vector2(130,435)};
+        if(l.Id=="parade")return new[]{Origin(l.A)+new Vector2(1400,535),Origin(l.A)+new Vector2(1590,530),Origin(l.B)+new Vector2(-60,320),Origin(l.B)+new Vector2(100,375),Origin(l.B)+new Vector2(230,450)};
+        if(l.Id=="regiment-quay")return new[]{Origin(l.A)+new Vector2(1380,495),Origin(l.A)+new Vector2(1470,395),Origin(l.A)+new Vector2(1630,330),Origin(l.B)+new Vector2(-60,320),Origin(l.B)+new Vector2(135,375),Origin(l.B)+new Vector2(250,465)};
+        if(l.Id=="retreat")return new[]{Origin(l.A)+new Vector2(800,945),Origin(l.A)+new Vector2(800,1060),new Vector2(21650,6000),new Vector2(15500,6000),Origin(l.B)+new Vector2(800,1030),Origin(l.B)+new Vector2(800,830)};
         if(l.Id=="roots")return new[]{Origin(l.A)+new Vector2(1390,545),Origin(l.A)+new Vector2(1490,415),Origin(l.A)+new Vector2(1610,355),Origin(l.B)+new Vector2(-60,335),Origin(l.B)+new Vector2(105,415),Origin(l.B)+new Vector2(180,495)};
         if(l.Id=="grove")return new[]{Origin(l.A)+new Vector2(1390,565),Origin(l.A)+new Vector2(1470,455),Origin(l.A)+new Vector2(1610,385),Origin(l.B)+new Vector2(-60,315),Origin(l.B)+new Vector2(185,425),Origin(l.B)+new Vector2(280,505)};
         if(l.Id=="chamber")return new[]{Origin(l.A)+new Vector2(1220,460),Origin(l.A)+new Vector2(1280,380),Origin(l.A)+new Vector2(1580,260),Origin(l.B)+new Vector2(-60,350),Origin(l.B)+new Vector2(245,390),Origin(l.B)+new Vector2(335,470)};
-        // Broad masonry galleries join the measured floor edges. The lower branch
-        // forms a real loop, with no overlap or accidental crossing of corridors.
-        if(l.Id=="cistern")return new[]{Origin(l.A)+new Vector2(760,900),new Vector2(4960,2430),new Vector2(3840,2675),Origin(l.B)+new Vector2(1290,675)};
-        if(l.Id=="shortcut")return new[]{Origin(l.A)+new Vector2(380,675),new Vector2(1540,2800),new Vector2(780,1110),new Vector2(780,900)};
+        if(l.Id=="lodge")return new[]{Origin(l.A)+new Vector2(500,290),Origin(l.A)+new Vector2(500,150),Origin(l.A)+new Vector2(500,-110),Origin(l.B)+new Vector2(1080,-100),Origin(l.B)+new Vector2(1030,260),Origin(l.B)+new Vector2(990,350),Origin(l.B)+new Vector2(925,470)};
+        if(l.Id=="pump")return new[]{Origin(l.A)+new Vector2(760,870),Origin(l.A)+new Vector2(760,1010),new Vector2(4000,1690),Origin(l.B)+new Vector2(1080,50),Origin(l.B)+new Vector2(1020,220),Origin(l.B)+new Vector2(960,340)};
+        if(l.Id=="cistern")return new[]{Origin(l.A)+new Vector2(760,880),Origin(l.A)+new Vector2(760,1010),new Vector2(4700,2480),Origin(l.B)+new Vector2(1060,30),Origin(l.B)+new Vector2(995,180),Origin(l.B)+new Vector2(975,315)};
+        if(l.Id=="shortcut")return new[]{Origin(l.A)+new Vector2(1360,520),Origin(l.A)+new Vector2(1480,390),Origin(l.A)+new Vector2(1590,310),new Vector2(3900,2750),new Vector2(3900,3300),new Vector2(700,3400),new Vector2(-200,1500),Origin(l.B)+new Vector2(170,710),Origin(l.B)+new Vector2(330,660)};
+        if(l.Id=="gallery")return new[]{Origin(l.A)+new Vector2(1350,490),Origin(l.A)+new Vector2(1430,370),Origin(l.A)+new Vector2(1590,310),Origin(l.B)+new Vector2(-60,330),Origin(l.B)+new Vector2(245,385),Origin(l.B)+new Vector2(340,470)};
+        if(l.Id=="archive")return new[]{Origin(l.A)+new Vector2(810,360),Origin(l.A)+new Vector2(810,230),Origin(l.A)+new Vector2(810,-80),Origin(l.B)+new Vector2(-80,320),Origin(l.B)+new Vector2(100,435),Origin(l.B)+new Vector2(220,520)};
         var a=Ground(l.A).MaxBy(p=>p.X);var b=Ground(l.B).MinBy(p=>p.X);
         return new[]{Origin(l.A)+Vector2.Lerp(a,new(780,620),.13f),Origin(l.A)+a+new Vector2(130,65),Origin(l.B)+b-new Vector2(130,65),Origin(l.B)+Vector2.Lerp(b,new(780,620),.13f)};
     }
@@ -40,9 +49,9 @@ public static class ConnectedWorld
     public static Vector2 Hinge(RoomLink l){var p=Route(l);return Center(l)+(Painted(l)?Side(p[0],p[1])*MouthWidth(l):Side(p[1],p[2]));}
     public static Vector2 Tip(RoomLink l,float open)
     {var h=Hinge(l);var d=(Center(l)-h)*2;float a=open*MathF.PI/2;return h+new Vector2(d.X*MathF.Cos(a)-d.Y*2*MathF.Sin(a),d.X*.5f*MathF.Sin(a)+d.Y*MathF.Cos(a));}
-    public static readonly Dictionary<string,Vector2[][]> Floors=PortRooms.Ids.ToDictionary(id=>id,id=>new[]{Ground(id).Select(p=>p+Origin(id)).ToArray()});
+    public static readonly Dictionary<string,Vector2[][]> Floors=RoomIds.ToDictionary(id=>id,id=>new[]{Ground(id).Select(p=>p+Origin(id)).ToArray()});
     public static Vector2[] PassageFor(RoomLink l,int segment)
-    {var route=Route(l);var a=route[segment-1];var b=route[segment];var side=Side(a,b)*(Painted(l)&&(segment==1||segment==route.Length-1)?MouthWidth(l):1);var along=Vector2.Normalize(b-a)*3;return new[]{a-along-side,b+along-side,b+along+side,a-along+side};}
+    {var route=Route(l);var a=route[segment-1];var b=route[segment];var side=Side(a,b)*(Painted(l)&&(segment==1||segment==route.Length-1)?(segment==1?MouthWidth(l):.4f):1);var along=Vector2.Normalize(b-a)*3;return new[]{a-along-side,b+along-side,b+along+side,a-along+side};}
     public static readonly Dictionary<string,Vector2[][]> Corridors=RoomLinks.All.ToDictionary(l=>l.Id,l=>Enumerable.Range(1,Route(l).Length-1).Select(i=>PassageFor(l,i)).ToArray());
     public sealed class Shape
     {
@@ -57,7 +66,7 @@ public static class ConnectedWorld
         DoorTrialLayout.Bar(Origin(PortRooms.Chamber)+new Vector2(0,560),Origin(PortRooms.Chamber)+new Vector2(200,440),18),
         DoorTrialLayout.Bar(Origin(PortRooms.Chamber)+new Vector2(305,398),Origin(PortRooms.Chamber)+new Vector2(460,315),18)
     };
-    public static readonly Vector2[][] Solids=PortRooms.Ids.SelectMany(id=>Obstacles(id).Select(poly=>poly.Select(p=>p+Origin(id)).ToArray())).Concat(ArchJambs).ToArray();
+    public static readonly Vector2[][] Solids=RoomIds.SelectMany(id=>Obstacles(id).Select(poly=>poly.Select(p=>p+Origin(id)).ToArray())).Concat(ArchJambs).ToArray();
 }
 
 public sealed partial class Combat
@@ -68,6 +77,7 @@ public sealed partial class Combat
     {
         get
         {
+            if(InRegiment)return RegimentObjective;
             var r=Rooms!;
             Vector2 Gate(string id)=>ConnectedWorld.Center(RoomLinks.All.First(l=>l.Id==id))-WorldOrigin;
             return r.Current switch
@@ -79,7 +89,7 @@ public sealed partial class Combat
                 PortRooms.Gallery=>!r.WitnessRead?PortRooms.Witness:Gate("chamber"),
                 PortRooms.Chamber=>!r.OathDefeated?new(800,550):!r.Completed?PortRooms.OathExit:Gate("archive"),
                 PortRooms.Archive=>!r.ArchiveRead||ArchiveChoice==0?ArchiveRoom.Desk:!r.ArchiveSecured?ArchiveRoom.Seal:Gate("roots"),
-                PortRooms.Roots=>!r.RootGateOpen?Rootway.Winch:Gate("grove"),_=>Rootway.Memorial
+                PortRooms.Roots=>!r.RootGateOpen?Rootway.Winch:Gate("grove"),_=>r.GroveSecured?Gate("regiment"):Rootway.Memorial
             };
         }
     }
@@ -88,7 +98,7 @@ public sealed partial class Combat
     public void EnableConnectedWorld()
     {
         if(!InRooms||InDoorTrial||InConnectedWorld)return;
-        var r=Rooms!;r.Connected=true;r.ConnectionRevision=ConnectedWorld.Revision;
+        var r=Rooms!;foreach(var id in Regiment.Ids)r.Rooms.TryAdd(id,new());r.LayoutVersion=6;r.Connected=true;r.ConnectionRevision=ConnectedWorld.Revision;
         foreach(var e in Enemies)e.HomeRoom=r.Current;
         foreach(var pair in r.Rooms)
         {
@@ -100,7 +110,7 @@ public sealed partial class Combat
         foreach(var l in RoomLinks.All)r.Doors[l.Id]=new(){Locked=!RoomLinks.Open(r,l),TargetOpen=RoomLinks.Open(r,l),Openness=RoomLinks.Open(r,l)?1:0};
         UpdateRoomSight(true);
     }
-    public static bool HasWorldDoor(RoomLink l)=>l.Gate is PassageGate.Key or PassageGate.Shortcut or PassageGate.InnerPort or PassageGate.Archive or PassageGate.RootGate;
+    public static bool HasWorldDoor(RoomLink l)=>l.Gate is PassageGate.Key or PassageGate.Shortcut or PassageGate.Archive or PassageGate.RootGate or PassageGate.RegimentExit or PassageGate.RegimentShortcut;
     private bool WorldGround(Vector2 world){foreach(var p in ConnectedWorld.FloorShapes)if(p.Contains(world))return true;return false;}
     [JsonIgnore] private int _solidStamp=int.MinValue;
     [JsonIgnore] private ConnectedWorld.Shape[] _worldSolids=Array.Empty<ConnectedWorld.Shape>();
@@ -177,6 +187,8 @@ public sealed partial class Combat
         }
         if(!input.Interact||_roomInteractHeld||Dead||AttackTime>0||DodgeTime>0)return;
         // Release the adjacent archive seal before operating its unlocked leaf.
+        if(r.Current==PortRooms.Chamber&&!r.Completed&&Vector2.Distance(Player,PortRooms.OathExit)<72)return;
+        if(r.Current==Regiment.Flags&&!r.Regiment.ShortcutOpen&&Vector2.Distance(Player,Regiment.Shortcut)<72)return;
         if(r.Current==PortRooms.Archive&&!r.ArchiveSecured&&Vector2.Distance(Player,ArchiveRoom.Seal)<72)return;
         foreach(var l in RoomLinks.All)
         {
@@ -184,7 +196,8 @@ public sealed partial class Combat
             var d=r.Doors[l.Id];if(!HasWorldDoor(l)&&RoomLinks.Open(r,l))continue;
             if(!RoomLinks.Open(r,l))
             {
-                if(l.Gate==PassageGate.Key&&r.KeyTaken)r.DoorOpen=true;
+                if(l.Gate==PassageGate.RegimentShortcut&&r.Current==Regiment.Flags)r.Regiment.ShortcutOpen=true;
+                else if(l.Gate==PassageGate.Key&&r.KeyTaken)r.DoorOpen=true;
                 else if(l.Gate==PassageGate.Shortcut&&r.Current==PortRooms.Cistern)r.ShortcutOpen=true;
                 else{Emit("room-notice",Player,RoomLinks.LockedReason(l));_roomInteractHeld=true;return;}
             }
@@ -204,6 +217,7 @@ public sealed partial class Combat
         r.Current=destination;bool first=!r.Rooms[destination].Visited;r.Rooms[destination].Visited=true;
         if(first)
         {
+            if(Regiment.Known(destination))EnterRegiment(destination);
             if(destination==PortRooms.Lodge){Spawn(EnemyKind.Guard,new(650,735));Spawn(EnemyKind.Gunner,new(530,585));}
             if(destination==PortRooms.Pump){Spawn(EnemyKind.Pikeman,new(610,700));Spawn(EnemyKind.Guard,new(1040,610));Emit("radio",Player,"rooms-pump");}
             if(destination==PortRooms.Chamber)Spawn(EnemyKind.OathGuardian,new(800,515));
@@ -235,7 +249,7 @@ public sealed partial class Combat
         foreach(var foe in Enemies)if(!OnWalkable(foe.Position))foe.Position=Restore(foe.HomeRoom,foe.Position);
         foreach(var drop in Inventory.Drops.Where(d=>d.Room!=""))if(!OnWalkable(drop.Position))drop.Position=Restore(drop.Room,drop.Position);
         int previous=Rooms.ConnectionRevision;
-        Rooms.CorridorSeen.RemoveWhere(key=>(previous<2&&key.StartsWith("chamber:",StringComparison.Ordinal))||key.StartsWith("roots:",StringComparison.Ordinal)||key.StartsWith("grove:",StringComparison.Ordinal));
+        Rooms.CorridorSeen.RemoveWhere(key=>RoomLinks.All.Take(9).Any(l=>key.StartsWith(l.Id+":",StringComparison.Ordinal)&&(l.Id=="chamber"?previous<2:l.Id is "roots" or "grove"?previous<3:previous<4)));
         Rooms.ConnectionRevision=ConnectedWorld.Revision;
     }
     private void ValidateConnectedWorld()

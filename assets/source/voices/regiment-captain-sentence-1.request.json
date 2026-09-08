@@ -1,0 +1,11 @@
+{
+  "text": "Tjugosjunde kompaniet.",
+  "voice_instruction": "An adult Swedish male captain about fifty-five, restrained weathered baritone, clear natural Swedish, exhausted dignity, quiet human warmth, serious and calm, no villain voice, no theatrical growl.",
+  "language": "sv",
+  "model_backend": "dots.tts-mf",
+  "output_format": "wav",
+  "normalize": false,
+  "seed": 30221120,
+  "prompt_text": "Jag heter Arvid Silfvergren. Mina män har hållit vägen öppen genom vintern. Nu väntar vi på order om avlösning. Jag vill se dem återvända hem medan någon ännu minns deras namn.",
+  "dots_num_steps": 16
+}

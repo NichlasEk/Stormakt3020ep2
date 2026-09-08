@@ -5,7 +5,7 @@ public static class ConnectedTests
     public static void Run(Action<bool,string> check)
     {
         var g=Combat.NewRooms(Order.Artillery);g.EnableConnectedWorld();g.DeveloperSurvival=true;
-        check(g.InConnectedWorld&&g.Rooms!.Doors.Count==9,"All nine connections have persistent gates");
+        check(g.InConnectedWorld&&g.Rooms!.Doors.Count==RoomLinks.All.Length,"All nine connections have persistent gates");
         void Clear(){foreach(var e in g.Enemies)e.Health=0;g.Shots.Clear();g.Hazards.Clear();g.Hurt=g.AttackTime=g.DodgeTime=0;}
         void Use(Vector2 p){Clear();g.Player=p;g.Step(default);g.Step(new(default,Vector2.UnitY,false,false,false,false,false,false,false,true));}
         void Walk(RoomLink link,string destination)
@@ -29,20 +29,20 @@ public static class ConnectedTests
         Use(PortRooms.Key);check(g.Rooms!.KeyTaken,"Key still works in connected route");
         var first=RoomLinks.All[0];var center=ConnectedWorld.Center(first);
         check(!g.ClearPath(center-g.WorldOrigin-new Vector2(60,0),center-g.WorldOrigin+new Vector2(60,0)),"Locked gate blocks passage");
-        Use(center-g.WorldOrigin-new Vector2(70,0));
+        Use(center-g.WorldOrigin+new Vector2(0,85));
         for(int i=0;i<70;i++)g.Step(default);
         check(g.Rooms.DoorOpen&&g.Rooms.Doors["lodge"].Openness>.99f,"Key opens physical oak door");
         g.Shots.Add(new(){Position=g.Player,Velocity=Vector2.Zero,Life=1000,Reflected=true});var shotWorld=g.Shots[0].Position+g.WorldOrigin;
         Walk(first,PortRooms.Lodge);check(g.Shots.Count==1&&Vector2.Distance(g.Shots[0].Position+g.WorldOrigin,shotWorld)<1,"Room boundary preserves live projectile position and lifetime");Clear();Use(PortRooms.Cache);
         Walk(RoomLinks.All[1],PortRooms.Pump);Clear();Use(PortRooms.Pressure);Use(PortRooms.Wheel);
         Walk(RoomLinks.All[2],PortRooms.Cistern);Use(PortRooms.Relic);
-        var shortcut=RoomLinks.All[3];Use(ConnectedWorld.Center(shortcut)-g.WorldOrigin+new Vector2(65,0));for(int i=0;i<75;i++)g.Step(default);
+        var shortcut=RoomLinks.All[3];Use(ConnectedWorld.Route(shortcut)[0]-g.WorldOrigin);for(int i=0;i<75;i++)g.Step(default);
         Walk(shortcut,PortRooms.Court);Walk(shortcut,PortRooms.Cistern);Walk(RoomLinks.All[2],PortRooms.Pump);
         Walk(RoomLinks.All[4],PortRooms.Gallery);Use(PortRooms.Witness);Walk(RoomLinks.All[5],PortRooms.Chamber);
         Clear();g.Rooms.OathDefeated=true;Walk(RoomLinks.All[5],PortRooms.Gallery);Walk(RoomLinks.All[5],PortRooms.Chamber);Use(PortRooms.OathExit);for(int i=0;i<80;i++)g.Step(default);
         Walk(RoomLinks.All[6],PortRooms.Archive);Use(ArchiveRoom.Desk);check(g.ChooseRoomArchive(1),"Archive choice works");Clear();Use(ArchiveRoom.Seal);for(int i=0;i<80;i++)g.Step(default);
         Walk(RoomLinks.All[7],PortRooms.Roots);Use(Rootway.Winch);for(int i=0;i<80;i++)g.Step(default);
-        Walk(RoomLinks.All[8],PortRooms.Grove);Clear();Walk(RoomLinks.All[8],PortRooms.Roots);Walk(RoomLinks.All[7],PortRooms.Archive);Walk(RoomLinks.All[7],PortRooms.Roots);Walk(RoomLinks.All[8],PortRooms.Grove);check(g.Rooms.Rooms.Values.All(r=>r.Visited),"Every room is connected and visited");
+        Walk(RoomLinks.All[8],PortRooms.Grove);Clear();Walk(RoomLinks.All[8],PortRooms.Roots);Walk(RoomLinks.All[7],PortRooms.Archive);Walk(RoomLinks.All[7],PortRooms.Roots);Walk(RoomLinks.All[8],PortRooms.Grove);check(PortRooms.Ids.All(id=>g.Rooms.Rooms[id].Visited),"Every room is connected and visited");
         // Save halfway along a passage, with actors and loot belonging to distant rooms.
         var path=Path.Combine(Path.GetTempPath(),"atland-connected-"+Guid.NewGuid()+".json");
         g.Player=ConnectedWorld.Center(RoomLinks.All[8])-g.WorldOrigin;var saved=g.Player;SaveStore.Write(path,g);var restored=SaveStore.Read(path);
@@ -75,7 +75,7 @@ public static class ConnectedTests
         chase.Rooms!.KeyTaken=chase.Rooms.DoorOpen=true;var chaseDoor=chase.Rooms.Doors["lodge"];chaseDoor.Locked=false;chaseDoor.Openness=1;chaseDoor.TargetOpen=true;
         var gate=ConnectedWorld.Center(first);chase.Player=ConnectedWorld.Route(first)[^1]-chase.WorldOrigin;chase.Step(default);
         foreach(var e in chase.Enemies)e.Health=0;
-        chase.Spawn(EnemyKind.Guard,gate-chase.WorldOrigin-new Vector2(90,0));var pursuer=chase.Enemies[^1];pursuer.HomeRoom=PortRooms.Court;pursuer.Alerted=true;
+        chase.Spawn(EnemyKind.Guard,ConnectedWorld.Route(first)[^2]-chase.WorldOrigin);var pursuer=chase.Enemies[^1];pursuer.HomeRoom=PortRooms.Court;pursuer.Alerted=true;
         for(int i=0;i<900;i++)chase.Step(default);
         check(pursuer.Position.X+chase.WorldOrigin.X>ConnectedWorld.Origin(PortRooms.Lodge).X+150,"Danish guard follows across room boundary");
         // An occupied leaf sweep cannot close through an actor.
@@ -85,7 +85,7 @@ public static class ConnectedTests
         chase.Step(default);check(chaseDoor.Openness==1,"Connected door stops its closing sweep at a guard");
         // Each story gate seals the full corridor from both approaches.
         var locked=Combat.NewRooms(Order.Artillery);locked.EnableConnectedWorld();
-        foreach(var l in RoomLinks.All)
+        foreach(var l in RoomLinks.All.Where(l=>l.Gate!=PassageGate.Free))
         {var route=ConnectedWorld.Route(l);var axis=Vector2.Normalize(ConnectedWorld.Painted(l)?route[1]-route[0]:route[2]-route[1]);var c=ConnectedWorld.Center(l);
             check(!locked.ClearPath(c-axis*55,c+axis*55)&&!locked.ClearPath(c+axis*55,c-axis*55),"Story gate blocks both directions: "+l.Id);}
         foreach(var link in RoomLinks.All.Where(l=>l.Id is "roots" or "grove"))

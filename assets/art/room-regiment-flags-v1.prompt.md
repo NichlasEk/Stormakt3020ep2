@@ -1,0 +1,5 @@
+# regiment-flags
+
+Generated with the built-in imagegen tool, 2026-09-08.
+
+Create a NEW finished true 2D isometric action RPG game background, not 3D, not Blender or concept art. Reference is STYLE ONLY. 1536x1024. Dark matte Swedish baroque oil painting, readable gameplay ground, worn intricate textures, subdued gold and black-green. FANLUNDEN: an ancient regiment's forest parade grove. Two distinct broad muddy routes split around a long low island of uprooted roots and fallen ragged blue-yellow regimental flags in the middle (island x620..890 y390..590). Paths reunite at the right. Fixed isometric overhead view. Main entrance is open road on left EDGE (0,500); exit open road on right EDGE (1536,570). A third narrow path heads toward BOTTOM edge at (800,1024) for a shortcut. Broken low stone boundaries and gravestones frame playable area. Small 17th century army camp remains along back wall. No soldiers or people, no UI, no letters, no arrows, no giant props. No overhead canopy obscuring walkable ground. Keep all entrances readable and actually open.

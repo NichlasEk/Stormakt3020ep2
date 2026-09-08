@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Generate new synthetic Episode II cast and lines on local EutherLink."""
-import json,base64,time,urllib.request,hashlib,subprocess,sys
+import json,base64,time,urllib.request,hashlib,subprocess,sys,re,wave
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1];SRC=ROOT/'assets/source/voices';SRC.mkdir(parents=True,exist_ok=True)
 URL='http://127.0.0.1:8765'
@@ -46,7 +46,9 @@ roles['hedvig']={'seed':30220606,'instruction':'A mature Swedish female historia
 hedvig_lines={
  'hedvig-karta':('hedvig','Hedvig Rålamb här. Kartans linjer följer gamla vadställen och gravhögar. Karl, vi behöver avtryck av inskrifterna.'),
  'hedvig-minne':('hedvig','Rudbecks äpplen är minne, tal och skrift. Stenarna bevarar gärningar som kronan har strukit. Ta med avtrycken.')}
-if '--intro-only' in sys.argv: lines=json.loads((ROOT/'assets/story/intro-radio.json').read_text())
+roles['arvid']={'seed':30220908,'instruction':'An adult Swedish male captain about fifty-five, restrained weathered baritone, clear natural Swedish, exhausted dignity, quiet human warmth, serious and calm, no villain voice, no theatrical growl.','text':'Jag heter Arvid Silfvergren. Mina män har hållit vägen öppen genom vintern. Nu väntar vi på order om avlösning. Jag vill se dem återvända hem medan någon ännu minns deras namn.'}
+if '--regiment-only' in sys.argv: lines=json.loads((ROOT/'assets/story/regiment-radio.json').read_text())
+elif '--intro-only' in sys.argv: lines=json.loads((ROOT/'assets/story/intro-radio.json').read_text())
 elif '--roots-only' in sys.argv: lines=json.loads((ROOT/'assets/story/rootway-radio.json').read_text())
 elif '--archive-only' in sys.argv: lines=json.loads((ROOT/'assets/story/archive-radio.json').read_text())
 elif '--rooms-only' in sys.argv: lines=json.loads((ROOT/'assets/story/rooms-radio.json').read_text())
@@ -59,7 +61,19 @@ for role,v in roles.items():
  ref=render(role+'-reference',{'text':v['text'],'voice_instruction':v['instruction'],'language':'sv','model_backend':'voxcpm2','output_format':'wav','normalize':False,'seed':v['seed']})
  for name,(r,line) in lines.items():
   if r!=role:continue
-  if (ROOT/'assets/audio'/f'voice-{name}.ogg').exists():continue
-  raw=render(name,{'text':line,'voice_instruction':v['instruction'],'language':'sv','model_backend':'dots.tts-mf','output_format':'wav','normalize':False,'seed':v['seed']+100,'reference_wav_base64':base64.b64encode(ref.read_bytes()).decode(),'prompt_text':v['text'],'dots_num_steps':8 if '--rooms-only' in sys.argv or '--archive-only' in sys.argv or '--roots-only' in sys.argv or '--intro-only' in sys.argv else 4})
+  if (ROOT/'assets/audio'/f'voice-{name}.ogg').exists() and not ('--retake-regiment' in sys.argv and name in {'regiment-captain','regiment-freed','regiment-marshal'}):continue
+  raw=render(name,{'text':line,'voice_instruction':v['instruction'],'language':'sv','model_backend':'dots.tts-mf','output_format':'wav','normalize':False,'seed':v['seed']+100,'reference_wav_base64':base64.b64encode(ref.read_bytes()).decode(),'prompt_text':v['text'],'dots_num_steps':8 if '--regiment-only' in sys.argv or '--rooms-only' in sys.argv or '--archive-only' in sys.argv or '--roots-only' in sys.argv or '--intro-only' in sys.argv else 4})
+  if '--retake-regiment' in sys.argv and name in {'regiment-captain','regiment-freed','regiment-marshal'}:
+   parts=[]
+   for index,sentence in enumerate(re.split(r'(?<=[.!?])\s+',line)):
+    part=render(name+'-sentence-'+str(index),{'text':sentence,'voice_instruction':v['instruction'],'language':'sv','model_backend':'dots.tts-mf','output_format':'wav','normalize':False,'seed':v['seed']+211+index,'reference_wav_base64':base64.b64encode(ref.read_bytes()).decode(),'prompt_text':v['text'],'dots_num_steps':16})
+    parts.append(part)
+   raw=SRC/(name+'-complete.wav')
+   with wave.open(str(raw),'wb') as out:
+    for part in parts:
+     with wave.open(str(part),'rb') as source:
+      if part==parts[0]:out.setparams(source.getparams())
+      out.writeframes(source.readframes(source.getnframes()))
+   (SRC/(name+'-complete.manifest.json')).write_text(json.dumps({'parts':[p.name for p in parts],'sha256':hashlib.sha256(raw.read_bytes()).hexdigest(),'backend':'dots.tts-mf','synthetic_reference':True},indent=2))
   subprocess.run(['ffmpeg','-y','-v','error','-i',str(raw),'-af','highpass=f=110,lowpass=f=7500,loudnorm=I=-18:TP=-2:LRA=8','-ar','48000','-ac','1','-c:a','libvorbis','-q:a','5',str(ROOT/'assets/audio'/f'voice-{name}.ogg')],check=True)
   print('saved',name,flush=True)

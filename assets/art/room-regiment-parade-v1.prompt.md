@@ -1,0 +1,5 @@
+# regiment-parade
+
+Generated with the built-in imagegen tool, 2026-09-08.
+
+Create a NEW final 2D isometric game background, not a 3D render, not concept art. Reference image STYLE ONLY.1536x1024. MÖNSTRINGSVALLEN, ancient Swedish baroque regimental parade square claimed by enormous roots. Broad worn stone drill ground, clearly readable open combat floor from (200,520) through center (770,570) to (1370,580), foreground down to y900. Three separate small flag sockets visible in the ground at approximately (510,430),(1070,470),(850,780); no standing flags in these sockets, game adds them. Low roots at rear, solemn stone muster memorial along back wall, ragged empty banner brackets, distant black pines. Entry OPEN stone arch in left wall at (150,460), exit OPEN arch right at (1390,500). No people, no enemies, no UI, no writing. Human scale doorways, matte dark oil painted surfaces, muted olive, ochre, worn blue, old brass. Fixed isometric camera. Central combat floor wide, almost empty, no giant props or decorative objects blocking dodge lanes.

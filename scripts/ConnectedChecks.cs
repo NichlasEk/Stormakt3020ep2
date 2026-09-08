@@ -13,7 +13,7 @@ public partial class Main
             LoadWaterArt();_game=Combat.NewRooms(_order);_game.Events.Clear();_game.EnableConnectedWorld();_game.DeveloperSurvival=true;_game.Rooms!.KeyTaken=_game.Rooms.DoorOpen=true;
             var door=_game.Rooms.Doors["lodge"];door.Locked=false;door.TargetOpen=true;door.Openness=1;
             foreach(var e in _game.Enemies)e.Health=0;
-            _game.Player=ConnectedWorld.Center(RoomLinks.All[0])-new NVec(70,0);_game.UpdateRoomSight(true);
+            _game.Player=ConnectedWorld.Route(RoomLinks.All[0])[0]-_game.WorldOrigin;_game.UpdateRoomSight(true);
             ChangeScreen(Screen.Game);SetPhysicsProcess(false);_radio="";_radioQueue.Clear();_bannerTime=_noticeTime=_campaignTextTime=0;
             async Task SettleAudio()
             {
@@ -70,7 +70,7 @@ public partial class Main
                 await Capture("painted-arch-arrival");await SettleAudio();GD.Print("ARCH CHECK PASS: painted doorway, vault occlusion and continuous chamber arrival");GetTree().Quit();return;
             }
             await Capture("connected-door");
-            foreach(var target in ConnectedWorld.Route(RoomLinks.All[0]).Skip(2))
+            foreach(var target in ConnectedWorld.Route(RoomLinks.All[0]).Skip(1))
             {
                 for(int i=0;i<1600&&NVec.Distance(_game.Player+_game.WorldOrigin,target)>5;i++)
                 {

@@ -1,0 +1,5 @@
+# regiment-farled
+
+Generated with the built-in imagegen tool, 2026-09-08.
+
+Create a new finished 2D isometric gameplay background1536x1024, STYLE reference only, not3D, not concept art. FARLEDEN VID BERGET: a remote Swedish mountain landing reached by boat. Broad worn stone quay from (300,680) to (1100,700), sloping path north-east to sealed ancient iron mine gate at (1320,380). Ground at x450..1350,y420..820 is readable walking space. At lower-left, a modest six-person 17th century wooden sail and rowing boat moored beside boarding point (390,685). Dark water on left and foreground, steep rock cliff at back/right with roots and rusted iron pipes. Distant mine chimney emits a faint glow, tiny amber lamp by iron gate. Mist across water. Matte detailed oil painting, dark olive stone, cold grey water, worn blue and brass details, serious national romantic atmosphere. Human scale, no oversized lanterns. No people, no text, no UI, no arrows. Fixed isometric projection and clean walkable silhouettes.

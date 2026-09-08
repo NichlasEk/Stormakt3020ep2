@@ -1,0 +1,5 @@
+# regiment-trail
+
+Generated with the built-in imagegen tool, 2026-09-08.
+
+Create a NEW finished gameplay background for a true 2D isometric action RPG, not concept art, not a 3D render. Reference image is STYLE ONLY: sombre Swedish baroque, ancient roots, serious matte oil painting, dense worn material detail, readable flat gameplay floor, fixed isometric projection. 1536x1024. No characters, text, UI, arrows or giant props. Human doorways 140px tall. Ground fills central lower space approximately diamond with corners (160,500),(760,300),(1390,520),(820,910). All movement areas visible, no overhead canopy over paths. An overgrown military forest approach. Trampled muddy road runs from an open gap at LEFT EDGE x0 y500 through (450,610), curves around a low broken gravestone island at (780,490), and leaves RIGHT EDGE x1536 y570. Left and right entrances are road gaps, not doors. Bare black trunks along upper edge, broken cart at upper left, ragged blue-yellow old regimental pennant upper right, mossy stone boundary below. Open walking road at least240px wide. Dark Scandinavian twilight, subdued gold light from distant barracks upper right.
