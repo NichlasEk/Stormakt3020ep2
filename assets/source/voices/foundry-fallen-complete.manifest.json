@@ -1,0 +1,10 @@
+{
+  "parts": [
+    "foundry-fallen-sentence-0.wav",
+    "foundry-fallen-sentence-1.wav",
+    "foundry-fallen-sentence-2.wav"
+  ],
+  "sha256": "018fb8212b42a4a19d16131ffa066f24fbd4b1271d0a95529c3c3d5848b7ffd2",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

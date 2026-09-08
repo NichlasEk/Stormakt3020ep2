@@ -1,0 +1,10 @@
+{
+ "foundry-gate": ["ebba", "Porten ger efter. Karl, ta det försiktigt. Hammaren stannade just."],
+ "foundry-bailiff": ["bailiff", "Ni har stängt luften. Ni har inte avslutat arbetet. Kronan gjuts när riket är redo."],
+ "foundry-tactic": ["ebba", "Se var han lyfter hammaren. Slagen följer samma linje. Kylvattnet kan ge dig en lucka."],
+ "foundry-cooling": ["ebba", "Järnet svalnar. Nu, Karl. Innan ledningen går tom."],
+ "foundry-rage": ["bailiff", "Kungen är en senare fråga. Kronan måste bli färdig."],
+ "foundry-fallen": ["ebba", "Han är nere. Ta plåten vid pressen. Jag vill veta vad han försökte gjuta."],
+ "foundry-plate": ["hedvig", "Det här är ingen kungakrona. Den mäter himlen. Uppsala ligger i mitten, men norr är vänt åt fel håll."],
+ "foundry-return": ["ebba", "Ta avtrycket tillbaka till båten. Vi lämnar ingen kvar i berget. Sedan följer vi stjärnorna."]
+}

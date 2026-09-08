@@ -13,7 +13,7 @@ public static class RegimentTests
         try
         {
             SaveStore.Write(migration,legacy);var restored=SaveStore.Read(migration);
-            check(restored.Rooms!.LayoutVersion==7&&restored.Rooms.Rooms.Count==18,"Published nine-room saves gain six unvisited rooms");
+            check(restored.Rooms!.LayoutVersion==8&&restored.Rooms.Rooms.Count==19,"Published nine-room saves gain six unvisited rooms");
             check(Regiment.Ids.All(id=>!restored.Rooms.Rooms[id].Visited)&&restored.Health==61&&restored.Rooms.GroveSecured,"Migration preserves earlier story and wounds");
         }
         finally{File.Delete(migration);}

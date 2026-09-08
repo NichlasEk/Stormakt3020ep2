@@ -1,0 +1,9 @@
+{
+  "parts": [
+    "foundry-rage-sentence-0.wav",
+    "foundry-rage-sentence-1.wav"
+  ],
+  "sha256": "c06e1ac082756aeaf41702753d6b51e19e585639d7a9d84dca8741ee1035bbbd",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

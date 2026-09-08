@@ -1,5 +1,10 @@
 # Från arenor till expeditioner
 
+## 0.15 · Kronfogdens gjuteri · 2026-09-08
+
+Nittonde platsen fortsätter genom svalgångens målade port. Egen boss med hammarnedslag, kylvatten och en andra stridsfas; åtta nya radiorepliker, nytt porträtt och kronans stjärnplatta pekar vidare mot Uppsala. Direktprov med separat sparning: `./play.sh -- --foundry`. [Leverans, assets och nästa steg](FOUNDRY.md). Uppsalaområdet återstår.
+
+
 ## 0.14 · Järnets lungor, första gruvdelen
 
 Expeditionen fortsätter från bergets kaj genom gruvmynningen, blåsbälgarnas sal och svalgången. Ångtryck, ventiler, återtågstrappa, åtta nya radiorepliker och kronans gjutform ingår. Huvudrutten har nu 18 beständiga platser. Direktprov med separat sparning: `./play.sh -- --mine`. [Leverans och nästa steg](MINE.md). Kronfogdens gjuteri återstår.

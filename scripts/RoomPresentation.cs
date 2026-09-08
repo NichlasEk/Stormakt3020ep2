@@ -10,7 +10,7 @@ public partial class Main
     private bool _roomsSlot,_roomChecks;
     private void StartStandardExpedition()
     {
-        _mineSlot=_regimentSlot=false;
+        _foundrySlot=_mineSlot=_regimentSlot=false;
         // A shore continuation keeps its original save slot. Prefer whichever room expedition
         // was played most recently, without overwriting the other independent run.
         var quay=ProjectSettings.GlobalizePath("user://quay-save.json");
@@ -24,7 +24,7 @@ public partial class Main
     }
     private void StartRooms()
     {
-        _mineSlot=false;_regimentSlot=false;_doorSlot=false;
+        _foundrySlot=false;_mineSlot=false;_regimentSlot=false;_doorSlot=false;
         LoadWaterArt();
         _roomsSlot=true;_atlandSlot=_portSlot=false;
         if(!_testMode&&System.IO.File.Exists(SavePath)){ResumeSave();return;}
@@ -84,7 +84,7 @@ public partial class Main
     }
     private void DrawRoomPrompt()
     {
-        if(DrawMinePrompt()||DrawRegimentPrompt())return;
+        if(DrawFoundryPrompt()||DrawMinePrompt()||DrawRegimentPrompt())return;
         var r=_game.Rooms!;string prompt="";
         bool Near(System.Numerics.Vector2 p)=>System.Numerics.Vector2.Distance(_game.Player,p)<72&&_game.ClearPath(_game.Player,p);
         var link=(_game.InConnectedWorld?Array.Empty<RoomLink>():RoomLinks.From(r.Current)).FirstOrDefault(l=>Near(l.At(r.Current)));

@@ -7,18 +7,19 @@ namespace Atland;
 public static class Mine
 {
     public const string Mouth="mine-mouth",Bellows="mine-bellows",Coolway="mine-coolway";
-    public static readonly string[] Ids={Mouth,Bellows,Coolway};
+    public static readonly string[] Ids={Mouth,Bellows,Coolway,Foundry.Room};
     public static bool Known(string id)=>Ids.Contains(id);
-    public static string Name(string id)=>id switch{Mouth=>"Gruvmynningen",Bellows=>"Järnets lungor",_=>"Svalgången"};
-    public static Vector2 Origin(string id)=>id switch{Mouth=>new(30100,7000),Bellows=>new(32100,7060),_=>new(34100,7120)};
+    public static string Name(string id)=>id switch{Foundry.Room=>"Den tomma kronans gjuteri",Mouth=>"Gruvmynningen",Bellows=>"Järnets lungor",_=>"Svalgången"};
+    public static Vector2 Origin(string id)=>id switch{Foundry.Room=>new(36100,7180),Mouth=>new(30100,7000),Bellows=>new(32100,7060),_=>new(34100,7120)};
     public static readonly Vector2 Latch=new(1250,330),Ledger=new(770,610),Feed=new(480,640),Relief=new(1070,640),Imprint=new(960,665),Cache=new(520,690),Shortcut=new(720,900);
     public static readonly Vector2[] Vents={new(560,585),new(770,623),new(970,585)};
-    public static Vector2[] Ground(string id)=>new Vector2[]{new(90,400),new(650,280),new(1030,315),new(1450,450),new(1490,550),new(1100,775),new(850,940),new(700,940),new(285,700),new(90,510)};
+    public static Vector2[] Ground(string id)=>id==Foundry.Room?Foundry.Ground:new Vector2[]{new(90,400),new(650,280),new(1030,315),new(1450,450),new(1490,550),new(1100,775),new(850,940),new(700,940),new(285,700),new(90,510)};
     public static Vector2[][] Obstacles(string id)=>id switch
     {
+        Foundry.Room=>Foundry.Obstacles,
         Mouth=>new[]{new Vector2[]{new(725,548),new(775,530),new(810,560),new(780,593),new(725,580)}},
         Bellows=>new[]{new Vector2[]{new(580,360),new(870,340),new(1080,470),new(990,550),new(740,580),new(575,470)}},
-        _=>new[]{new Vector2[]{new(870,520),new(965,480),new(1040,540),new(1000,625),new(915,620)},new Vector2[]{new(1260,320),new(1536,380),new(1536,620),new(1270,520)}}
+        _=>new[]{DoorTrialLayout.Bar(new(500,320),new(1377,486),18),DoorTrialLayout.Bar(new(1444,499),new(1540,560),18),new Vector2[]{new(870,520),new(965,480),new(1040,540),new(1000,625),new(915,620)}}
     };
 }
 public sealed class MineRun
@@ -35,10 +36,10 @@ public sealed partial class Combat
     {
         Mine.Mouth=>MineState.LedgerRead?"Följ ledningen till blåsbälgarna":"Läs bergmästarens driftbok",
         Mine.Bellows=>!MineState.FeedClosed?"Stäng matningen till vänster":!MineState.PressureReleased?"Öppna avlastningen till höger":"Fortsätt till svalgången",
-        _=>MineState.ImprintTaken?"Gjuteriets spår är säkrat":"Undersök gjutformen i svalgången"
+        _=>MineState.ImprintTaken?(FoundryState.GateOpen?"Fortsätt in i gjuteriet":"Lossa porten till gjuteriet"):"Undersök gjutformen i svalgången"
     };
     [JsonIgnore] public Vector2 MineObjective=>Rooms!.Current switch
-    {Mine.Mouth=>MineState.LedgerRead?new(1370,500):Mine.Ledger,Mine.Bellows=>!MineState.FeedClosed?Mine.Feed:!MineState.PressureReleased?Mine.Relief:new(1370,500),_=>MineState.ImprintTaken?Mine.Shortcut:Mine.Imprint};
+    {Mine.Mouth=>MineState.LedgerRead?new(1370,500):Mine.Ledger,Mine.Bellows=>!MineState.FeedClosed?Mine.Feed:!MineState.PressureReleased?Mine.Relief:new(1370,500),_=>MineState.ImprintTaken?Foundry.Gate:Mine.Imprint};
     public static Combat NewMinePreview(Order order)
     {
         var g=NewRegimentPreview(order);var r=g.Rooms!;var shift=g.WorldOrigin-ConnectedWorld.Origin(Regiment.Farled);
@@ -51,6 +52,7 @@ public sealed partial class Combat
     }
     private void EnterMine(string room)
     {
+        if(room==Foundry.Room)EnterFoundry();
         if(room==Mine.Mouth){Spawn(EnemyKind.Guard,new(1030,650));Spawn(EnemyKind.Gunner,new(1130,450));Emit("radio",Player,"mine-entry");}
         if(room==Mine.Bellows){Spawn(EnemyKind.Pikeman,new(850,720));Spawn(EnemyKind.Guard,new(1140,630));Emit("radio",Player,"mine-bellows");}
         if(room==Mine.Coolway)Emit("radio",Player,"mine-coolway");

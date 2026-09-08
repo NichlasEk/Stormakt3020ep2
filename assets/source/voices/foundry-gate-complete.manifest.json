@@ -1,0 +1,10 @@
+{
+  "parts": [
+    "foundry-gate-sentence-0.wav",
+    "foundry-gate-sentence-1.wav",
+    "foundry-gate-sentence-2.wav"
+  ],
+  "sha256": "b0071ee24637e7bbc6353d34a222b10e3f8ba4c00021ed95368488a9f660d68e",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

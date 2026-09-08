@@ -1,0 +1,9 @@
+{
+  "text": "Arbetet fortsätter enligt kronans beslut. Varje namn skall föras in i liggaren. Ingen lämnar sin post innan räkningen är avslutad.",
+  "voice_instruction": "An adult Swedish male crown bailiff around sixty, dry resonant low baritone, precise bureaucratic Swedish diction, measured calm severity, tired and utterly convinced, no theatrical monster growl, no comedy.",
+  "language": "sv",
+  "model_backend": "voxcpm2",
+  "output_format": "wav",
+  "normalize": false,
+  "seed": 30220910
+}

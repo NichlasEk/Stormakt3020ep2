@@ -1,0 +1,11 @@
+{
+  "text": "Kronan måste bli färdig.",
+  "voice_instruction": "An adult Swedish male crown bailiff around sixty, dry resonant low baritone, precise bureaucratic Swedish diction, measured calm severity, tired and utterly convinced, no theatrical monster growl, no comedy.",
+  "language": "sv",
+  "model_backend": "dots.tts-mf",
+  "output_format": "wav",
+  "normalize": false,
+  "seed": 30221122,
+  "prompt_text": "Arbetet fortsätter enligt kronans beslut. Varje namn skall föras in i liggaren. Ingen lämnar sin post innan räkningen är avslutad.",
+  "dots_num_steps": 16
+}

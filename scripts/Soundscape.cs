@@ -39,7 +39,7 @@ public partial class Soundscape : Node
             if(ResourceLoader.Exists($"res://assets/audio/voice-{name}.ogg"))_clips["voice-"+name]=GD.Load<AudioStream>($"res://assets/audio/voice-{name}.ogg");
         foreach(var id in JourneyDialogue.Load().Keys)
             if(ResourceLoader.Exists($"res://assets/audio/voice-{id}.ogg"))_clips["voice-"+id]=GD.Load<AudioStream>($"res://assets/audio/voice-{id}.ogg");
-        foreach(var id in JourneyDialogue.Rooms().Keys.Concat(JourneyDialogue.Archive().Keys).Concat(JourneyDialogue.Roots().Keys).Concat(JourneyDialogue.Regiment().Keys).Concat(JourneyDialogue.Mine().Keys))
+        foreach(var id in JourneyDialogue.Rooms().Keys.Concat(JourneyDialogue.Archive().Keys).Concat(JourneyDialogue.Roots().Keys).Concat(JourneyDialogue.Regiment().Keys).Concat(JourneyDialogue.Mine().Keys).Concat(JourneyDialogue.Foundry().Keys))
             if(ResourceLoader.Exists($"res://assets/audio/voice-{id}.ogg"))_clips["voice-"+id]=GD.Load<AudioStream>($"res://assets/audio/voice-{id}.ogg");
         foreach(var name in new[]{"mine-valve","mine-warning","mine-steam","door-unlock","door-creak","door-hit","door-break","pump-pressure","pump-drain","stone-door","oath-lock","oath-rush","oath-impact","vault-ambience"})
             _clips[name]=GD.Load<AudioStream>($"res://assets/audio/{name}.ogg");

@@ -1,0 +1,10 @@
+{
+  "parts": [
+    "foundry-return-sentence-0.wav",
+    "foundry-return-sentence-1.wav",
+    "foundry-return-sentence-2.wav"
+  ],
+  "sha256": "b69c9aee6f7c403705ac0593979cc62a6c743effaf7706f42a3ac02fe5929730",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

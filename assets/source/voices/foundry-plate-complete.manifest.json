@@ -1,0 +1,10 @@
+{
+  "parts": [
+    "foundry-plate-sentence-0.wav",
+    "foundry-plate-sentence-1.wav",
+    "foundry-plate-sentence-2.wav"
+  ],
+  "sha256": "ba9bd31c27783d00370ad7a50712fe230aa03f7e9bcd5ccc13b81a2de5a662a2",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

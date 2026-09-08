@@ -1,0 +1,10 @@
+{
+  "parts": [
+    "foundry-tactic-sentence-0.wav",
+    "foundry-tactic-sentence-1.wav",
+    "foundry-tactic-sentence-2.wav"
+  ],
+  "sha256": "66f074c11cd84c7c50a1552041d491bd34826be0ea441264a343280bd56b4251",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

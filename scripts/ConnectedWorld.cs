@@ -10,7 +10,7 @@ namespace Atland;
 public static class ConnectedWorld
 {
     public static readonly string[] RoomIds=PortRooms.Ids.Concat(Regiment.Ids).Concat(Mine.Ids).ToArray();
-    public const int Revision=4;
+    public const int Revision=5;
     public static bool Painted(RoomLink link)=>true;
     public static float MouthWidth(RoomLink link)=>link.Id switch{"lodge"=>.8f,"pump" or "cistern"=>.75f,"archive"=>1.15f,"gallery"=>.42f,"shortcut"=>.38f,"chamber"=>.42f,_=>.36f};
     public static Vector2 Origin(string id)=>Mine.Known(id)?Mine.Origin(id):Regiment.Known(id)?Regiment.Origin(id):id switch
@@ -25,6 +25,7 @@ public static class ConnectedWorld
     {PortRooms.Lodge=>new[]{Navigation.Expand(JourneyLayout.WarehouseObstacle,22)},PortRooms.Pump=>new[]{PortRooms.PumpBasin},PortRooms.Cistern=>new[]{PortRooms.CisternBasin},PortRooms.Gallery=>new[]{PortRooms.Lectern},PortRooms.Chamber=>PortRooms.OathObstacles,PortRooms.Archive=>new[]{ArchiveRoom.Table},PortRooms.Grove=>new[]{Rootway.Slab},_=>Array.Empty<Vector2[]>()};
     public static Vector2[] Route(RoomLink l)
     {
+        if(l.Id=="foundry")return new[]{Origin(l.A)+new Vector2(1370,545),Origin(l.A)+new Vector2(1450,440),Origin(l.A)+new Vector2(1600,380),Origin(l.B)+new Vector2(-60,350),Origin(l.B)+new Vector2(130,420),Origin(l.B)+new Vector2(240,480)};
         if(l.Id=="mine-entry")return new[]{Origin(l.A)+new Vector2(1260,300),Origin(l.A)+new Vector2(1260,170),Origin(l.A)+new Vector2(1260,-80),Origin(l.B)+new Vector2(-60,350),Origin(l.B)+new Vector2(125,420),Origin(l.B)+new Vector2(230,480)};
         if(l.Id is "mine-bellows" or "mine-coolway")return new[]{Origin(l.A)+new Vector2(1360,510),Origin(l.A)+new Vector2(1450,410),Origin(l.A)+new Vector2(1600,350),Origin(l.B)+new Vector2(-60,350),Origin(l.B)+new Vector2(130,420),Origin(l.B)+new Vector2(240,480)};
         if(l.Id=="mine-return")return new[]{Origin(l.A)+new Vector2(720,900),Origin(l.A)+new Vector2(720,1060),new Vector2(34820,8500),new Vector2(30880,8500),Origin(l.B)+new Vector2(780,1060),Origin(l.B)+new Vector2(780,900)};
@@ -80,6 +81,7 @@ public sealed partial class Combat
     {
         get
         {
+            if(InFoundry)return FoundryObjective;
             if(InMine)return MineObjective;
             if(InRegiment)return RegimentObjective;
             var r=Rooms!;
@@ -102,7 +104,7 @@ public sealed partial class Combat
     public void EnableConnectedWorld()
     {
         if(!InRooms||InDoorTrial||InConnectedWorld)return;
-        var r=Rooms!;foreach(var id in Regiment.Ids.Concat(Mine.Ids))r.Rooms.TryAdd(id,new());r.LayoutVersion=7;r.Connected=true;r.ConnectionRevision=ConnectedWorld.Revision;
+        var r=Rooms!;foreach(var id in Regiment.Ids.Concat(Mine.Ids))r.Rooms.TryAdd(id,new());r.LayoutVersion=8;r.Connected=true;r.ConnectionRevision=ConnectedWorld.Revision;
         foreach(var e in Enemies)e.HomeRoom=r.Current;
         foreach(var pair in r.Rooms)
         {
@@ -190,6 +192,7 @@ public sealed partial class Combat
             {EnterConnectedRoom(other);break;}
         }
         if(!input.Interact||_roomInteractHeld||Dead||AttackTime>0||DodgeTime>0)return;
+        if(r.Current==Mine.Coolway&&Vector2.Distance(Player,Foundry.Gate)<72)return;
         if(r.Current==Regiment.Farled&&Vector2.Distance(Player,Mine.Latch)<72)return;
         if(r.Current==Mine.Coolway&&!r.Mine.ShortcutOpen&&Vector2.Distance(Player,Mine.Shortcut)<72)return;
         // Release the adjacent archive seal before operating its unlocked leaf.
@@ -252,6 +255,17 @@ public sealed partial class Combat
         // unchanged, so positions on retained floor keep their exact frame.
         Vector2 Restore(string room,Vector2 at)
         {var offset=ConnectedWorld.Origin(room)-WorldOrigin;return Navigation.Clamp(ConnectedWorld.Ground(room),ConnectedWorld.Obstacles(room),at-offset)+offset;}
+        // Revision 5 closes the painted wall beside the foundry arch. Recover
+        // old saves from its formerly walkable water/wall strip as well.
+        Vector2 RecoverCoolway(string room,Vector2 at)
+        {
+            var offset=ConnectedWorld.Origin(Mine.Coolway)-WorldOrigin;var local=at-offset;
+            return room==Mine.Coolway&&local.X>=450&&local.Y<340+(local.X-500)*166/877
+                ?new Vector2(1180,650)+offset:at;
+        }
+        Player=RecoverCoolway(Rooms.Current,Player);
+        foreach(var foe in Enemies)foe.Position=RecoverCoolway(foe.HomeRoom,foe.Position);
+        foreach(var drop in Inventory.Drops)drop.Position=RecoverCoolway(drop.Room,drop.Position);
         if(!OnWalkable(Player))Player=Restore(Rooms.Current,Player);
         foreach(var foe in Enemies)if(!OnWalkable(foe.Position))foe.Position=Restore(foe.HomeRoom,foe.Position);
         foreach(var drop in Inventory.Drops.Where(d=>d.Room!=""))if(!OnWalkable(drop.Position))drop.Position=Restore(drop.Room,drop.Position);

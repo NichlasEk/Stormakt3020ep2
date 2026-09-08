@@ -4,7 +4,7 @@ using System.Numerics;
 
 namespace Atland;
 
-public enum PassageGate { Key,Plans,Water,Shortcut,Witness,InnerPort,Archive,RootGate,Free,RegimentAccess,RegimentExit,RegimentShortcut,MineEntrance,MinePressure,MineShortcut }
+public enum PassageGate { Key,Plans,Water,Shortcut,Witness,InnerPort,Archive,RootGate,Free,RegimentAccess,RegimentExit,RegimentShortcut,MineEntrance,MinePressure,MineShortcut,Foundry }
 public sealed record RoomLink(string Id,string A,Vector2 AtA,Vector2 ArrivalA,string B,Vector2 AtB,Vector2 ArrivalB,PassageGate Gate)
 {
     public Vector2 At(string room)=>room==A?AtA:AtB;
@@ -33,11 +33,12 @@ public static class RoomLinks
         new("mine-entry",Regiment.Farled,new(1260,300),new(1260,340),Mine.Mouth,new(125,420),new(240,480),PassageGate.MineEntrance),
         new("mine-bellows",Mine.Mouth,new(1360,510),new(1300,550),Mine.Bellows,new(130,420),new(240,480),PassageGate.Free),
         new("mine-coolway",Mine.Bellows,new(1360,510),new(1300,550),Mine.Coolway,new(130,420),new(240,480),PassageGate.MinePressure),
-        new("mine-return",Mine.Coolway,Mine.Shortcut,new(780,820),Mine.Mouth,Mine.Shortcut,new(780,820),PassageGate.MineShortcut)
+        new("mine-return",Mine.Coolway,Mine.Shortcut,new(780,820),Mine.Mouth,Mine.Shortcut,new(780,820),PassageGate.MineShortcut),
+        new("foundry",Mine.Coolway,Foundry.Gate,new(1250,600),Foundry.Room,new(130,420),new(240,480),PassageGate.Foundry)
     };
     public static IEnumerable<RoomLink> From(string room)=>Array.FindAll(All,l=>l.A==room||l.B==room);
     public static bool Open(RoomRun run,RoomLink link)=>link.Gate switch
-    {PassageGate.MineEntrance=>run.Mine.EntranceOpen,PassageGate.MinePressure=>run.Mine.PressureReleased,PassageGate.MineShortcut=>run.Mine.ShortcutOpen,PassageGate.Free=>true,PassageGate.RegimentAccess=>run.GroveSecured,PassageGate.RegimentExit=>run.Regiment.Discharged,PassageGate.RegimentShortcut=>run.Regiment.ShortcutOpen,PassageGate.Archive=>run.ArchiveSecured,PassageGate.RootGate=>run.RootGateOpen,PassageGate.InnerPort=>run.Completed,PassageGate.Key=>run.DoorOpen,PassageGate.Plans=>run.CacheTaken,PassageGate.Water=>run.WaterLowered,PassageGate.Witness=>run.WitnessRead,_=>run.ShortcutOpen};
+    {PassageGate.Foundry=>run.Foundry.GateOpen,PassageGate.MineEntrance=>run.Mine.EntranceOpen,PassageGate.MinePressure=>run.Mine.PressureReleased,PassageGate.MineShortcut=>run.Mine.ShortcutOpen,PassageGate.Free=>true,PassageGate.RegimentAccess=>run.GroveSecured,PassageGate.RegimentExit=>run.Regiment.Discharged,PassageGate.RegimentShortcut=>run.Regiment.ShortcutOpen,PassageGate.Archive=>run.ArchiveSecured,PassageGate.RootGate=>run.RootGateOpen,PassageGate.InnerPort=>run.Completed,PassageGate.Key=>run.DoorOpen,PassageGate.Plans=>run.CacheTaken,PassageGate.Water=>run.WaterLowered,PassageGate.Witness=>run.WitnessRead,_=>run.ShortcutOpen};
     public static string LockedReason(RoomLink link)=>link.Gate switch
-    {PassageGate.MineEntrance=>"Lossa gruvportens spärr vid trappan.",PassageGate.MinePressure=>"Stäng matningen och öppna avlastningen först.",PassageGate.MineShortcut=>"Reglad från svalgångens sida.",PassageGate.RegimentAccess=>"Återfinn lundens namn innan du följer stigen.",PassageGate.RegimentExit=>"Läs avlösningen vid mönstringsstenen.",PassageGate.RegimentShortcut=>"Återtågsvägen är reglad från fanlunden.",PassageGate.Free=>"Öppen gångväg",PassageGate.Archive=>"Säkra arkivets grind efter kontrollen.",PassageGate.RootGate=>"Lossa spärren vid motvikten först.",PassageGate.InnerPort=>"Besegra Edsväktaren och öppna den inre porten.",PassageGate.Key=>"Låst · väktarens nyckel saknas.",PassageGate.Plans=>"Undersök logementets ritning först.",PassageGate.Witness=>"Läs vittnesboken innan du bryter kammarens försegling.",PassageGate.Water=>"Trappan ligger under vatten. Frilägg den med pumpen.",_=>"Reglad från cisternens sida."};
+    {PassageGate.Foundry=>"Undersök gjutformen och lossa gjuteriets spärr.",PassageGate.MineEntrance=>"Lossa gruvportens spärr vid trappan.",PassageGate.MinePressure=>"Stäng matningen och öppna avlastningen först.",PassageGate.MineShortcut=>"Reglad från svalgångens sida.",PassageGate.RegimentAccess=>"Återfinn lundens namn innan du följer stigen.",PassageGate.RegimentExit=>"Läs avlösningen vid mönstringsstenen.",PassageGate.RegimentShortcut=>"Återtågsvägen är reglad från fanlunden.",PassageGate.Free=>"Öppen gångväg",PassageGate.Archive=>"Säkra arkivets grind efter kontrollen.",PassageGate.RootGate=>"Lossa spärren vid motvikten först.",PassageGate.InnerPort=>"Besegra Edsväktaren och öppna den inre porten.",PassageGate.Key=>"Låst · väktarens nyckel saknas.",PassageGate.Plans=>"Undersök logementets ritning först.",PassageGate.Witness=>"Läs vittnesboken innan du bryter kammarens försegling.",PassageGate.Water=>"Trappan ligger under vatten. Frilägg den med pumpen.",_=>"Reglad från cisternens sida."};
 }

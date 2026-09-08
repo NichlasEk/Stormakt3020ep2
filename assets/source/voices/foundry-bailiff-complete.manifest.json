@@ -1,0 +1,10 @@
+{
+  "parts": [
+    "foundry-bailiff-sentence-0.wav",
+    "foundry-bailiff-sentence-1.wav",
+    "foundry-bailiff-sentence-2.wav"
+  ],
+  "sha256": "b9601bf15c77802b739c8d2382790472e5a04a2fc939a5786646b2d554fdc20c",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

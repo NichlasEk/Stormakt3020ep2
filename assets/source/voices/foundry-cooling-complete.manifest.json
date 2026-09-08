@@ -1,0 +1,10 @@
+{
+  "parts": [
+    "foundry-cooling-sentence-0.wav",
+    "foundry-cooling-sentence-1.wav",
+    "foundry-cooling-sentence-2.wav"
+  ],
+  "sha256": "c4dbb077990ef72773cb0baae2e752f78cbe092f179e5feb819f4ae3d727b96f",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

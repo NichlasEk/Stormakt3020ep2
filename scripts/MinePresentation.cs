@@ -12,14 +12,14 @@ public partial class Main
     private bool _mineSlot;
     private void LoadMineArt()
     {
-        if(_mineArt.Count>0)return;
+        if(_mineArt.Count>0)return;LoadFoundryArt();
         foreach(var id in Mine.Ids)_mineArt[id]=GD.Load<Texture2D>($"res://assets/art/room-{id}-v1.png");
         _mineFarledOpen=GD.Load<Texture2D>("res://assets/art/room-farled-open-v1.png");
         _mineValve=GD.Load<Texture2D>("res://assets/art/mine-valve-v1.png");
     }
     private void StartMine(bool fresh=false)
     {
-        LoadWaterArt();_mineSlot=true;_regimentSlot=_doorSlot=_roomsSlot=_portSlot=_atlandSlot=false;_boatTime=0;
+        LoadWaterArt();_foundrySlot=false;_mineSlot=true;_regimentSlot=_doorSlot=_roomsSlot=_portSlot=_atlandSlot=false;_boatTime=0;
         if(!fresh&&!_testMode&&System.IO.File.Exists(SavePath)){ResumeSave();return;}
         _game=Combat.NewMinePreview(_order);ApplyDeveloperSettings();_particles.Clear();_floating.Clear();_radioQueue.Clear();_radio="";_sound.StopVoice();
         _bannerTime=_campaignTextTime=_revealTime=0;_camera=G(_game.Player)+new Vector2(0,-60);RememberRenderPositions();ChangeScreen(Screen.Game);Save();Notice("Separat gruvexpedition · följ trappan från kajen");
