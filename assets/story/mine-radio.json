@@ -1,0 +1,10 @@
+{
+  "mine-gate": ["ebba", "Spärren släpper. Karl, följ trappan. Jag håller båten kvar vid kajen."],
+  "mine-entry": ["ebba", "Hammarslagen hörs tydligare nu. Men det finns ingen rök över skorstenen."],
+  "mine-ledger": ["hedvig", "Här står hur verket stängs. Först matningen. Sedan avlastningen. Någon har skrivit det med darrande hand."],
+  "mine-bellows": ["ebba", "Se upp för golvutloppen. De blåser i tur och ordning. Vakterna verkar inte heller tåla ångan."],
+  "mine-feed": ["ebba", "Matningen är stängd. Nu avlastningen på andra sidan. Ta det lugnt mellan utbrotten."],
+  "mine-release": ["hedvig", "Trycket faller. Men hammaren fortsätter. Det är inte luften som driver den."],
+  "mine-coolway": ["ebba", "Här är luften kallare. Vi kan hämta andan. Undersök formen innan du går vidare."],
+  "mine-imprint": ["hedvig", "En krona utan kunganamn. Och samma stjärnor som i arkivet. Karl, den här formen väntar på något annat än guld."]
+}

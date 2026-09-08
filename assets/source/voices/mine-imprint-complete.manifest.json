@@ -1,0 +1,10 @@
+{
+  "parts": [
+    "mine-imprint-sentence-0.wav",
+    "mine-imprint-sentence-1.wav",
+    "mine-imprint-sentence-2.wav"
+  ],
+  "sha256": "78438d9ca353fac6dc3516ef4503cfeaf27f83eb3253a17b11ea2fd1992015b5",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

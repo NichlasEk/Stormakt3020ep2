@@ -1,0 +1,10 @@
+{
+  "parts": [
+    "mine-gate-sentence-0.wav",
+    "mine-gate-sentence-1.wav",
+    "mine-gate-sentence-2.wav"
+  ],
+  "sha256": "7315b6d2e08e6549280a62717c5747aa5643a48f0fbaabbec8f4c43fd6bf828c",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

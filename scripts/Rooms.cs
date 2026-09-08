@@ -24,8 +24,8 @@ public static class PortRooms
     public static readonly Vector2[] Lectern=Navigation.Expand(new Vector2[]{new(730,655),new(789,620),new(880,665),new(818,706)},10);
     public static readonly Vector2[] Pillars={new(570,620),new(1000,640)};
     public static readonly Vector2[][] OathObstacles=Pillars.Select(p=>new[]{p+new Vector2(-52,-8),p+new Vector2(0,-38),p+new Vector2(52,-8),p+new Vector2(0,30)}).ToArray();
-    public static string Name(string id)=>Regiment.Known(id)?Regiment.Name(id):id switch {Roots=>"Rötternas trappa",Grove=>"De namnlösas lund",Court=>"Den dränkta förgården",Lodge=>"Väktarnas logement",Pump=>"Pumphuset",Cistern=>"Den sänkta cisternen",Gallery=>"Vittnesgalleriet",Archive=>"Minnets arkiv",_=>"Edskammaren"};
-    public static bool Known(string id)=>Array.IndexOf(Ids,id)>=0||Regiment.Known(id);
+    public static string Name(string id)=>Mine.Known(id)?Mine.Name(id):Regiment.Known(id)?Regiment.Name(id):id switch {Roots=>"Rötternas trappa",Grove=>"De namnlösas lund",Court=>"Den dränkta förgården",Lodge=>"Väktarnas logement",Pump=>"Pumphuset",Cistern=>"Den sänkta cisternen",Gallery=>"Vittnesgalleriet",Archive=>"Minnets arkiv",_=>"Edskammaren"};
+    public static bool Known(string id)=>Array.IndexOf(Ids,id)>=0||Regiment.Known(id)||Mine.Known(id);
     public static Vector2 Door(string id)=>id==Court?CourtDoor:LodgeDoor;
     public static Vector2 Arrival(string id)=>id==Court?new(530,330):new(930,510);
 }
@@ -41,6 +41,7 @@ public sealed class RoomSnapshot
 public sealed class RoomRun
 {
     public RegimentRun Regiment=new();
+    public MineRun Mine=new();
     public bool Connected;
     public int ConnectionRevision=1;
     public HashSet<string> CorridorSeen=new();
@@ -67,6 +68,7 @@ public sealed partial class Combat
         {
             var r=Rooms!;
             if(InDoorTrial)return DoorTest!.EnteredLodge?"Stäng dörren eller slå sönder den":DoorTest.KeyTaken?"Öppna dörren och gå in":"Hämta nyckeln · eller bryt upp dörren";
+            if(InMine)return MineGoal;
             if(InRegiment)return RegimentGoal;
             if(r.Current is PortRooms.Roots or PortRooms.Grove)return RootGoal;
             if(r.Current==PortRooms.Archive)return ArchiveGoal;
@@ -125,7 +127,7 @@ public sealed partial class Combat
             Emit("checkpoint",Player);return;
         }
         bool peaceful=EncounterEnemies.All(e=>e.Dead)&&Shots.All(s=>s.Reflected)&&Hazards.All(h=>h.Friendly);
-        if(StepRegiment(Near,peaceful)||StepArchiveRoom(Near,peaceful)||StepRootway(Near,peaceful))return;
+        if(StepMine(Near)||StepRegiment(Near,peaceful)||StepArchiveRoom(Near,peaceful)||StepRootway(Near,peaceful))return;
         if(Rooms.Current==PortRooms.Pump&&(Near(PortRooms.Pressure)||Near(PortRooms.Wheel)))
         {
             if(!peaceful){Emit("room-notice",Player,"Säkra pumphuset först.");return;}
@@ -238,11 +240,18 @@ public sealed partial class Combat
         {
             if(r.Rooms.Count!=9)throw new System.IO.InvalidDataException("Ogiltig äldre världskarta");
             foreach(var id in Regiment.Ids)r.Rooms.Add(id,new());
-            foreach(var link in RoomLinks.All.Skip(9))r.Doors.Add(link.Id,new(){Locked=!RoomLinks.Open(r,link),TargetOpen=RoomLinks.Open(r,link),Openness=RoomLinks.Open(r,link)?1:0});
+            foreach(var link in RoomLinks.All.Skip(9).Take(6))r.Doors.Add(link.Id,new(){Locked=!RoomLinks.Open(r,link),TargetOpen=RoomLinks.Open(r,link),Openness=RoomLinks.Open(r,link)?1:0});
             r.LayoutVersion=6;
         }
+        if(r.Connected&&r.LayoutVersion==6)
+        {
+            if(r.Rooms is null||r.Rooms.Count!=15||PortRooms.Ids.Concat(Regiment.Ids).Any(id=>!r.Rooms.ContainsKey(id)))throw new System.IO.InvalidDataException("Ogiltig äldre regementeskarta");
+            foreach(var id in Mine.Ids)r.Rooms.Add(id,new());
+            foreach(var link in RoomLinks.All.Skip(15))r.Doors.Add(link.Id,new(){Locked=!RoomLinks.Open(r,link),TargetOpen=RoomLinks.Open(r,link),Openness=RoomLinks.Open(r,link)?1:0});
+            r.LayoutVersion=7;
+        }
         if(!InCampaign||CampaignStage!=0||Region!=Region.Atland||CampaignFinished||!PortRooms.Known(r.Current)
-            ||r.Rooms is null||r.LayoutVersion!=(r.Connected?6:5)||r.Rooms.Count!=(r.Connected?ConnectedWorld.RoomIds.Length:9)||(r.Connected?ConnectedWorld.RoomIds:PortRooms.Ids).Any(id=>!r.Rooms.ContainsKey(id))
+            ||r.Rooms is null||r.LayoutVersion!=(r.Connected?7:5)||r.Rooms.Count!=(r.Connected?ConnectedWorld.RoomIds.Length:9)||(r.Connected?ConnectedWorld.RoomIds:PortRooms.Ids).Any(id=>!r.Rooms.ContainsKey(id))
             ||r.Rooms.Any(p=>p.Value is null||p.Value.Enemies is null||p.Value.Enemies.Count>100||p.Value.Explored is null||p.Value.Explored.Length!=RoomSight.Bytes||(!p.Value.Visited&&p.Value.Explored.Any(b=>b!=0)))
             ||!r.Rooms[PortRooms.Court].Visited||!r.Rooms[r.Current].Visited||r.Rooms[r.Current].Enemies.Count!=0
             ||(r.DoorOpen&&!r.KeyTaken&&!(InConnectedWorld&&r.Doors is not null&&r.Doors.TryGetValue("lodge",out var brokenDoor)&&brokenDoor.Broken))||(r.Rooms[PortRooms.Lodge].Visited&&!r.DoorOpen)||(r.CacheTaken&&!r.Rooms[PortRooms.Lodge].Visited)
@@ -266,7 +275,7 @@ public sealed partial class Combat
         var archiveActors=ActorsInRoom(PortRooms.Archive);
         if((ArchiveChoice==0&&archiveActors.Count!=0)||(ArchiveChoice!=0&&archiveActors.Count!=(ArchiveChoice==1?3:1))
             ||(r.ArchiveSecured&&archiveActors.Any(e=>!e.Dead)))throw new System.IO.InvalidDataException("Ogiltig arkivkontroll");
-        ValidateRootway();ValidateConnectedWorld();ValidateRegiment();
+        ValidateRootway();ValidateConnectedWorld();ValidateRegiment();ValidateMine();
         if(Inventory.Drops.Any(d=>d.Room!=""&&!PortRooms.Known(d.Room)))throw new System.IO.InvalidDataException("Ogiltigt fyndrum");
     }
 }

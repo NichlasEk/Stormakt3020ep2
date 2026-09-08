@@ -1,0 +1,11 @@
+{
+  "parts": [
+    "mine-ledger-sentence-0.wav",
+    "mine-ledger-sentence-1.wav",
+    "mine-ledger-sentence-2.wav",
+    "mine-ledger-sentence-3.wav"
+  ],
+  "sha256": "b2f8f11d3db8e309890cc792a7e2186298eda5c8a6df99981a750548b6d324e7",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

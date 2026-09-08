@@ -59,7 +59,7 @@ public partial class Main
             var delta=G(ConnectedWorld.Origin(id)-_game.WorldOrigin);if(!WorldRectVisible(delta,new(1536,1024)))continue;
             _paintRoom=id;var local=new List<(float Depth,Action Draw)>();
             if(id is PortRooms.Pump or PortRooms.Cistern)AddWaterLayers(local);
-            AddOathLayers(local);AddArchiveLayers(local);AddRootwayLayers(local);AddRegimentLayers(local);AddOlderArchLayers(local);AddPaintedArchLayers(local);
+            AddOathLayers(local);AddArchiveLayers(local);AddRootwayLayers(local);AddRegimentLayers(local);AddMineLayers(local);AddOlderArchLayers(local);AddPaintedArchLayers(local);
             if(id==PortRooms.Lodge)
             {
                 local.Add((623,()=>PaintForeground(_lodgePassageArt!,new Vector2[]{new(677,513),new(720,490),new(722,466),new(753,450),new(812,454),new(874,477),new(882,572),new(791,621),new(677,566)})));
@@ -74,7 +74,7 @@ public partial class Main
         _paintRoom=null;LoadDoorArt();
         foreach(var l in RoomLinks.All)
         {
-            if(l.Id is "chamber" or "archive")continue;
+            if(l.Id is "chamber" or "archive" or "mine-entry")continue;
             var at=G(ConnectedWorld.Center(l)-_game.WorldOrigin);if(!WorldRectVisible(at-new Vector2(210,240),new(420,420)))continue;
             var center=ConnectedWorld.Center(l)-_game.WorldOrigin;
             var path=ConnectedWorld.Route(l);var approach=NVec.Normalize(ConnectedWorld.Painted(l)?path[1]-path[0]:path[2]-path[1])*65;
@@ -174,18 +174,26 @@ public partial class Main
     {
         DrawRect(new Rect2(0,0,1280,720),new Color(.025f,.023f,.019f,.97f));
         Text("ATLAND · GÅNGVÄGARNA",new Vector2(80,90),28,Pale,true);
-        Wrapped("Förgården, logementet och de inre rummen hör till samma anläggning. Följ passagerna till fots. E / B manövrerar portarna; cisternens sidoväg sluter kretsen tillbaka till förgården.",new Vector2(80,132),1100,19,Muted,28);
+        Wrapped("Följ passagerna till fots genom Atland, regementets marker och gruvan. Sidovägar öppnar återtåg. Mellan regementets brygga och berget går färden med båt.",new Vector2(80,132),1100,19,Muted,28);
         Vector2 At(string id)
         {
-            int index=Array.IndexOf(ConnectedWorld.RoomIds,id), row=index/5, column=index%5;
-            return new Vector2(155+(row%2==0?column:4-column)*225,250+row*115);
+            int index=Array.IndexOf(ConnectedWorld.RoomIds,id), row=index/6, column=index%6;
+            return new Vector2(140+(row%2==0?column:5-column)*190,250+row*115);
         }
         var r=_game.Rooms!;
         foreach(var l in RoomLinks.All)
         {
             if(!r.Rooms[l.A].Visited&&!r.Rooms[l.B].Visited)continue;
-            var a=At(l.A);var b=At(l.B);DrawLine(a,b,RoomLinks.Open(r,l)?new Color("706c53"):new Color("383b32"),3,true);
+            var a=At(l.A);var b=At(l.B);var color=RoomLinks.Open(r,l)?new Color("706c53"):new Color("383b32");
+            if(Math.Abs(a.Y-b.Y)<1&&Math.Abs(a.X-b.X)>200)DrawPolyline(new[]{a,a-new Vector2(0,37),b-new Vector2(0,37),b},color,2,true);
+            else DrawLine(a,b,color,3,true);
             if(!RoomLinks.Open(r,l))DrawCircle((a+b)/2,5,Gold);
+        }
+        if(r.Regiment.Discharged)
+        {
+            var a=At(Regiment.Quay);var b=At(Regiment.Farled);
+            for(int i=0;i<10;i++)DrawLine(a.Lerp(b,i/10f),a.Lerp(b,(i+.5f)/10),Teal,2,true);
+            Text("BÅT",(a+b)/2+new Vector2(-13,-10),11,Teal);
         }
         foreach(var id in ConnectedWorld.RoomIds)
         {

@@ -49,10 +49,10 @@ public sealed partial class Combat
         Regiment.Flags=>!RegimentState.MusterPassed?"Visa din handling vid kontrollen":"Följ vägen till mönstringsvallen",
         Regiment.Parade=>!RegimentState.MarshalDefeated?(RegimentState.Exposed>0?"Eden vacklar · angrip Rotmarskalken":"Bryt fanornas rotförbindelser"):!RegimentState.OrdersTaken?"Hämta avlösningsordern i sjukbaracken":!RegimentState.Discharged?"Läs avlösningen vid mönstringsstenen":"Fortsätt till regementets brygga",
         Regiment.Quay=>"Båten väntar vid bryggan · E för överfart",
-        _=>"Farleden vid berget · återresa med båt"
+        _=>MineState.EntranceOpen?"Följ trappan in i berget":"Lossa gruvportens spärr"
     };
     [JsonIgnore] public Vector2 RegimentObjective=>Rooms!.Current switch
-    {Regiment.Trail=>new(1440,550),Regiment.Barracks=>!RegimentState.CaptainMet?Regiment.Captain:!RegimentState.OrdersTaken?Regiment.Orders:new(1420,460),Regiment.Flags=>!RegimentState.MusterPassed?Regiment.Checkpoint:new(1450,520),Regiment.Parade=>RegimentState.MarshalDefeated?Regiment.Discharge:RegimentState.Exposed>0?new(800,550):Regiment.Standards[Array.FindIndex(RegimentState.Standards,h=>h>0) is var i&&i>=0?i:0],Regiment.Quay=>Regiment.Boat,_=>Regiment.LandingBoat};
+    {Regiment.Trail=>new(1440,550),Regiment.Barracks=>!RegimentState.CaptainMet?Regiment.Captain:!RegimentState.OrdersTaken?Regiment.Orders:new(1420,460),Regiment.Flags=>!RegimentState.MusterPassed?Regiment.Checkpoint:new(1450,520),Regiment.Parade=>RegimentState.MarshalDefeated?Regiment.Discharge:RegimentState.Exposed>0?new(800,550):Regiment.Standards[Array.FindIndex(RegimentState.Standards,h=>h>0) is var i&&i>=0?i:0],Regiment.Quay=>Regiment.Boat,_=>MineState.EntranceOpen?new(1260,290):Mine.Latch};
     public static Combat NewRegimentPreview(Order order)
     {
         var game=NewRooms(order);game.EnableConnectedWorld();game.Enemies.Clear();var r=game.Rooms!;

@@ -1,5 +1,10 @@
 # Stormakt 3020: Atlands arv
 
+## 0.14 · Järnets lungor, första gruvdelen
+
+Expeditionen fortsätter från bergets kaj genom gruvmynningen, blåsbälgarnas sal och svalgången. Ångtryck, ventiler, återtågstrappa, åtta nya radiorepliker och kronans gjutform ingår. Huvudrutten har nu 18 beständiga platser. Direktprov med separat sparning: `./play.sh -- --mine`. [Leverans och nästa steg](docs/MINE.md). Kronfogdens gjuteri återstår.
+
+
 ## 0.13 · Regementet som stannar · 2026-09-08
 
 Den sammanhängande huvudrutten fortsätter från lunden genom fem nya platser till Rotmarskalken och regementets avlösning. Båtresa och återresa leder till en sjätte ny målning vid berget. Kapten Arvid Silfvergren, målade rotkaroliner, nio radiorepliker och arkivberoende fanvakter ingår. De sex återstående äldre anslutningarna går genom målade öppningar; mellangångarnas murverk behöver fortfarande ett detaljpass.
@@ -13,7 +18,7 @@ Vittnesgalleriets högra valv leder nu fysiskt till Edskammarens vänstra port. 
 
 Episod II. Ett nytt, fristående actionrollspel i Stormakts värld: nordisk barock, karoliner, mytologi och Rudbecks Atland.
 
-[Nästa arbetsmål och nulägesanalys](docs/ROADMAP.md): sammanhängande banor med flera målade rum, dörrar, upptäcktsmörker och egna bossmekaniker. Huvudrutten har nu femton beständiga platser, inklusive regementet och bergets landstigning.
+[Nästa arbetsmål och nulägesanalys](docs/ROADMAP.md): sammanhängande banor med flera målade rum, dörrar, upptäcktsmörker och egna bossmekaniker. Huvudrutten har nu arton beständiga platser, inklusive regementet och gruvans första del.
 
 Starta senaste verifierade Linux-versionen med `./play.sh` (ingen ombyggnad). `./play.sh -- --gate-film` visar filmprovet direkt. Exportens programfil, `.pck` och `data_AtlandsArv_linuxbsd_x86_64` måste ligga tillsammans; `play.sh` kontrollerar detta innan start. `./start.sh` bygger och kör från källkoden.
 

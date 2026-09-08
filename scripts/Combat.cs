@@ -48,7 +48,7 @@ public sealed class Hazard
     public Vector2 Position;
     public float Timer;
     public float Radius;
-    public bool Friendly,Roots;
+    public bool Friendly,Roots,Steam;
 }
 public sealed class Seal
 {
@@ -234,12 +234,14 @@ public sealed partial class Combat
                     if (Vector2.DistanceSquared(shot.Position,enemy.Position)<30*30) { DamageEnemy(enemy,65,shot.Position,true);shot.Life=0;break; }
         }
         Shots.RemoveAll(s=>s.Life<=0);
+        StepMinePressure(dt);
         foreach (var hazard in Hazards)
         {
             hazard.Timer-=dt;
             if(hazard.Timer<=0)
             {
-                Emit(hazard.Friendly?"cannon":"slam",hazard.Position,"",hazard.Radius);
+                Emit(hazard.Steam?"room-sound":hazard.Friendly?"cannon":"slam",hazard.Position,hazard.Steam?"mine-steam":"",hazard.Radius);
+                if(hazard.Steam)foreach(var e in Enemies.Where(e=>!e.Dead&&Vector2.Distance(e.Position,hazard.Position)<hazard.Radius&&ClearPath(e.Position,hazard.Position)))DamageEnemy(e,38,hazard.Position,true);
                 if(hazard.Friendly)
                     foreach(var e in Enemies.Where(e=>!e.Dead && Vector2.Distance(e.Position,hazard.Position)<hazard.Radius)) DamageEnemy(e,110,hazard.Position,true);
                 else if(Vector2.Distance(Player,hazard.Position)<hazard.Radius&&ClearPath(hazard.Position,Player)){if(hazard.Roots&&DodgeTime<=0)RootSnare=.9f;DamagePlayer(23,hazard.Position);}

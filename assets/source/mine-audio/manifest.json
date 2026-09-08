@@ -1,0 +1,23 @@
+[
+  {
+    "asset": "mine-valve",
+    "sha256": "48efbf02594294237580dce1c127d6fdfa41452cc92a5b8424cba1cdbcaa3bde",
+    "method": "original procedural PCM",
+    "seed": 30220909,
+    "seconds": 1.25
+  },
+  {
+    "asset": "mine-warning",
+    "sha256": "751d10fb2a2d5188911002e190968d8f14dcb33c341382e545f927ff4dd245a1",
+    "method": "original procedural PCM",
+    "seed": 30220909,
+    "seconds": 0.7
+  },
+  {
+    "asset": "mine-steam",
+    "sha256": "48f1d79264e77d73ca5bdbd012e8d80289b682d15d6877a13a27da98cdf339fa",
+    "method": "original procedural PCM",
+    "seed": 30220909,
+    "seconds": 1.4
+  }
+]

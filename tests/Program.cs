@@ -5,6 +5,7 @@ using System.Text.Json;
 int checks=0;
 void Check(bool condition,string message){if(!condition)throw new Exception(message);checks++;}
 Controls Input(Vector2 move=default,Vector2 aim=default,bool attack=false,bool heavy=false,bool dodge=false,bool guard=false,bool swap=false,bool heal=false,bool support=false,bool interact=false)=>new(move,aim,attack,heavy,dodge,guard,swap,heal,support,interact);
+if(args.Contains("--mine-only")){MineTests.Run(Check);Console.WriteLine($"PASS MINE · {checks}");return;}
 if(args.Contains("--regiment-only")){RegimentTests.Run(Check);Console.WriteLine($"PASS REGIMENT · {checks}");return;}
 if(args.Contains("--world-only")){ConnectedTests.Run(Check);Console.WriteLine($"PASS WORLD · {checks}");return;}
 if(args.Contains("--doors-only")){DoorTests.Run(Check);Console.WriteLine($"PASS DOORS · {checks}");return;}
@@ -375,3 +376,5 @@ Console.WriteLine($"PASS PHYSICAL DOORS AND STANDARD ROUTE · {checks} assertion
 ConnectedTests.Run(Check);Console.WriteLine($"PASS CONNECTED WORLD · {checks} assertions");
 
 RegimentTests.Run(Check);Console.WriteLine($"PASS REGIMENT · {checks} assertions");
+
+MineTests.Run(Check);Console.WriteLine($"PASS MINE · {checks} assertions");

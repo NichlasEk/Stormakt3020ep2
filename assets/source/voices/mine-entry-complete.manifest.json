@@ -1,0 +1,9 @@
+{
+  "parts": [
+    "mine-entry-sentence-0.wav",
+    "mine-entry-sentence-1.wav"
+  ],
+  "sha256": "5d5724fbe2d799bea47a50e82cef0501134d45d3401a761c54b177eff1f9df55",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

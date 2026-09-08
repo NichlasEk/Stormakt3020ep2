@@ -1,5 +1,10 @@
 # Checkpoint · Vägen under vattnet · 2026-09-06
 
+## 0.14 · Järnets lungor, första gruvdelen
+
+Expeditionen fortsätter från bergets kaj genom gruvmynningen, blåsbälgarnas sal och svalgången. Ångtryck, ventiler, återtågstrappa, åtta nya radiorepliker och kronans gjutform ingår. Huvudrutten har nu 18 beständiga platser. Direktprov med separat sparning: `./play.sh -- --mine`. [Leverans och nästa steg](MINE.md). Kronfogdens gjuteri återstår.
+
+
 ## 0.13 · Regementet som stannar · 2026-09-08
 
 Den sammanhängande huvudrutten fortsätter från lunden genom fem nya platser till Rotmarskalken och regementets avlösning. Båtresa och återresa leder till en sjätte ny målning vid berget. Kapten Arvid Silfvergren, målade rotkaroliner, nio radiorepliker och arkivberoende fanvakter ingår. De sex återstående äldre anslutningarna går genom målade öppningar; mellangångarnas murverk behöver fortfarande ett detaljpass.

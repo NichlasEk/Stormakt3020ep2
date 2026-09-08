@@ -9,22 +9,25 @@ namespace Atland;
 // current room's frame; a frame change translates every live object, never time.
 public static class ConnectedWorld
 {
-    public static readonly string[] RoomIds=PortRooms.Ids.Concat(Regiment.Ids).ToArray();
+    public static readonly string[] RoomIds=PortRooms.Ids.Concat(Regiment.Ids).Concat(Mine.Ids).ToArray();
     public const int Revision=4;
     public static bool Painted(RoomLink link)=>true;
     public static float MouthWidth(RoomLink link)=>link.Id switch{"lodge"=>.8f,"pump" or "cistern"=>.75f,"archive"=>1.15f,"gallery"=>.42f,"shortcut"=>.38f,"chamber"=>.42f,_=>.36f};
-    public static Vector2 Origin(string id)=>Regiment.Known(id)?Regiment.Origin(id):id switch
+    public static Vector2 Origin(string id)=>Mine.Known(id)?Mine.Origin(id):Regiment.Known(id)?Regiment.Origin(id):id switch
     {
         PortRooms.Court=>new(0,0),PortRooms.Lodge=>new(2100,482.5f),PortRooms.Pump=>new(4200,1275),
         PortRooms.Cistern=>new(2100,1950),PortRooms.Gallery=>new(6300,1515),PortRooms.Chamber=>new(8400,2005),
         PortRooms.Archive=>new(10500,2365),PortRooms.Roots=>new(12600,2795),_=>new(14700,3172.5f)
     };
-    public static Vector2[] Ground(string id)=>Regiment.Known(id)?Regiment.Ground(id):id switch
+    public static Vector2[] Ground(string id)=>Mine.Known(id)?Mine.Ground(id):Regiment.Known(id)?Regiment.Ground(id):id switch
     {PortRooms.Court=>PortRooms.CourtGround,PortRooms.Lodge=>JourneyLayout.WarehouseGround,PortRooms.Pump=>PortRooms.PumpGround,PortRooms.Cistern=>PortRooms.CisternGround,PortRooms.Gallery=>PortRooms.GalleryGround,PortRooms.Chamber=>PortRooms.OathGround,PortRooms.Archive=>ArchiveRoom.Ground,PortRooms.Roots=>Rootway.Ground,_=>Rootway.GroveGround};
-    public static Vector2[][] Obstacles(string id)=>Regiment.Known(id)?Regiment.Obstacles(id):id switch
+    public static Vector2[][] Obstacles(string id)=>Mine.Known(id)?Mine.Obstacles(id):Regiment.Known(id)?Regiment.Obstacles(id):id switch
     {PortRooms.Lodge=>new[]{Navigation.Expand(JourneyLayout.WarehouseObstacle,22)},PortRooms.Pump=>new[]{PortRooms.PumpBasin},PortRooms.Cistern=>new[]{PortRooms.CisternBasin},PortRooms.Gallery=>new[]{PortRooms.Lectern},PortRooms.Chamber=>PortRooms.OathObstacles,PortRooms.Archive=>new[]{ArchiveRoom.Table},PortRooms.Grove=>new[]{Rootway.Slab},_=>Array.Empty<Vector2[]>()};
     public static Vector2[] Route(RoomLink l)
     {
+        if(l.Id=="mine-entry")return new[]{Origin(l.A)+new Vector2(1260,300),Origin(l.A)+new Vector2(1260,170),Origin(l.A)+new Vector2(1260,-80),Origin(l.B)+new Vector2(-60,350),Origin(l.B)+new Vector2(125,420),Origin(l.B)+new Vector2(230,480)};
+        if(l.Id is "mine-bellows" or "mine-coolway")return new[]{Origin(l.A)+new Vector2(1360,510),Origin(l.A)+new Vector2(1450,410),Origin(l.A)+new Vector2(1600,350),Origin(l.B)+new Vector2(-60,350),Origin(l.B)+new Vector2(130,420),Origin(l.B)+new Vector2(240,480)};
+        if(l.Id=="mine-return")return new[]{Origin(l.A)+new Vector2(720,900),Origin(l.A)+new Vector2(720,1060),new Vector2(34820,8500),new Vector2(30880,8500),Origin(l.B)+new Vector2(780,1060),Origin(l.B)+new Vector2(780,900)};
         if(l.Id=="regiment")return new[]{Origin(l.A)+new Vector2(800,830),Origin(l.A)+new Vector2(800,1030),new Vector2(16400,4450),Origin(l.B)+new Vector2(0,450),Origin(l.B)+new Vector2(180,465)};
         if(l.Id=="barracks")return new[]{Origin(l.A)+new Vector2(1400,550),Origin(l.A)+new Vector2(1590,570),Origin(l.B)+new Vector2(-60,360),Origin(l.B)+new Vector2(120,400),Origin(l.B)+new Vector2(230,470)};
         if(l.Id=="flags")return new[]{Origin(l.A)+new Vector2(1400,490),Origin(l.A)+new Vector2(1510,405),Origin(l.A)+new Vector2(1640,365),Origin(l.B)+new Vector2(-60,390),Origin(l.B)+new Vector2(130,435)};
@@ -77,6 +80,7 @@ public sealed partial class Combat
     {
         get
         {
+            if(InMine)return MineObjective;
             if(InRegiment)return RegimentObjective;
             var r=Rooms!;
             Vector2 Gate(string id)=>ConnectedWorld.Center(RoomLinks.All.First(l=>l.Id==id))-WorldOrigin;
@@ -98,7 +102,7 @@ public sealed partial class Combat
     public void EnableConnectedWorld()
     {
         if(!InRooms||InDoorTrial||InConnectedWorld)return;
-        var r=Rooms!;foreach(var id in Regiment.Ids)r.Rooms.TryAdd(id,new());r.LayoutVersion=6;r.Connected=true;r.ConnectionRevision=ConnectedWorld.Revision;
+        var r=Rooms!;foreach(var id in Regiment.Ids.Concat(Mine.Ids))r.Rooms.TryAdd(id,new());r.LayoutVersion=7;r.Connected=true;r.ConnectionRevision=ConnectedWorld.Revision;
         foreach(var e in Enemies)e.HomeRoom=r.Current;
         foreach(var pair in r.Rooms)
         {
@@ -110,7 +114,7 @@ public sealed partial class Combat
         foreach(var l in RoomLinks.All)r.Doors[l.Id]=new(){Locked=!RoomLinks.Open(r,l),TargetOpen=RoomLinks.Open(r,l),Openness=RoomLinks.Open(r,l)?1:0};
         UpdateRoomSight(true);
     }
-    public static bool HasWorldDoor(RoomLink l)=>l.Gate is PassageGate.Key or PassageGate.Shortcut or PassageGate.Archive or PassageGate.RootGate or PassageGate.RegimentExit or PassageGate.RegimentShortcut;
+    public static bool HasWorldDoor(RoomLink l)=>l.Gate is PassageGate.Key or PassageGate.Shortcut or PassageGate.Archive or PassageGate.RootGate or PassageGate.RegimentExit or PassageGate.RegimentShortcut or PassageGate.MineShortcut;
     private bool WorldGround(Vector2 world){foreach(var p in ConnectedWorld.FloorShapes)if(p.Contains(world))return true;return false;}
     [JsonIgnore] private int _solidStamp=int.MinValue;
     [JsonIgnore] private ConnectedWorld.Shape[] _worldSolids=Array.Empty<ConnectedWorld.Shape>();
@@ -186,6 +190,8 @@ public sealed partial class Combat
             {EnterConnectedRoom(other);break;}
         }
         if(!input.Interact||_roomInteractHeld||Dead||AttackTime>0||DodgeTime>0)return;
+        if(r.Current==Regiment.Farled&&Vector2.Distance(Player,Mine.Latch)<72)return;
+        if(r.Current==Mine.Coolway&&!r.Mine.ShortcutOpen&&Vector2.Distance(Player,Mine.Shortcut)<72)return;
         // Release the adjacent archive seal before operating its unlocked leaf.
         if(r.Current==PortRooms.Chamber&&!r.Completed&&Vector2.Distance(Player,PortRooms.OathExit)<72)return;
         if(r.Current==Regiment.Flags&&!r.Regiment.ShortcutOpen&&Vector2.Distance(Player,Regiment.Shortcut)<72)return;
@@ -217,6 +223,7 @@ public sealed partial class Combat
         r.Current=destination;bool first=!r.Rooms[destination].Visited;r.Rooms[destination].Visited=true;
         if(first)
         {
+            if(Mine.Known(destination))EnterMine(destination);
             if(Regiment.Known(destination))EnterRegiment(destination);
             if(destination==PortRooms.Lodge){Spawn(EnemyKind.Guard,new(650,735));Spawn(EnemyKind.Gunner,new(530,585));}
             if(destination==PortRooms.Pump){Spawn(EnemyKind.Pikeman,new(610,700));Spawn(EnemyKind.Guard,new(1040,610));Emit("radio",Player,"rooms-pump");}

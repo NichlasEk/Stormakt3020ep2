@@ -1,0 +1,10 @@
+{
+  "parts": [
+    "mine-release-sentence-0.wav",
+    "mine-release-sentence-1.wav",
+    "mine-release-sentence-2.wav"
+  ],
+  "sha256": "d5d47c425f9d0273832d6eec34197127a87962987a4a9c6c6c3e51ba660b3ca5",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

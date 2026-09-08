@@ -1,0 +1,10 @@
+{
+  "parts": [
+    "mine-feed-sentence-0.wav",
+    "mine-feed-sentence-1.wav",
+    "mine-feed-sentence-2.wav"
+  ],
+  "sha256": "783caf2df3ae9ae515a800244170485711f1e124ac867aa66a84bc79796fb85b",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

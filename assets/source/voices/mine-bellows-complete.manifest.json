@@ -1,0 +1,10 @@
+{
+  "parts": [
+    "mine-bellows-sentence-0.wav",
+    "mine-bellows-sentence-1.wav",
+    "mine-bellows-sentence-2.wav"
+  ],
+  "sha256": "b970d4598d6dbe670b8429da5a1cb795b8f0801baeda2663a666aecb0a3a1f33",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

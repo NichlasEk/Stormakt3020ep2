@@ -48,8 +48,8 @@ public partial class Main : Node2D
     private bool _capturePending;
     private int _testTicks;
     private bool _atlandSlot,_portSlot,_portChecks;
-    private string SavePath=>ProjectSettings.GlobalizePath(_regimentSlot?"user://regiment-preview-save.json":_doorSlot?"user://door-trial-save.json":_roomsSlot?"user://rooms-save.json":_portSlot?"user://port-save.json":_atlandSlot?"user://atland-save.json":"user://quay-save.json");
-    private string ManualPath=>ProjectSettings.GlobalizePath(_regimentSlot?"user://regiment-preview-manual-save.json":_doorSlot?"user://door-trial-manual-save.json":_roomsSlot?"user://rooms-manual-save.json":_portSlot?"user://port-manual-save.json":_atlandSlot?"user://atland-manual-save.json":"user://manual-save.json");
+    private string SavePath=>ProjectSettings.GlobalizePath(_mineSlot?"user://mine-preview-save.json":_regimentSlot?"user://regiment-preview-save.json":_doorSlot?"user://door-trial-save.json":_roomsSlot?"user://rooms-save.json":_portSlot?"user://port-save.json":_atlandSlot?"user://atland-save.json":"user://quay-save.json");
+    private string ManualPath=>ProjectSettings.GlobalizePath(_mineSlot?"user://mine-preview-manual-save.json":_regimentSlot?"user://regiment-preview-manual-save.json":_doorSlot?"user://door-trial-manual-save.json":_roomsSlot?"user://rooms-manual-save.json":_portSlot?"user://port-manual-save.json":_atlandSlot?"user://atland-manual-save.json":"user://manual-save.json");
     private const float Zoom=1.12f;
     private static readonly Color Gold=new("b99a64"), Pale=new("ddd6c5"), Muted=new("9b9a8d"), Teal=new("93aaa0"), Red=new("c57761");
     private static readonly Dictionary<string,(string Speaker,string Text)> Radio=new()
@@ -77,7 +77,7 @@ public partial class Main : Node2D
     private static NVec N(Vector2 v)=>new(v.X,v.Y);
     public override void _Ready()
     {
-        var args=OS.GetCmdlineUserArgs();_doorChecks=args.Contains("--door-check");_filmCheck=args.Contains("--cinematic-check");_filmPreview=args.Contains("--gate-film");_introPreview=args.Contains("--intro-film");_rootwayChecks=args.Contains("--rootway-check")||_filmCheck;_archiveChecks=args.Contains("--archive-check")||_rootwayChecks;_roomAudioChecks=args.Contains("--room-audio-check");_oathChecks=args.Contains("--oath-check")||_roomAudioChecks||_archiveChecks;_waterChecks=args.Contains("--water-check");_fogChecks=args.Contains("--fog-check");_roomChecks=args.Contains("--rooms-check");_inventoryChecks=args.Contains("--inventory-check");_portChecks=args.Contains("--port-check");_sceneChecks=args.Contains("--regiment-check")||args.Contains("--ports-check")||args.Contains("--root-arch-check")||args.Contains("--arch-check")||args.Contains("--world-check")||args.Contains("--scene-check")||_portChecks||_inventoryChecks||_roomChecks||_fogChecks||_waterChecks||_oathChecks||_doorChecks;_uiChecks=args.Contains("--ui-check");
+        var args=OS.GetCmdlineUserArgs();_doorChecks=args.Contains("--door-check");_filmCheck=args.Contains("--cinematic-check");_filmPreview=args.Contains("--gate-film");_introPreview=args.Contains("--intro-film");_rootwayChecks=args.Contains("--rootway-check")||_filmCheck;_archiveChecks=args.Contains("--archive-check")||_rootwayChecks;_roomAudioChecks=args.Contains("--room-audio-check");_oathChecks=args.Contains("--oath-check")||_roomAudioChecks||_archiveChecks;_waterChecks=args.Contains("--water-check");_fogChecks=args.Contains("--fog-check");_roomChecks=args.Contains("--rooms-check");_inventoryChecks=args.Contains("--inventory-check");_portChecks=args.Contains("--port-check");_sceneChecks=args.Contains("--mine-check")||args.Contains("--regiment-check")||args.Contains("--ports-check")||args.Contains("--root-arch-check")||args.Contains("--arch-check")||args.Contains("--world-check")||args.Contains("--scene-check")||_portChecks||_inventoryChecks||_roomChecks||_fogChecks||_waterChecks||_oathChecks||_doorChecks;_uiChecks=args.Contains("--ui-check");
         _serif=GD.Load<Font>("res://assets/fonts/NotoSerif-Regular.ttf");_sans=GD.Load<Font>("res://assets/fonts/NotoSans-Regular.ttf");
         _background=GD.Load<Texture2D>("res://assets/art/likvarvet-scale-v5.png");
         _radioPortraits=GD.Load<Texture2D>("res://assets/art/radio-cast-v1.png");
@@ -95,6 +95,8 @@ public partial class Main : Node2D
         if(args.Contains("--rooms")||_roomChecks||_fogChecks||_waterChecks||_oathChecks)StartRooms();
         if(args.Contains("--capture-title"))_smokeCapture=true;
         if(args.Contains("--doors")||args.Contains("--doors-new")||_doorChecks)StartDoorTrial(args.Contains("--doors-new"));
+        if(args.Contains("--mine-check")){RunMineChecks();return;}
+        if(args.Contains("--mine")||args.Contains("--mine-new")){StartMine(args.Contains("--mine-new"));return;}
         if(args.Contains("--regiment-check")){RunRegimentChecks();return;}
         if(args.Contains("--ports-check")){RunRegimentChecks(true);return;}
         if(args.Contains("--regiment")||args.Contains("--regiment-new")){StartRegiment(args.Contains("--regiment-new"));return;}
@@ -197,6 +199,7 @@ public partial class Main : Node2D
             case "journey":if(_game.ContinueJourney()){ChangeScreen(Screen.Game);foreach(var cue in _game.Events)HandleCue(cue);Save();}break;
             case "archive-preserve":SelectArchiveDecision(1);break;
             case "archive-forge":SelectArchiveDecision(2);break;
+            case "mine-preview":StartMine();break;
             case "regiment-preview":StartRegiment();break;
             case "videos":_videoPage=0;ChangeScreen(Screen.Videos);break;
             case "film-prev":_videoPage=Math.Max(0,_videoPage-1);break;
@@ -210,7 +213,7 @@ public partial class Main : Node2D
             case "port":_roomsSlot=false;_portSlot=true;StartAtland();break;
             case "atland":_roomsSlot=false;_portSlot=false;StartAtland();break;
             case "new":ChangeScreen(Screen.Briefing);break;
-            case "continue":_regimentSlot=false;_doorSlot=false;_roomsSlot=false;_portSlot=false;_atlandSlot=false;ResumeSave();break;
+            case "continue":_mineSlot=false;_regimentSlot=false;_doorSlot=false;_roomsSlot=false;_portSlot=false;_atlandSlot=false;ResumeSave();break;
             case "artillery":_order=Order.Artillery;break;
             case "medicine":_order=Order.Medicine;break;
             case "land":StartNew();break;
@@ -227,7 +230,7 @@ public partial class Main : Node2D
             case "shake":_cameraShake=!_cameraShake;SaveSettings();break;
             case "fullscreen":DisplayServer.WindowSetMode(DisplayServer.WindowGetMode()==DisplayServer.WindowMode.Fullscreen?DisplayServer.WindowMode.Windowed:DisplayServer.WindowMode.Fullscreen);break;
             case "back":Back();break;
-            case "title":_regimentSlot=false;_boatTime=0;_doorSlot=false;_roomsSlot=false;_portSlot=false;_atlandSlot=false;_sound.StopVoice();_radioQueue.Clear();_radio="";ChangeScreen(Screen.Title);break;
+            case "title":_mineSlot=false;_regimentSlot=false;_boatTime=0;_doorSlot=false;_roomsSlot=false;_portSlot=false;_atlandSlot=false;_sound.StopVoice();_radioQueue.Clear();_radio="";ChangeScreen(Screen.Title);break;
             case "retry":if(_game.Duel){StartDuel();break;}if(System.IO.File.Exists(SavePath))ResumeSave();else StartNew();break;
             case "quit":GetTree().Quit();break;
         }
@@ -242,7 +245,7 @@ public partial class Main : Node2D
     }
     private void StartNew()
     {
-        _regimentSlot=false;_doorSlot=false;_roomsSlot=false;_portSlot=false;_atlandSlot=false;_game=Combat.New(_order,true);_game.PreferRoomRoute=!_testMode;_game.AtlandCampaign=!_integration;ApplyDeveloperSettings();_camera=G(_game.Player)+new Vector2(85,-80);_particles.Clear();_floating.Clear();_radioQueue.Clear();_radio="";_sound.StopVoice();
+        _mineSlot=false;_regimentSlot=false;_doorSlot=false;_roomsSlot=false;_portSlot=false;_atlandSlot=false;_game=Combat.New(_order,true);_game.PreferRoomRoute=!_testMode;_game.AtlandCampaign=!_integration;ApplyDeveloperSettings();_camera=G(_game.Player)+new Vector2(85,-80);_particles.Clear();_floating.Clear();_radioQueue.Clear();_radio="";_sound.StopVoice();
         ChangeScreen(Screen.Game);_banner="BLEKINGES LIKVARV";_bannerTime=5;Save();
     }
     private void Save(bool manual=false)
@@ -326,7 +329,11 @@ public partial class Main : Node2D
             case "boat-travel":if(_boatTime<=0){_boatDestination=cue.Text;_boatTime=6;_sound.Play("paper");ClearPresses();}break;
             case "cinematic":if(!_sceneChecks)StartFilm(cue.Text);break;
             case "archive-open":ChangeScreen(Screen.Archive);break;
-            case "room-sound":if(NVec.Distance(_game.Player,cue.Position)<500)_sound.Play(cue.Text);break;
+            case "room-sound":
+                if(NVec.Distance(_game.Player,cue.Position)<500)_sound.Play(cue.Text);
+                if(cue.Text=="mine-steam"&&_game.CanSeeRoomPoint(cue.Position))
+                    for(int i=0;i<22;i++){float life=.5f+i%5*.09f;_particles.Add(new(){P=p+new Vector2((i%7-3)*6,-8),V=new Vector2((i%5-2)*12,-90-i%4*13),Life=life,Max=life,C=new Color(.68f,.7f,.66f),Size=5+i%4});}
+                break;
             case "oath-break":case "oath-wall":
                 if(NVec.Distance(_game.Player,cue.Position)<500)_sound.Play("oath-impact",cue.Kind=="oath-break"?1:.8f);
                 if(_game.CanSeeRoomPoint(cue.Position))
@@ -561,7 +568,7 @@ public partial class Main : Node2D
             if(alive){DrawArc(p,38,_clock*.4f,_clock*.4f+Mathf.Pi*1.5f,40,new Color(Teal,.45f),1.5f,true);DrawLine(p-new Vector2(0,10),p-new Vector2(0,49),Teal,2,true);DrawLine(p-new Vector2(0,42),p+new Vector2(12,-32),Teal,2,true);DrawLine(p-new Vector2(0,30),p+new Vector2(-12,-20),Teal,2,true);WorldBar(p+new Vector2(-24,15),48,seal.Health/80,Teal);}
         }
         foreach(var h in _game.Hazards.Where(h=>_game.CanSeeRoomPoint(h.Position)||(_game.InRooms&&NVec.Distance(h.Position,_game.Player)<h.Radius+60&&_game.ClearPath(_game.Player,h.Position))))
-        {var c=h.Friendly?Gold:Red;DrawCircle(G(h.Position),h.Radius,new Color(c,.10f));DrawArc(G(h.Position),h.Radius,0,Mathf.Tau,70,c,2,true);DrawArc(G(h.Position),h.Radius*Math.Clamp(1-h.Timer/1.5f,0,1),0,Mathf.Tau,60,new Color(c,.5f),2,true);}
+        {var c=h.Steam?new Color("c4bba2"):h.Friendly?Gold:Red;DrawCircle(G(h.Position),h.Radius,new Color(c,.10f));DrawArc(G(h.Position),h.Radius,0,Mathf.Tau,70,c,2,true);DrawArc(G(h.Position),h.Radius*Math.Clamp(1-h.Timer/1.5f,0,1),0,Mathf.Tau,60,new Color(c,.5f),2,true);}
         foreach(var e in _game.Enemies.Where(e=>!e.Dead && e.State==1&&_game.CanSeeRoomPoint(e.Position)))DrawTelegraph(e);
         DrawDepthSortedActors();
         DrawDroppedItems();
@@ -774,7 +781,8 @@ public partial class Main : Node2D
         Centered("Karl tar skada men överlever på minst 1 liv.",640,534,15,Muted);
         Button(new Rect2(205,550,420,43),"Utvecklarverktyg · Videobibliotek","videos");
         Button(new Rect2(645,550,440,43),"Prova regementet · separat sparning","regiment-preview");
-        Button(new Rect2(455,609,370,38),"Tillbaka","back",true);
+        Button(new Rect2(205,609,420,38),"Prova gruvan · separat sparning","mine-preview");
+        Button(new Rect2(645,609,440,38),"Tillbaka","back",true);
         Centered("M tyst/ljud · +/− volym · dra reglaget uppe till höger",640,675,12,Gold);
         Centered("Undertexter visas alltid. Inställningarna sparas automatiskt.",640,701,12,Muted);
     }
@@ -862,7 +870,7 @@ public partial class Main : Node2D
     private void WorldBar(Vector2 p,float width,float amount,Color color,float height=4){DrawRect(new Rect2(p,new Vector2(width,height)),new Color(.015f,.028f,.034f,.9f));DrawRect(new Rect2(p,new Vector2(width*Math.Clamp(amount,0,1),height)),color);}
     public override void _ExitTree()
     {
-        _grovePassageArt?.Dispose();_courtOpenArt?.Dispose();_lodgePassageArt?.Dispose();_cisternOpenArt?.Dispose();DisposeRegimentArt();DisposeFilm();_doorGround?.Dispose();_doorFace?.Dispose();
+        _grovePassageArt?.Dispose();_courtOpenArt?.Dispose();_lodgePassageArt?.Dispose();_cisternOpenArt?.Dispose();DisposeMineArt();DisposeRegimentArt();DisposeFilm();_doorGround?.Dispose();_doorFace?.Dispose();
         foreach(var texture in _campaignWorlds)texture?.Dispose();
         _cast?.Dispose();_animated?.Dispose();_warehouse?.Dispose();if(_shoreRevealed!=_shore)_shoreRevealed?.Dispose();_shore?.Dispose();
         _pumpArt?.Dispose();_pumpLowArt?.Dispose();_cisternArt?.Dispose();_galleryArt?.Dispose();_chamberArt?.Dispose();_chamberOpenArt?.Dispose();_archiveArt?.Dispose();_archiveOpenArt?.Dispose();_rootwayOpenArt?.Dispose();_archiveDocuments?.Dispose();_rootwayArt?.Dispose();_groveArt?.Dispose();_oathCast?.Dispose();_roomFog?.Dispose();_inventoryBackground?.Dispose();foreach(var texture in _inventoryItemArt.Values)texture.Dispose();

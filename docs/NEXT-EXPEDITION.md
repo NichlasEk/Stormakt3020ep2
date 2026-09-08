@@ -1,5 +1,7 @@
 # Nästa expedition: Regementet som stannar
 
+Aktuell fortsättning: [första gruvdelen i 0.14](MINE.md) är byggd efter regementet. Ursprunglig designplan nedan; nästa konkreta steg är Kronfogdens gjuteri.
+
 2026-09-07. Berättelse- och byggplan efter användarens provspelning av 0.12.1. Originalplanen nedan bevaras som designunderlag. Aktuell leveransstatus finns i [REGIMENT.md](REGIMENT.md).
 
 ## Produktion 2026-09-08

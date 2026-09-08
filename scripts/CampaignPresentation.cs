@@ -17,7 +17,7 @@ public partial class Main
     }
     private void StartAtland()
     {
-        _regimentSlot=false;
+        _mineSlot=false;_regimentSlot=false;
         _doorSlot=false;
         _atlandSlot=true;
         if(!_testMode&&System.IO.File.Exists(SavePath)){ResumeSave();return;}
