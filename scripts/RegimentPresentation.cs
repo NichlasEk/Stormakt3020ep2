@@ -34,7 +34,7 @@ public partial class Main
         int pose=e.Retired?0:e.Dead?5:e.State==1?3:e.State==2?4:boss&&e.State==3?5:e.Moving?1+(int)(e.Walk/1.8f)%2:0;
         var feet=boss?new Vector2[]{new(260,447),new(270,438),new(270,438),new(245,440),new(205,425),new(235,370)}:new Vector2[]{new(255,443),new(265,438),new(265,438),new(245,442),new(205,425),new(260,363)};
         var at=RenderPosition(e);float scale=(boss?165f:146f)/420;
-        DrawSetTransform(Offset+at*Zoom,0,new Vector2(e.Facing.X<0?-scale:scale,scale)*Zoom);
+        DrawSetTransform(Offset+at*Zoom,0,new Vector2((e.Moving?WalkFacing(e).X:e.Facing.X)<0?-scale:scale,scale)*Zoom);
         DrawTextureRectRegion(art,new Rect2(-feet[pose],new Vector2(512,512)),new Rect2(new Vector2(pose%3,pose/3)*512,new Vector2(512,512)),e.Retired?new Color(.65f,.68f,.65f,.8f):e.Hurt>0?new Color(1.3f,1.15f,1):Colors.White);
         DrawSetTransform(Offset,0,Vector2.One*Zoom);
         if(!e.Dead&&e.Health<e.MaxHealth)WorldBar(at+new Vector2(-24,-170),48,e.Health/e.MaxHealth,boss?Gold:Red);

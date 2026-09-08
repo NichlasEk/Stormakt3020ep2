@@ -1,5 +1,10 @@
 # Checkpoint · Vägen under vattnet · 2026-09-06
 
+## 0.15.1 · Gångputs
+
+Kortare bildhållning och stabilare riktningsbyten för gången, samt separat målat gångkort för Kronfogden med fram- och bakvy. [Omfattning, begränsningar och provspelning](GAIT-POLISH.md).
+
+
 ## 0.15 · Kronfogdens gjuteri · 2026-09-08
 
 Nittonde platsen fortsätter genom svalgångens målade port. Egen boss med hammarnedslag, kylvatten och en andra stridsfas; åtta nya radiorepliker, nytt porträtt och kronans stjärnplatta pekar vidare mot Uppsala. Direktprov med separat sparning: `./play.sh -- --foundry`. [Leverans, assets och nästa steg](FOUNDRY.md). Uppsalaområdet återstår.

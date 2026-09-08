@@ -6,12 +6,13 @@ using System.Collections.Generic;
 using NVec=System.Numerics.Vector2;
 public partial class Main
 {
-    private ImageTexture? _bailiffArt;
+    private ImageTexture? _bailiffArt,_bailiffWalk;
     private Texture2D? _coolwayOpen;
     private bool _foundrySlot;
     private void LoadFoundryArt()
     {
         _bailiffArt??=SpriteCutout.Load("res://assets/art/crown-bailiff-v1.png",chromaKey:new Color(1,0,1));
+        _bailiffWalk??=SpriteCutout.Load("res://assets/art/crown-bailiff-walk-v1.png",chromaKey:new Color(1,0,1));
         _coolwayOpen??=GD.Load<Texture2D>("res://assets/art/room-coolway-open-v1.png");
     }
     private void StartFoundry(bool fresh=false)
@@ -23,6 +24,16 @@ public partial class Main
     }
     private void DrawBailiff(Fighter e)
     {
+        if(e.Moving&&e.State==0&&!e.Dead)
+        {
+            var facing=WalkFacing(e);int row=facing.Y<0?1:0,frame=Gait.Frame(e.Walk,96);
+            // Belt centers keep the heavy torso steady; no limb stretching.
+            var anchors=new Vector2[]{new(240,465),new(222,465),new(209,465),new(225,465),new(223,457),new(229,457),new(220,457),new(235,457)};
+            var walkAt=RenderPosition(e);const float walkScale=.40f;
+            DrawSetTransform(Offset+walkAt*Zoom,0,new Vector2(facing.X<0?-walkScale:walkScale,walkScale)*Zoom);
+            DrawTextureRectRegion(_bailiffWalk!,new Rect2(-anchors[row*4+frame],new Vector2(384,512)),new Rect2(frame*384,row*512,384,512),e.Hurt>0?new Color(1.3f,1.15f,1):Colors.White);
+            DrawSetTransform(Offset,0,Vector2.One*Zoom);return;
+        }
         int pose=e.Dead||e.State==3?5:e.State==1?3:e.State==2?4:e.Moving?1+(int)(e.Walk/1.8f)%2:0;
         var feet=new Vector2[]{new(256,450),new(256,450),new(256,450),new(256,450),new(256,450),new(256,430)};
         const float scale=.39f;var at=RenderPosition(e);

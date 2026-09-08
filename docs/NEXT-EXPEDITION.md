@@ -1,6 +1,6 @@
 # Nästa expedition: Regementet som stannar
 
-Aktuell fortsättning: [Kronfogdens gjuteri i 0.15](FOUNDRY.md) är byggt efter gruvans första del. Ursprunglig designplan nedan; nästa konkreta steg är båtresan till Uppsala och dess felvända himmel.
+Aktuell fortsättning: [Kronfogdens gjuteri i 0.15](FOUNDRY.md) är byggt efter gruvans första del. Ursprunglig designplan nedan; nästa konkreta steg är resan till Uppsala och dess felvända himmel. Efter användarens fråga om rymdskeppet föreslås Karl CCLV som transport: återvänd med båten till expeditionens landningsplats och byt till skeppet. Ebba behandlar avfärden som saklig expeditionstrafik. Denna transport är planerad, ännu inte byggd.
 
 2026-09-07. Berättelse- och byggplan efter användarens provspelning av 0.12.1. Originalplanen nedan bevaras som designunderlag. Aktuell leveransstatus finns i [REGIMENT.md](REGIMENT.md).
 

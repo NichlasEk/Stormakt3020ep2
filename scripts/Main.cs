@@ -77,7 +77,7 @@ public partial class Main : Node2D
     private static NVec N(Vector2 v)=>new(v.X,v.Y);
     public override void _Ready()
     {
-        var args=OS.GetCmdlineUserArgs();_doorChecks=args.Contains("--door-check");_filmCheck=args.Contains("--cinematic-check");_filmPreview=args.Contains("--gate-film");_introPreview=args.Contains("--intro-film");_rootwayChecks=args.Contains("--rootway-check")||_filmCheck;_archiveChecks=args.Contains("--archive-check")||_rootwayChecks;_roomAudioChecks=args.Contains("--room-audio-check");_oathChecks=args.Contains("--oath-check")||_roomAudioChecks||_archiveChecks;_waterChecks=args.Contains("--water-check");_fogChecks=args.Contains("--fog-check");_roomChecks=args.Contains("--rooms-check");_inventoryChecks=args.Contains("--inventory-check");_portChecks=args.Contains("--port-check");_sceneChecks=args.Contains("--foundry-check")||args.Contains("--mine-check")||args.Contains("--regiment-check")||args.Contains("--ports-check")||args.Contains("--root-arch-check")||args.Contains("--arch-check")||args.Contains("--world-check")||args.Contains("--scene-check")||_portChecks||_inventoryChecks||_roomChecks||_fogChecks||_waterChecks||_oathChecks||_doorChecks;_uiChecks=args.Contains("--ui-check");
+        var args=OS.GetCmdlineUserArgs();_doorChecks=args.Contains("--door-check");_filmCheck=args.Contains("--cinematic-check");_filmPreview=args.Contains("--gate-film");_introPreview=args.Contains("--intro-film");_rootwayChecks=args.Contains("--rootway-check")||_filmCheck;_archiveChecks=args.Contains("--archive-check")||_rootwayChecks;_roomAudioChecks=args.Contains("--room-audio-check");_oathChecks=args.Contains("--oath-check")||_roomAudioChecks||_archiveChecks;_waterChecks=args.Contains("--water-check");_fogChecks=args.Contains("--fog-check");_roomChecks=args.Contains("--rooms-check");_inventoryChecks=args.Contains("--inventory-check");_portChecks=args.Contains("--port-check");_sceneChecks=args.Contains("--gait-check")||args.Contains("--foundry-check")||args.Contains("--mine-check")||args.Contains("--regiment-check")||args.Contains("--ports-check")||args.Contains("--root-arch-check")||args.Contains("--arch-check")||args.Contains("--world-check")||args.Contains("--scene-check")||_portChecks||_inventoryChecks||_roomChecks||_fogChecks||_waterChecks||_oathChecks||_doorChecks;_uiChecks=args.Contains("--ui-check");
         _serif=GD.Load<Font>("res://assets/fonts/NotoSerif-Regular.ttf");_sans=GD.Load<Font>("res://assets/fonts/NotoSans-Regular.ttf");
         _background=GD.Load<Texture2D>("res://assets/art/likvarvet-scale-v5.png");
         _radioPortraits=GD.Load<Texture2D>("res://assets/art/radio-cast-v1.png");
@@ -95,6 +95,7 @@ public partial class Main : Node2D
         if(args.Contains("--rooms")||_roomChecks||_fogChecks||_waterChecks||_oathChecks)StartRooms();
         if(args.Contains("--capture-title"))_smokeCapture=true;
         if(args.Contains("--doors")||args.Contains("--doors-new")||_doorChecks)StartDoorTrial(args.Contains("--doors-new"));
+        if(args.Contains("--gait-check")){RunGaitChecks();return;}
         if(args.Contains("--foundry-check")){RunFoundryChecks();return;}
         if(args.Contains("--foundry")||args.Contains("--foundry-new")){StartFoundry(args.Contains("--foundry-new"));return;}
         if(args.Contains("--mine-check")){RunMineChecks();return;}
@@ -623,7 +624,7 @@ public partial class Main : Node2D
         string kind=e.Kind.ToString().ToLowerInvariant();if(kind=="guard")kind="guard";
         int pose=e.State==1?3:e.State==2?4:e.State==3?5:(int)e.Walk%2+1;
         if(dead)pose=6;
-        DrawActor(kind,RenderPosition(e),G(e.Moving&&e.State==0&&e.MoveDirection.LengthSquared()>.01f?e.MoveDirection:e.Facing),pose,e.Hurt,dead,false,e.Moving,e.Walk,e.State==2&&e.Timer>.37f&&e.Timer<=.5f);
+        DrawActor(kind,RenderPosition(e),e.Moving&&e.State==0?WalkFacing(e):G(e.Facing),pose,e.Hurt,dead,false,e.Moving,e.Walk,e.State==2&&e.Timer>.37f&&e.Timer<=.5f);
         if(!dead && e.Health<e.MaxHealth)WorldBar(G(e.Position)+new Vector2(-24,-160),48,e.Health/e.MaxHealth,e.Kind==EnemyKind.Collector?Gold:Red);
     }
     private void DrawPlayer()
@@ -645,7 +646,7 @@ public partial class Main : Node2D
         if(kind is "karl-saber" or "guard")
         {
             string action="attack";int frame=pose==3?1:pose==4?(contact?2:3):0;
-            if(moving&&pose<3){action="walk";frame=(int)walk%4;if(player)facing=G(_game.MoveDirection);}
+            if(moving&&pose<3){action="walk";frame=Gait.Frame(walk);if(player)facing=PlayerWalkFacing();}
             if(pose==5){action="react";frame=player?0:1;}
             if(hurt>0){action="react";frame=1;}
             if(player&&_game.DodgeTime>0){action="react";frame=2;facing=G(_game.DodgeDirection);}
@@ -653,7 +654,7 @@ public partial class Main : Node2D
             _animated.Draw(this,player?"karl":"guard",p,facing,action,frame,hurt,dead,Offset,Zoom);
         }
         else if(kind is "karl-hammer" or "collector" or "pikeman" or "gunner" && moving&&pose<3&&hurt<=0&&!dead)
-            _animated.Draw(this,kind,p,player?G(_game.MoveDirection):facing,"walk",(int)walk%4,0,false,Offset,Zoom);
+            _animated.Draw(this,kind,p,player?PlayerWalkFacing():facing,"walk",Gait.Frame(walk),0,false,Offset,Zoom);
         else _cast.Draw(this,kind,p,facing,pose,hurt,dead,Offset,Zoom);
     }
     private void DrawHud()
@@ -880,7 +881,7 @@ public partial class Main : Node2D
     private void WorldBar(Vector2 p,float width,float amount,Color color,float height=4){DrawRect(new Rect2(p,new Vector2(width,height)),new Color(.015f,.028f,.034f,.9f));DrawRect(new Rect2(p,new Vector2(width*Math.Clamp(amount,0,1),height)),color);}
     public override void _ExitTree()
     {
-        _grovePassageArt?.Dispose();_courtOpenArt?.Dispose();_lodgePassageArt?.Dispose();_cisternOpenArt?.Dispose();_bailiffArt?.Dispose();_coolwayOpen?.Dispose();DisposeMineArt();DisposeRegimentArt();DisposeFilm();_doorGround?.Dispose();_doorFace?.Dispose();
+        _grovePassageArt?.Dispose();_courtOpenArt?.Dispose();_lodgePassageArt?.Dispose();_cisternOpenArt?.Dispose();_bailiffArt?.Dispose();_bailiffWalk?.Dispose();_coolwayOpen?.Dispose();DisposeMineArt();DisposeRegimentArt();DisposeFilm();_doorGround?.Dispose();_doorFace?.Dispose();
         foreach(var texture in _campaignWorlds)texture?.Dispose();
         _cast?.Dispose();_animated?.Dispose();_warehouse?.Dispose();if(_shoreRevealed!=_shore)_shoreRevealed?.Dispose();_shore?.Dispose();
         _pumpArt?.Dispose();_pumpLowArt?.Dispose();_cisternArt?.Dispose();_galleryArt?.Dispose();_chamberArt?.Dispose();_chamberOpenArt?.Dispose();_archiveArt?.Dispose();_archiveOpenArt?.Dispose();_rootwayOpenArt?.Dispose();_archiveDocuments?.Dispose();_rootwayArt?.Dispose();_groveArt?.Dispose();_oathCast?.Dispose();_roomFog?.Dispose();_inventoryBackground?.Dispose();foreach(var texture in _inventoryItemArt.Values)texture.Dispose();

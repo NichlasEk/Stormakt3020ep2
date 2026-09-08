@@ -160,7 +160,7 @@ public sealed partial class Combat
         if(e.State==0)
         {
             var before=e.Position;if(delta.Length()>155)e.Position=MoveBody(e.Position,e.Position+Normal(NextWaypoint(e.Position,Player)-e.Position,e.Facing)*68*dt);
-            e.Moving=Vector2.DistanceSquared(before,e.Position)>.001f;e.Walk+=Vector2.Distance(before,e.Position)*7/195;
+            e.Moving=Vector2.DistanceSquared(before,e.Position)>.001f;if(e.Moving)e.MoveDirection=Vector2.Normalize(e.Position-before);e.Walk+=Vector2.Distance(before,e.Position)*7/195;
             if(e.Cooldown<=0&&delta.Length()<420){e.State=1;e.Timer=1.2f;e.LockedAim=Player;Emit("warning",e.Position);}
         }
         else

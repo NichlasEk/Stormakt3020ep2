@@ -206,7 +206,7 @@ public sealed partial class Combat
         {
             var move = input.Move.LengthSquared() > 1 ? Vector2.Normalize(input.Move) : input.Move;
             var before=Player;MovePlayer(move*(Guarding?85:RootSnare>0?115:195)*dt);float travelled=Vector2.Distance(before,Player);Moving=travelled>.001f;
-            if(Moving){MoveDirection=Normal(move,Facing);float previousWalk=Walk;Walk+=travelled*7/195; if((int)(Walk/2)!=(int)(previousWalk/2))Emit("step",Player);}
+            if(Moving){MoveDirection=Normal(move,Facing);float previousWalk=Walk;Walk+=travelled*7/195; if(Gait.Footfall(Walk)!=Gait.Footfall(previousWalk))Emit("step",Player);}
         }
         Stamina = Math.Min(100,Stamina+dt*((Guarding?5:AttackTime>0?10:29)+EquipmentRecovery));
         if (AttackTime > 0)

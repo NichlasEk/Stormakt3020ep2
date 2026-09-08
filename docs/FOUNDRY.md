@@ -32,6 +32,6 @@ Linux-exporten är `dist/AtlandsArv-0.15-foundry/`. Hela mappen behövs, inklusi
 
 ## Kvar att förbättra
 
-Kronfogden har sex målade poser och en enkel tvåbildsgång; fullständiga gång- och riktningskort återstår. Mellangångens material behöver fortfarande ett detaljpass. Automatisk stridsverifiering ersätter inte mänsklig balansbedömning: perfekt parering kan göra kampen betydligt lättare. Inga nya mellanfilmer ingår i denna checkpoint.
+0.15.1 tillför ett separat gångkort med fyra faser i fram- och bakvy, speglat åt väster. Stridsposerna är kvar. Fler mellanbilder och förfinade stödben återstår. Mellangångens material behöver fortfarande ett detaljpass. Automatisk stridsverifiering ersätter inte mänsklig balansbedömning: perfekt parering kan göra kampen betydligt lättare. Inga nya mellanfilmer ingår i denna checkpoint.
 
-Nästa sammanhängande kapitel: Uppsala, med ankomst från båten, flera rum kring den felvända himlens instrument och nya berättelseval. Karl CCLV sparas till en senare resa där skeppet behövs.
+Nästa sammanhängande kapitel: Uppsala, med flera rum kring den felvända himlens instrument och nya berättelseval. Nytt transportförslag efter användarens fråga: båt tillbaka till expeditionens landningsplats, därefter Karl CCLV till Uppsala. Resan är ännu inte byggd.

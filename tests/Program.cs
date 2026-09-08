@@ -10,6 +10,11 @@ if(args.Contains("--mine-only")){MineTests.Run(Check);Console.WriteLine($"PASS M
 if(args.Contains("--regiment-only")){RegimentTests.Run(Check);Console.WriteLine($"PASS REGIMENT · {checks}");return;}
 if(args.Contains("--world-only")){ConnectedTests.Run(Check);Console.WriteLine($"PASS WORLD · {checks}");return;}
 if(args.Contains("--doors-only")){DoorTests.Run(Check);Console.WriteLine($"PASS DOORS · {checks}");return;}
+var facing=new Vector2(1,-1);
+for(int i=0;i<100;i++){facing=Gait.Facing(new Vector2(i%2==0?.02f:-.02f,-1),facing);Check(facing.X>0&&facing.Y<0,"Gait keeps quadrant under vertical jitter");}
+Check(Gait.Facing(new(-1,-1),facing).X<0,"Gait turns on deliberate direction change");
+Check(Gait.Facing(Vector2.Zero,facing)==facing,"Stopped gait retains facing");
+Check(Gait.Frame(0)==0&&Gait.Frame(88*7f/195)==0,"Gait completes one distance cycle");
 var arena=Combat.New(Order.Artillery);
 arena.Enemies.Clear();arena.Player=new(740,740);arena.Spawn(EnemyKind.Guard,new(795,740));
 arena.Enemies[0].Cooldown=10;
