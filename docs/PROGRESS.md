@@ -1,5 +1,10 @@
 # Checkpoint · Vägen under vattnet · 2026-09-06
 
+## 2026-09-09 · Storyboard och dialogöversikt
+
+[STORYBOARD.md](STORYBOARD.md) samlar huvudrutten till Uppsalagården och den äldre prologens relation till direktstarten. Befintliga JSON-repliker återges ordagrant; nya förslag märks separat. Prioriterat manusglapp: de döda soldaterna vet att de är döda, men den nuvarande radion behöver uttrycka det tydligare. Inga repliker, assets eller spelregler ändrades i detta dokumentpass.
+
+
 ## 0.16 · Karl CCLV till Uppsala
 
 Skeppsresa och återresa, ny målad Uppsalagård med tre instrument, strid och beständigt datumfynd. Nio nya radiorepliker och motorljud. Tjugo platser; Meridiansalen är nästa byggmål. Separat direktprov: `./play.sh -- --uppsala`. [Leverans och verifiering](UPPSALA.md).

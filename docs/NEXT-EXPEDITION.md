@@ -1,5 +1,8 @@
 # Nästa expedition: Regementet som stannar
 
+[Storyboard och samlat dialogmanus](STORYBOARD.md) — handling scen för scen, de dödas avlösning, befintliga repliker och öppna berättelsefrågor. Avstämt 2026-09-09.
+
+
 Aktuell fortsättning: [Karl CCLV till Uppsala i 0.16](UPPSALA.md) är byggd, med skeppsresa, första gården, instrumentgåta, strid och återresa. Nästa konkreta steg är Meridiansalen bakom gårdens målade port. Ursprunglig designplan nedan.
 
 2026-09-07. Berättelse- och byggplan efter användarens provspelning av 0.12.1. Originalplanen nedan bevaras som designunderlag. Aktuell leveransstatus finns i [REGIMENT.md](REGIMENT.md).

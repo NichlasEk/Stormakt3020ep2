@@ -1,5 +1,8 @@
 # Stormakt 3020: Atlands arv
 
+[Storyboard och samlat dialogmanus](docs/STORYBOARD.md) — handling scen för scen, de dödas avlösning, befintliga repliker och öppna berättelsefrågor. Avstämt 2026-09-09.
+
+
 ## 0.16 · Karl CCLV till Uppsala
 
 Skeppsresa och återresa, ny målad Uppsalagård med tre instrument, strid och beständigt datumfynd. Nio nya radiorepliker och motorljud. Tjugo platser; Meridiansalen är nästa byggmål. Separat direktprov: `./play.sh -- --uppsala`. [Leverans och verifiering](docs/UPPSALA.md).
