@@ -1,0 +1,106 @@
+{
+  "assets/art/room-observatory-quarters-v1.png": {
+    "bytes": 2739806,
+    "sha256": "86f9a4635fd8099d68fcf8a54265237dd92d95ce6b65760712b7762599c30724"
+  },
+  "assets/art/room-observatory-workshop-v1.png": {
+    "bytes": 3097402,
+    "sha256": "3608d664b78e45dbb3971ce83612e07671243d34e4ea6be7ad8527773a978c1a"
+  },
+  "assets/art/room-observatory-machine-v1.png": {
+    "bytes": 2915188,
+    "sha256": "a3abd9ee4cbdcdf591cadb53ede2dd3a9d63b60fea6596b7cd874d5e864cdd14"
+  },
+  "assets/art/room-observatory-dome-v1.png": {
+    "bytes": 2844200,
+    "sha256": "d5aa4b2a8d21ba976742daca6f6ecb88e7444a4863749d54886accd590a0fa4a"
+  },
+  "assets/art/room-meridian-observatory-open-v1.png": {
+    "bytes": 2796437,
+    "sha256": "fd418a7e53e4664ef7e7c4ad7f1cc76dcf37b6ed95e25797b66e2c763840430d"
+  },
+  "assets/art/marta-vinge-v1.png": {
+    "bytes": 1664929,
+    "sha256": "83522c5ee7bfc85c7cef46facb8109c4295aacdde14ab8a4e229ade221dd2720"
+  },
+  "assets/art/zenith-guardian-v1.png": {
+    "bytes": 1381567,
+    "sha256": "f1681abcd00252100b9708f8ba7acb68b76532f9d9e472ae0a5052fc4c088262"
+  },
+  "assets/audio/voice-observatory-quarters.ogg": {
+    "bytes": 61893,
+    "sha256": "fb046799392035851c8b0e2fb98b6bfc6ffc409bef09f8588ecdc4d030f9cab5"
+  },
+  "assets/audio/voice-observatory-workshop.ogg": {
+    "bytes": 74660,
+    "sha256": "c30033ecd4ec415b6c69a0dcd12b48dc2dca6bd05dc237aa43539ba45ed78c92"
+  },
+  "assets/audio/voice-observatory-key.ogg": {
+    "bytes": 61571,
+    "sha256": "403fd8ffc67551d06968ed7caa02a4a423a47f8929851a7bf858c2033bb3fa7e"
+  },
+  "assets/audio/voice-observatory-shortcut.ogg": {
+    "bytes": 54691,
+    "sha256": "1d590bbcc6d3fbaca258497baf252b6f52f87de4ec235a43c10fe7861413e97d"
+  },
+  "assets/audio/voice-observatory-zenith.ogg": {
+    "bytes": 67359,
+    "sha256": "c9984ade7ea23f5ef7f8392b43d862b09fdc4c8ca2d143c51cb1c93d4b9bcf1e"
+  },
+  "assets/audio/voice-observatory-fallen.ogg": {
+    "bytes": 67528,
+    "sha256": "e5a6d9008ae32c4088f1065c239d367bc8d2b93d357f3ecd75a1ab04bfb4e614"
+  },
+  "assets/audio/voice-observatory-response.ogg": {
+    "bytes": 91340,
+    "sha256": "d8e7ae4beac1978323debfa92af1fa2abfe13cbe7d61099f552bca040a507504"
+  },
+  "assets/audio/voice-observatory-next.ogg": {
+    "bytes": 88356,
+    "sha256": "797affb6c347a9722daa352985fb9b67a3aa4e720f5823f18c5d6c571a7d514a"
+  },
+  "assets/audio/voice-observatory-marta.ogg": {
+    "bytes": 115924,
+    "sha256": "777b8d38663788eb1f9a1f8d3ab5695ad6216ea5f45666bb116835f86b1ba404"
+  },
+  "assets/audio/voice-observatory-list.ogg": {
+    "bytes": 123383,
+    "sha256": "c09d6553d1d461cf0de61e1b7c5e8de298dd9edb369f395ccc0e9eddbfe1b769"
+  },
+  "assets/audio/voice-observatory-marta-repeat.ogg": {
+    "bytes": 91694,
+    "sha256": "eef46ccf677a450c2a15082e9fb68e1a987d6f00b9a1b588411e3d4708585b47"
+  },
+  "assets/audio/voice-observatory-diagram.ogg": {
+    "bytes": 127174,
+    "sha256": "14a502457b0d6565c7e2ee339da1d67bcf7de2e54c3e0436a01564918d395e6b"
+  },
+  "assets/audio/voice-observatory-locks.ogg": {
+    "bytes": 105956,
+    "sha256": "2b56f5021b4c3c1c1826c05e96d30f45847bd82235f80c5f77de4e8f499aa5ad"
+  },
+  "assets/audio/voice-observatory-original.ogg": {
+    "bytes": 140007,
+    "sha256": "cf3553be55ff359c0c3f465f42859d8d20a3e3e1abe4910267c08625f2503eab"
+  },
+  "assets/audio/voice-observatory-entry.ogg": {
+    "bytes": 78259,
+    "sha256": "743fbeeaf1b8453894e0a1f5c13416366e2bd829f0371f61b224ef7bd897460e"
+  },
+  "assets/audio/voice-observatory-debrief.ogg": {
+    "bytes": 76105,
+    "sha256": "eb050db9e449935c55d8aed99428730b4bbcbe724d218c1eacdf11c53bf485d9"
+  },
+  "assets/audio/voice-observatory-weights.ogg": {
+    "bytes": 81117,
+    "sha256": "3e146f07376d8c40b504eb1ff0ed5393597e9bfd14c303aa2a4dcc5de1c39e3f"
+  },
+  "assets/audio/voice-observatory-aligned.ogg": {
+    "bytes": 82751,
+    "sha256": "6772323942b4284d7341af067e872cc838d1affa17701a7875d6b4a50097748d"
+  },
+  "assets/video/observatory-dome-v1.ogv": {
+    "bytes": 2060564,
+    "sha256": "880b6952d75b731b67fcac58342dc9d38d51ffd115eeabb9898a717a010c8cd0"
+  }
+}

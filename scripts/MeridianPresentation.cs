@@ -26,7 +26,7 @@ public partial class Main
     private bool _meridianSlot;
     private void StartMeridian(bool fresh=false)
     {
-        LoadWaterArt();_meridianSlot=true;_uppsalaSlot=false;_foundrySlot=_mineSlot=_regimentSlot=_doorSlot=_roomsSlot=_portSlot=_atlandSlot=false;
+        LoadWaterArt();_observatorySlot=false;_meridianSlot=true;_uppsalaSlot=false;_foundrySlot=_mineSlot=_regimentSlot=_doorSlot=_roomsSlot=_portSlot=_atlandSlot=false;
         _boatTime=_shipTime=0;_pendingStoryFilm="";_radioBreath=0;
         if(!fresh&&!_testMode&&System.IO.File.Exists(SavePath)){ResumeSave();return;}
         _game=Combat.NewMeridianPreview(_order);ApplyDeveloperSettings();_camera=G(_game.Player)+new Vector2(0,-60);_particles.Clear();_floating.Clear();_radioQueue.Clear();_radio="";_radioTime=0;_sound.StopVoice();
@@ -41,7 +41,7 @@ public partial class Main
     }
     private bool DrawMeridianPrompt()
     {
-        if(!_game.InUppsala)return false;var m=_game.MeridianState;string label="";
+        if(!_game.InUppsala||_game.InObservatory)return false;var m=_game.MeridianState;string label="";
         bool Near(NVec p)=>NVec.Distance(_game.Player,p)<80&&_game.ClearPath(_game.Player,p);
         if(_game.Rooms!.Current==Uppsala.Court)
         {if(_game.UppsalaState.KeyTaken&&!m.CourtOpen&&Near(Meridian.CourtGate))label="E / B · Öppna porten med datumavtrycket";}

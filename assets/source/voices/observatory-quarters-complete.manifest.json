@@ -1,0 +1,10 @@
+{
+  "parts": [
+    "observatory-quarters-sentence-0.wav",
+    "observatory-quarters-sentence-1.wav",
+    "observatory-quarters-sentence-2.wav"
+  ],
+  "sha256": "5684ed2598a3faa71d588ff8ff33754cb1cce5f7bf9cf8dcd9c9038fd0173d66",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

@@ -18,7 +18,7 @@ public partial class Main
         _warehouse=GD.Load<Texture2D>("res://assets/art/warehouse-v1.png");
         _shore=GD.Load<Texture2D>("res://assets/art/shore-v1.png");
         _shoreRevealed=ResourceLoader.Exists("res://assets/art/shore-revealed-v1.png")?GD.Load<Texture2D>("res://assets/art/shore-revealed-v1.png"):_shore;
-        foreach(var (id,line) in JourneyDialogue.Load().Concat(JourneyDialogue.Rooms()).Concat(JourneyDialogue.Archive()).Concat(JourneyDialogue.Roots()).Concat(JourneyDialogue.Regiment()).Concat(JourneyDialogue.Mine()).Concat(JourneyDialogue.Foundry()).Concat(JourneyDialogue.Uppsala()).Concat(JourneyDialogue.Continuity()).Concat(JourneyDialogue.Cabin()).Concat(JourneyDialogue.Meridian()))Radio[id]=(line[0]=="ebba"?"RIKSAMIRAL EBBA GRIP":line[0]=="meridian"?"MERIDIANVÄKTAREN":line[0]=="bailiff"?"KRONFOGDEN":line[0]=="arvid"?"KAPTEN ARVID SILFVERGREN":"ANTIKVARIE HEDVIG RÅLAMB",line[1]);
+        foreach(var (id,line) in JourneyDialogue.Load().Concat(JourneyDialogue.Rooms()).Concat(JourneyDialogue.Archive()).Concat(JourneyDialogue.Roots()).Concat(JourneyDialogue.Regiment()).Concat(JourneyDialogue.Mine()).Concat(JourneyDialogue.Foundry()).Concat(JourneyDialogue.Uppsala()).Concat(JourneyDialogue.Continuity()).Concat(JourneyDialogue.Observatory()).Concat(JourneyDialogue.Cabin()).Concat(JourneyDialogue.Meridian()))Radio[id]=(line[0]=="ebba"?"RIKSAMIRAL EBBA GRIP":line[0]=="marta"?"MÄRTA VINGE":line[0]=="meridian"?"MERIDIANVÄKTAREN":line[0]=="bailiff"?"KRONFOGDEN":line[0]=="arvid"?"KAPTEN ARVID SILFVERGREN":"ANTIKVARIE HEDVIG RÅLAMB",line[1]);
     }
     private void StartDuel()
     {

@@ -41,5 +41,13 @@
     "duration": 8.041666666666666,
     "description": "Mönstringsplatsen ligger tom. Vinden rör fanor och löv efter kompaniets sista order.",
     "captions": []
+  },
+  {
+    "id": "observatory-dome",
+    "title": "Kupolen öppnas",
+    "file": "res://assets/video/observatory-dome-v1.ogv",
+    "duration": 8.041666666666666,
+    "description": "Zenitverket tystnar och kupolens springa öppnas mot morgonen.",
+    "captions": []
   }
 ]

@@ -6,7 +6,7 @@ namespace Atland;
 public static class Uppsala
 {
     public const string Court="uppsala-court";
-    public static readonly string[] Ids={Court,Meridian.Clock,Meridian.Hall,Cabin.Room};
+    public static readonly string[] Ids=new[]{Court,Meridian.Clock,Meridian.Hall,Cabin.Room}.Concat(Observatory.Ids).ToArray();
     public static bool Known(string id)=>Array.IndexOf(Ids,id)>=0;
     public static readonly Vector2 Origin=new(42000,1000),Board=new(930,490),Ramp=new(280,455),Desk=new(700,440),Seal=new(1040,455);
     // Painted non-walkable landmark; the fog may reveal the hull from its boarding point.
@@ -28,8 +28,8 @@ public sealed partial class Combat
 {
     [JsonIgnore] public bool InUppsala=>InConnectedWorld&&Uppsala.Known(Rooms!.Current);
     [JsonIgnore] public UppsalaRun UppsalaState=>Rooms!.Uppsala;
-    [JsonIgnore] public string UppsalaGoal=>InCabin?CabinGoal:InMeridian?MeridianGoal:!UppsalaState.ClueRead?"Läs astronomens anvisning":!UppsalaState.Aligned?"Rikta gårdens tre instrument":!UppsalaState.Secured?"Skydda stjärnplattan":!UppsalaState.KeyTaken?"Undersök portens daterade sigill":MeridianState.OrderTaken?(CabinState.Briefed?"Ordern är hos Ebba":"Till landgången · möt Ebba"):MeridianState.CourtOpen?"Fortsätt genom porten till klockgången":"Öppna porten med datumavtrycket";
-    [JsonIgnore] public Vector2 UppsalaObjective=>InCabin?CabinObjective:InMeridian?(Rooms!.Current==Meridian.Clock?(!MeridianState.LedgerRead?Meridian.Ledger:!MeridianState.ClockAnchored?Meridian.Bell:Meridian.ClockExit):!MeridianState.PlateSet?Meridian.Plate:MeridianState.WardenDefeated?Meridian.Order:MeridianState.Exposed>0?Meridian.Warden:Meridian.Controls[MeridianState.Breaks%3]):UppsalaState.KeyTaken?(MeridianState.OrderTaken?Uppsala.Ramp:Meridian.CourtGate):!UppsalaState.ClueRead?Uppsala.Desk:!UppsalaState.Aligned?Uppsala.Rings[Enumerable.Range(0,3).First(i=>UppsalaState.Rings[i]!=Uppsala.Target[i])]:Uppsala.Seal;
+    [JsonIgnore] public string UppsalaGoal=>InObservatory?ObservatoryGoal:InCabin?CabinGoal:InMeridian?MeridianGoal:!UppsalaState.ClueRead?"Läs astronomens anvisning":!UppsalaState.Aligned?"Rikta gårdens tre instrument":!UppsalaState.Secured?"Skydda stjärnplattan":!UppsalaState.KeyTaken?"Undersök portens daterade sigill":MeridianState.OrderTaken?(CabinState.Briefed?(ObservatoryState.OriginalTaken?"Återvänd med originalet till Ebba":"Fortsätt till observatoriet"):"Till landgången · möt Ebba"):MeridianState.CourtOpen?"Fortsätt genom porten till klockgången":"Öppna porten med datumavtrycket";
+    [JsonIgnore] public Vector2 UppsalaObjective=>InObservatory?ObservatoryObjective:InCabin?CabinObjective:InMeridian&&MeridianState.OrderTaken&&CabinState.Briefed?(ObservatoryState.OriginalTaken?new Vector2(110,490):Observatory.Gate):InMeridian?(Rooms!.Current==Meridian.Clock?(!MeridianState.LedgerRead?Meridian.Ledger:!MeridianState.ClockAnchored?Meridian.Bell:Meridian.ClockExit):!MeridianState.PlateSet?Meridian.Plate:MeridianState.WardenDefeated?Meridian.Order:MeridianState.Exposed>0?Meridian.Warden:Meridian.Controls[MeridianState.Breaks%3]):UppsalaState.KeyTaken?(MeridianState.OrderTaken&&(!CabinState.Briefed||ObservatoryState.OriginalTaken)?Uppsala.Ramp:Meridian.CourtGate):!UppsalaState.ClueRead?Uppsala.Desk:!UppsalaState.Aligned?Uppsala.Rings[Enumerable.Range(0,3).First(i=>UppsalaState.Rings[i]!=Uppsala.Target[i])]:Uppsala.Seal;
     public static Combat NewUppsalaPreview(Order order)
     {
         var g=NewFoundryPreview(order);g.FoundryState.GateOpen=true;g.EnterConnectedRoom(Foundry.Room);
@@ -54,6 +54,7 @@ public sealed partial class Combat
     private bool StepUppsala(Func<Vector2,bool> near)
     {
         if(!InConnectedWorld)return false;
+        if(StepObservatory(near))return true;
         if(StepCabin(near))return true;
         if(StepMeridian(near))return true;
         if((Rooms!.Current==Regiment.Quay&&near(Uppsala.Board)&&FoundryState.PlateTaken)||(Rooms!.Current==Uppsala.Court&&near(Uppsala.Ramp)))

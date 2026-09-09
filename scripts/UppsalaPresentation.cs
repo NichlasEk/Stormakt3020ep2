@@ -12,14 +12,14 @@ public partial class Main
     private string _shipDestination="";
     private void LoadUppsalaArt()
     {
-        LoadMeridianArt();LoadCabinArt();
+        LoadMeridianArt();LoadCabinArt();LoadObservatoryArt();
         _uppsalaArt??=GD.Load<Texture2D>("res://assets/art/room-uppsala-court-v1.png");
         _quayFrigate??=GD.Load<Texture2D>("res://assets/art/room-quay-docked-v2.png");
         _flightArt??=GD.Load<Texture2D>("res://assets/art/flight-uppsala-v1.png");
     }
     private void StartUppsala(bool fresh=false)
     {
-        LoadWaterArt();_meridianSlot=false;_uppsalaSlot=true;_foundrySlot=_mineSlot=_regimentSlot=_doorSlot=_roomsSlot=_portSlot=_atlandSlot=false;_boatTime=_shipTime=0;_pendingStoryFilm="";_radioBreath=0;
+        LoadWaterArt();_observatorySlot=false;_meridianSlot=false;_uppsalaSlot=true;_foundrySlot=_mineSlot=_regimentSlot=_doorSlot=_roomsSlot=_portSlot=_atlandSlot=false;_boatTime=_shipTime=0;_pendingStoryFilm="";_radioBreath=0;
         if(!fresh&&!_testMode&&System.IO.File.Exists(SavePath)){ResumeSave();return;}
         _game=Combat.NewUppsalaPreview(_order);ApplyDeveloperSettings();_particles.Clear();_floating.Clear();_radioQueue.Clear();_radio="";_radioTime=0;_sound.StopVoice();
         _bannerTime=_campaignTextTime=_revealTime=0;_camera=G(_game.Player)+new Vector2(0,-60);RememberRenderPositions();ChangeScreen(Screen.Game);Save();HandleCue(new("radio",_game.Player,"uppsala-ready"));
@@ -58,9 +58,10 @@ public partial class Main
     }
     private bool DrawUppsalaPrompt()
     {
+        if(DrawObservatoryPrompt())return true;
         if(DrawCabinPrompt())return true;
         if(DrawMeridianPrompt())return true;
-        if(!_game.InConnectedWorld||_game.InMeridian||_game.InCabin)return false;string label="";
+        if(!_game.InConnectedWorld||_game.InMeridian||_game.InCabin||_game.InObservatory)return false;string label="";
         bool Near(NVec p)=>NVec.Distance(p,_game.Player)<80&&_game.ClearPath(p,_game.Player);
         if(_game.Rooms!.Current==Regiment.Quay&&_game.FoundryState.PlateTaken&&Near(Uppsala.Board))label=_game.MeridianState.OrderTaken?"E / B · Gå ombord · möt Ebba i kajutan":"E / B · Ombord på Karl CCLV · Uppsala";
         if(_game.InUppsala)

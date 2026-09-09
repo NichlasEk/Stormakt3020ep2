@@ -1,0 +1,11 @@
+{
+  "parts": [
+    "observatory-debrief-sentence-0.wav",
+    "observatory-debrief-sentence-1.wav",
+    "observatory-debrief-sentence-2.wav",
+    "observatory-debrief-sentence-3.wav"
+  ],
+  "sha256": "fb8e2add5adb518617dd5cbf49065c128055e87b9d387993caf042d1ea0c950a",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

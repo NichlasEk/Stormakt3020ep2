@@ -1,5 +1,9 @@
 # Checkpoint · Vägen under vattnet · 2026-09-06
 
+## 0.19 · Övre observatoriet
+
+Fyra nya sammanhängande rum efter Ebbas kajutsamtal, Märta Vinge, Zenitväktaren, låst underhållsväg, 18 nya röster och en kupolfilm. 27 platser totalt. [Spelväg, direktprov, assets och kontroller](OBSERVATORY.md). Gamla Uppsala är nästa kapitel att bygga. Äldre avsnitt nedan är historik.
+
 ## 0.18.2 · Dockad rymdfregatt
 
 Ny målad rymdskeppskajuta och Karl CCLV dockad vid regementets brygga med ansluten landgång. Ombordpunkten följer bilden; skrovet syns genom rättad landskapsdimma. [Innehåll och bildprompter](CABIN.md).

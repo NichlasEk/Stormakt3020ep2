@@ -1,5 +1,9 @@
 # Från arenor till expeditioner
 
+## 0.19 · Övre observatoriet
+
+Fyra nya sammanhängande rum efter Ebbas kajutsamtal, Märta Vinge, Zenitväktaren, låst underhållsväg, 18 nya röster och en kupolfilm. 27 platser totalt. [Spelväg, direktprov, assets och kontroller](OBSERVATORY.md). Gamla Uppsala är nästa kapitel att bygga. Äldre avsnitt nedan är historik.
+
 ## 0.16 · Karl CCLV till Uppsala
 
 Skeppsresa och återresa, ny målad Uppsalagård med tre instrument, strid och beständigt datumfynd. Nio nya radiorepliker och motorljud. Tjugo platser; Meridiansalen är nästa byggmål. Separat direktprov: `./play.sh -- --uppsala`. [Leverans och verifiering](UPPSALA.md).

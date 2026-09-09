@@ -1,0 +1,3 @@
+Mode: edit. Result replaces room-observatory-quarters-v1.png.
+
+Edit this exact isometric 2D game background, retaining all rooms, furniture, side arched doorways, lights and floor texture. Add only a small descending stone maintenance stair at the FRONT CENTER edge of this room, centered x760, at y900 through bottom y1024. The 130 pixel wide stairwell starts in the floor at y900 and descends toward the bottom edge of the image, 5 worn stone steps, low stone side curbs, no tall railings. This is a walkable passage for our 170px tall human characters. Existing center floor stays empty and walkable, all other props untouched. Match dark matte historic oil-painted texture, fixed camera and 1536x1024 size. No text, no arrows, no people, no 3D render.

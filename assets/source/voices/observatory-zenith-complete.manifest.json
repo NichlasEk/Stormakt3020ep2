@@ -1,0 +1,9 @@
+{
+  "parts": [
+    "observatory-zenith-sentence-0.wav",
+    "observatory-zenith-sentence-1.wav"
+  ],
+  "sha256": "e0b8735688fed26b5b9129ef7553fd2b4f09a48192562b9e3227c44a0af8dcf2",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

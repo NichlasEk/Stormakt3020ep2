@@ -5,6 +5,7 @@ using System.Text.Json;
 int checks=0;
 void Check(bool condition,string message){if(!condition)throw new Exception(message);checks++;}
 Controls Input(Vector2 move=default,Vector2 aim=default,bool attack=false,bool heavy=false,bool dodge=false,bool guard=false,bool swap=false,bool heal=false,bool support=false,bool interact=false)=>new(move,aim,attack,heavy,dodge,guard,swap,heal,support,interact);
+if(args.Contains("--observatory-only")){ObservatoryTests.Run(Check);Console.WriteLine($"PASS OBSERVATORY · {checks}");return;}
 if(args.Contains("--cabin-only")){CabinTests.Run(Check);Console.WriteLine($"PASS CABIN · {checks}");return;}
 if(args.Contains("--meridian-only")){MeridianTests.Run(Check);Console.WriteLine($"PASS MERIDIAN · {checks}");return;}
 if(args.Contains("--narrative-only")){NarrativeTests.Run(Check);Console.WriteLine($"PASS NARRATIVE · {checks}");return;}
@@ -396,4 +397,5 @@ UppsalaTests.Run(Check);Console.WriteLine($"PASS UPPSALA · {checks} assertions"
 NarrativeTests.Run(Check);Console.WriteLine($"PASS NARRATIVE · {checks} assertions");
 
 MeridianTests.Run(Check);Console.WriteLine($"PASS MERIDIAN · {checks} assertions");
+ObservatoryTests.Run(Check);
 CabinTests.Run(Check);Console.WriteLine($"PASS CABIN · {checks} assertions");

@@ -363,19 +363,36 @@ Ebba märker att solen rört sig (`meridian-after`). Karl undersöker handlingen
 | Den instängda morgonen | Uppsalas instrument svarar. | Upprepade klockslag och vaktens väg, sedan väktarens förflyttningsorder. | Orderns ursprung och mål; hur mycket av Uppsala som påverkas. |
 | Mytiska makter | Rötter och Atland-motiv. | Stämning och undersökningsspår. | Nornornas roll och relation till de mänskliga institutionerna. |
 
+## 16 · Övre observatoriet — Den strukna destinationen
+
+**Byggt i 0.19.** Efter Ebbas genomgång ombord öppnar orderns sigill Meridiansalens högra port. Fyra sammanhängande rum fortsätter samma promenad, med bevarad utforskning och återväg.
+
+| Scen | Karl gör | Berättelsen förändras |
+| --- | --- | --- |
+| Astronomernas bostäder | Driver bort vakterna och talar med Märta Vinge, levande instrumentassistent. | Hennes syster Elin togs till uppställningen innan klockan stannade. Märta står själv på listan. Kvarteret betyder människor. |
+| Sönderslagna verkstaden | Slåss, läser bromsdiagrammet och söker verkstadsnyckeln i gömman. | Märta har lämnat en praktisk väg genom maskineriet. Elins lampa gör sökandet personligt. Dörren kan öppnas, stängas eller slås sönder. |
+| Kupolens motvikter | Ställer vänster broms på II, främre på 0, höger på I; undviker fallande vikter. | Mekaniken är begriplig och farlig. Nyckeln öppnar en underhållstrappa tillbaka till bostäderna. |
+| Övre observatoriet | Väcker och bekämpar Zenitväktaren: bryter tre låsningar, angriper det oskyddade drivverket. | En kort film visar kupolens öppning. Försvarsverket skyddade en handling, inte en skatt. |
+| Originalet | Läser originalordern vid skrivbordet. | Destinationen är mottagningsanläggningen under kungshögarna i Gamla Uppsala. Märta och Elin finns på listan. Vi vet ännu inte vilka som kom fram. |
+| Tillbaka ombord | Går tillbaka och lämnar originalet till Ebba i rymdfregattens kajuta. | Originalet stannar hos Ebba. Nästa sökande gäller både mottagningen och Elin. |
+
+**Kanon och öppna frågor:** Märta är levande; hon är inte ett nytt spöke från Arvids kompani. Vi vet inte vem som beställde transporten, vem som nådde mottagningen eller vad anläggningen gör. Inget samband mellan Elins uppställning och de döda soldaternas ed är fastslaget. Gamla Uppsala är nästa byggmål, ännu ingen spelbar landningsplats.
+
+**Röster:** 18 nya klipp i `observatory-radio.json`, två roller: Ebba och Märta. Märtas kropp och radioporträtt kommer från samma målade figur. Två direkta repliker hos Ebba avslutar kapitlet. Filmen saknar tal och delar huvudvolymen.
+
 ## Nästa manuspass, före fler stora avslöjanden
 
 1. **Genomfört i 0.16.1:** uttrycklig död/vila-dialog, avskedsorder, film och stilla efterspel.
 2. **Begreppen karta/form/plåt förtydligade i 0.16.1.** Karl/personen kontra skeppets namn återstår att stämma av.
 3. Ge direktstartande spelare tillräcklig kartbakgrund och se över äldre prologens hemfärdsreplik.
 4. **Genomfört i 0.17:** lokal upprepning bevittnas i Klockgången innan väktarens förklaring.
-5. **Första konflikten byggd i 0.17:** väktaren försöker skjuta upp en förflyttningsorder. Diskutera orderns mål och observatoriets nästa scen före ett större val.
+5. **Första konflikten byggd i 0.17:** väktaren försöker skjuta upp en förflyttningsorder. **Fortsatt i 0.19:** orderns destination och Märta/Elin är nu införda. Beställaren, transportens utfall och mottagningens funktion förblir öppna.
 
 De nio replikerna i `continuity-radio.json` är införda och inspelade i detta pass. Vid nästa manusändring: ändra berört JSON-manus, producera den nya rösten, kontrollera utlösning och pauser i scenen och uppdatera storyboardens status. Att filen finns betyder inte att repliken faktiskt går att höra i huvudrutten.
 
 ## Dialogbilaga — befintliga JSON-manus, ordagrant
 
-Nedan följer den befintliga texten från samtliga tolv berättelsefiler `*-radio.json` vid denna avstämning. Gruppordningen följer berättelsen; ordningen inom varje grupp är filens ordning, inte en garanti om uppspelning. Scenkorten ovan anger placering och alternativ. De äldsta grundreplikerna för Likvarvet ligger dessutom i `scripts/Main.cs`; denna bilaga gör inte anspråk på att ersätta hela den äldre prologens manus.
+Nedan följer den befintliga texten från samtliga tretton berättelsefiler `*-radio.json` vid denna avstämning. Gruppordningen följer berättelsen; ordningen inom varje grupp är filens ordning, inte en garanti om uppspelning. Scenkorten ovan anger placering och alternativ. De äldsta grundreplikerna för Likvarvet ligger dessutom i `scripts/Main.cs`; denna bilaga gör inte anspråk på att ersätta hela den äldre prologens manus.
 
 <!-- DIALOGUE-SNAPSHOT -->
 
@@ -829,5 +846,82 @@ Källa: [meridian-radio.json](../assets/story/meridian-radio.json).
 **`cabin-well` · Ebba Grip, direkt ombord**
 
 > Förbanden sitter där de ska. Försök låta dem göra sitt arbete nu.
+
+
+### 16 · Övre observatoriet
+
+Källa: [observatory-radio.json](../assets/story/observatory-radio.json).
+
+**`observatory-entry` · Ebba Grip**
+
+> Sigillet öppnar porten. Gå försiktigt, Karl. Där uppe finns människor som har väntat på samma morgon som väktaren.
+
+**`observatory-quarters` · Ebba Grip**
+
+> Sängarna är bäddade. Väskorna står kvar. De fick veta att de skulle resa, men inte vart.
+
+**`observatory-marta` · Märta Vinge**
+
+> Märta Vinge. Jag sköter instrumenten här. De tog min syster Elin till uppställningen. Sedan slutade klockan gå.
+
+**`observatory-list` · Märta Vinge**
+
+> Mitt namn står också på listan. Vi bor här, Karl. När de skriver kvarteret menar de oss. Originalet ligger under kupolen.
+
+**`observatory-marta-repeat` · Märta Vinge**
+
+> Min syster lämnade lampan i fönstret. Ta reda på vart de förde henne. Jag håller vägen öppen här.
+
+**`observatory-workshop` · Ebba Grip**
+
+> De försöker regla dörren bakom dig. Håll en väg tillbaka öppen. Det där är en verkstad, ingen gravkammare.
+
+**`observatory-diagram` · Märta Vinge**
+
+> Jag ritade bromsarna på diagrammet. Vänster på två. Den främre på noll. Höger på ett. Håll dig undan när motvikten faller.
+
+**`observatory-key` · Ebba Grip**
+
+> Verkstadsnyckeln passar också underhållsdörren. Ta den vägen tillbaka om trappan blir för het.
+
+**`observatory-weights` · Märta Vinge**
+
+> De stora vikterna är fortfarande spända. Bromsarna måste ta lasten innan taket går att öppna.
+
+**`observatory-shortcut` · Ebba Grip**
+
+> Underhållsvägen är öppen. Nu har du en andra väg tillbaka till bostäderna.
+
+**`observatory-aligned` · Märta Vinge**
+
+> Där. Nu bär bromsarna vikten. Men försvarsverket har sin egen drivning.
+
+**`observatory-zenith` · Ebba Grip**
+
+> Ett astronomiskt instrument med stridsberedskap. Jag börjar förstå varför ingen ville betala för ett vanligt tak.
+
+**`observatory-locks` · Märta Vinge**
+
+> Tre låsningar håller verket spänt. Hugg sönder dem. När armarna slår förbi får du en öppning mot mitten.
+
+**`observatory-fallen` · Ebba Grip**
+
+> Verket har stannat. Du kan släppa garden en stund, Karl. Ta originalet vid skrivbordet.
+
+**`observatory-original` · Märta Vinge**
+
+> Gamla Uppsala. Mottagningsanläggningen under kungshögarna. Elin står på raden ovanför mitt namn. De visste precis vart vi skulle.
+
+**`observatory-response` · Ebba Grip**
+
+> Nu har vi destinationen. Men vi vet ännu inte vilka som kom fram. Ta handlingen ombord. Märta, stanna vid den öppna återvägen.
+
+**`observatory-debrief` · Ebba Grip**
+
+> Här är den strukna raden. Platsen var dold. Människorna fanns kvar i räkningen. Originalet stannar hos mig.
+
+**`observatory-next` · Ebba Grip**
+
+> Nästa färd går till Gamla Uppsala. Vi söker mottagningen under högarna, och Elin. Nu har expeditionen både en plats och ett namn.
 
 <!-- END-DIALOGUE-SNAPSHOT -->

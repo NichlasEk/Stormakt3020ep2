@@ -1,0 +1,9 @@
+{
+  "parts": [
+    "observatory-weights-sentence-0.wav",
+    "observatory-weights-sentence-1.wav"
+  ],
+  "sha256": "cba3e917a184b65c7bfa8c7fb1dee9d8b007d6399f9a241b4b9572339a04ab20",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

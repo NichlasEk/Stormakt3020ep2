@@ -1,0 +1,9 @@
+{
+  "parts": [
+    "observatory-key-sentence-0.wav",
+    "observatory-key-sentence-1.wav"
+  ],
+  "sha256": "55852485cf21a33e6ee4dcafa94c5de0cb05606d1c4dab59a0b7b5377b6f4c7a",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

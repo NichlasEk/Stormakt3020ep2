@@ -25,10 +25,10 @@ public sealed class MeridianRun
 public sealed partial class Combat
 {
     [JsonIgnore] public MeridianRun MeridianState=>Rooms!.Meridian;
-    [JsonIgnore] public bool InMeridian=>InUppsala&&!InCabin&&Rooms!.Current!=Uppsala.Court;
+    [JsonIgnore] public bool InMeridian=>InUppsala&&Rooms!.Current is (Meridian.Clock or Meridian.Hall);
     [JsonIgnore] public string MeridianGoal=>Rooms!.Current==Meridian.Clock?
         !MeridianState.LedgerRead?"Läs klockans liggare":!MeridianState.ClockStarted?"Starta slagverket vid spaken":MeridianState.Cycles<2?"Följ vakten · lyssna efter nästa klockslag":!MeridianState.ClockAnchored?"Håll stjärnplåten mot slagverkets spärr":"Fortsätt genom valvet till Meridiansalen":
-        !MeridianState.PlateSet?"Jämför stjärnplåten vid astronomens bord":!MeridianState.WardenDefeated?MeridianState.Exposed>0?"Verket tappar takten · angrip väktaren":"Rikta det rörliga instrumentet · undvik mätlinjen":!MeridianState.OrderTaken?"Undersök förflyttningsordern vid porten":CabinState.Briefed?"Ordern är hos Ebba":"Ordern är säkrad · återvänd till Ebba";
+        !MeridianState.PlateSet?"Jämför stjärnplåten vid astronomens bord":!MeridianState.WardenDefeated?MeridianState.Exposed>0?"Verket tappar takten · angrip väktaren":"Rikta det rörliga instrumentet · undvik mätlinjen":!MeridianState.OrderTaken?"Undersök förflyttningsordern vid porten":CabinState.Briefed?(ObservatoryState.Debriefed?"Gamla Uppsala är nästa mål":ObservatoryState.OriginalTaken?"Återvänd med originalet till Ebba":"Öppna vägen till observatoriet"):"Ordern är säkrad · återvänd till Ebba";
     [JsonIgnore] public Vector2 ClockEchoPosition=>MeridianState.ClockAnchored?Vector2.Lerp(MeridianState.ReleaseFrom,new(1400,425),Math.Clamp(MeridianState.Departure/8,0,1)):Vector2.Lerp(new(470,555),new(1000,550),MeridianState.ClockTime<=6?MeridianState.ClockTime/6:(12-MeridianState.ClockTime)/6);
     public static Combat NewMeridianPreview(Order order)
     {
@@ -57,7 +57,7 @@ public sealed partial class Combat
     }
     private bool StepMeridian(Func<Vector2,bool> near)
     {
-        if(!InUppsala||InCabin)return false;var m=MeridianState;
+        if(!InUppsala||InCabin||InObservatory)return false;var m=MeridianState;
         if(Rooms!.Current==Uppsala.Court)
         {
             if(!UppsalaState.KeyTaken||!near(Meridian.CourtGate))return false;
@@ -97,7 +97,7 @@ public sealed partial class Combat
         {
             if(!m.WardenDefeated){Emit("room-notice",Player,"Väktaren håller kvar dagens order.");return true;}
             if(!m.OrderTaken){m.OrderTaken=true;DropItem("memory",Meridian.Order);Emit("radio",Player,"meridian-order");Emit("radio",Player,"meridian-stop");Emit("checkpoint",Player);}
-            Emit("campaign",Player,"FÖRFLYTTNINGSORDER: Ett helt kvarter skall flyttas vid gryningen. Målet är överstruket; originalet förvaras i det övre observatoriet. Väktaren lever men har lagt ned mätstaven. Nästa port är förseglad inifrån. Ta handlingen till expeditionen innan du går vidare.");return true;
+            Emit("campaign",Player,"FÖRFLYTTNINGSORDER: Ett helt kvarter skall flyttas vid gryningen. Målet är överstruket; originalet förvaras i det övre observatoriet. Väktaren lever men har lagt ned mätstaven. Visa handlingen för Ebba ombord. Orderns sigill öppnar sedan vägen till observatoriet.");return true;
         }
         return true;
     }

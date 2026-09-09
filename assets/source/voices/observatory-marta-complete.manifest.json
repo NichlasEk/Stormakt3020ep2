@@ -1,0 +1,11 @@
+{
+  "parts": [
+    "observatory-marta-sentence-0.wav",
+    "observatory-marta-sentence-1.wav",
+    "observatory-marta-sentence-2.wav",
+    "observatory-marta-sentence-3.wav"
+  ],
+  "sha256": "5e7bf46ccc4c5070ec373971f68ce72ba5c6f4bcdd35f035118827bab92f2e2c",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

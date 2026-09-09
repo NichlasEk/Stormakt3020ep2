@@ -1,0 +1,10 @@
+{
+  "parts": [
+    "observatory-fallen-sentence-0.wav",
+    "observatory-fallen-sentence-1.wav",
+    "observatory-fallen-sentence-2.wav"
+  ],
+  "sha256": "d96841c723164752cd723bdce0a2bf3ff80bb20ea38411a70c5c4f62ca590f8c",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

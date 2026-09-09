@@ -1,0 +1,9 @@
+{
+  "parts": [
+    "observatory-shortcut-sentence-0.wav",
+    "observatory-shortcut-sentence-1.wav"
+  ],
+  "sha256": "a4a460b0150e2fc0b2ba5e44017847ab2b4fab97cf601c25c1c0d0561664f09a",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

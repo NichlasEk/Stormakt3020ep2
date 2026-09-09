@@ -1,0 +1,74 @@
+{
+  "observatory-entry": [
+    "ebba",
+    "Sigillet öppnar porten. Gå försiktigt, Karl. Där uppe finns människor som har väntat på samma morgon som väktaren."
+  ],
+  "observatory-quarters": [
+    "ebba",
+    "Sängarna är bäddade. Väskorna står kvar. De fick veta att de skulle resa, men inte vart."
+  ],
+  "observatory-marta": [
+    "marta",
+    "Märta Vinge. Jag sköter instrumenten här. De tog min syster Elin till uppställningen. Sedan slutade klockan gå."
+  ],
+  "observatory-list": [
+    "marta",
+    "Mitt namn står också på listan. Vi bor här, Karl. När de skriver kvarteret menar de oss. Originalet ligger under kupolen."
+  ],
+  "observatory-marta-repeat": [
+    "marta",
+    "Min syster lämnade lampan i fönstret. Ta reda på vart de förde henne. Jag håller vägen öppen här."
+  ],
+  "observatory-workshop": [
+    "ebba",
+    "De försöker regla dörren bakom dig. Håll en väg tillbaka öppen. Det där är en verkstad, ingen gravkammare."
+  ],
+  "observatory-diagram": [
+    "marta",
+    "Jag ritade bromsarna på diagrammet. Vänster på två. Den främre på noll. Höger på ett. Håll dig undan när motvikten faller."
+  ],
+  "observatory-key": [
+    "ebba",
+    "Verkstadsnyckeln passar också underhållsdörren. Ta den vägen tillbaka om trappan blir för het."
+  ],
+  "observatory-weights": [
+    "marta",
+    "De stora vikterna är fortfarande spända. Bromsarna måste ta lasten innan taket går att öppna."
+  ],
+  "observatory-shortcut": [
+    "ebba",
+    "Underhållsvägen är öppen. Nu har du en andra väg tillbaka till bostäderna."
+  ],
+  "observatory-aligned": [
+    "marta",
+    "Där. Nu bär bromsarna vikten. Men försvarsverket har sin egen drivning."
+  ],
+  "observatory-zenith": [
+    "ebba",
+    "Ett astronomiskt instrument med stridsberedskap. Jag börjar förstå varför ingen ville betala för ett vanligt tak."
+  ],
+  "observatory-locks": [
+    "marta",
+    "Tre låsningar håller verket spänt. Hugg sönder dem. När armarna slår förbi får du en öppning mot mitten."
+  ],
+  "observatory-fallen": [
+    "ebba",
+    "Verket har stannat. Du kan släppa garden en stund, Karl. Ta originalet vid skrivbordet."
+  ],
+  "observatory-original": [
+    "marta",
+    "Gamla Uppsala. Mottagningsanläggningen under kungshögarna. Elin står på raden ovanför mitt namn. De visste precis vart vi skulle."
+  ],
+  "observatory-response": [
+    "ebba",
+    "Nu har vi destinationen. Men vi vet ännu inte vilka som kom fram. Ta handlingen ombord. Märta, stanna vid den öppna återvägen."
+  ],
+  "observatory-debrief": [
+    "ebba",
+    "Här är den strukna raden. Platsen var dold. Människorna fanns kvar i räkningen. Originalet stannar hos mig."
+  ],
+  "observatory-next": [
+    "ebba",
+    "Nästa färd går till Gamla Uppsala. Vi söker mottagningen under högarna, och Elin. Nu har expeditionen både en plats och ett namn."
+  ]
+}

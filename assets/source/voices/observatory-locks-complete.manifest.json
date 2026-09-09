@@ -1,0 +1,10 @@
+{
+  "parts": [
+    "observatory-locks-sentence-0.wav",
+    "observatory-locks-sentence-1.wav",
+    "observatory-locks-sentence-2.wav"
+  ],
+  "sha256": "c45f8a71895b4a1a97d8779dde9071e8f1c892aeca3afdc09c50c438f2c92813",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

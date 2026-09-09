@@ -13,18 +13,23 @@ public static class ConnectedWorld
     public const int Revision=5;
     public static bool Painted(RoomLink link)=>true;
     public static float MouthWidth(RoomLink link)=>link.Id switch{"meridian-hall"=>.65f,"lodge"=>.8f,"pump" or "cistern"=>.75f,"archive"=>1.15f,"gallery"=>.42f,"shortcut"=>.38f,"chamber"=>.42f,_=>.36f};
-    public static Vector2 Origin(string id)=>id==Cabin.Room?new(50000,1000):id==Meridian.Clock?new(44100,550):id==Meridian.Hall?new(46200,750):Uppsala.Known(id)?Uppsala.Origin:Mine.Known(id)?Mine.Origin(id):Regiment.Known(id)?Regiment.Origin(id):id switch
+    public static Vector2 Origin(string id)=>Observatory.Known(id)?Observatory.Origin(id):id==Cabin.Room?new(50000,1000):id==Meridian.Clock?new(44100,550):id==Meridian.Hall?new(46200,750):Uppsala.Known(id)?Uppsala.Origin:Mine.Known(id)?Mine.Origin(id):Regiment.Known(id)?Regiment.Origin(id):id switch
     {
         PortRooms.Court=>new(0,0),PortRooms.Lodge=>new(2100,482.5f),PortRooms.Pump=>new(4200,1275),
         PortRooms.Cistern=>new(2100,1950),PortRooms.Gallery=>new(6300,1515),PortRooms.Chamber=>new(8400,2005),
         PortRooms.Archive=>new(10500,2365),PortRooms.Roots=>new(12600,2795),_=>new(14700,3172.5f)
     };
-    public static Vector2[] Ground(string id)=>id==Cabin.Room?Cabin.Ground:id==Meridian.Clock?Meridian.ClockGround:id==Meridian.Hall?Meridian.HallGround:Uppsala.Known(id)?Uppsala.Ground:Mine.Known(id)?Mine.Ground(id):Regiment.Known(id)?Regiment.Ground(id):id switch
+    public static Vector2[] Ground(string id)=>Observatory.Known(id)?Observatory.Ground(id):id==Cabin.Room?Cabin.Ground:id==Meridian.Clock?Meridian.ClockGround:id==Meridian.Hall?Meridian.HallGround:Uppsala.Known(id)?Uppsala.Ground:Mine.Known(id)?Mine.Ground(id):Regiment.Known(id)?Regiment.Ground(id):id switch
     {PortRooms.Court=>PortRooms.CourtGround,PortRooms.Lodge=>JourneyLayout.WarehouseGround,PortRooms.Pump=>PortRooms.PumpGround,PortRooms.Cistern=>PortRooms.CisternGround,PortRooms.Gallery=>PortRooms.GalleryGround,PortRooms.Chamber=>PortRooms.OathGround,PortRooms.Archive=>ArchiveRoom.Ground,PortRooms.Roots=>Rootway.Ground,_=>Rootway.GroveGround};
-    public static Vector2[][] Obstacles(string id)=>id==Cabin.Room?Cabin.Obstacles:id==Meridian.Clock?Array.Empty<Vector2[]>():id==Meridian.Hall?Meridian.HallObstacles:Uppsala.Known(id)?Uppsala.Obstacles:Mine.Known(id)?Mine.Obstacles(id):Regiment.Known(id)?Regiment.Obstacles(id):id switch
+    public static Vector2[][] Obstacles(string id)=>Observatory.Known(id)?Observatory.Obstacles(id):id==Cabin.Room?Cabin.Obstacles:id==Meridian.Clock?Array.Empty<Vector2[]>():id==Meridian.Hall?Meridian.HallObstacles:Uppsala.Known(id)?Uppsala.Obstacles:Mine.Known(id)?Mine.Obstacles(id):Regiment.Known(id)?Regiment.Obstacles(id):id switch
     {PortRooms.Lodge=>new[]{Navigation.Expand(JourneyLayout.WarehouseObstacle,22)},PortRooms.Pump=>new[]{PortRooms.PumpBasin},PortRooms.Cistern=>new[]{PortRooms.CisternBasin},PortRooms.Gallery=>new[]{PortRooms.Lectern},PortRooms.Chamber=>PortRooms.OathObstacles,PortRooms.Archive=>new[]{ArchiveRoom.Table},PortRooms.Grove=>new[]{Rootway.Slab},_=>Array.Empty<Vector2[]>()};
     public static Vector2[] Route(RoomLink l)
     {
+        if(l.Id.StartsWith("observatory-"))
+        {
+            if(l.Id=="observatory-shortcut")return new[]{Origin(l.A)+new Vector2(760,445),Origin(l.A)+new Vector2(760,330),Origin(l.A)+new Vector2(760,-120),new Vector2(51800,2100),new Vector2(51800,3500),Origin(l.B)+new Vector2(760,1130),Origin(l.B)+new Vector2(760,970),Origin(l.B)+new Vector2(760,880)};
+            var entry=l.AtA;var exit=l.AtB;return new[]{Origin(l.A)+entry,Origin(l.A)+entry+new Vector2(65,-115),Origin(l.A)+entry+new Vector2(240,-175),Origin(l.B)+exit+new Vector2(-220,-90),Origin(l.B)+exit,Origin(l.B)+l.ArrivalB};
+        }
         if(l.Id=="uppsala-clock")return new[]{Origin(l.A)+new Vector2(1040,425),Origin(l.A)+new Vector2(1040,290),Origin(l.A)+new Vector2(1040,-70),Origin(l.B)+new Vector2(-60,455),Origin(l.B)+new Vector2(100,525),Origin(l.B)+new Vector2(240,555)};
         if(l.Id=="meridian-hall")return new[]{Origin(l.A)+new Vector2(1370,465),Origin(l.A)+new Vector2(1440,360),Origin(l.A)+new Vector2(1600,300),Origin(l.B)+new Vector2(-60,410),Origin(l.B)+new Vector2(110,490),Origin(l.B)+new Vector2(240,545)};
         if(l.Id=="foundry")return new[]{Origin(l.A)+new Vector2(1370,545),Origin(l.A)+new Vector2(1450,440),Origin(l.A)+new Vector2(1600,380),Origin(l.B)+new Vector2(-60,350),Origin(l.B)+new Vector2(130,420),Origin(l.B)+new Vector2(240,480)};
@@ -110,7 +115,7 @@ public sealed partial class Combat
     public void EnableConnectedWorld()
     {
         if(!InRooms||InDoorTrial||InConnectedWorld)return;
-        var r=Rooms!;foreach(var id in Regiment.Ids.Concat(Mine.Ids).Concat(Uppsala.Ids))r.Rooms.TryAdd(id,new());r.LayoutVersion=11;r.Connected=true;r.ConnectionRevision=ConnectedWorld.Revision;
+        var r=Rooms!;foreach(var id in Regiment.Ids.Concat(Mine.Ids).Concat(Uppsala.Ids))r.Rooms.TryAdd(id,new());r.LayoutVersion=12;r.Connected=true;r.ConnectionRevision=ConnectedWorld.Revision;
         foreach(var e in Enemies)e.HomeRoom=r.Current;
         foreach(var pair in r.Rooms)
         {
@@ -122,7 +127,7 @@ public sealed partial class Combat
         foreach(var l in RoomLinks.All)r.Doors[l.Id]=new(){Locked=!RoomLinks.Open(r,l),TargetOpen=RoomLinks.Open(r,l),Openness=RoomLinks.Open(r,l)?1:0};
         UpdateRoomSight(true);
     }
-    public static bool HasWorldDoor(RoomLink l)=>l.Gate is PassageGate.Key or PassageGate.Shortcut or PassageGate.Archive or PassageGate.RootGate or PassageGate.RegimentExit or PassageGate.RegimentShortcut or PassageGate.MineShortcut or PassageGate.Meridian;
+    public static bool HasWorldDoor(RoomLink l)=>(l.Id.StartsWith("observatory-")&&l.Id!="observatory-machine")||l.Gate is PassageGate.Key or PassageGate.Shortcut or PassageGate.Archive or PassageGate.RootGate or PassageGate.RegimentExit or PassageGate.RegimentShortcut or PassageGate.MineShortcut or PassageGate.Meridian;
     private bool WorldGround(Vector2 world){foreach(var p in ConnectedWorld.FloorShapes)if(p.Contains(world))return true;return false;}
     [JsonIgnore] private int _solidStamp=int.MinValue;
     [JsonIgnore] private ConnectedWorld.Shape[] _worldSolids=Array.Empty<ConnectedWorld.Shape>();
@@ -198,6 +203,8 @@ public sealed partial class Combat
             {EnterConnectedRoom(other);break;}
         }
         if(!input.Interact||_roomInteractHeld||Dead||AttackTime>0||DodgeTime>0)return;
+        if(r.Current==Meridian.Hall&&!r.Observatory.EntryOpen&&Vector2.Distance(Player,Observatory.Gate)<72)return;
+        if(r.Current==Observatory.Machine&&!r.Observatory.ShortcutOpen&&Vector2.Distance(Player,Observatory.Shortcut)<72)return;
         if(r.Current==Uppsala.Court&&Vector2.Distance(Player,Meridian.CourtGate)<72)return;
         if(r.Current==Mine.Coolway&&Vector2.Distance(Player,Foundry.Gate)<72)return;
         if(r.Current==Regiment.Farled&&Vector2.Distance(Player,Mine.Latch)<72)return;
@@ -234,6 +241,7 @@ public sealed partial class Combat
         if(first)
         {
             if(Uppsala.Known(destination))EnterMeridian(destination);
+            if(Observatory.Known(destination))EnterObservatory(destination);
             if(Mine.Known(destination))EnterMine(destination);
             if(Regiment.Known(destination))EnterRegiment(destination);
             if(destination==PortRooms.Lodge){Spawn(EnemyKind.Guard,new(650,735));Spawn(EnemyKind.Gunner,new(530,585));}
@@ -249,11 +257,11 @@ public sealed partial class Combat
         if(!InConnectedWorld)return;
         foreach(var l in RoomLinks.All)
         {
-            if(l.Gate!=PassageGate.Key)continue;
+            if(l.Gate!=PassageGate.Key&&l.Id!="observatory-workshop")continue;
             var d=Rooms!.Doors[l.Id];var at=(ConnectedWorld.Hinge(l)+ConnectedWorld.Tip(l,d.Openness))/2-WorldOrigin;
             if(d.Broken||Vector2.Distance(Player,at)>range+45||Vector2.Dot(Normal(at-Player,Facing),Facing)<arc)continue;
             d.Health=Math.Max(0,d.Health-damage);Emit("room-sound",at,d.Broken?"door-break":"door-hit");
-            if(d.Broken){Rooms.DoorOpen=true;Emit("checkpoint",Player);}
+            if(d.Broken){if(l.Gate==PassageGate.Key)Rooms.DoorOpen=true;Emit("checkpoint",Player);}
         }
     }
     public void UpgradeConnectedPassages()

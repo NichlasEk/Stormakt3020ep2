@@ -1,0 +1,10 @@
+{
+  "parts": [
+    "observatory-workshop-sentence-0.wav",
+    "observatory-workshop-sentence-1.wav",
+    "observatory-workshop-sentence-2.wav"
+  ],
+  "sha256": "62a56d4a6271466fa3972ca7a2e5a2e8b16c95aa11a5bb03b75d08a26e27cf11",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

@@ -26,8 +26,8 @@ public sealed partial class Combat
 {
     [JsonIgnore] public bool InCabin=>InConnectedWorld&&Rooms!.Current==Cabin.Room;
     [JsonIgnore] public CabinRun CabinState=>Rooms!.Cabin;
-    [JsonIgnore] public string CabinGoal=>!CabinState.Briefed?"Tala med Ebba vid bordet":!CabinState.Rested?"Lägg om såren ombord":"Ordern är hos Ebba";
-    [JsonIgnore] public Vector2 CabinObjective=>!CabinState.Briefed?Cabin.Talk:!CabinState.Rested?Cabin.Rest:Cabin.Entry;
+    [JsonIgnore] public string CabinGoal=>ObservatoryState.Debriefed?"Gamla Uppsala är nästa mål":ObservatoryState.OriginalTaken?"Visa originalet för Ebba":!CabinState.Briefed?"Tala med Ebba vid bordet":!CabinState.Rested?"Lägg om såren ombord":"Ordern är hos Ebba";
+    [JsonIgnore] public Vector2 CabinObjective=>ObservatoryState.OriginalTaken&&!ObservatoryState.Debriefed?Cabin.Talk:!CabinState.Briefed?Cabin.Talk:!CabinState.Rested?Cabin.Rest:Cabin.Entry;
     public bool BoardCabin()
     {
         if(!InConnectedWorld||!MeridianState.OrderTaken||!CanShipTravel(Rooms!.Current==Uppsala.Court?Regiment.Quay:Uppsala.Court))return false;
@@ -51,7 +51,8 @@ public sealed partial class Combat
             if(c.Conversation==0){c.Conversation=1;Emit("radio",Player,"cabin-order");Emit("radio",Player,"cabin-soldiers");}
             else if(c.Conversation==1){c.Conversation=2;Emit("radio",Player,"cabin-plate");}
             else if(c.Conversation==2){c.Conversation=3;Emit("radio",Player,"cabin-original");Emit("campaign",Player,"ORDERN HOS EBBA: Förflyttningen omfattade hela kvarteret. Destinationen är struken. Originalet i övre observatoriet är nästa spår. Ebba behåller handlingen medan expeditionen förbereder nästa färd.");}
-            else Emit("radio",Player,"cabin-repeat");
+            else if(ObservatoryState.OriginalTaken&&!ObservatoryState.Debriefed){ObservatoryState.Debriefed=true;Emit("radio",Player,"observatory-debrief");Emit("radio",Player,"observatory-next");Emit("campaign",Player,"GAMLA UPPSALA: Originalet är säkrat ombord. Nästa färd går till mottagningsanläggningen under kungshögarna. Märta och Elin står på listan. Deras öde återstår att ta reda på.");}
+            else Emit("radio",Player,ObservatoryState.Debriefed?"observatory-next":"cabin-repeat");
             Emit("room-sound",Player,"paper");Emit("checkpoint",Player);return true;
         }
         if(near(Cabin.Rest))

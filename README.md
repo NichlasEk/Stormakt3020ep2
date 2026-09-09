@@ -1,5 +1,9 @@
 # Stormakt 3020: Atlands arv
 
+## 0.19 · Den strukna destinationen
+
+Fyra nya sammanhängande rum i Övre observatoriet, Märta Vinge, Zenitväktaren, 18 nya röster, en kupolfilm och återkomsten till Ebba. Fortsätt efter kajutsamtalet genom Meridiansalens högra port. Separat prov: `./play.sh -- --observatory`. [Spelväg, assets och kontroller](docs/OBSERVATORY.md).
+
 ## 0.18 · Ebba i egen hög person
 
 Spelbar kajuta ombord på Karl CCLV, fysisk Ebba, åtta nya direkta röstklipp och ett sparat efterspel till Meridiansalens order. Gå ombord via Instrumentgårdens landgång efter orderfyndet. [Mötet, provspelning och verifiering](docs/CABIN.md).
