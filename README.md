@@ -1,5 +1,11 @@
 # Stormakt 3020: Atlands arv
 
+## 0.20 · Under kungshögarna
+
+Första etappen i Gamla Uppsala är spelbar: tre målade rum, Nils Berg, 13 nya röstklipp, ankomstfilm och återkomst till Ebba. Efter observatoriets avrapportering använder du rodret ombord. Separat prov: `./play.sh -- --gamla`. Målade dörrövergångar med djupskalning ersätter de synliga broarna även i äldre rum. [Spelväg, omfattning och kontroller](docs/GAMLA-UPPSALA.md).
+
+Nästa byggmål: Västra vågen och Mönstringsförrättaren, med fortsatt sökande efter Elin. Först utvärderar vi de nya portalernas gång och kamerabyte i spel.
+
 ## 0.19 · Den strukna destinationen
 
 Fyra nya sammanhängande rum i Övre observatoriet, Märta Vinge, Zenitväktaren, 18 nya röster, en kupolfilm och återkomsten till Ebba. Fortsätt efter kajutsamtalet genom Meridiansalens högra port. Separat prov: `./play.sh -- --observatory`. [Spelväg, assets och kontroller](docs/OBSERVATORY.md).

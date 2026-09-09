@@ -48,7 +48,8 @@ hedvig_lines={
  'hedvig-minne':('hedvig','Rudbecks äpplen är minne, tal och skrift. Stenarna bevarar gärningar som kronan har strukit. Ta med avtrycken.')}
 roles['arvid']={'seed':30220908,'instruction':'An adult Swedish male captain about fifty-five, restrained weathered baritone, clear natural Swedish, exhausted dignity, quiet human warmth, serious and calm, no villain voice, no theatrical growl.','text':'Jag heter Arvid Silfvergren. Mina män har hållit vägen öppen genom vintern. Nu väntar vi på order om avlösning. Jag vill se dem återvända hem medan någon ännu minns deras namn.'}
 roles['bailiff']={'seed':30220910,'instruction':'An adult Swedish male crown bailiff around sixty, dry resonant low baritone, precise bureaucratic Swedish diction, measured calm severity, tired and utterly convinced, no theatrical monster growl, no comedy.','text':'Arbetet fortsätter enligt kronans beslut. Varje namn skall föras in i liggaren. Ingen lämnar sin post innan räkningen är avslutad.'}
-if '--observatory-only' in sys.argv: lines=json.loads((ROOT/'assets/story/observatory-radio.json').read_text())
+if '--gamla-only' in sys.argv: lines=json.loads((ROOT/'assets/story/gamla-radio.json').read_text())
+elif '--observatory-only' in sys.argv: lines=json.loads((ROOT/'assets/story/observatory-radio.json').read_text())
 elif '--cabin-only' in sys.argv: lines=json.loads((ROOT/'assets/story/cabin-radio.json').read_text())
 elif '--meridian-only' in sys.argv: lines=json.loads((ROOT/'assets/story/meridian-radio.json').read_text())
 elif '--continuity-only' in sys.argv: lines=json.loads((ROOT/'assets/story/continuity-radio.json').read_text())
@@ -66,6 +67,7 @@ elif '--names-only' in sys.argv: lines=name_lines
 else: lines.update(name_lines);lines.update(hedvig_lines)
 roles['meridian']={'seed':30220917,'instruction':'A mature Swedish male astronomer, restrained clear baritone, weary educated authority, measured natural speech, humane and serious rather than theatrical, precise intelligible Swedish.','text':'Morgonen ligger kvar över gården. Jag har räknat alla slagen. Ingen annan har skrivit sitt namn under ordern. Låt mig läsa den en gång till.'}
 roles['marta']={'seed':30220919,'instruction':'An adult Swedish woman around forty, observatory technician, clear natural Swedish pronunciation, grounded warm mezzo voice, tired but brave and precise, soft steady delivery, no theatrical acting.','text':'Jag heter Märta Vinge. Jag arbetar med instrumenten i observatoriet. Min syster väntar på mig. Vi har hållit lampan tänd varje natt och jag tänker inte lämna henne här.'}
+roles['nils']={'seed':30220925,'instruction':'A Swedish adult male clerk around forty five, clear natural Swedish, quiet tense tenor baritone with a dry soft grain, humane and precise, tired but relieved to speak, not theatrical, not a villain.','text':'Jag heter Nils Berg. Jag skrev kvittenserna vid den inre porten. Min uppgift var att räkna de ankommande. Jag minns deras ansikten bättre än deras nummer.'}
 for role,v in roles.items():
  if not any(r==role for r,_ in lines.values()):continue
  ref=render(role+'-reference',{'text':v['text'],'voice_instruction':v['instruction'],'language':'sv','model_backend':'voxcpm2','output_format':'wav','normalize':False,'seed':v['seed']})
@@ -73,7 +75,7 @@ for role,v in roles.items():
   if r!=role:continue
   if (ROOT/'assets/audio'/f'voice-{name}.ogg').exists() and not ('--retake-regiment' in sys.argv and name in {'regiment-captain','regiment-freed','regiment-marshal'}):continue
   raw=render(name,{'text':line,'voice_instruction':v['instruction'],'language':'sv','model_backend':'dots.tts-mf','output_format':'wav','normalize':False,'seed':v['seed']+100,'reference_wav_base64':base64.b64encode(ref.read_bytes()).decode(),'prompt_text':v['text'],'dots_num_steps':8 if '--regiment-only' in sys.argv or '--rooms-only' in sys.argv or '--archive-only' in sys.argv or '--roots-only' in sys.argv or '--intro-only' in sys.argv else 4})
-  if '--observatory-only' in sys.argv or '--cabin-only' in sys.argv or '--meridian-only' in sys.argv or '--continuity-only' in sys.argv or '--uppsala-only' in sys.argv or '--foundry-only' in sys.argv or '--mine-only' in sys.argv or ('--retake-regiment' in sys.argv and name in {'regiment-captain','regiment-freed','regiment-marshal'}):
+  if '--gamla-only' in sys.argv or '--observatory-only' in sys.argv or '--cabin-only' in sys.argv or '--meridian-only' in sys.argv or '--continuity-only' in sys.argv or '--uppsala-only' in sys.argv or '--foundry-only' in sys.argv or '--mine-only' in sys.argv or ('--retake-regiment' in sys.argv and name in {'regiment-captain','regiment-freed','regiment-marshal'}):
    parts=[]
    for index,sentence in enumerate(re.split(r'(?<=[.!?])\s+',line)):
     part=render(name+'-sentence-'+str(index),{'text':sentence,'voice_instruction':v['instruction'],'language':'sv','model_backend':'dots.tts-mf','output_format':'wav','normalize':False,'seed':v['seed']+211+index,'reference_wav_base64':base64.b64encode(ref.read_bytes()).decode(),'prompt_text':v['text'],'dots_num_steps':16})

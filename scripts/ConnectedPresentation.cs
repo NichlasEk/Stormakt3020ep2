@@ -19,6 +19,7 @@ public partial class Main
         DrawConnectionFloors(true);var backWalls=new List<(float Depth,Action Draw)>();AddPassageWalls(backWalls,true);foreach(var wall in backWalls.OrderBy(w=>w.Depth))wall.Draw();
         foreach(var id in ConnectedWorld.RoomIds)
         {
+            if(_game.PaintedRooms&&id!=_game.Rooms!.Current)continue;
             var delta=G(ConnectedWorld.Origin(id)-_game.WorldOrigin);if(!WorldRectVisible(delta,new(1536,1024)))continue;
             _paintRoom=id;var painting=id==Cabin.Room?new Rect2(delta+G(Cabin.FromPainting(NVec.Zero)),new Vector2(1536,1024)*Cabin.EnvironmentScale):new Rect2(delta,new Vector2(1536,1024));DrawTextureRect(RoomBackground,painting,false);
         }
@@ -26,6 +27,7 @@ public partial class Main
     }
     private void DrawConnectionFloors(bool behindPaintings)
     {
+        if(_game.PaintedRooms)return;
         foreach(var l in RoomLinks.All)
         {
             if(ConnectedWorld.Painted(l)!=behindPaintings)continue;
@@ -52,14 +54,15 @@ public partial class Main
     private void DrawConnectedActors()
     {
         var layers=new List<(float Depth,Action Draw)>();
-        foreach(var enemy in _game.Enemies.Where(e=>_game.CanSeeRoomPoint(e.Position))){var actor=enemy;layers.Add((actor.Position.Y,()=>Actor(actor,actor.Dead)));}
+        foreach(var enemy in _game.Enemies.Where(e=>(!_game.PaintedRooms||e.HomeRoom==_game.Rooms!.Current)&&_game.CanSeeRoomPoint(e.Position))){var actor=enemy;layers.Add((actor.Position.Y,()=>Actor(actor,actor.Dead)));}
         layers.Add((_game.Player.Y,DrawPlayer));
         foreach(var id in ConnectedWorld.RoomIds)
         {
+            if(_game.PaintedRooms&&id!=_game.Rooms!.Current)continue;
             var delta=G(ConnectedWorld.Origin(id)-_game.WorldOrigin);if(!WorldRectVisible(delta,new(1536,1024)))continue;
             _paintRoom=id;var local=new List<(float Depth,Action Draw)>();
             if(id is PortRooms.Pump or PortRooms.Cistern)AddWaterLayers(local);
-            AddOathLayers(local);AddArchiveLayers(local);AddRootwayLayers(local);AddRegimentLayers(local);AddMineLayers(local);AddFoundryLayers(local);AddUppsalaLayers(local);AddMeridianLayers(local);AddCabinLayers(local);AddObservatoryLayers(local);AddOlderArchLayers(local);AddPaintedArchLayers(local);
+            AddOathLayers(local);AddArchiveLayers(local);AddRootwayLayers(local);AddRegimentLayers(local);AddMineLayers(local);AddFoundryLayers(local);AddUppsalaLayers(local);AddMeridianLayers(local);AddCabinLayers(local);AddObservatoryLayers(local);AddGamlaLayers(local);AddOlderArchLayers(local);AddPaintedArchLayers(local);
             if(id==PortRooms.Lodge)
             {
                 local.Add((623,()=>PaintForeground(_lodgePassageArt!,new Vector2[]{new(677,513),new(720,490),new(722,466),new(753,450),new(812,454),new(874,477),new(882,572),new(791,621),new(677,566)})));
@@ -117,6 +120,7 @@ public partial class Main
     {DrawPolygon(polygon,new[]{new Color(light,light*.98f,light*.90f)},new[]{new Vector2(.51f,.01f),new Vector2(.85f,.01f),new Vector2(.85f,.49f),new Vector2(.51f,.49f)},_passageMaterials);}
     private void AddPassageWalls(List<(float Depth,Action Draw)> layers,bool behindPaintings=false)
     {
+        if(_game.PaintedRooms)return;
         foreach(var l in RoomLinks.All)
         {
             if(ConnectedWorld.Painted(l)!=behindPaintings)continue;
@@ -177,8 +181,8 @@ public partial class Main
         Wrapped("Följ passagerna till fots genom Atland, regementets marker och gruvan. Sidovägar öppnar återtåg. Båten går mellan bryggan och berget. Karl CCLV flyger vidare till Uppsala när stjärnplattan är säkrad.",new Vector2(80,132),1100,19,Muted,28);
         Vector2 At(string id)
         {
-            int index=Array.IndexOf(ConnectedWorld.RoomIds,id), row=index/7, column=index%7;
-            return new Vector2(110+(row%2==0?column:6-column)*175,210+row*90);
+            int index=Array.IndexOf(ConnectedWorld.RoomIds,id), row=index/6, column=index%6;
+            return new Vector2(110+(row%2==0?column:5-column)*190,185+row*75);
         }
         var r=_game.Rooms!;
         foreach(var l in RoomLinks.All)
@@ -219,13 +223,14 @@ public partial class Main
         Vector2 Point(NVec world)=>center+G(world-player)*scale;
         foreach(var id in ConnectedWorld.RoomIds)
         {
+            if(_game.PaintedRooms&&id!=_game.Rooms!.Current)continue;
             var seen=_game.Rooms!.Rooms[id].Explored;
             for(int i=0;i<RoomSight.Count;i++)if(RoomSight.Seen(seen,i)&&(id!=Cabin.Room||Navigation.Contains(Cabin.Ground,RoomSight.Center(i))&&!Cabin.Obstacles.Any(o=>Navigation.Contains(o,RoomSight.Center(i)))))
             {var world=RoomSight.Center(i)+ConnectedWorld.Origin(id);var p=Point(world);if(rect.HasPoint(p))DrawRect(new Rect2(p,new Vector2(3.8f,3.8f)),id==_game.Rooms.Current?new Color("77735e"):new Color("383d35"));}
         }
         foreach(var l in RoomLinks.All)
         {
-            var route=ConnectedWorld.Route(l);
+            var route=_game.PaintedRooms?Array.Empty<NVec>():ConnectedWorld.Route(l);
             for(int k=1;k<route.Length;k++)
             {int count=Math.Max(1,(int)MathF.Ceiling(NVec.Distance(route[k-1],route[k])/32));for(int j=0;j<count;j++)if(_game.Rooms!.CorridorSeen.Contains(l.Id+":"+k+":"+j))
                 {var p=Point(NVec.Lerp(route[k-1],route[k],(j+.5f)/count));if(rect.HasPoint(p))DrawCircle(p,3,new Color("77735e"));}}
@@ -257,7 +262,8 @@ public partial class Main
                 var shift=ConnectedWorld.Origin(id)-_game.WorldOrigin;
                 if(!WorldRectVisible(G(shift),new(1536,1024)))continue;
                 var data=new byte[RoomSight.Count*4];var seen=_game.Rooms!.Rooms[id].Explored;
-                var feet=_game.Enemies.Where(e=>_game.CanSeeRoomPoint(e.Position)).Select(e=>e.Position-shift).Append(_game.Player-shift).ToArray();
+                var feet=_game.Enemies.Where(e=>(!_game.PaintedRooms||e.HomeRoom==_game.Rooms!.Current)&&_game.CanSeeRoomPoint(e.Position)).Select(e=>e.Position-shift).Append(_game.Player-shift).ToArray();
+                if(id==Gamla.Registry&&_game.CanSeeRoomPoint(Gamla.Talk+shift))feet=feet.Append(Gamla.Nils).ToArray();
                 if(id==Observatory.Quarters&&_game.CanSeeRoomPoint(Observatory.Talk+shift))feet=feet.Append(Observatory.Marta).ToArray();
                 for(int y=0;y<RoomSight.Rows;y++)for(int x=0;x<RoomSight.Columns;x++)
                 {
@@ -270,6 +276,7 @@ public partial class Main
                     }
                     var pixel=RoomSight.Center(y*RoomSight.Columns+x);
                     // The docked hull is scenery above water, not unexplored traversable floor.
+                    if(id==Gamla.Landing&&_game.Rooms!.Rooms[id].Visited&&pixel.Y<435)alpha=0;
                     if(id==Regiment.Quay&&_game.FoundryState.PlateTaken&&Navigation.Contains(Uppsala.DockedHull,pixel))
                     {
                         var boarding=Uppsala.Board+shift;
@@ -285,6 +292,7 @@ public partial class Main
         }
         foreach(var id in ConnectedWorld.RoomIds)
         {
+            if(_game.PaintedRooms&&id!=_game.Rooms!.Current)continue;
             var at=G(ConnectedWorld.Origin(id)-_game.WorldOrigin);if(!WorldRectVisible(at,new(1536,1024)))continue;
             if(_worldFog.TryGetValue(id,out var fog))DrawTextureRect(fog,new Rect2(at,new Vector2(1536,1024)),false);
         }

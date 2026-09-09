@@ -49,5 +49,13 @@
     "duration": 8.041666666666666,
     "description": "Zenitverket tystnar och kupolens springa öppnas mot morgonen.",
     "captions": []
+  },
+  {
+    "id": "gamla-arrival",
+    "title": "Under kungshögarna",
+    "file": "res://assets/video/gamla-arrival-v1.ogv",
+    "duration": 8.041666666666666,
+    "description": "Fregatten sjunker ned vid högarna. Vägen fortsätter genom den gamla stentrappan.",
+    "captions": []
   }
 ]

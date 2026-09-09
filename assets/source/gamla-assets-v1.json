@@ -1,0 +1,74 @@
+{
+  "assets/art/room-gamla-landing-v1.png": {
+    "bytes": 3381661,
+    "sha256": "41371d09f001a1cda7b12b50b1a959361a870c50eb4619ff25700687064f20a0"
+  },
+  "assets/art/room-gamla-passage-v1.png": {
+    "bytes": 2742972,
+    "sha256": "0f3e5544df771328214872b915a6d8adbf1dc03b2d583620ba3f1ad25c490017"
+  },
+  "assets/art/room-gamla-registry-v1.png": {
+    "bytes": 3216143,
+    "sha256": "f35f582059b467204d60c6adfaa9fa39a1b67a5e2bfc90660d067a540bb28458"
+  },
+  "assets/art/nils-berg-v1.png": {
+    "bytes": 1636203,
+    "sha256": "ec5f04ea0e38027122e95a82711fd86c8629c103df2cc1f73a46b48a10ff4b2c"
+  },
+  "assets/audio/voice-gamla-depart.ogg": {
+    "bytes": 76796,
+    "sha256": "88eaa24c6f60d4c642283c789e8413276541095ab0a895693938774a3c29550b"
+  },
+  "assets/audio/voice-gamla-return.ogg": {
+    "bytes": 46728,
+    "sha256": "abe16480cc69dec6c96392961c753dbdbfe02f54673ada57141205311d80c414"
+  },
+  "assets/audio/voice-gamla-camp.ogg": {
+    "bytes": 73543,
+    "sha256": "d67446597e90cfb98aa1c6b64fd4ecfc5d08f44559ef3c0bcccdb279760b6f26"
+  },
+  "assets/audio/voice-gamla-below.ogg": {
+    "bytes": 67296,
+    "sha256": "c3a2484d2efd41dafbb5023e30b4303c25c06465efc9a275c399ae101dd00a29"
+  },
+  "assets/audio/voice-gamla-ledger.ogg": {
+    "bytes": 92979,
+    "sha256": "683254b0d5a8a56511963bc5cf1141889d21d161615358fb6dcd5ef7068c43c1"
+  },
+  "assets/audio/voice-gamla-waiting.ogg": {
+    "bytes": 65675,
+    "sha256": "1c91160324a7564b85ed3b1c1456693757b3ae0af565bdd208effb3fa0623432"
+  },
+  "assets/audio/voice-gamla-evidence.ogg": {
+    "bytes": 78860,
+    "sha256": "55e5422f1722c68cc63664bb8a40fb7ef3a4f439959114bad0d8ac627dbd2e2c"
+  },
+  "assets/audio/voice-gamla-nils.ogg": {
+    "bytes": 129104,
+    "sha256": "ea3c7aeffd026bbdfce0b32d21777f2f59b7c0129e90fb801623eae3de73f191"
+  },
+  "assets/audio/voice-gamla-counted.ogg": {
+    "bytes": 130154,
+    "sha256": "925244e4dea2d75e338ff505815cd88212aacd4c3186592f4f38c474aaddd85f"
+  },
+  "assets/audio/voice-gamla-elin.ogg": {
+    "bytes": 140604,
+    "sha256": "11d6bf4a9f85e01d82baf02c0cf80d2b0d93e77a9d977551eed5c1c5c0e4c994"
+  },
+  "assets/audio/voice-gamla-nils-repeat.ogg": {
+    "bytes": 103175,
+    "sha256": "fde14bffdcdb7f383aa1332c5ba628c398fd045ca4833bdb3fca10e031868b8c"
+  },
+  "assets/audio/voice-gamla-arrival.ogg": {
+    "bytes": 68781,
+    "sha256": "678ae7cc77faa95f62fb63443be0b22fffd7b5a93a7cbd110cb2d304ac123404"
+  },
+  "assets/audio/voice-gamla-debrief.ogg": {
+    "bytes": 101099,
+    "sha256": "eb3fb712b96c2203cebee62ac7c3fe6a96775cf04b11797c5de0710621bd69af"
+  },
+  "assets/video/gamla-arrival-v1.ogv": {
+    "bytes": 3697947,
+    "sha256": "55c6a3ba7db30a947eabad7875c0c687fa1aea4bca524dffdfac6c7d9e36a2c0"
+  }
+}

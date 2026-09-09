@@ -1,0 +1,12 @@
+{
+  "parts": [
+    "gamla-elin-sentence-0.wav",
+    "gamla-elin-sentence-1.wav",
+    "gamla-elin-sentence-2.wav",
+    "gamla-elin-sentence-3.wav",
+    "gamla-elin-sentence-4.wav"
+  ],
+  "sha256": "ca4a2566e1de60951e4e0fd909af723a781e907f97ab71b1f8080903af2c9a5b",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

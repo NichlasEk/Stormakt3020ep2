@@ -42,7 +42,7 @@ public sealed partial class Combat
             int index=RoomSight.Index(at);
             if(index>=0&&CanSeeRoomPoint(at)){RoomSight.Reveal(seen,index);RoomVisible[index]=true;}
         }
-        if(InConnectedWorld)
+        if(InConnectedWorld&&!PaintedRooms)
         {
             foreach(var pair in Rooms.Rooms.Where(p=>p.Value.Visited&&p.Key!=Rooms.Current))
             {var shift=ConnectedWorld.Origin(pair.Key)-WorldOrigin;for(int i=0;i<RoomSight.Count;i++)if(CanSeeRoomPoint(RoomSight.Center(i)+shift))RoomSight.Reveal(pair.Value.Explored,i);}

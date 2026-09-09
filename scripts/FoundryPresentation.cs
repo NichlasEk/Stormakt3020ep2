@@ -17,7 +17,7 @@ public partial class Main
     }
     private void StartFoundry(bool fresh=false)
     {
-        LoadWaterArt();_observatorySlot=false;_meridianSlot=false;_uppsalaSlot=false;_shipTime=0;_pendingStoryFilm="";_radioBreath=0;_foundrySlot=true;_mineSlot=_regimentSlot=_doorSlot=_roomsSlot=_portSlot=_atlandSlot=false;_boatTime=0;
+        LoadWaterArt();_gamlaSlot=false;_observatorySlot=false;_meridianSlot=false;_uppsalaSlot=false;_shipTime=0;_pendingStoryFilm="";_radioBreath=0;_foundrySlot=true;_mineSlot=_regimentSlot=_doorSlot=_roomsSlot=_portSlot=_atlandSlot=false;_boatTime=0;
         if(!fresh&&!_testMode&&System.IO.File.Exists(SavePath)){ResumeSave();return;}
         _game=Combat.NewFoundryPreview(_order);ApplyDeveloperSettings();_particles.Clear();_floating.Clear();_radioQueue.Clear();_radio="";_sound.StopVoice();
         _bannerTime=_campaignTextTime=_revealTime=0;_camera=G(_game.Player)+new Vector2(0,-60);RememberRenderPositions();ChangeScreen(Screen.Game);Save();Notice("Separat gjuteriprov · lossa porten till höger");

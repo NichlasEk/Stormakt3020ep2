@@ -1,0 +1,11 @@
+{
+  "text": "De räknade oss vid dörren. Sedan räknade de papperen. När antalen skilde sig låste de väntrummet. Ingen frågade vem som fattades.",
+  "voice_instruction": "A Swedish adult male clerk around forty five, clear natural Swedish, quiet tense tenor baritone with a dry soft grain, humane and precise, tired but relieved to speak, not theatrical, not a villain.",
+  "language": "sv",
+  "model_backend": "dots.tts-mf",
+  "output_format": "wav",
+  "normalize": false,
+  "seed": 30221025,
+  "prompt_text": "Jag heter Nils Berg. Jag skrev kvittenserna vid den inre porten. Min uppgift var att räkna de ankommande. Jag minns deras ansikten bättre än deras nummer.",
+  "dots_num_steps": 4
+}

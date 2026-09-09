@@ -1,0 +1,10 @@
+{
+  "parts": [
+    "gamla-below-sentence-0.wav",
+    "gamla-below-sentence-1.wav",
+    "gamla-below-sentence-2.wav"
+  ],
+  "sha256": "6466f1ead843daf4cb529a3365f737b871bc0803de18444bae49f7eb93f0077a",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

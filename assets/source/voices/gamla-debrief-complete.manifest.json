@@ -1,0 +1,12 @@
+{
+  "parts": [
+    "gamla-debrief-sentence-0.wav",
+    "gamla-debrief-sentence-1.wav",
+    "gamla-debrief-sentence-2.wav",
+    "gamla-debrief-sentence-3.wav",
+    "gamla-debrief-sentence-4.wav"
+  ],
+  "sha256": "edccadca4ecd995de0a4224cbda400edabdecb9d7c637295fcf3a4625d9d3bc4",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

@@ -1,0 +1,9 @@
+{
+  "parts": [
+    "gamla-return-sentence-0.wav",
+    "gamla-return-sentence-1.wav"
+  ],
+  "sha256": "2e30d9a22a1a5daffedcfa2d05b74ec3b726fb3e0f300d135acb3c817ee34511",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

@@ -26,8 +26,8 @@ public sealed partial class Combat
 {
     [JsonIgnore] public bool InCabin=>InConnectedWorld&&Rooms!.Current==Cabin.Room;
     [JsonIgnore] public CabinRun CabinState=>Rooms!.Cabin;
-    [JsonIgnore] public string CabinGoal=>ObservatoryState.Debriefed?"Gamla Uppsala är nästa mål":ObservatoryState.OriginalTaken?"Visa originalet för Ebba":!CabinState.Briefed?"Tala med Ebba vid bordet":!CabinState.Rested?"Lägg om såren ombord":"Ordern är hos Ebba";
-    [JsonIgnore] public Vector2 CabinObjective=>ObservatoryState.OriginalTaken&&!ObservatoryState.Debriefed?Cabin.Talk:!CabinState.Briefed?Cabin.Talk:!CabinState.Rested?Cabin.Rest:Cabin.Entry;
+    [JsonIgnore] public string CabinGoal=>GamlaState.WitnessMet?(GamlaState.Debriefed?"Nästa etapp · Västra vågen":"Lämna Nils kvittens till Ebba"):ObservatoryState.Debriefed?"Gamla Uppsala är nästa mål":ObservatoryState.OriginalTaken?"Visa originalet för Ebba":!CabinState.Briefed?"Tala med Ebba vid bordet":!CabinState.Rested?"Lägg om såren ombord":"Ordern är hos Ebba";
+    [JsonIgnore] public Vector2 CabinObjective=>GamlaState.WitnessMet&&!GamlaState.Debriefed?Cabin.Talk:ObservatoryState.OriginalTaken&&!ObservatoryState.Debriefed?Cabin.Talk:!CabinState.Briefed?Cabin.Talk:!CabinState.Rested?Cabin.Rest:Cabin.Entry;
     public bool BoardCabin()
     {
         if(!InConnectedWorld||!MeridianState.OrderTaken||!CanShipTravel(Rooms!.Current==Uppsala.Court?Regiment.Quay:Uppsala.Court))return false;
@@ -38,21 +38,22 @@ public sealed partial class Combat
     public bool LeaveCabin(bool sail=false)
     {
         if(!InCabin||Dead||Vector2.Distance(Player,sail?Cabin.Helm:Cabin.Entry)>=72)return false;
-        var port=CabinState.ReturnRoom;EnterConnectedRoom(port);Player=port==Uppsala.Court?Uppsala.Ramp:Uppsala.Board;UpdateRoomSight(true);
+        var port=CabinState.ReturnRoom;EnterConnectedRoom(port);Player=port==Gamla.Landing?Gamla.Board:port==Uppsala.Court?Uppsala.Ramp:Uppsala.Board;UpdateRoomSight(true);
         Emit("cabin-enter",Player);Emit("checkpoint",Player);if(sail)Emit("ship-travel",Player,port==Uppsala.Court?Regiment.Quay:Uppsala.Court);return true;
     }
     private bool StepCabin(Func<Vector2,bool> near)
     {
         if(!InCabin)return false;var c=CabinState;
         if(near(Cabin.Entry)){LeaveCabin();return true;}
-        if(near(Cabin.Helm)){LeaveCabin(true);return true;}
+        if(near(Cabin.Helm)){if(ObservatoryState.Debriefed)Emit("gamla-travel",Player,c.ReturnRoom==Gamla.Landing?Uppsala.Court:Gamla.Landing);else LeaveCabin(true);return true;}
         if(near(Cabin.Talk))
         {
             if(c.Conversation==0){c.Conversation=1;Emit("radio",Player,"cabin-order");Emit("radio",Player,"cabin-soldiers");}
             else if(c.Conversation==1){c.Conversation=2;Emit("radio",Player,"cabin-plate");}
             else if(c.Conversation==2){c.Conversation=3;Emit("radio",Player,"cabin-original");Emit("campaign",Player,"ORDERN HOS EBBA: Förflyttningen omfattade hela kvarteret. Destinationen är struken. Originalet i övre observatoriet är nästa spår. Ebba behåller handlingen medan expeditionen förbereder nästa färd.");}
+            else if(GamlaState.WitnessMet&&!GamlaState.Debriefed){GamlaState.Debriefed=true;Emit("radio",Player,"gamla-debrief");Emit("campaign",Player,"KVITTENSEN HOS EBBA: Elin levde vid överföringen. Nästa etapp är Västra vågen. Expeditionen har ett vittne och en tidpunkt, men ingen bekräftelse på vad som hände därefter.");}
             else if(ObservatoryState.OriginalTaken&&!ObservatoryState.Debriefed){ObservatoryState.Debriefed=true;Emit("radio",Player,"observatory-debrief");Emit("radio",Player,"observatory-next");Emit("campaign",Player,"GAMLA UPPSALA: Originalet är säkrat ombord. Nästa färd går till mottagningsanläggningen under kungshögarna. Märta och Elin står på listan. Deras öde återstår att ta reda på.");}
-            else Emit("radio",Player,ObservatoryState.Debriefed?"observatory-next":"cabin-repeat");
+            else Emit("radio",Player,GamlaState.Debriefed?"gamla-debrief":ObservatoryState.Debriefed?"observatory-next":"cabin-repeat");
             Emit("room-sound",Player,"paper");Emit("checkpoint",Player);return true;
         }
         if(near(Cabin.Rest))
@@ -75,7 +76,7 @@ public sealed partial class Combat
     private void ValidateCabin()
     {
         if(!InConnectedWorld)return;var c=CabinState;
-        if(c is null||c.EnvironmentVersion<0||c.EnvironmentVersion>1||c.Conversation<0||c.Conversation>3||c.ReturnRoom is not (Uppsala.Court or Regiment.Quay)||(Rooms!.Rooms[Cabin.Room].Visited&&!MeridianState.OrderTaken)||(c.Conversation>0&&!Rooms.Rooms[Cabin.Room].Visited)||(c.Rested&&!c.Briefed))throw new System.IO.InvalidDataException("Ogiltigt kajutmöte");
+        if(c is null||c.EnvironmentVersion<0||c.EnvironmentVersion>1||c.Conversation<0||c.Conversation>3||c.ReturnRoom is not (Uppsala.Court or Regiment.Quay or Gamla.Landing)||(Rooms!.Rooms[Cabin.Room].Visited&&!MeridianState.OrderTaken)||(c.Conversation>0&&!Rooms.Rooms[Cabin.Room].Visited)||(c.Rested&&!c.Briefed))throw new System.IO.InvalidDataException("Ogiltigt kajutmöte");
         if(c.EnvironmentVersion==0)
         {
             if(InCabin)Player=Cabin.FromPainting(Player);

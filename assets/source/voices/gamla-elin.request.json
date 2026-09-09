@@ -1,0 +1,11 @@
+{
+  "text": "Elin Vinge. Ja, jag minns henne. Hon frågade efter sin syster. Hon levde när vakterna förde henne mot Västra vågen. Jag såg inte längre än så.",
+  "voice_instruction": "A Swedish adult male clerk around forty five, clear natural Swedish, quiet tense tenor baritone with a dry soft grain, humane and precise, tired but relieved to speak, not theatrical, not a villain.",
+  "language": "sv",
+  "model_backend": "dots.tts-mf",
+  "output_format": "wav",
+  "normalize": false,
+  "seed": 30221025,
+  "prompt_text": "Jag heter Nils Berg. Jag skrev kvittenserna vid den inre porten. Min uppgift var att räkna de ankommande. Jag minns deras ansikten bättre än deras nummer.",
+  "dots_num_steps": 4
+}

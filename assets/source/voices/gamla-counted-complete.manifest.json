@@ -1,0 +1,11 @@
+{
+  "parts": [
+    "gamla-counted-sentence-0.wav",
+    "gamla-counted-sentence-1.wav",
+    "gamla-counted-sentence-2.wav",
+    "gamla-counted-sentence-3.wav"
+  ],
+  "sha256": "9f220d17dfaaaa7251469b971f521c976b18cf67eee3220d26e6581f77037528",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

@@ -1,6 +1,6 @@
 # Stormakt 3020: Atlands arv — storyboard och dialog
 
-Arbetsversion 4 · 2026-09-09 · avstämd mot 0.18, Ebbas kajuta.
+Arbetsversion 5 · 2026-09-09 · avstämd mot 0.20, första etappen i Gamla Uppsala.
 
 Detta är vår gemensamma berättelseöversikt. Läs scenkorten i ordning för handling, spelarens insats och vad publiken får veta. Replik-ID länkar tanken till det faktiska manuset; hela nuvarande JSON-manuset finns i dialogbilagan längst ned. Föreslagna repliker har egna arbetsnamn och får inte förväxlas med inspelat innehåll.
 
@@ -42,7 +42,7 @@ Huvudmenyns rumsexpedition börjar med intro och den dränkta förgården. Den �
 
 **Huvudrutt:** förgård → logement → pumphus → vittnesgalleri → edskammare → arkiv → rotväg → lund → regementets stig → sjukbarack → fanlund → mönstringsvall → brygga → **båt** → farled → gruvmynning → blåsbälgar → svalgång → gjuteri → återväg och **båt tillbaka** → **fregatten Karl CCLV** → Uppsalagården.
 
-Cisternen är en valfri utflykt med fynd och genväg. Andra återtågsvägar förändrar gångsträckan, inte berättelsens obligatoriska avslöjanden. Huvudrutten har 20 beständiga platser; intro och transportscener är inte ytterligare spelrum.
+Cisternen är en valfri utflykt med fynd och genväg. Andra återtågsvägar förändrar gångsträckan, inte berättelsens obligatoriska avslöjanden. Huvudrutten har nu 30 beständiga platser; intro och transportscener är inte ytterligare spelrum.
 
 ## P0 · Likvarvet, magasinet och stranden
 
@@ -376,9 +376,25 @@ Ebba märker att solen rört sig (`meridian-after`). Karl undersöker handlingen
 | Originalet | Läser originalordern vid skrivbordet. | Destinationen är mottagningsanläggningen under kungshögarna i Gamla Uppsala. Märta och Elin finns på listan. Vi vet ännu inte vilka som kom fram. |
 | Tillbaka ombord | Går tillbaka och lämnar originalet till Ebba i rymdfregattens kajuta. | Originalet stannar hos Ebba. Nästa sökande gäller både mottagningen och Elin. |
 
-**Kanon och öppna frågor:** Märta är levande; hon är inte ett nytt spöke från Arvids kompani. Vi vet inte vem som beställde transporten, vem som nådde mottagningen eller vad anläggningen gör. Inget samband mellan Elins uppställning och de döda soldaternas ed är fastslaget. Gamla Uppsala är nästa byggmål, ännu ingen spelbar landningsplats.
+**Kanon och öppna frågor:** Märta är levande; hon är inte ett nytt spöke från Arvids kompani. Vi vet inte vem som beställde transporten, vem som nådde mottagningen eller vad anläggningen gör. Inget samband mellan Elins uppställning och de döda soldaternas ed är fastslaget. I 0.19 slutade rutten här. Första etappen i Gamla Uppsala är nu spelbar enligt scen 17 nedan.
 
 **Röster:** 18 nya klipp i `observatory-radio.json`, två roller: Ebba och Märta. Märtas kropp och radioporträtt kommer från samma målade figur. Två direkta repliker hos Ebba avslutar kapitlet. Filmen saknar tal och delar huvudvolymen.
+
+## 17 · Under kungshögarna
+
+**Status:** spelbart i 0.20. Första etappen; Västra vågen och dess boss är ännu inte byggda.
+
+| Bild och spelarhandling | Vad vi får veta |
+| --- | --- |
+| Efter originalordern och samtalet med Ebba använder Karl rodret. Fregatten flyger till Gamla Uppsala; en kort ankomstfilm följer första landningen. | Mottagningen ligger under kungshögarna. Ebba stannar ombord med radion öppen. |
+| Karl säkrar uppställningsplatsen och undersöker kvarlämnade skor och matsäckar. | Människorna kom för en uppställning; föremålen är inte begravningsgåvor. |
+| Genom högens målade dörröppning når Karl stenpassagen och läser transportliggaren efter striden. | Märta uteblev. Elin togs emot och fördes vidare till Västra vågen. Originalets sigill öppnar den inre vägen. |
+| I väntrummet säkrar Karl rummet och talar två gånger med Nils Berg, en levande före detta kvittensskrivare. | Nils såg Elin levande vid överföringen. Han såg inte vad som hände efter västra porten. Han lämnade sin post när människor inte längre fick återvända. |
+| Karl tar samma väg tillbaka, går ombord och lämnar vittnesmålet till Ebba. | Namn, tidpunkt och vittne ger ett prövbart spår. Nästa etapp är Västra vågen. |
+
+**Kanon:** Nils är levande. Elin var vid liv när Nils såg henne; hennes nuvarande tillstånd är okänt. Mottagningens funktion och beställaren bakom transporterna är inte avslöjade. Kvittensen säkras i uppdragets sparade tillstånd; spelaren behöver inte leta efter ett slumpmässigt nyckeldropp.
+
+**Gestaltning:** tre målade rum, fysisk Nils och radioporträtt från samma figur, 13 nya repliker med Ebba och Nils. Gamla Uppsala får sin egen cirka åtta sekunder långa ankomstfilm. Den absurda förvaltningen bär humorn; människorna förblir allvarliga.
 
 ## Nästa manuspass, före fler stora avslöjanden
 
@@ -392,7 +408,7 @@ De nio replikerna i `continuity-radio.json` är införda och inspelade i detta p
 
 ## Dialogbilaga — befintliga JSON-manus, ordagrant
 
-Nedan följer den befintliga texten från samtliga tretton berättelsefiler `*-radio.json` vid denna avstämning. Gruppordningen följer berättelsen; ordningen inom varje grupp är filens ordning, inte en garanti om uppspelning. Scenkorten ovan anger placering och alternativ. De äldsta grundreplikerna för Likvarvet ligger dessutom i `scripts/Main.cs`; denna bilaga gör inte anspråk på att ersätta hela den äldre prologens manus.
+Nedan följer den befintliga texten från samtliga fjorton berättelsefiler `*-radio.json` vid denna avstämning. Gruppordningen följer berättelsen; ordningen inom varje grupp är filens ordning, inte en garanti om uppspelning. Scenkorten ovan anger placering och alternativ. De äldsta grundreplikerna för Likvarvet ligger dessutom i `scripts/Main.cs`; denna bilaga gör inte anspråk på att ersätta hela den äldre prologens manus.
 
 <!-- DIALOGUE-SNAPSHOT -->
 
@@ -923,5 +939,62 @@ Källa: [observatory-radio.json](../assets/story/observatory-radio.json).
 **`observatory-next` · Ebba Grip**
 
 > Nästa färd går till Gamla Uppsala. Vi söker mottagningen under högarna, och Elin. Nu har expeditionen både en plats och ett namn.
+
+
+### 14 · Under kungshögarna
+
+Källa: [gamla-radio.json](../assets/story/gamla-radio.json).
+
+**`gamla-depart` · Ebba Grip**
+
+> Kurs mot Gamla Uppsala. Vi går ned vid högarna. Den här gången har vi både en adress och någon som saknas där.
+
+**`gamla-arrival` · Ebba Grip**
+
+> Vi är framme. Högarna ligger ovanför anläggningen. Jag stannar ombord och håller radion öppen.
+
+**`gamla-return` · Ebba Grip**
+
+> Tillbaka vid Instrumentgården. Fregatten ligger kvar vid landgången.
+
+**`gamla-camp` · Ebba Grip**
+
+> Skor, matsäckar och resväskor. Det här var en uppställningsplats. Ingen packar så för att begravas.
+
+**`gamla-below` · Ebba Grip**
+
+> Stenarna är gamla. Dörrarnas beslag är nyare. Någon har byggt en arbetsplats inuti graven.
+
+**`gamla-ledger` · Ebba Grip**
+
+> Märta kom aldrig till uppställningen. Elin blev mottagen. Sedan fördes hon till något som heter Västra vågen. Vi behöver ett vittne.
+
+**`gamla-waiting` · Ebba Grip**
+
+> Ett väntrum. Under en kungshög. Förvaltningen har verkligen hittat ett sätt att slippa dagsljus.
+
+**`gamla-nils` · Nils Berg**
+
+> Nils Berg. Jag skrev kvittenserna. Jag lämnade min post när de slutade låta folk gå tillbaka.
+
+**`gamla-counted` · Nils Berg**
+
+> De räknade oss vid dörren. Sedan räknade de papperen. När antalen skilde sig låste de väntrummet. Ingen frågade vem som fattades.
+
+**`gamla-elin` · Nils Berg**
+
+> Elin Vinge. Ja, jag minns henne. Hon frågade efter sin syster. Hon levde när vakterna förde henne mot Västra vågen. Jag såg inte längre än så.
+
+**`gamla-evidence` · Ebba Grip**
+
+> Ta hans kvittens, Karl. Ett namn och en tidpunkt är mer än vi hade förut. Nils, håll dig nära återvägen.
+
+**`gamla-nils-repeat` · Nils Berg**
+
+> Kvittensen är er. Jag såg henne gå genom den västra porten. Vad som hände där inne vet jag inte.
+
+**`gamla-debrief` · Ebba Grip**
+
+> Elin levde vid överföringen. Det är vad vi vet. Jag behåller kvittensen. Nästa etapp är Västra vågen. Nu följer vi Nils vittnesmål.
 
 <!-- END-DIALOGUE-SNAPSHOT -->

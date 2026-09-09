@@ -1,0 +1,10 @@
+{
+  "parts": [
+    "gamla-camp-sentence-0.wav",
+    "gamla-camp-sentence-1.wav",
+    "gamla-camp-sentence-2.wav"
+  ],
+  "sha256": "4c45eb9b47c05228fa2bc3b86b795e57efbf83b4c6b8ab678e9bf3c1bae86583",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

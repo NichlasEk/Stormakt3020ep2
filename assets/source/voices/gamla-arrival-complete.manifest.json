@@ -1,0 +1,10 @@
+{
+  "parts": [
+    "gamla-arrival-sentence-0.wav",
+    "gamla-arrival-sentence-1.wav",
+    "gamla-arrival-sentence-2.wav"
+  ],
+  "sha256": "0cc1c029ff521d4c34d9349ae27da25c27b2e0e28f9610de2b765d8f6269eba6",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

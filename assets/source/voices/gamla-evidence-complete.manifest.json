@@ -1,0 +1,10 @@
+{
+  "parts": [
+    "gamla-evidence-sentence-0.wav",
+    "gamla-evidence-sentence-1.wav",
+    "gamla-evidence-sentence-2.wav"
+  ],
+  "sha256": "0248ac48bd4cec352309afaaf5e3240f928f2e338b321f01f5d5626e30e75e13",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

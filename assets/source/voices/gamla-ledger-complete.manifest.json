@@ -1,0 +1,11 @@
+{
+  "parts": [
+    "gamla-ledger-sentence-0.wav",
+    "gamla-ledger-sentence-1.wav",
+    "gamla-ledger-sentence-2.wav",
+    "gamla-ledger-sentence-3.wav"
+  ],
+  "sha256": "397c75417a9f2d646f4dad3a1212a2ed80affb27aa4b7d4dfc72f4aafdb1d68b",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

@@ -165,6 +165,7 @@ public sealed partial class Combat
     public void Step(Controls input, float dt = 1f / 60)
     {
         Events.Clear(); ReadingIndex=-1; Tick++;
+        if(StepPaintedPassage(input,dt))return;
         if(InCabin)input=input with {Attack=false,Heavy=false,Support=false};
         if (Dead || Phase is Phase.Complete or Phase.Testimony) return;
         Elapsed += dt;
@@ -347,6 +348,7 @@ public sealed partial class Combat
     }
     private void StepEnemy(Fighter e,float dt)
     {
+        if(PaintedRooms&&InConnectedWorld&&e.HomeRoom!=Rooms!.Current)return;
         e.Moving=false;
         if(e.Dead)return;
         if(InConnectedWorld&&Vector2.DistanceSquared(e.Position,Player)>800*800)return;

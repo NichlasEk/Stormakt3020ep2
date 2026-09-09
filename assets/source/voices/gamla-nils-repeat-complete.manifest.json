@@ -1,0 +1,10 @@
+{
+  "parts": [
+    "gamla-nils-repeat-sentence-0.wav",
+    "gamla-nils-repeat-sentence-1.wav",
+    "gamla-nils-repeat-sentence-2.wav"
+  ],
+  "sha256": "030d7989a214a90eaa922f0a420202409aeb476362ec522fac0a883b87787f3c",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

@@ -1,0 +1,10 @@
+{
+  "parts": [
+    "gamla-waiting-sentence-0.wav",
+    "gamla-waiting-sentence-1.wav",
+    "gamla-waiting-sentence-2.wav"
+  ],
+  "sha256": "ac0bc35be24ef5070452bb85cb4697cbddfef5f1276b68bdcd67088debe103ab",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

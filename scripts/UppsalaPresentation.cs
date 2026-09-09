@@ -12,14 +12,14 @@ public partial class Main
     private string _shipDestination="";
     private void LoadUppsalaArt()
     {
-        LoadMeridianArt();LoadCabinArt();LoadObservatoryArt();
+        LoadMeridianArt();LoadCabinArt();LoadObservatoryArt();LoadGamlaArt();
         _uppsalaArt??=GD.Load<Texture2D>("res://assets/art/room-uppsala-court-v1.png");
         _quayFrigate??=GD.Load<Texture2D>("res://assets/art/room-quay-docked-v2.png");
         _flightArt??=GD.Load<Texture2D>("res://assets/art/flight-uppsala-v1.png");
     }
     private void StartUppsala(bool fresh=false)
     {
-        LoadWaterArt();_observatorySlot=false;_meridianSlot=false;_uppsalaSlot=true;_foundrySlot=_mineSlot=_regimentSlot=_doorSlot=_roomsSlot=_portSlot=_atlandSlot=false;_boatTime=_shipTime=0;_pendingStoryFilm="";_radioBreath=0;
+        LoadWaterArt();_gamlaSlot=false;_observatorySlot=false;_meridianSlot=false;_uppsalaSlot=true;_foundrySlot=_mineSlot=_regimentSlot=_doorSlot=_roomsSlot=_portSlot=_atlandSlot=false;_boatTime=_shipTime=0;_pendingStoryFilm="";_radioBreath=0;
         if(!fresh&&!_testMode&&System.IO.File.Exists(SavePath)){ResumeSave();return;}
         _game=Combat.NewUppsalaPreview(_order);ApplyDeveloperSettings();_particles.Clear();_floating.Clear();_radioQueue.Clear();_radio="";_radioTime=0;_sound.StopVoice();
         _bannerTime=_campaignTextTime=_revealTime=0;_camera=G(_game.Player)+new Vector2(0,-60);RememberRenderPositions();ChangeScreen(Screen.Game);Save();HandleCue(new("radio",_game.Player,"uppsala-ready"));
@@ -42,7 +42,7 @@ public partial class Main
         if(_shipTime<=0)
         {
             if(_sound.Speaking||_radioQueue.Count>0){_shipTime=.1f;return;}
-            if(_game.FinishShipTravel(_shipDestination))foreach(var cue in _game.Events.ToArray())HandleCue(cue);
+            if(_game.InCabin? _game.FinishGamlaFlight(_shipDestination):_game.FinishShipTravel(_shipDestination))foreach(var cue in _game.Events.ToArray())HandleCue(cue);
             _shipDestination="";ClearPresses();
         }
     }
@@ -53,15 +53,16 @@ public partial class Main
         DrawTextureRect(_flightArt!,new Rect2(-25-progress*45,-110+progress*28,1380,920),false);
         DrawRect(new Rect2(0,0,1280,65),new Color(0,0,0,.82f));DrawRect(new Rect2(0,550,1280,170),new Color(0,0,0,.84f));
         Centered("KARL CCLV",640,40,25,Gold,true);
-        Centered(_shipDestination==Uppsala.Court?"UPPSALAS FELVÄNDA HIMMEL":"ÅTERFÄRD TILL BRYGGAN",640,690,18,Pale);
+        Centered(_shipDestination==Gamla.Landing?"GAMLA UPPSALA · UNDER KUNGSHÖGARNA":_shipDestination==Uppsala.Court?"UPPSALAS FELVÄNDA HIMMEL":"ÅTERFÄRD TILL BRYGGAN",640,690,18,Pale);
         if(_radio!="")DrawRadio();
     }
     private bool DrawUppsalaPrompt()
     {
+        if(DrawGamlaPrompt())return true;
         if(DrawObservatoryPrompt())return true;
         if(DrawCabinPrompt())return true;
         if(DrawMeridianPrompt())return true;
-        if(!_game.InConnectedWorld||_game.InMeridian||_game.InCabin||_game.InObservatory)return false;string label="";
+        if(!_game.InConnectedWorld||_game.InMeridian||_game.InCabin||_game.InObservatory||_game.InGamla)return false;string label="";
         bool Near(NVec p)=>NVec.Distance(p,_game.Player)<80&&_game.ClearPath(p,_game.Player);
         if(_game.Rooms!.Current==Regiment.Quay&&_game.FoundryState.PlateTaken&&Near(Uppsala.Board))label=_game.MeridianState.OrderTaken?"E / B · Gå ombord · möt Ebba i kajutan":"E / B · Ombord på Karl CCLV · Uppsala";
         if(_game.InUppsala)

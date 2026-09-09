@@ -1,0 +1,10 @@
+{
+  "parts": [
+    "gamla-depart-sentence-0.wav",
+    "gamla-depart-sentence-1.wav",
+    "gamla-depart-sentence-2.wav"
+  ],
+  "sha256": "586b8a570b5c0ad6c62581065a9f47275534da75bcecd3f186606183e65c9a34",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

@@ -1,7 +1,8 @@
 {
   "assets/art/room-observatory-quarters-v1.png": {
-    "bytes": 2739806,
-    "sha256": "86f9a4635fd8099d68fcf8a54265237dd92d95ce6b65760712b7762599c30724"
+    "bytes": 2489970,
+    "sha256": "4f88b706df037a23845e82ec7233575247e547efd009bffda192d20a69ffaf9b",
+    "revision": "0.20: only foreground chair and draped coat reduced; see chair-fix prompt"
   },
   "assets/art/room-observatory-workshop-v1.png": {
     "bytes": 3097402,
