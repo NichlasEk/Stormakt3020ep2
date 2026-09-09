@@ -1,0 +1,11 @@
+{
+  "parts": [
+    "cabin-soldiers-sentence-0.wav",
+    "cabin-soldiers-sentence-1.wav",
+    "cabin-soldiers-sentence-2.wav",
+    "cabin-soldiers-sentence-3.wav"
+  ],
+  "sha256": "cd7ab96917ea1d5d0a2909a579e07e56ab2c67fde252abf0c791d4f512ec2699",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

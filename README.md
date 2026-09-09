@@ -1,5 +1,9 @@
 # Stormakt 3020: Atlands arv
 
+## 0.18 · Ebba i egen hög person
+
+Spelbar kajuta ombord på Karl CCLV, fysisk Ebba, åtta nya direkta röstklipp och ett sparat efterspel till Meridiansalens order. Gå ombord via Instrumentgårdens landgång efter orderfyndet. [Mötet, provspelning och verifiering](docs/CABIN.md).
+
 ## 0.17 · Morgonen som inte tar slut
 
 Instrumentgården fortsätter genom Klockgången till Meridiansalen: lokal tidsupprepning, tre instrument i väktarens strid, sexton nya röster, nytt porträtt och ett beständigt orderfynd. Två nya rum, 22 platser totalt. Separat prov: `./play.sh -- --meridian`. [Kapitel, provspelning och verifiering](docs/MERIDIAN.md).

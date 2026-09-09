@@ -1,0 +1,12 @@
+{
+  "parts": [
+    "cabin-plate-sentence-0.wav",
+    "cabin-plate-sentence-1.wav",
+    "cabin-plate-sentence-2.wav",
+    "cabin-plate-sentence-3.wav",
+    "cabin-plate-sentence-4.wav"
+  ],
+  "sha256": "e77a8d7fceca715cbcda9d21d382c9cf0095d0c9a3abecf40ed17c2510294a33",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

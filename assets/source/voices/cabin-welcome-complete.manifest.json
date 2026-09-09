@@ -1,0 +1,10 @@
+{
+  "parts": [
+    "cabin-welcome-sentence-0.wav",
+    "cabin-welcome-sentence-1.wav",
+    "cabin-welcome-sentence-2.wav"
+  ],
+  "sha256": "b1c6bdadfab0251aa9963d2cf4bc95ed72b0a9f697d8e6ea7f2d853385bf164f",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

@@ -1,0 +1,9 @@
+{
+  "parts": [
+    "cabin-repeat-sentence-0.wav",
+    "cabin-repeat-sentence-1.wav"
+  ],
+  "sha256": "126505037543c480340cf98920d713e49e8b52ba92e5e162bd0a5af4a786fe7b",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

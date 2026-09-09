@@ -19,6 +19,7 @@ public static class SpriteCutout
         bool Pale(int i)
         {
             int p=i*4,r=pixels[p],g=pixels[p+1],b=pixels[p+2];
+            if(chromaKey?.G>.8f)return g>120&&g-Math.Max(r,b)>55;
             if(chromaKey!=null)return r>150&&b>150&&g<120&&Math.Min(r,b)-g>80;
             return Math.Min(r,Math.Min(g,b))>194 && Math.Max(r,Math.Max(g,b))-Math.Min(r,Math.Min(g,b))<35;
         }
@@ -78,6 +79,7 @@ public static class SpriteCutout
         if(chromaKey!=null)for(int i=0;i<count;i++)
         {
             int p=i*4,spill=Math.Min(result[p],result[p+2])-result[p+1];
+            if(chromaKey?.G>.8f){result[p+1]=(byte)Math.Min(result[p+1],Math.Max(result[p],result[p+2]));continue;}
             if(spill>10){result[p]=(byte)(result[p]-spill);result[p+2]=(byte)(result[p+2]-spill);}
         }
         using var cutout=Image.CreateFromData(width,height,false,Image.Format.Rgba8,result);

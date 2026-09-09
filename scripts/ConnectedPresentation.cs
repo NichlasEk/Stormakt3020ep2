@@ -59,7 +59,7 @@ public partial class Main
             var delta=G(ConnectedWorld.Origin(id)-_game.WorldOrigin);if(!WorldRectVisible(delta,new(1536,1024)))continue;
             _paintRoom=id;var local=new List<(float Depth,Action Draw)>();
             if(id is PortRooms.Pump or PortRooms.Cistern)AddWaterLayers(local);
-            AddOathLayers(local);AddArchiveLayers(local);AddRootwayLayers(local);AddRegimentLayers(local);AddMineLayers(local);AddFoundryLayers(local);AddUppsalaLayers(local);AddMeridianLayers(local);AddOlderArchLayers(local);AddPaintedArchLayers(local);
+            AddOathLayers(local);AddArchiveLayers(local);AddRootwayLayers(local);AddRegimentLayers(local);AddMineLayers(local);AddFoundryLayers(local);AddUppsalaLayers(local);AddMeridianLayers(local);AddCabinLayers(local);AddOlderArchLayers(local);AddPaintedArchLayers(local);
             if(id==PortRooms.Lodge)
             {
                 local.Add((623,()=>PaintForeground(_lodgePassageArt!,new Vector2[]{new(677,513),new(720,490),new(722,466),new(753,450),new(812,454),new(874,477),new(882,572),new(791,621),new(677,566)})));
@@ -201,6 +201,7 @@ public partial class Main
             DrawPolyline(new[]{a,a-new Vector2(0,53),bend,b},new Color(Gold,.65f),1.5f,true);
             Text("KARL CCLV",bend+new Vector2(-40,-8),11,Gold);
         }
+        if(r.Rooms[Cabin.Room].Visited)DrawLine(At(r.Cabin.ReturnRoom),At(Cabin.Room),Gold,2,true);
         foreach(var id in ConnectedWorld.RoomIds)
         {
             bool visited=r.Rooms[id].Visited;var at=At(id);
@@ -219,7 +220,7 @@ public partial class Main
         foreach(var id in ConnectedWorld.RoomIds)
         {
             var seen=_game.Rooms!.Rooms[id].Explored;
-            for(int i=0;i<RoomSight.Count;i++)if(RoomSight.Seen(seen,i))
+            for(int i=0;i<RoomSight.Count;i++)if(RoomSight.Seen(seen,i)&&(id!=Cabin.Room||Navigation.Contains(Cabin.Ground,RoomSight.Center(i))&&!Cabin.Obstacles.Any(o=>Navigation.Contains(o,RoomSight.Center(i)))))
             {var world=RoomSight.Center(i)+ConnectedWorld.Origin(id);var p=Point(world);if(rect.HasPoint(p))DrawRect(new Rect2(p,new Vector2(3.8f,3.8f)),id==_game.Rooms.Current?new Color("77735e"):new Color("383d35"));}
         }
         foreach(var l in RoomLinks.All)

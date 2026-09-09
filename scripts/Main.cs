@@ -77,7 +77,7 @@ public partial class Main : Node2D
     private static NVec N(Vector2 v)=>new(v.X,v.Y);
     public override void _Ready()
     {
-        var args=OS.GetCmdlineUserArgs();_doorChecks=args.Contains("--door-check");_filmCheck=args.Contains("--cinematic-check");_filmPreview=args.Contains("--gate-film");_introPreview=args.Contains("--intro-film");_rootwayChecks=args.Contains("--rootway-check")||_filmCheck;_archiveChecks=args.Contains("--archive-check")||_rootwayChecks;_roomAudioChecks=args.Contains("--room-audio-check");_oathChecks=args.Contains("--oath-check")||_roomAudioChecks||_archiveChecks;_waterChecks=args.Contains("--water-check");_fogChecks=args.Contains("--fog-check");_roomChecks=args.Contains("--rooms-check");_inventoryChecks=args.Contains("--inventory-check");_portChecks=args.Contains("--port-check");_sceneChecks=args.Contains("--meridian-check")||args.Contains("--narrative-check")||args.Contains("--uppsala-check")||args.Contains("--gait-check")||args.Contains("--foundry-check")||args.Contains("--mine-check")||args.Contains("--regiment-check")||args.Contains("--ports-check")||args.Contains("--root-arch-check")||args.Contains("--arch-check")||args.Contains("--world-check")||args.Contains("--scene-check")||_portChecks||_inventoryChecks||_roomChecks||_fogChecks||_waterChecks||_oathChecks||_doorChecks;_uiChecks=args.Contains("--ui-check");
+        var args=OS.GetCmdlineUserArgs();_doorChecks=args.Contains("--door-check");_filmCheck=args.Contains("--cinematic-check");_filmPreview=args.Contains("--gate-film");_introPreview=args.Contains("--intro-film");_rootwayChecks=args.Contains("--rootway-check")||_filmCheck;_archiveChecks=args.Contains("--archive-check")||_rootwayChecks;_roomAudioChecks=args.Contains("--room-audio-check");_oathChecks=args.Contains("--oath-check")||_roomAudioChecks||_archiveChecks;_waterChecks=args.Contains("--water-check");_fogChecks=args.Contains("--fog-check");_roomChecks=args.Contains("--rooms-check");_inventoryChecks=args.Contains("--inventory-check");_portChecks=args.Contains("--port-check");_sceneChecks=args.Contains("--cabin-check")||args.Contains("--meridian-check")||args.Contains("--narrative-check")||args.Contains("--uppsala-check")||args.Contains("--gait-check")||args.Contains("--foundry-check")||args.Contains("--mine-check")||args.Contains("--regiment-check")||args.Contains("--ports-check")||args.Contains("--root-arch-check")||args.Contains("--arch-check")||args.Contains("--world-check")||args.Contains("--scene-check")||_portChecks||_inventoryChecks||_roomChecks||_fogChecks||_waterChecks||_oathChecks||_doorChecks;_uiChecks=args.Contains("--ui-check");
         _serif=GD.Load<Font>("res://assets/fonts/NotoSerif-Regular.ttf");_sans=GD.Load<Font>("res://assets/fonts/NotoSans-Regular.ttf");
         _background=GD.Load<Texture2D>("res://assets/art/likvarvet-scale-v5.png");
         _radioPortraits=GD.Load<Texture2D>("res://assets/art/radio-cast-v1.png");
@@ -95,6 +95,7 @@ public partial class Main : Node2D
         if(args.Contains("--rooms")||_roomChecks||_fogChecks||_waterChecks||_oathChecks)StartRooms();
         if(args.Contains("--capture-title"))_smokeCapture=true;
         if(args.Contains("--doors")||args.Contains("--doors-new")||_doorChecks)StartDoorTrial(args.Contains("--doors-new"));
+        if(args.Contains("--cabin-check")){RunCabinChecks();return;}
         if(args.Contains("--meridian-check")){RunMeridianChecks();return;}
         if(args.Contains("--meridian")||args.Contains("--meridian-new")){StartMeridian(args.Contains("--meridian-new"));return;}
         if(args.Contains("--narrative-check")){RunNarrativeChecks();return;}
@@ -337,6 +338,7 @@ public partial class Main : Node2D
         var p=G(cue.Position);
         switch(cue.Kind)
         {
+            case "cabin-enter":_radioQueue.Clear();_radio="";_radioTime=0;_sound.StopVoice();break;
             case "story-film":QueueFarewell();break;
             case "ship-travel":BeginShipTravel(cue.Text);break;
             case "boat-travel":if(_boatTime<=0){_boatDestination=cue.Text;_boatTime=6;_sound.Play("paper");ClearPresses();}break;
@@ -426,6 +428,7 @@ public partial class Main : Node2D
         _sound.Boss=(_game.Phase==Phase.Collector||(_game.Phase==Phase.Extraction&&_game.Enemies.Any(e=>!e.Dead))||(_game.InCampaign&&_game.Enemies.Any(e=>!e.Dead&&e.Kind is (EnemyKind.Collector or EnemyKind.OathGuardian or EnemyKind.RootMarshal or EnemyKind.CrownBailiff or EnemyKind.MeridianWarden)&&_game.CanSeeRoomPoint(e.Position)))) && _screen is Screen.Game or Screen.Pause;
         _sound.Remembrance=_game.InRegiment&&_game.RegimentState.Discharged;
         _sound.Discovery=_game.Phase is Phase.Names or Phase.Testimony || _game.Region==Region.Shore || _game.Rooms?.Current is PortRooms.Gallery or PortRooms.Cistern or PortRooms.Archive;
+        _sound.Cabin=_game.InCabin&&_shipTime<=0;
         _sound.Underground=_game.InRooms&&_game.Rooms!.Current!=PortRooms.Court&&!_game.InRegiment&&!_game.InUppsala&&_shipTime<=0;
         if(_screen is Screen.Game or Screen.Ending or Screen.Testimony or Screen.Archive)
         {
@@ -712,7 +715,7 @@ public partial class Main : Node2D
         Panel(new Rect2(417,623,470,77),.96f);Text(_game.WeaponName.ToUpperInvariant(),new Vector2(435,647),16,Gold);
         Text(_controller?"RB  Byt vapen     ↑  Tinktur ×"+_game.Potions:"TAB  Byt vapen     Q  Tinktur ×"+_game.Potions,new Vector2(435,674),14,Muted);
         Panel(new Rect2(903,623,357,77),.96f);Text(_game.Order==Order.Artillery?"ÖRLOGSBATTERI":"FÄLTSJUKVÅRD",new Vector2(921,647),14,Gold);
-        Text(_game.SupportCooldown<=0?(_controller?"↓  Understöd redo":"F  Understöd redo"):$"Redo om {Math.Ceiling(_game.SupportCooldown)} s",new Vector2(921,674),16,_game.SupportCooldown<=0?Teal:Muted);
+        Text(_game.InCabin?"Understödet vilar ombord":_game.SupportCooldown<=0?(_controller?"↓  Understöd redo":"F  Understöd redo"):$"Redo om {Math.Ceiling(_game.SupportCooldown)} s",new Vector2(921,674),16,_game.SupportCooldown<=0?Teal:Muted);
         if(_bannerTime>0)
         {float alpha=Math.Clamp(Math.Min(_bannerTime,5-_bannerTime),0,1);Centered(_banner,640,180,32,new Color(Pale,alpha),true);Centered(_game.InRooms?_game.RoomGoal:_game.InCampaign?_game.Stage.Goal:_game.AtlandRevealed?"Kartan följer landskapet.":_game.Region==Region.Warehouse?"Kollegiets förråd. Kollegiets hemligheter.":_game.Region==Region.Shore?"Gravhögen · vadstället · farleden":"En kust som inte längre räknar sina döda.",640,211,16,new Color(Muted,alpha));}
         if(_game.Phase==Phase.Names)
@@ -732,7 +735,7 @@ public partial class Main : Node2D
         else
         {
             if(_game.Phase==Phase.Discovery && NVec.Distance(_game.Player,Combat.ChartPosition)<100){Panel(new Rect2(430,526,420,52),.94f);Centered(_controller?"B  Undersök bronskartan":"E  Undersök bronskartan",640,558,19,Gold);}
-            else if(!_game.InDoorTrial&&_game.Elapsed<35&&(!_game.InCampaign||_campaignTextTime<=0)){Panel(new Rect2(282,552,716,43),.85f);Centered(_controller?"X Hugg · Y Tungt · A Undanmanöver · LB Parad":"WASD Gå · Mus Sikta · Vänster Hugg · Höger Tungt · Space Undan · Shift Parad",640,578,14,Muted);}
+            else if(!_game.InDoorTrial&&_game.Elapsed<35&&(!_game.InCampaign||_campaignTextTime<=0)){Panel(new Rect2(282,552,716,43),.85f);Centered(_game.InCabin?(_controller?"Vänster spak Gå · B Tala / undersök":"WASD Gå · E Tala / undersök"):_controller?"X Hugg · Y Tungt · A Undanmanöver · LB Parad":"WASD Gå · Mus Sikta · Vänster Hugg · Höger Tungt · Space Undan · Shift Parad",640,578,14,Muted);}
         }
         Text(_controller?"START Paus · BACK Fynd":"ESC Paus · R Fynd · I Inventarium · C Stats",new Vector2(24,608),12,Muted);
     }
@@ -764,7 +767,7 @@ public partial class Main : Node2D
         DrawRect(portraitRect,new Color(Gold,.65f),false,1);
         DrawLine(new Vector2(186,492),new Vector2(186,602),portrait==1?Teal:Gold,3);
         for(int i=0;i<7;i++){float height=_sound.Speaking?3+Mathf.Abs(Mathf.Sin(_clock*5+i*.9f))*9:2;DrawLine(new Vector2(1048+i*3,512-height/2),new Vector2(1048+i*3,512+height/2),new Color(Teal,.7f),1.5f);}
-        Text(speaker,new Vector2(304,517),12,Gold);Wrapped(text,new Vector2(304,544),770,16,Pale,23);
+        Text(_radio.StartsWith("cabin-")?"EBBA GRIP · I KAJUTAN":speaker,new Vector2(304,517),12,Gold);Wrapped(text,new Vector2(304,544),770,16,Pale,23);
     }
     private void DrawTitle()
     {
@@ -902,7 +905,7 @@ public partial class Main : Node2D
     private void WorldBar(Vector2 p,float width,float amount,Color color,float height=4){DrawRect(new Rect2(p,new Vector2(width,height)),new Color(.015f,.028f,.034f,.9f));DrawRect(new Rect2(p,new Vector2(width*Math.Clamp(amount,0,1),height)),color);}
     public override void _ExitTree()
     {
-        _grovePassageArt?.Dispose();_courtOpenArt?.Dispose();_lodgePassageArt?.Dispose();_cisternOpenArt?.Dispose();_uppsalaArt?.Dispose();_quayFrigate?.Dispose();_flightArt?.Dispose();_bailiffArt?.Dispose();_bailiffWalk?.Dispose();_coolwayOpen?.Dispose();DisposeMeridianArt();DisposeMineArt();DisposeRegimentArt();DisposeFilm();_doorGround?.Dispose();_doorFace?.Dispose();
+        _grovePassageArt?.Dispose();_courtOpenArt?.Dispose();_lodgePassageArt?.Dispose();_cisternOpenArt?.Dispose();_cabinArt?.Dispose();_ebbaCabin?.Dispose();_uppsalaArt?.Dispose();_quayFrigate?.Dispose();_flightArt?.Dispose();_bailiffArt?.Dispose();_bailiffWalk?.Dispose();_coolwayOpen?.Dispose();DisposeMeridianArt();DisposeMineArt();DisposeRegimentArt();DisposeFilm();_doorGround?.Dispose();_doorFace?.Dispose();
         foreach(var texture in _campaignWorlds)texture?.Dispose();
         _cast?.Dispose();_animated?.Dispose();_warehouse?.Dispose();if(_shoreRevealed!=_shore)_shoreRevealed?.Dispose();_shore?.Dispose();
         _pumpArt?.Dispose();_pumpLowArt?.Dispose();_cisternArt?.Dispose();_galleryArt?.Dispose();_chamberArt?.Dispose();_chamberOpenArt?.Dispose();_archiveArt?.Dispose();_archiveOpenArt?.Dispose();_rootwayOpenArt?.Dispose();_archiveDocuments?.Dispose();_rootwayArt?.Dispose();_groveArt?.Dispose();_oathCast?.Dispose();_roomFog?.Dispose();_inventoryBackground?.Dispose();foreach(var texture in _inventoryItemArt.Values)texture.Dispose();

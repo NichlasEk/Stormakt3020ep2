@@ -1,0 +1,11 @@
+{
+  "parts": [
+    "cabin-original-sentence-0.wav",
+    "cabin-original-sentence-1.wav",
+    "cabin-original-sentence-2.wav",
+    "cabin-original-sentence-3.wav"
+  ],
+  "sha256": "26e216fd7e45452cc1292239c2f77d035e41922c8c645a69176080c2d467d9b5",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

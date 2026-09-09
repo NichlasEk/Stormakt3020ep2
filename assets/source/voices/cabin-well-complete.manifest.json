@@ -1,0 +1,9 @@
+{
+  "parts": [
+    "cabin-well-sentence-0.wav",
+    "cabin-well-sentence-1.wav"
+  ],
+  "sha256": "e6293c6cbd19b5ba3deeb981582af00bc1a2084e7381cccc8b16a515ce9b6662",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

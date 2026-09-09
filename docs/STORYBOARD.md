@@ -1,6 +1,6 @@
 # Stormakt 3020: Atlands arv — storyboard och dialog
 
-Arbetsversion 3 · 2026-09-09 · avstämd mot kapitel 0.17, Meridiansalen.
+Arbetsversion 4 · 2026-09-09 · avstämd mot 0.18, Ebbas kajuta.
 
 Detta är vår gemensamma berättelseöversikt. Läs scenkorten i ordning för handling, spelarens insats och vad publiken får veta. Replik-ID länkar tanken till det faktiska manuset; hela nuvarande JSON-manuset finns i dialogbilagan längst ned. Föreslagna repliker har egna arbetsnamn och får inte förväxlas med inspelat innehåll.
 
@@ -332,7 +332,24 @@ Ebba märker att solen rört sig (`meridian-after`). Karl undersöker handlingen
 
 **Vad vi nu vet:** väktaren har försökt skjuta upp en förflyttningsorder genom att hindra nästa dag. Hans påstående får stöd av en verklig handling, men orderns ursprung, mål och verkställande är fortfarande okända. Vi har inte bestämt att detta är samma ed som höll regementet kvar.
 
-**Återväg:** `meridian-stop` ber Karl ta handlingen till expeditionen. Rum, instrument och besegrad väktare förblir förändrade. Det övre observatoriet är inte byggt. Nästa steg är att diskutera fyndet och sedan utforma ett begripligt val kring ordern, med kända berörda människor och följder.
+**Återväg:** `meridian-stop` ber Karl ta handlingen till expeditionen. Rum, instrument och besegrad väktare förblir förändrade. Det övre observatoriet är inte byggt. Fyndet diskuteras nu ombord i scen 16. Observatoriets kommande val behöver fortfarande kända berörda människor och begripliga följder.
+
+## 16 · Ebba i egen hög person
+
+**Spelbart i 0.18.** Från Instrumentgårdens landgång går Karl ombord efter orderfyndet. Samma kajuta nås från regementets brygga efter återflygning. Detta är ett fysiskt, fredat rum med en målad Ebba vid kartbordet. Luckan leder tillbaka till aktuell förtöjningsplats; navigationen vid babordsinstrumentet behåller skeppsresan åt andra hållet.
+
+**Bild och ljud:** sliten ek, blått och guld, sjökort och förband. Lågt motorbrum. Ebba talar direkt, med befintlig röstidentitet och eget kort märkt ”I kajutan”. Inga nya berättelseavslöjanden göms i en film.
+
+| Spelarhandling | Replik | Bestående följd |
+| --- | --- | --- |
+| Första gången ombord | `cabin-welcome` | Besöket sparas; hälsan ändras inte. |
+| E vid Ebba: visa ordern | `cabin-order`, `cabin-soldiers` | Orderns omfattning och soldaternas vila hålls isär. |
+| E igen: de tre föremålen | `cabin-plate` | Kartan visar väg, formen tillverkning, plåten påverkar instrument. |
+| E igen: nästa steg | `cabin-original` | Återvänd-till-Ebba-målet avslutas. Originalet återstår i observatoriet. |
+| E vid förbandskistan | `cabin-rest` | Fullt liv och uthållighet, en gång efter samtalet. |
+| Senare samtal/förband | `cabin-repeat`, `cabin-well` | Påminnelse, inga nya belöningar eller upprepad läkning. |
+
+**Avsikt:** en mänsklig andningspaus efter den fastlåsta morgonen. Ebbas torra humor gäller blod på sjökorten; allvaret hos Arvids döda män förminskas inte. Ingen koppling mellan deras ed och förflyttningsordern slås fast. Karl är spelbar, men attacker och artilleristöd är avstängda ombord. Övre observatoriet är fortfarande inte byggt.
 
 ## Kontinuitetsregister — vad spelaren vet när
 
@@ -340,7 +357,7 @@ Ebba märker att solen rört sig (`meridian-after`). Karl undersöker handlingen
 | --- | --- | --- | --- |
 | Strukna namn | Äldre prolog/arkivets motsägelsefulla handlingar. | Avtryck, identifiering och möjlighet att låta soldater lägga ned vapnen. | Vem beslöt varje strykning och varför? |
 | Bindande eder | Edsväktarens pelare. | Rotmarskalkens fanor och erkänd avlösning. | Gemensamt ursprung eller olika lokala eder? |
-| De döda | Regementets avsikt; sjukrulla och kaptenens antydningar. | Avlösning och kvarlämnad båt. | Behöver explicit replik och tydligare synligt efterspel. |
+| De döda | Regementets avsikt; sjukrulla och kaptenens antydningar. | Avlösning och kvarlämnad båt. | Död/vila uttalas i avlösningen och återkommer nu hos Ebba; edens ursprung är öppet. |
 | Det fortsatta arbetet | Hammare efter avstängd luft. | Kronfogdens instrument och plåt. | Beställare, drivkraft, verkligt ändamål. |
 | Felvänd riktning | Intro och lundens nordliga sol. | Stjärnplatta, kompassproblem, Uppsalas instrument. | Varför kartan placerade Uppsala vid en annan kust. |
 | Den instängda morgonen | Uppsalas instrument svarar. | Upprepade klockslag och vaktens väg, sedan väktarens förflyttningsorder. | Orderns ursprung och mål; hur mycket av Uppsala som påverkas. |
@@ -358,7 +375,7 @@ De nio replikerna i `continuity-radio.json` är införda och inspelade i detta p
 
 ## Dialogbilaga — befintliga JSON-manus, ordagrant
 
-Nedan följer den befintliga texten från samtliga elva berättelsefiler `*-radio.json` vid denna avstämning. Gruppordningen följer berättelsen; ordningen inom varje grupp är filens ordning, inte en garanti om uppspelning. Scenkorten ovan anger placering och alternativ. De äldsta grundreplikerna för Likvarvet ligger dessutom i `scripts/Main.cs`; denna bilaga gör inte anspråk på att ersätta hela den äldre prologens manus.
+Nedan följer den befintliga texten från samtliga tolv berättelsefiler `*-radio.json` vid denna avstämning. Gruppordningen följer berättelsen; ordningen inom varje grupp är filens ordning, inte en garanti om uppspelning. Scenkorten ovan anger placering och alternativ. De äldsta grundreplikerna för Likvarvet ligger dessutom i `scripts/Main.cs`; denna bilaga gör inte anspråk på att ersätta hela den äldre prologens manus.
 
 <!-- DIALOGUE-SNAPSHOT -->
 
@@ -777,5 +794,40 @@ Källa: [meridian-radio.json](../assets/story/meridian-radio.json).
 **`meridian-stop` · Ebba Grip**
 
 > Ta handlingen med dig. Han får stanna här under uppsikt. Vi öppnar inte nästa port förrän vi vet vart den leder.
+
+
+### 16 · Ebbas kajuta
+
+**`cabin-welcome` · Ebba Grip, direkt ombord**
+
+> Där är du. Kom hit till bordet, Karl. Jag vill se vad han höll kvar morgonen för.
+
+**`cabin-order` · Ebba Grip, direkt ombord**
+
+> Lägg ordern här. Hela kvarteret skulle flyttas. Men någon har strukit vart. Det är den raden jag är rädd för.
+
+**`cabin-soldiers` · Ebba Grip, direkt ombord**
+
+> Arvids män var redan döda. Avlösningen gav dem vila. Det du gjorde där står inte i den här ordern. Men det ska stå i vår loggbok.
+
+**`cabin-plate` · Ebba Grip, direkt ombord**
+
+> Bronskartan visar vägen. Gjutformen visar hur den tillverkades. Plåten med stjärnan får instrumenten att svara. Tre föremål, Karl. Vi får inte låta dem bli samma gåta.
+
+**`cabin-original` · Ebba Grip, direkt ombord**
+
+> Originalet finns i det övre observatoriet. Nästa gång går vi dit för den strukna raden. I kväll stannar ordern hos mig. Och du får åtminstone låta någon lägga om såren.
+
+**`cabin-rest` · Ebba Grip, direkt ombord**
+
+> Sitt still en stund. Du lämnar blod på mina sjökort. Jag har redan tillräckligt många röda gränser att förhålla mig till.
+
+**`cabin-repeat` · Ebba Grip, direkt ombord**
+
+> Handlingen ligger säkert här. I observatoriet finns nästa spår.
+
+**`cabin-well` · Ebba Grip, direkt ombord**
+
+> Förbanden sitter där de ska. Försök låta dem göra sitt arbete nu.
 
 <!-- END-DIALOGUE-SNAPSHOT -->

@@ -23,7 +23,7 @@ public sealed partial class Combat
     [JsonIgnore] private string _sightRoom="";
     [JsonIgnore] private Vector2 _sightPosition;
     // Movement, bullets and sight use the same measured walk polygon and obstacle.
-    public bool CanSeeRoomPoint(Vector2 at)=>!InRooms||(Vector2.DistanceSquared(Player,at)<=RoomSight.Radius*RoomSight.Radius&&ClearPath(Player,at));
+    public bool CanSeeRoomPoint(Vector2 at)=>!InRooms||(InCabin&&RoomSight.Index(at)>=0)||(Vector2.DistanceSquared(Player,at)<=RoomSight.Radius*RoomSight.Radius&&ClearPath(Player,at));
     public bool ExploredRoomPoint(Vector2 at)=>!InRooms||RoomSight.Seen(Rooms!.Rooms[Rooms.Current].Explored,RoomSight.Index(at));
     public void UpdateRoomSight(bool force=false)
     {

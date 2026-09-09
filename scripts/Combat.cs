@@ -165,6 +165,7 @@ public sealed partial class Combat
     public void Step(Controls input, float dt = 1f / 60)
     {
         Events.Clear(); ReadingIndex=-1; Tick++;
+        if(InCabin)input=input with {Attack=false,Heavy=false,Support=false};
         if (Dead || Phase is Phase.Complete or Phase.Testimony) return;
         Elapsed += dt;
         if (!IntroPlayed) { IntroPlayed = true; Emit("radio", Player, "arrival"); }

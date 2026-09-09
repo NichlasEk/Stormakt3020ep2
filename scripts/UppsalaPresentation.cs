@@ -12,7 +12,7 @@ public partial class Main
     private string _shipDestination="";
     private void LoadUppsalaArt()
     {
-        LoadMeridianArt();
+        LoadMeridianArt();LoadCabinArt();
         _uppsalaArt??=GD.Load<Texture2D>("res://assets/art/room-uppsala-court-v1.png");
         _quayFrigate??=GD.Load<Texture2D>("res://assets/art/room-quay-frigate-v1.png");
         _flightArt??=GD.Load<Texture2D>("res://assets/art/flight-uppsala-v1.png");
@@ -58,13 +58,14 @@ public partial class Main
     }
     private bool DrawUppsalaPrompt()
     {
+        if(DrawCabinPrompt())return true;
         if(DrawMeridianPrompt())return true;
-        if(!_game.InConnectedWorld||_game.InMeridian)return false;string label="";
+        if(!_game.InConnectedWorld||_game.InMeridian||_game.InCabin)return false;string label="";
         bool Near(NVec p)=>NVec.Distance(p,_game.Player)<80&&_game.ClearPath(p,_game.Player);
-        if(_game.Rooms!.Current==Regiment.Quay&&_game.FoundryState.PlateTaken&&Near(Uppsala.Board))label="E / B · Ombord på Karl CCLV · Uppsala";
+        if(_game.Rooms!.Current==Regiment.Quay&&_game.FoundryState.PlateTaken&&Near(Uppsala.Board))label=_game.MeridianState.OrderTaken?"E / B · Gå ombord · möt Ebba i kajutan":"E / B · Ombord på Karl CCLV · Uppsala";
         if(_game.InUppsala)
         {
-            if(Near(Uppsala.Ramp))label="E / B · Karl CCLV · tillbaka till bryggan";
+            if(Near(Uppsala.Ramp))label=_game.MeridianState.OrderTaken?"E / B · Gå ombord · möt Ebba i kajutan":"E / B · Karl CCLV · tillbaka till bryggan";
             else if(Near(Uppsala.Desk))label="E / B · Läs astronomens anvisning";
             else if(Near(Uppsala.Seal))label="E / B · Undersök portens datum";
             else for(int i=0;i<3;i++)if(Near(Uppsala.Rings[i]))label=_game.UppsalaState.Aligned?"Instrumentet står rätt":"E / B · Vrid "+Uppsala.Names[i].ToLowerInvariant()+" · "+Uppsala.Directions[_game.UppsalaState.Rings[i]];
