@@ -338,7 +338,7 @@ Ebba märker att solen rört sig (`meridian-after`). Karl undersöker handlingen
 
 **Spelbart i 0.18.** Från Instrumentgårdens landgång går Karl ombord efter orderfyndet. Samma kajuta nås från regementets brygga efter återflygning. Detta är ett fysiskt, fredat rum med en målad Ebba vid kartbordet. Luckan leder tillbaka till aktuell förtöjningsplats; navigationen vid babordsinstrumentet behåller skeppsresan åt andra hållet.
 
-**Bild och ljud:** sliten ek, blått och guld, sjökort och förband. Lågt motorbrum. Ebba talar direkt, med befintlig röstidentitet och eget kort märkt ”I kajutan”. Inga nya berättelseavslöjanden göms i en film.
+**Bild och ljud:** sliten ek, blått och guld, sjökort och förband, tillsammans med rymdfregattens tryckskott, luftsluss och navigationsskärmar. Kajen syns genom fönstren. Vid regementets brygga ligger Karl CCLV dockad med ansluten landgång. Lågt motorbrum. Ebba talar direkt, med befintlig röstidentitet och eget kort märkt ”I kajutan”. Inga nya berättelseavslöjanden göms i en film.
 
 | Spelarhandling | Replik | Bestående följd |
 | --- | --- | --- |

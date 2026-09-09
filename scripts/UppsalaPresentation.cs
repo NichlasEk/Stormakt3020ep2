@@ -14,7 +14,7 @@ public partial class Main
     {
         LoadMeridianArt();LoadCabinArt();
         _uppsalaArt??=GD.Load<Texture2D>("res://assets/art/room-uppsala-court-v1.png");
-        _quayFrigate??=GD.Load<Texture2D>("res://assets/art/room-quay-frigate-v1.png");
+        _quayFrigate??=GD.Load<Texture2D>("res://assets/art/room-quay-docked-v2.png");
         _flightArt??=GD.Load<Texture2D>("res://assets/art/flight-uppsala-v1.png");
     }
     private void StartUppsala(bool fresh=false)

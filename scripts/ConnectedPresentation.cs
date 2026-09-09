@@ -268,6 +268,13 @@ public partial class Main
                         if(RoomSight.Seen(seen,i))alpha=158;
                     }
                     var pixel=RoomSight.Center(y*RoomSight.Columns+x);
+                    // The docked hull is scenery above water, not unexplored traversable floor.
+                    if(id==Regiment.Quay&&_game.FoundryState.PlateTaken&&Navigation.Contains(Uppsala.DockedHull,pixel))
+                    {
+                        var boarding=Uppsala.Board+shift;
+                        if(_game.CanSeeRoomPoint(boarding))alpha=0;
+                        else if(RoomSight.Seen(seen,RoomSight.Index(Uppsala.Board)))alpha=158;
+                    }
                     if(feet.Any(p=>Math.Abs(pixel.X-p.X)<64&&pixel.Y>=p.Y-190&&pixel.Y<=p.Y+40))alpha=0;
                     int at=(y*RoomSight.Columns+x)*4;data[at]=3;data[at+1]=5;data[at+2]=6;data[at+3]=alpha;
                 }

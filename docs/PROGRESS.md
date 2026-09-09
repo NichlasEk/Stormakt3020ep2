@@ -1,5 +1,10 @@
 # Checkpoint · Vägen under vattnet · 2026-09-06
 
+## 0.18.2 · Dockad rymdfregatt
+
+Ny målad rymdskeppskajuta och Karl CCLV dockad vid regementets brygga med ansluten landgång. Ombordpunkten följer bilden; skrovet syns genom rättad landskapsdimma. [Innehåll och bildprompter](CABIN.md).
+
+
 ## 0.18.1 · Mänsklig skala i kajutan
 
 Målning, kollisioner och interaktionspunkter skalas tillsammans till 65 procent, med oförändrad storlek på Karl och Ebba. Äldre kajutsparningar följer med en gång. [Skalrättning och prov](CABIN.md).

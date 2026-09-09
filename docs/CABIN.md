@@ -2,6 +2,14 @@
 
 Meridiansalens ”återvänd till Ebba” leder nu till ett faktiskt möte ombord på Karl CCLV. Kajutan är den 23:e platsen, med rik målad bakgrund, en fysisk 2D-Ebba efter det godkända porträttet, åtta nya direkta repliker och lågt motorbrum.
 
+## Rymdfregatten 0.18.2
+
+Kajutan har tryckskott, luftsluss, navigationsskärmar, infälld stjärnkarta och kraftledningar tillsammans med ek, blått och guld. Kajen syns genom fönstren. Regementets brygga visar nu själva rymdfregatten dockad intill stenen med förtöjning och landgång, i stället för ett litet skepp ute över vattnet. Den vanliga lilla båten finns kvar för farleden. Uppsalas båda portbilder har redan fregatten vid landgången.
+
+Verifiering av 0.18.2: 28 kajutkontroller och 116 Uppsalakontroller godkända; native bildprov omfattar nu även dockad fregatt, Uppsalas landgång och ombordstigning från bryggan.
+
+Ombordpunkten vid bryggan följer den målade landgångens fot. Skrovet visas som ett synligt landmärke när ombordpunkten syns; det är inte en ny gångyta. Den korrigerade kajutskalan, Ebba och sparningarna behålls. [Nya bildfiler och exakta imagegen-prompter](../assets/art/space-frigate-v2.prompt.md).
+
 ## Skalrättning 0.18.1
 
 Kajutans målning, gångyta, möbelkollisioner, förgrund och interaktionspunkter använder nu samma faktor **0,65**, förankrad vid luckan. Karl och Ebba behåller sin vanliga kroppsstorlek. Bordets framkant blir cirka 74 världspixlar hög mot en cirka 172 pixlar hög vuxen; dörr, stol och kistor krymper lika mycket. Bildfilen är oförändrad och ingen ny bild genererades.
@@ -40,6 +48,6 @@ Ebba skiljer tydligt mellan Arvids döda regemente och Meridiansalens förflyttn
 - Full ren simuleringssvit: **78 191 kontroller**, inklusive äldre sparningar och hela Meridian-/Uppsalarutten.
 - Kajutans riktade prov kontrollerar vanlig landgångsinteraktion, rörelse mellan alla interaktionspunkter, tre sparade samtalssteg, engångsläkning, återbesök, fredad strid, rätt kaj och fortsatt flygning.
 - Native `--cabin-check`: scener, åtta laddade röstklipp, målad Ebba med transparent bakgrund, kartbord och lucka.
-- Slutlig Linux-export: `dist/AtlandsArv-0.18.1-cabin-scale/`, med executable, PCK och hela .NET-datakatalogen. Native `--cabin-check` passerade även i denna färdiga export; alla åtta röster och motorbrummet laddades. Bilderna inspekterades efter exporten.
+- Slutlig Linux-export: `dist/AtlandsArv-0.18.2-space-frigate/`, med executable, PCK och hela .NET-datakatalogen. Native `--cabin-check` passerade även i denna färdiga export; alla åtta röster och motorbrummet laddades. Bilderna inspekterades efter exporten.
 
 För ett isolerat automatiskt bildprov, utan ändring av spelarens sparning: `./play.sh -- --cabin-check`. Bilder skrivs till exportmappens `artifacts/cabin-*.png`. Detta prov spelar igenom mötet automatiskt och avslutar spelet.

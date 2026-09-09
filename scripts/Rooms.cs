@@ -76,7 +76,7 @@ public sealed partial class Combat
             if(InUppsala)return UppsalaGoal;
             if(InMine&&FoundryState.PlateTaken)return "Återvänd genom gruvan till båten";
             if(InRegiment&&r.Current==Regiment.Farled&&FoundryState.PlateTaken)return "Ta båten tillbaka · Karl CCLV väntar";
-            if(InRegiment&&r.Current==Regiment.Quay&&FoundryState.PlateTaken)return "Gå ombord · Karl CCLV till Uppsala";
+            if(InRegiment&&r.Current==Regiment.Quay&&FoundryState.PlateTaken)return MeridianState.OrderTaken?(CabinState.Briefed?"Karl CCLV · dockad vid bryggan":"Gå ombord · tala med Ebba"):"Gå ombord · Karl CCLV till Uppsala";
             if(InFoundry)return FoundryGoal;
             if(InMine)return MineGoal;
             if(InRegiment)return RegimentGoal;

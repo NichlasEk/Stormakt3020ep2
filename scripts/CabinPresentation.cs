@@ -8,7 +8,7 @@ public partial class Main
     private Texture2D? _cabinArt,_ebbaCabin;
     private void LoadCabinArt()
     {
-        _cabinArt??=GD.Load<Texture2D>("res://assets/art/room-cabin-v1.png");
+        _cabinArt??=GD.Load<Texture2D>("res://assets/art/room-cabin-space-v2.png");
         _ebbaCabin??=SpriteCutout.Load("res://assets/art/ebba-cabin-v1.png",chromaKey:new Color(0,1,0));
     }
     private void AddCabinLayers(List<(float Depth,Action Draw)> layers)

@@ -8,7 +8,9 @@ public static class Uppsala
     public const string Court="uppsala-court";
     public static readonly string[] Ids={Court,Meridian.Clock,Meridian.Hall,Cabin.Room};
     public static bool Known(string id)=>Array.IndexOf(Ids,id)>=0;
-    public static readonly Vector2 Origin=new(42000,1000),Board=new(1010,570),Ramp=new(280,455),Desk=new(700,440),Seal=new(1040,455);
+    public static readonly Vector2 Origin=new(42000,1000),Board=new(930,490),Ramp=new(280,455),Desk=new(700,440),Seal=new(1040,455);
+    // Painted non-walkable landmark; the fog may reveal the hull from its boarding point.
+    public static readonly Vector2[] DockedHull={new(690,0),new(1536,0),new(1536,480),new(1270,430),new(1160,355),new(955,460),new(885,450),new(975,340),new(745,240),new(710,110)};
     public static readonly Vector2[] Rings={new(465,550),new(795,610),new(1120,705)};
     public static readonly Vector2[] Centers={new(465,487),new(795,550),new(1120,640)};
     public static readonly int[] Target={2,0,3};
