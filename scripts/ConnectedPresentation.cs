@@ -20,7 +20,7 @@ public partial class Main
         foreach(var id in ConnectedWorld.RoomIds)
         {
             var delta=G(ConnectedWorld.Origin(id)-_game.WorldOrigin);if(!WorldRectVisible(delta,new(1536,1024)))continue;
-            _paintRoom=id;DrawTextureRect(RoomBackground,new Rect2(delta,new Vector2(1536,1024)),false);
+            _paintRoom=id;var painting=id==Cabin.Room?new Rect2(delta+G(Cabin.FromPainting(NVec.Zero)),new Vector2(1536,1024)*Cabin.EnvironmentScale):new Rect2(delta,new Vector2(1536,1024));DrawTextureRect(RoomBackground,painting,false);
         }
         _paintRoom=null;DrawConnectionFloors(false);
     }

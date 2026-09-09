@@ -22,7 +22,7 @@ public partial class Main
             Use(Cabin.Talk);_radioQueue.Clear();_radio="cabin-order";_radioTime=20;await Capture("cabin-ebba-order");
             Use(Cabin.Talk);Use(Cabin.Talk);Check(_game.CabinState.Briefed,"Three-part conversation completes");
             Use(Cabin.Rest);Check(_game.Health==100,"Medical rest");_radioQueue.Clear();_radio="cabin-rest";_radioTime=20;await Capture("cabin-bandages");
-            _radio="";_sound.StopVoice();_game.Player=new(820,355);Check(_game.OnWalkable(_game.Player),"Depth sample stands on reachable floor");await Capture("cabin-table-depth");
+            _radio="";_sound.StopVoice();_game.Player=Cabin.FromPainting(new(820,355));Check(_game.OnWalkable(_game.Player),"Depth sample stands on reachable floor");await Capture("cabin-table-depth");
             Use(Cabin.Entry);Check(_game.Rooms!.Current==Uppsala.Court,"Hatch returns to Uppsala");_game.ValidateRooms();
             foreach(var(id,line) in JourneyDialogue.Cabin())Check(Radio[id].Text==line[1]&&_sound.HasClip("voice-"+id)&&_sound.ClipDuration("voice-"+id)>2,"Direct cabin voice "+id);
             using(var sprite=_ebbaCabin!.GetImage()){Check(sprite.GetPixel(0,0).A==0&&sprite.GetPixel(500,700).A>.9,"Chroma removed, costume opaque");}

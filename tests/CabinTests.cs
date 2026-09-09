@@ -14,6 +14,8 @@ public static class CabinTests
             g.Player=Uppsala.Ramp+new Vector2(200,0);check(!g.BoardCabin(),"No remote boarding");g.Player=Uppsala.Ramp;
             g.Hazards.Add(new(){Position=g.Player,Timer=1,Radius=50});check(!g.BoardCabin(),"Unsafe boarding blocked");g.Hazards.Clear();
             Use(Uppsala.Ramp);check(g.InCabin&&g.Events.Any(e=>e.Text=="cabin-welcome")&&g.Health==21,"Normal ramp interaction enters physical cabin with greeting");Save();
+            g.CabinState.EnvironmentVersion=0;g.Player=new(870,490);g.DropItem("helmet",new(1240,565));Save();
+            check(g.Player==Cabin.Talk&&g.Health==21,"Old cabin save moves with scaled furniture without healing");check(g.Inventory.Drops.Single().Position==Cabin.Rest,"Dropped gear follows cabin scale");var migrated=g.Player;Save();check(g.Player==migrated&&g.Inventory.Drops.Single().Position==Cabin.Rest,"Cabin scale migration happens once");g.Inventory.Drops.Clear();
             check(g.OnWalkable(Cabin.Entry)&&g.OnWalkable(Cabin.Talk)&&g.OnWalkable(Cabin.Rest)&&g.OnWalkable(Cabin.Helm),"Every cabin interaction has walkable footing");
             foreach(var at in new[]{Cabin.Talk,Cabin.Rest,Cabin.Helm,Cabin.Entry})
             {

@@ -6,14 +6,19 @@ namespace Atland;
 public static class Cabin
 {
     public const string Room="ship-cabin";
-    public static readonly Vector2 Entry=new(1070,420),Ebba=new(855,430),Talk=new(870,490),Rest=new(1240,565),Helm=new(380,425);
-    public static readonly Vector2[] Ground={new(90,535),new(415,375),new(815,315),new(1010,375),new(1090,330),new(1200,400),new(1235,520),new(1440,625),new(1220,965),new(365,980)};
-    public static readonly Vector2[][] Obstacles={new Vector2[]{new(440,285),new(620,220),new(815,305),new(815,370),new(640,467),new(465,390)},new Vector2[]{new(833,420),new(855,412),new(877,420),new(877,440),new(855,450),new(833,440)}};
+    // One environment transform keeps painted furniture, floor, collisions and interaction points aligned.
+    // Actors remain at the same human scale as in the rest of the game.
+    public const float EnvironmentScale=.65f;
+    public static Vector2 FromPainting(Vector2 p)=>new Vector2(1070,420)+(p-new Vector2(1070,420))*EnvironmentScale;
+    public static readonly Vector2 Entry=FromPainting(new(1070,420)),Ebba=FromPainting(new(855,430)),Talk=FromPainting(new(870,490)),Rest=FromPainting(new(1240,565)),Helm=FromPainting(new(380,425));
+    public static readonly Vector2[] Ground=new Vector2[]{new(90,535),new(415,375),new(815,315),new(1010,375),new(1090,330),new(1200,400),new(1235,520),new(1440,625),new(1220,965),new(365,980)}.Select(FromPainting).ToArray();
+    public static readonly Vector2[][] Obstacles=new Vector2[][]{new Vector2[]{new(440,285),new(620,220),new(815,305),new(815,370),new(640,467),new(465,390)},new Vector2[]{new(833,420),new(855,412),new(877,420),new(877,440),new(855,450),new(833,440)}}.Select(poly=>poly.Select(FromPainting).ToArray()).ToArray();
 }
 public sealed class CabinRun
 {
     public string ReturnRoom=Uppsala.Court;
     public int Conversation;
+    public int EnvironmentVersion;
     public bool Rested;
     [JsonIgnore] public bool Briefed=>Conversation==3;
 }
@@ -69,6 +74,13 @@ public sealed partial class Combat
     private void ValidateCabin()
     {
         if(!InConnectedWorld)return;var c=CabinState;
-        if(c is null||c.Conversation<0||c.Conversation>3||c.ReturnRoom is not (Uppsala.Court or Regiment.Quay)||(Rooms!.Rooms[Cabin.Room].Visited&&!MeridianState.OrderTaken)||(c.Conversation>0&&!Rooms.Rooms[Cabin.Room].Visited)||(c.Rested&&!c.Briefed))throw new System.IO.InvalidDataException("Ogiltigt kajutmöte");
+        if(c is null||c.EnvironmentVersion<0||c.EnvironmentVersion>1||c.Conversation<0||c.Conversation>3||c.ReturnRoom is not (Uppsala.Court or Regiment.Quay)||(Rooms!.Rooms[Cabin.Room].Visited&&!MeridianState.OrderTaken)||(c.Conversation>0&&!Rooms.Rooms[Cabin.Room].Visited)||(c.Rested&&!c.Briefed))throw new System.IO.InvalidDataException("Ogiltigt kajutmöte");
+        if(c.EnvironmentVersion==0)
+        {
+            if(InCabin)Player=Cabin.FromPainting(Player);
+            var shift=ConnectedWorld.Origin(Cabin.Room)-WorldOrigin;
+            foreach(var drop in Inventory.Drops.Where(d=>d.Room==Cabin.Room))drop.Position=Cabin.FromPainting(drop.Position-shift)+shift;
+            c.EnvironmentVersion=1;
+        }
     }
 }

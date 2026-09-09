@@ -1,6 +1,12 @@
-# 0.18 · Ebba i egen hög person
+# 0.18.1 · Ebba i egen hög person
 
 Meridiansalens ”återvänd till Ebba” leder nu till ett faktiskt möte ombord på Karl CCLV. Kajutan är den 23:e platsen, med rik målad bakgrund, en fysisk 2D-Ebba efter det godkända porträttet, åtta nya direkta repliker och lågt motorbrum.
+
+## Skalrättning 0.18.1
+
+Kajutans målning, gångyta, möbelkollisioner, förgrund och interaktionspunkter använder nu samma faktor **0,65**, förankrad vid luckan. Karl och Ebba behåller sin vanliga kroppsstorlek. Bordets framkant blir cirka 74 världspixlar hög mot en cirka 172 pixlar hög vuxen; dörr, stol och kistor krymper lika mycket. Bildfilen är oförändrad och ingen ny bild genererades.
+
+Äldre sparningar i kajutan flyttar Karl och eventuella tappade föremål med miljön en gång. Samtal, order, läkning och övrig värld bevaras. 28 riktade kontroller verifierar kajutan, sparflytten och att den inte upprepas; native bildprovet visar skalan och förgrunden i spelmotorn.
 
 ## Prova från din sparning
 
@@ -34,6 +40,6 @@ Ebba skiljer tydligt mellan Arvids döda regemente och Meridiansalens förflyttn
 - Full ren simuleringssvit: **78 191 kontroller**, inklusive äldre sparningar och hela Meridian-/Uppsalarutten.
 - Kajutans riktade prov kontrollerar vanlig landgångsinteraktion, rörelse mellan alla interaktionspunkter, tre sparade samtalssteg, engångsläkning, återbesök, fredad strid, rätt kaj och fortsatt flygning.
 - Native `--cabin-check`: scener, åtta laddade röstklipp, målad Ebba med transparent bakgrund, kartbord och lucka.
-- Slutlig Linux-export: `dist/AtlandsArv-0.18-cabin/`, med executable, PCK och hela .NET-datakatalogen. Native `--cabin-check` passerade även i denna färdiga export; alla åtta röster och motorbrummet laddades. Bilderna inspekterades efter exporten.
+- Slutlig Linux-export: `dist/AtlandsArv-0.18.1-cabin-scale/`, med executable, PCK och hela .NET-datakatalogen. Native `--cabin-check` passerade även i denna färdiga export; alla åtta röster och motorbrummet laddades. Bilderna inspekterades efter exporten.
 
 För ett isolerat automatiskt bildprov, utan ändring av spelarens sparning: `./play.sh -- --cabin-check`. Bilder skrivs till exportmappens `artifacts/cabin-*.png`. Detta prov spelar igenom mötet automatiskt och avslutar spelet.

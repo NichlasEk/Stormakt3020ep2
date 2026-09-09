@@ -1,5 +1,10 @@
 # Checkpoint · Vägen under vattnet · 2026-09-06
 
+## 0.18.1 · Mänsklig skala i kajutan
+
+Målning, kollisioner och interaktionspunkter skalas tillsammans till 65 procent, med oförändrad storlek på Karl och Ebba. Äldre kajutsparningar följer med en gång. [Skalrättning och prov](CABIN.md).
+
+
 ## 0.18 · Ebba i egen hög person
 
 Spelbar kajuta ombord på Karl CCLV, fysisk Ebba, åtta nya direkta röstklipp och ett sparat efterspel till Meridiansalens order. Gå ombord via Instrumentgårdens landgång efter orderfyndet. [Mötet, provspelning och verifiering](CABIN.md).

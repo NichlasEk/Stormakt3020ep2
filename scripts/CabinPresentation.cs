@@ -22,7 +22,13 @@ public partial class Main
             float scale=172f/1500;var size=_ebbaCabin!.GetSize()*scale;
             DrawTextureRect(_ebbaCabin,new Rect2(at-new Vector2(520,1515)*scale,size),false,new Color(.83f,.80f,.75f));
         }));
-        layers.Add((455,()=>PaintForeground(_cabinArt!,new Vector2[]{new(435,229),new(611,167),new(803,244),new(807,275),new(668,340),new(650,450),new(626,454),new(623,347),new(550,325),new(540,402),new(519,398),new(516,309),new(447,279)})));
+        layers.Add((Cabin.FromPainting(new(0,455)).Y,()=>
+        {
+            var delta=G(ConnectedWorld.Origin(Cabin.Room)-_game.WorldOrigin);
+            DrawSetTransform(Offset+(delta+G(Cabin.FromPainting(NVec.Zero)))*Zoom,0,Vector2.One*Zoom*Cabin.EnvironmentScale);
+            PaintForeground(_cabinArt!,new Vector2[]{new(435,229),new(611,167),new(803,244),new(807,275),new(668,340),new(650,450),new(626,454),new(623,347),new(550,325),new(540,402),new(519,398),new(516,309),new(447,279)});
+            DrawSetTransform(Offset+delta*Zoom,0,Vector2.One*Zoom);
+        }));
     }
     private bool DrawCabinPrompt()
     {
