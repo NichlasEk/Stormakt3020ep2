@@ -1,0 +1,9 @@
+{
+  "parts": [
+    "continuity-silence-sentence-0.wav",
+    "continuity-silence-sentence-1.wav"
+  ],
+  "sha256": "0c7b0b6856c6f6c2e3d54d27b6adf37573d5f98f0e88ada3d4d075a2cb1ad9eb",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

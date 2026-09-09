@@ -1,0 +1,10 @@
+{
+  "parts": [
+    "continuity-dismiss-sentence-0.wav",
+    "continuity-dismiss-sentence-1.wav",
+    "continuity-dismiss-sentence-2.wav"
+  ],
+  "sha256": "32b235bb218fc17c510ec176b27ff68a0c5fe0d98d0a8ef67564df85cdb47d39",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

@@ -24,6 +24,7 @@ public static class Mine
 }
 public sealed class MineRun
 {
+    public bool FormExplained;
     public bool EntranceOpen,LedgerRead,FeedClosed,PressureReleased,ShortcutOpen,ImprintTaken,CacheTaken;
     public float Pulse=2;
     public int Vent;
@@ -99,6 +100,7 @@ public sealed partial class Combat
             if(near(Mine.Imprint))
             {
                 if(!m.ImprintTaken){m.ImprintTaken=true;DropItem("memory",Mine.Imprint);Emit("radio",Player,"mine-imprint");Save();}
+                if(!m.FormExplained){m.FormExplained=true;Emit("radio",Player,"continuity-mould");Save();}
                 Emit("campaign",Player,"GJUTFORMEN: Kronans insida saknar kunganamnet. På kanten finns samma stjärnfigur som i arkivets avtryck. Bakom den förseglade gjuteridörren fortsätter hammarslagen. Expeditionens nästa mål är Kronfogdens gjuteri.");return true;
             }
         }

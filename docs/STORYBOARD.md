@@ -1,6 +1,6 @@
 # Stormakt 3020: Atlands arv — storyboard och dialog
 
-Arbetsversion 1 · 2026-09-09 · avstämd mot spelversion 0.16 (`2ac79e5`).
+Arbetsversion 2 · 2026-09-09 · berättelsepass 0.16.1, ovanpå spelversion 0.16.
 
 Detta är vår gemensamma berättelseöversikt. Läs scenkorten i ordning för handling, spelarens insats och vad publiken får veta. Replik-ID länkar tanken till det faktiska manuset; hela nuvarande JSON-manuset finns i dialogbilagan längst ned. Föreslagna repliker har egna arbetsnamn och får inte förväxlas med inspelat innehåll.
 
@@ -21,7 +21,7 @@ Den stora frågan är: **Vem tjänar på att ingenting får ta slut — och vad 
 | Karl | Spelarens närvaro: slåss, iakttar, använder fynd, öppnar vägen och fattar val. Seriös kroppslig gestaltning. | Ska inte behandlas som någon som redan vet lösningen. Något fullständigt talat Karl-manus finns inte i nuvarande radioregister. |
 | Riksamiral Ebba Grip | Expeditionens ledning, praktisk omsorg, order och torr humor. Hon försöker få hem alla. | Hon kan se motsägelser i rapporter men ska inte förklara uråldriga makter utan belägg. |
 | Antikvarie Hedvig Rålamb | Läser landskap, inskrifter och handlingar. Kopplar fynd till nästa prövbara fråga. | Skilj hennes hypoteser från bevis. Uppsala-repliken om att flytta stjärnorna är hennes tolkning av fynden. |
-| Kapten Arvid Silfvergren | De döda soldaternas mänskliga röst. Ber om avlösning, inte förstärkning. | Vet att han och männen är döda och vill tillbaka till jorden enligt den beslutade regementesplanen. Detta behöver sägas tydligare i spel. |
+| Kapten Arvid Silfvergren | De döda soldaternas mänskliga röst. Ber om avlösning, inte förstärkning. | Vet att han och männen är döda och vill tillbaka till jorden enligt den beslutade regementesplanen. Säger nu uttryckligen att de är döda i `continuity-dead`. |
 | Rotmarskalken | Upprätthåller den bindande eden; fanornas rötter håller samman hans skydd och formation. | Vi har inte fastslagit hans ursprung, egen vilja eller ansvar för att eden först uppstod. Har inget eget inspelat tal i regementesmanuset. |
 | Kronfogden i gjuteriet | Arbetet måste fortsätta och kronan bli färdig, även när ändamålet har försvunnit. | Han avslöjar inte vem beställaren är eller om han förstår instrumentets fulla syfte. Inte samma namngivna möte som Varvets indrivare. |
 | Förmyndarkollegiet | Officiella liggare, strukna namn, expeditionens motsägelsefulla uppdrag. Den övergripande visionen säger att det vill bevara riket och dess krig. | Exakt ansvar för regementets ed och den instängda morgonen återstår att belägga i berättelsen. |
@@ -159,21 +159,19 @@ Cisternen är en valfri utflykt med fynd och genväg. Andra återtågsvägar fö
 
 **Handling:** Karl följer trummorna, tar sig genom ett första anfall och möter Arvid. Arvid ber att männen ska få lämna sin post.
 
-**Befintlig dialog:** `regiment-entry` → `regiment-captain` → `regiment-orders`.
+**Befintlig dialog:** `regiment-entry` → `regiment-captain` → `continuity-dead` → `continuity-rest` → `regiment-orders`. Orderkvittensen utlöses när Karl tar ordern.
 
 > Arvid: Kapten Arvid Silfvergren. Tjugosjunde kompaniet. Vi begär inte förstärkning. Vi begär avlösning. Mina män har stått här länge nog.
 
 **Vad vi som författare vet:** soldaterna och kaptenen är döda. De vet om det. De vill återvända till jorden. Eden gäller tills avlösningen erkänts. Källa: [regementesplanen](NEXT-EXPEDITION.md), avsnittet ”Berättelsens nästa steg”.
 
-**Vad spelaren faktiskt hör:** ”stått här länge nog”, sjukrulla, saknade namn. Det räcker för en antydan men inte säkert för förståelse. Användarens fråga om spöken visar att detta är en prioriterad berättelselucka.
+**Vad spelaren nu hör, infört och inspelat:**
 
-**Förslag, ännu inte infört/inspelat — efter kaptenens presentation, före orderkvittensen:**
-
-> **Arvid, `proposal-regiment-dead`:** Vi vet att vi är döda. Det är avlösningen som saknas.
+> **Arvid, `continuity-dead`:** Vi vet att vi är döda. Det är avlösningen som saknas.
 >
-> **Hedvig, `proposal-regiment-rest`:** De ber inte om livet tillbaka, Karl. De ber om att få vila.
+> **Hedvig, `continuity-rest`:** De ber inte om livet tillbaka, Karl. De ber om att få vila.
 
-**Regianvisning, förslag:** låt Arvids mening följas av två–tre sekunders tystnad med vind och en ensam fanlina. Inget skämt här. Därefter Ebbas befintliga ”Uppfattat, kapten”. Detta ger henne en konkret mänsklig begäran att svara på.
+**Regi i spelet:** tre sekunders paus efter Arvids avslutade röst/radiokort, sedan Hedvig. Ebbas befintliga ”Uppfattat, kapten” får ligga kvar efter detta när ordern tas. Äldre sparningar där Karl redan mött kaptenen får de två nya replikerna vid nästa samtal, så länge kompaniet ännu inte avlösts.
 
 ## 07 · Sjukrullan, fanorna och Rotmarskalken
 
@@ -205,7 +203,15 @@ Cisternen är en valfri utflykt med fynd och genväg. Andra återtågsvägar fö
 
 **Avsedd känsla:** lättnad och sorg. De dödas ”hem” är vilan, inte en nästa militär transport. Karl tar båten vidare för de levandes expedition.
 
-**Gestaltningslucka:** tillståndet ”avlöst” finns, men en samlad synlig scen där hela regementet lämnar världen är inte levererad. Önskad bildsekvens får märkas som förslag: vapnen sänks, trummorna tystnar, den sista fanan faller. Ingen automatisk återuppståndelse och inget triumferande skämt.
+**Efterspel, infört och inspelat i 0.16.1:** Arvid ger sista ordern (`continuity-dismiss`), följd av hans befintliga tack och överlämning av båten (`regiment-freed`). Striden står stilla under avskedet. En cirka åtta sekunder lång lokal LTX-film, **Avlösningen**, visar den tomma mönstringsplatsen med vind, löv och fanor. Detta är en bild av platsen efter avskedet, inte en ny animerad formation som marscherar bort.
+
+Efter filmen:
+
+> **Ebba, `continuity-silence`:** Jag hör inga trummor längre. Vi låter dem vila, Karl.
+>
+> **Hedvig, `continuity-names`:** Vi tar namnen med oss. De behöver ingen order nu.
+
+Soldaterna tonar bort under avskedet och kaptenens plats förblir tom efter avlösningen. Regementets musik tonar bort; miljöljudet återstår. Filmen kan hoppas över och finns också i Inställningar → Videobibliotek. Biblioteksvisning ändrar inga berättelseflaggor. Äldre avlösta sparningar kan få efterspelssekvensen vid mönstringsstenen, utan en ny belöning.
 
 **Transport och krok:** `regiment-boat` avslutar båtfärden med hammarslagen under vattnet.
 
@@ -243,7 +249,7 @@ Cisternen är en valfri utflykt med fynd och genväg. Andra återtågsvägar fö
 
 **Avslöjande:** det kungliga föremålet visar sig vara ett astronomiskt instrument. Sambandet med kartans felvända himmel stärks.
 
-**Begrepp att hålla åtskilda:** bronskartan från expeditionens början; gjutformen som undersöks i svalgången; plåten/avtrycket som tas efter Kronfogden. Vi använder ibland ”krona”, ”plåt” och ”avtryck” om närliggande saker. Det måste bli visuellt och språkligt tydligare vilken del Karl bär och vilken Hedvig läser. Nuvarande speltillstånd heter `ImprintTaken` respektive `PlateTaken`; det ersätter inte en berättelseförklaring.
+**Begrepp, nu uttryckta i radion:** bronskartan är expeditionens vägvisare (`continuity-chart`); gjutformen i svalgången stannar i verket och Karl gör en avritning (`continuity-mould`); stjärnplåten är föremålet han tar vid pressen och bär vidare (`continuity-plate`). Ebba ber därefter att få plåten tillbaka till båten (`continuity-home`). Den äldre `foundry-return`, som kallar föremålet ”avtrycket”, är bevarad som källasset men utlöses inte längre. Kodnamnen `ImprintTaken` och `PlateTaken` behålls för sparkompatibilitet. Ursprung och funktion är fortfarande mysterier, inte lösta av dessa sakförklaringar.
 
 ## 11 · Återvägen och fregatten Karl CCLV
 
@@ -316,19 +322,20 @@ Den sista meningen introducerar en möjlighet, inte sanningen om slutet. Den få
 
 ## Nästa manuspass, före fler stora avslöjanden
 
-1. Förtydliga de döda soldaterna med Arvid/Hedvig och ge avlösningen ett stilla efterspel.
-2. Stäm av Karl/personen mot namnet på skeppet, samt karta/form/plåt/avtryck. Enas om orden innan fler repliker spelas in.
+1. **Genomfört i 0.16.1:** uttrycklig död/vila-dialog, avskedsorder, film och stilla efterspel.
+2. **Begreppen karta/form/plåt förtydligade i 0.16.1.** Karl/personen kontra skeppets namn återstår att stämma av.
 3. Ge direktstartande spelare tillräcklig kartbakgrund och se över äldre prologens hemfärdsreplik.
 4. Låt spelaren se minst ett av Uppsalas påståenden bevisas på plats innan nästa förklaring.
 5. Bestäm Meridiansalens mänskliga konflikt och först därefter dess nya röstroll, strid och val.
 
-Detta dokument inför inga nya repliker i spelet. Vid godkänd manusändring: ändra berört JSON-manus, producera den nya rösten, kontrollera utlösning och pauser i scenen och uppdatera storyboardens status. Att filen finns betyder inte att repliken faktiskt går att höra i huvudrutten.
+De nio replikerna i `continuity-radio.json` är införda och inspelade i detta pass. Vid nästa manusändring: ändra berört JSON-manus, producera den nya rösten, kontrollera utlösning och pauser i scenen och uppdatera storyboardens status. Att filen finns betyder inte att repliken faktiskt går att höra i huvudrutten.
 
 ## Dialogbilaga — befintliga JSON-manus, ordagrant
 
-Nedan följer den befintliga texten från samtliga nio berättelsefiler `*-radio.json` vid denna avstämning. Gruppordningen följer berättelsen; ordningen inom varje grupp är filens ordning, inte en garanti om uppspelning. Scenkorten ovan anger placering och alternativ. De äldsta grundreplikerna för Likvarvet ligger dessutom i `scripts/Main.cs`; denna bilaga gör inte anspråk på att ersätta hela den äldre prologens manus.
+Nedan följer den befintliga texten från samtliga tio berättelsefiler `*-radio.json` vid denna avstämning. Gruppordningen följer berättelsen; ordningen inom varje grupp är filens ordning, inte en garanti om uppspelning. Scenkorten ovan anger placering och alternativ. De äldsta grundreplikerna för Likvarvet ligger dessutom i `scripts/Main.cs`; denna bilaga gör inte anspråk på att ersätta hela den äldre prologens manus.
 
 <!-- DIALOGUE-SNAPSHOT -->
+
 ### 00 · Intro
 
 Källa: [intro-radio.json](../assets/story/intro-radio.json).
@@ -636,5 +643,45 @@ Källa: [uppsala-radio.json](../assets/story/uppsala-radio.json).
 **`uppsala-return` · Ebba Grip**
 
 > Vi lämnar en signal vid gården och återvänder till bryggan. Fynden är säkrade. Uppsala ligger kvar på vår färdplan.
+
+### Förtydliganden och efterspel · 0.16.1
+
+Källa: [continuity-radio.json](../assets/story/continuity-radio.json).
+
+**`continuity-chart` · Hedvig Rålamb**
+
+> Bronskartan visar vägen, Karl. Avtrycken berättar vilka som gick här. Behåll båda. En väg utan namn säger inte hela sanningen.
+
+**`continuity-dead` · Arvid Silfvergren**
+
+> Vi vet att vi är döda. Det är avlösningen som saknas.
+
+**`continuity-rest` · Hedvig Rålamb**
+
+> De ber inte om livet tillbaka, Karl. De ber om att få vila.
+
+**`continuity-dismiss` · Arvid Silfvergren**
+
+> Tjugosjunde kompaniet. Tjänsten är fullgjord. Sänk fanorna.
+
+**`continuity-silence` · Ebba Grip**
+
+> Jag hör inga trummor längre. Vi låter dem vila, Karl.
+
+**`continuity-names` · Hedvig Rålamb**
+
+> Vi tar namnen med oss. De behöver ingen order nu.
+
+**`continuity-mould` · Hedvig Rålamb**
+
+> Det här är själva gjutformen. Den stannar i verket. Gör en avritning. Vi jämför den med det som fogden arbetar på.
+
+**`continuity-plate` · Hedvig Rålamb**
+
+> Gjutformen gav plåten dess mönster. Det är stjärnplåten du bär nu, Karl. Bronskartan är fortfarande vår vägvisare.
+
+**`continuity-home` · Ebba Grip**
+
+> Ta stjärnplåten tillbaka till båten. Vi lämnar ingen kvar i berget. Sedan följer vi stjärnorna.
 
 <!-- END-DIALOGUE-SNAPSHOT -->

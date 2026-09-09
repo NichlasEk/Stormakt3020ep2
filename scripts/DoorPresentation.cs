@@ -11,7 +11,7 @@ public partial class Main
     private void LoadDoorArt(){_doorGround??=GD.Load<Texture2D>("res://assets/art/door-courtyard-v1.png");_doorFace??=GD.Load<Texture2D>("res://assets/art/door-oak-face-v1.png");}
     private void StartDoorTrial(bool fresh=false)
     {
-        _uppsalaSlot=false;_shipTime=0;_foundrySlot=false;_mineSlot=false;_regimentSlot=false;
+        _uppsalaSlot=false;_shipTime=0;_pendingStoryFilm="";_radioBreath=0;_foundrySlot=false;_mineSlot=false;_regimentSlot=false;
         LoadDoorArt();LoadWaterArt();_doorSlot=true;_roomsSlot=_portSlot=_atlandSlot=false;
         if(!fresh&&!_testMode&&System.IO.File.Exists(SavePath)){ResumeSave();return;}
         _game=Combat.NewDoorTrial(_order);ApplyDeveloperSettings();_particles.Clear();_floating.Clear();_radioQueue.Clear();_sound.StopVoice();_radio="";

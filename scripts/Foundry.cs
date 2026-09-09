@@ -12,6 +12,7 @@ public static class Foundry
 }
 public sealed class FoundryRun
 {
+    public bool PlateExplained;
     public bool GateOpen,BailiffDefeated,PlateTaken,SecondPhase;
     public float Cooling,CoolingCooldown;
     public int Quenches;
@@ -20,7 +21,7 @@ public sealed partial class Combat
 {
     [JsonIgnore] public bool InFoundry=>InConnectedWorld&&Rooms!.Current==Foundry.Room;
     [JsonIgnore] public FoundryRun FoundryState=>Rooms!.Foundry;
-    [JsonIgnore] public string FoundryGoal=>!FoundryState.BailiffDefeated?(FoundryState.Cooling>0?"Järnet svalnar · angrip Kronfogden":"Undvik hammaren · använd kylvattnet"):FoundryState.PlateTaken?"Uppsalas stjärnspår är säkrat":"Ta kronans avtryck vid pressen";
+    [JsonIgnore] public string FoundryGoal=>!FoundryState.BailiffDefeated?(FoundryState.Cooling>0?"Järnet svalnar · angrip Kronfogden":"Undvik hammaren · använd kylvattnet"):FoundryState.PlateTaken?"Uppsalas stjärnspår är säkrat":"Ta stjärnplåten vid pressen";
     [JsonIgnore] public Vector2 FoundryObjective=>FoundryState.BailiffDefeated?Foundry.Plate:Foundry.Valve;
     public static Combat NewFoundryPreview(Order order)
     {
@@ -57,8 +58,9 @@ public sealed partial class Combat
         if(near(Foundry.Plate))
         {
             if(!f.BailiffDefeated){Emit("room-notice",Player,"Kronfogden håller pressen. Bryt hans grepp först.");return true;}
-            if(!f.PlateTaken){f.PlateTaken=true;DropItem("crown-helm",Foundry.Plate);Emit("radio",Player,"foundry-plate");Emit("radio",Player,"foundry-return");Emit("checkpoint",Player);}
-            Emit("campaign",Player,"KRONANS AVTRYCK: Ingen kung anges. Stjärncirklarna pekar mot Uppsala, men himlen i avtrycket är vänd åt fel håll. Hedvig begär hela plåten ombord. Båten ligger kvar vid bergets kaj; vägen tillbaka genom gruvan är öppen.");return true;
+            if(!f.PlateTaken){f.PlateTaken=true;DropItem("crown-helm",Foundry.Plate);Emit("radio",Player,"foundry-plate");Emit("checkpoint",Player);}
+            if(!f.PlateExplained){f.PlateExplained=true;Emit("radio",Player,"continuity-plate");Emit("radio",Player,"continuity-home");Emit("checkpoint",Player);}
+            Emit("campaign",Player,"STJÄRNPLÅTEN: Ingen kung anges. Stjärncirklarna pekar mot Uppsala, men himlen i avtrycket är vänd åt fel håll. Hedvig begär hela plåten ombord. Båten ligger kvar vid bergets kaj; vägen tillbaka genom gruvan är öppen.");return true;
         }
         return true;
     }

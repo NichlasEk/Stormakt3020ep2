@@ -1,0 +1,11 @@
+{
+  "parts": [
+    "continuity-mould-sentence-0.wav",
+    "continuity-mould-sentence-1.wav",
+    "continuity-mould-sentence-2.wav",
+    "continuity-mould-sentence-3.wav"
+  ],
+  "sha256": "9e9981051a322c75a2d1487bf3c99bf6e612d7af3d2696c36210996299193db4",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

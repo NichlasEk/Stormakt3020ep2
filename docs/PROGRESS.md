@@ -1,5 +1,9 @@
 # Checkpoint · Vägen under vattnet · 2026-09-06
 
+## 0.16.1 · Avlösningen
+
+Nio nya röstklipp och radiokort, tydligare död/vila och karta/gjutform/stjärnplåt, ett bestående stilla efterspel och en ny film i videobiblioteket. [Innehåll, sparkompatibilitet och provspelning](NARRATIVE-POLISH.md).
+
 ## 2026-09-09 · Storyboard och dialogöversikt
 
 [STORYBOARD.md](STORYBOARD.md) samlar huvudrutten till Uppsalagården och den äldre prologens relation till direktstarten. Befintliga JSON-repliker återges ordagrant; nya förslag märks separat. Prioriterat manusglapp: de döda soldaterna vet att de är döda, men den nuvarande radion behöver uttrycka det tydligare. Inga repliker, assets eller spelregler ändrades i detta dokumentpass.

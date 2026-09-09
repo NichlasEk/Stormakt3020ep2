@@ -1,0 +1,10 @@
+{
+  "parts": [
+    "continuity-plate-sentence-0.wav",
+    "continuity-plate-sentence-1.wav",
+    "continuity-plate-sentence-2.wav"
+  ],
+  "sha256": "34b32503e861b94aae95f672b38d49a16cd48180249ef7cada743d7480aa533e",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

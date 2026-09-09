@@ -41,6 +41,7 @@ public partial class Main
         if(_screen!=Screen.Cinematic)return;
         _filmPlayer?.Stop();_sound.Cinematic=false;
         ChangeScreen(_filmReturn);_inventoryMouseRelease=true;
+        FinishNarrativeFilm();
         if(_screen==Screen.Game){_bannerTime=5;_campaignTextTime=10;}
     }
     private void StepFilm(float dt)

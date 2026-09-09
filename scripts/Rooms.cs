@@ -44,6 +44,7 @@ public sealed class RoomRun
     public MineRun Mine=new();
     public FoundryRun Foundry=new();
     public UppsalaRun Uppsala=new();
+    public bool ChartExplained;
     public bool Connected;
     public int ConnectionRevision=1;
     public HashSet<string> CorridorSeen=new();
@@ -120,6 +121,7 @@ public sealed partial class Combat
         UpdateRoomSight();AdvanceGrove();AdvanceUppsala();
         bool pressed=input.Interact&&!_roomInteractHeld;_roomInteractHeld=input.Interact;
         if(!pressed||Dead||Moving||AttackTime>0||DodgeTime>0||Guarding||Hurt>0)return;
+        if(InConnectedWorld&&!Rooms!.ChartExplained&&Rooms.Current is PortRooms.Court or PortRooms.Archive){Rooms.ChartExplained=true;Emit("radio",Player,"continuity-chart");Emit("checkpoint",Player);}
         bool Near(Vector2 at)=>Vector2.Distance(Player,at)<72&&ClearPath(Player,at);
         if(Rooms!.Current==PortRooms.Court&&!Rooms.KeyTaken&&Near(PortRooms.Key))
         {
@@ -204,7 +206,7 @@ public sealed partial class Combat
         Emit("checkpoint",Player);
     }
 
-    public bool RoomRadioRelevant(string id)=>id.StartsWith("uppsala-",StringComparison.Ordinal)?InRooms:id switch
+    public bool RoomRadioRelevant(string id)=>(id.StartsWith("uppsala-",StringComparison.Ordinal)||id.StartsWith("continuity-",StringComparison.Ordinal))?InRooms:id switch
     {
         "regiment-entry" or "regiment-captain" or "regiment-orders" or "regiment-proof" or "regiment-names" or "regiment-pass" or "regiment-marshal" or "regiment-freed" or "regiment-boat"=>InRooms,
         "roots-entry" or "roots-winch" or "roots-secured"=>InRooms,

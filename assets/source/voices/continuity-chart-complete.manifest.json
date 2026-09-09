@@ -1,0 +1,11 @@
+{
+  "parts": [
+    "continuity-chart-sentence-0.wav",
+    "continuity-chart-sentence-1.wav",
+    "continuity-chart-sentence-2.wav",
+    "continuity-chart-sentence-3.wav"
+  ],
+  "sha256": "6c4909821f6d768165c84c9f259312c90157a3da878f9a622691f086e0b3ed58",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

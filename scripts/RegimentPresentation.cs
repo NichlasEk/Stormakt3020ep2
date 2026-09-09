@@ -23,19 +23,21 @@ public partial class Main
     }
     private void StartRegiment(bool fresh=false)
     {
-        LoadWaterArt();_uppsalaSlot=false;_shipTime=0;_foundrySlot=false;_mineSlot=false;_regimentSlot=true;_doorSlot=_roomsSlot=_portSlot=_atlandSlot=false;
+        LoadWaterArt();_uppsalaSlot=false;_shipTime=0;_pendingStoryFilm="";_radioBreath=0;_foundrySlot=false;_mineSlot=false;_regimentSlot=true;_doorSlot=_roomsSlot=_portSlot=_atlandSlot=false;
         if(!fresh&&!_testMode&&System.IO.File.Exists(SavePath)){ResumeSave();return;}
         _game=Combat.NewRegimentPreview(_order);ApplyDeveloperSettings();_particles.Clear();_floating.Clear();_radioQueue.Clear();_radio="";_sound.StopVoice();
         _camera=G(_game.Player)+new Vector2(0,-60);RememberRenderPositions();ChangeScreen(Screen.Game);Save();Notice("Separat provexpedition · följ stigen från lunden");
     }
     private void DrawRegimentActor(Fighter e)
     {
+        if(RegimentVisibility<=0)return;
         bool boss=e.Kind==EnemyKind.RootMarshal;var art=boss?_marshalArt!:_soldierArt!;
         int pose=e.Retired?0:e.Dead?5:e.State==1?3:e.State==2?4:boss&&e.State==3?5:e.Moving?1+(int)(e.Walk/1.8f)%2:0;
         var feet=boss?new Vector2[]{new(260,447),new(270,438),new(270,438),new(245,440),new(205,425),new(235,370)}:new Vector2[]{new(255,443),new(265,438),new(265,438),new(245,442),new(205,425),new(260,363)};
         var at=RenderPosition(e);float scale=(boss?165f:146f)/420;
         DrawSetTransform(Offset+at*Zoom,0,new Vector2((e.Moving?WalkFacing(e).X:e.Facing.X)<0?-scale:scale,scale)*Zoom);
-        DrawTextureRectRegion(art,new Rect2(-feet[pose],new Vector2(512,512)),new Rect2(new Vector2(pose%3,pose/3)*512,new Vector2(512,512)),e.Retired?new Color(.65f,.68f,.65f,.8f):e.Hurt>0?new Color(1.3f,1.15f,1):Colors.White);
+        var tint=e.Retired?new Color(.65f,.68f,.65f,.8f):e.Hurt>0?new Color(1.3f,1.15f,1):Colors.White;tint.A*=RegimentVisibility;
+        DrawTextureRectRegion(art,new Rect2(-feet[pose],new Vector2(512,512)),new Rect2(new Vector2(pose%3,pose/3)*512,new Vector2(512,512)),tint);
         DrawSetTransform(Offset,0,Vector2.One*Zoom);
         if(!e.Dead&&e.Health<e.MaxHealth)WorldBar(at+new Vector2(-24,-170),48,e.Health/e.MaxHealth,boss?Gold:Red);
     }
@@ -55,7 +57,7 @@ public partial class Main
             Foreground(577,new Vector2[]{new(620,450),new(742,390),new(875,440),new(874,532),new(752,577),new(620,540)});
             Wall(new Vector2[]{new(0,0),new(320,0),new(320,315),new(195,387),new(193,216),new(90,252),new(90,431),new(0,495)},145,425,-.5f);
             Wall(new Vector2[]{new(1270,0),new(1536,0),new(1536,508),new(1480,465),new(1480,262),new(1416,236),new(1415,419),new(1270,375)},1450,452,.5f);
-            if(_game.CanSeeRoomPoint(Regiment.Captain+Regiment.Origin(room)-_game.WorldOrigin))layers.Add((Regiment.Captain.Y,()=>
+            if(!_game.RegimentState.Discharged&&_game.CanSeeRoomPoint(Regiment.Captain+Regiment.Origin(room)-_game.WorldOrigin))layers.Add((Regiment.Captain.Y,()=>
             {var size=_captainArt!.GetSize();float scale=153/(size.Y*.92f);DrawTextureRect(_captainArt,new Rect2(G(Regiment.Captain)-new Vector2(size.X*.5f,size.Y*.96f)*scale,size*scale),false);}));
         }
         if(room is Regiment.Parade or Regiment.Quay)
@@ -84,7 +86,7 @@ public partial class Main
         {
             case Regiment.Barracks:label=Near(Regiment.Captain)?"E / B · Tala med kapten Silfvergren":Near(Regiment.Orders)?"E / B · Läs avlösningsordern":Near(Regiment.Proof)?"E / B · Undersök sjukrullan":"";break;
             case Regiment.Flags:label=Near(Regiment.Checkpoint)?"E / B · Visa din handling":Near(Regiment.Shortcut)?"E / B · Öppna återtågsvägen":"";break;
-            case Regiment.Parade:if(r.MarshalDefeated&&Near(Regiment.Discharge))label="E / B · Läs avlösningen";break;
+            case Regiment.Parade:if(r.MarshalDefeated&&Near(Regiment.Discharge)&&!r.FarewellSeen)label=r.Discharged?"E / B · Minns avlösningen":"E / B · Läs avlösningen";break;
             case Regiment.Quay:label=Near(Regiment.Boat)?"E / B · Stig ombord · farleden mot berget":Near(new(640,465))&&!r.QuayCacheTaken?"E / B · Kaptenens kvarlåtenskap":"";break;
             case Regiment.Farled:if(Near(Regiment.LandingBoat))label="E / B · Båt tillbaka till regementets brygga";break;
         }

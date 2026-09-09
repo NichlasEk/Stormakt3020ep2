@@ -1,0 +1,9 @@
+{
+  "parts": [
+    "continuity-dead-sentence-0.wav",
+    "continuity-dead-sentence-1.wav"
+  ],
+  "sha256": "77a2d130ce5a083e5c2f9d4f89e8a854f17f64bf08098cc9be2830cc755eedc1",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

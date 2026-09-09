@@ -1,5 +1,9 @@
 # Stormakt 3020: Atlands arv
 
+## 0.16.1 · Avlösningen
+
+Nio nya röstklipp och radiokort, tydligare död/vila och karta/gjutform/stjärnplåt, ett bestående stilla efterspel och en ny film i videobiblioteket. [Innehåll, sparkompatibilitet och provspelning](docs/NARRATIVE-POLISH.md).
+
 [Storyboard och samlat dialogmanus](docs/STORYBOARD.md) — handling scen för scen, de dödas avlösning, befintliga repliker och öppna berättelsefrågor. Avstämt 2026-09-09.
 
 

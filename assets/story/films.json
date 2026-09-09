@@ -33,5 +33,13 @@
     "duration": 8.1,
     "description": "Kedjan spänns, stenen viker undan och dagsljuset når arkivet.",
     "captions": []
+  },
+  {
+    "id": "regiment-rest",
+    "title": "Avlösningen",
+    "file": "res://assets/video/regiment-rest-v1.ogv",
+    "duration": 8.041666666666666,
+    "description": "Mönstringsplatsen ligger tom. Vinden rör fanor och löv efter kompaniets sista order.",
+    "captions": []
   }
 ]

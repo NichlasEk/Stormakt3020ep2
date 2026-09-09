@@ -32,6 +32,7 @@ public static class Regiment
 }
 public sealed class RegimentRun
 {
+    public bool DeathExplained,FarewellSeen;
     public bool CaptainMet,OrdersTaken,ProofTaken,MusterPassed,ShortcutOpen,MarshalDefeated,Discharged,FarledReached,QuayCacheTaken;
     public float[] Standards={65,65,65};
     public float Exposed;
@@ -44,8 +45,8 @@ public sealed partial class Combat
     [JsonIgnore] public float RootSnare;
     [JsonIgnore] public string RegimentGoal=>Rooms!.Current switch
     {
-        Regiment.Trail=>"Följ trummorna till sjukbaracken",
-        Regiment.Barracks=>!RegimentState.CaptainMet?"Tala med kapten Silfvergren":!RegimentState.OrdersTaken?"Läs avlösningsordern på bordet":"Fortsätt till fanlunden",
+        Regiment.Trail=>RegimentState.Discharged?"Stigen ligger tyst · kompaniet har fått vila":"Följ trummorna till sjukbaracken",
+        Regiment.Barracks=>RegimentState.Discharged?"Baracken är tom · namnen följer expeditionen":!RegimentState.CaptainMet?"Tala med kapten Silfvergren":!RegimentState.OrdersTaken?"Läs avlösningsordern på bordet":"Fortsätt till fanlunden",
         Regiment.Flags=>!RegimentState.MusterPassed?"Visa din handling vid kontrollen":"Följ vägen till mönstringsvallen",
         Regiment.Parade=>!RegimentState.MarshalDefeated?(RegimentState.Exposed>0?"Eden vacklar · angrip Rotmarskalken":"Bryt fanornas rotförbindelser"):!RegimentState.OrdersTaken?"Hämta avlösningsordern i sjukbaracken":!RegimentState.Discharged?"Läs avlösningen vid mönstringsstenen":"Fortsätt till regementets brygga",
         Regiment.Quay=>"Båten väntar vid bryggan · E för överfart",
@@ -87,7 +88,12 @@ public sealed partial class Combat
         if(Rooms!.Current==Regiment.Barracks)
         {
             if(near(Regiment.Captain))
-            {if(!r.CaptainMet){r.CaptainMet=true;Emit("radio",Player,"regiment-captain");Save();}else Emit("room-notice",Player,"Kaptenen pekar mot ordern på bordet. Han har väntat färdigt.");return true;}
+            {
+                if(r.Discharged){Emit("campaign",Player,"Kaptenens plats står tom. Ordern är verkställd. Namnen följer expeditionen.");return true;}
+                if(!r.CaptainMet){r.CaptainMet=true;Emit("radio",Player,"regiment-captain");}
+                if(!r.DeathExplained){r.DeathExplained=true;Emit("radio",Player,"continuity-dead");Emit("radio",Player,"continuity-rest");Save();}
+                else Emit("room-notice",Player,"Kaptenen pekar mot avlösningsordern på bordet.");return true;
+            }
             if(near(Regiment.Orders))
             {if(!r.CaptainMet){Emit("room-notice",Player,"Tala med kaptenen innan du tar hans order.");return true;}
                 if(!r.OrdersTaken){r.OrdersTaken=true;Emit("radio",Player,"regiment-orders");Emit("campaign",Player,"AVLÖSNINGSORDER: Kompaniet får lämna sin post när befälets ed är bruten och ordern läses vid mönstringsstenen. Sjukrullan vid bäddarna styrker de saknade namnen.");Save();}else Emit("room-notice",Player,"Avlösningsordern följer expeditionen.");return true;}
@@ -114,7 +120,14 @@ public sealed partial class Combat
         if(Rooms.Current==Regiment.Parade&&r.MarshalDefeated&&near(Regiment.Discharge))
         {
             if(!r.OrdersTaken){Emit("room-notice",Player,"Avlösningsordern ligger kvar hos kaptenen i sjukbaracken.");return true;}
-            if(!r.Discharged){r.Discharged=true;Emit("radio",Player,"regiment-freed");DropItem("forge-hammer",Regiment.Discharge);Emit("inscription",Player,"REGEMENTET ÄR AVLÖST");Save();}return true;
+            if(!r.Discharged)
+            {
+                r.Discharged=true;foreach(var soldier in Enemies.Where(e=>e.Kind==EnemyKind.RootSoldier)){soldier.Health=0;soldier.Retired=true;}
+                Emit("radio",Player,"continuity-dismiss");Emit("radio",Player,"regiment-freed");Emit("story-film",Player,"regiment-rest");
+                DropItem("forge-hammer",Regiment.Discharge);Emit("inscription",Player,"REGEMENTET ÄR AVLÖST");Save();
+            }
+            else if(!r.FarewellSeen){Emit("radio",Player,"continuity-dismiss");Emit("radio",Player,"regiment-freed");Emit("story-film",Player,"regiment-rest");}
+            return true;
         }
         if(Rooms.Current==Regiment.Quay&&near(new(640,465))&&!r.QuayCacheTaken)
         {r.QuayCacheTaken=true;DropItem("brigandine",new(640,465));Emit("campaign",Player,"Kaptenens kvarlåtenskap: en lagad brigantin och en anteckning om farleden mot berget.");Save();return true;}
@@ -182,7 +195,7 @@ public sealed partial class Combat
     {
         if(!InConnectedWorld)return;var r=Rooms!.Regiment;
         if(r is null||r.Standards is null||r.Standards.Length!=3||r.Standards.Any(h=>!float.IsFinite(h)||h<0||h>65)||!float.IsFinite(r.Exposed)||r.Exposed<0||r.Exposed>8||r.Formation<0||r.Formation>100000
-            ||(Regiment.Ids.Any(id=>Rooms.Rooms[id].Visited)&&!Rooms.GroveSecured)||(r.CaptainMet&&!Rooms.Rooms[Regiment.Barracks].Visited)||(r.OrdersTaken&&!r.CaptainMet)||(r.ProofTaken&&!Rooms.Rooms[Regiment.Barracks].Visited)||(r.MusterPassed&&!r.OrdersTaken)||(r.ShortcutOpen&&!Rooms.Rooms[Regiment.Flags].Visited)||(r.Discharged&&(!r.MarshalDefeated||!r.OrdersTaken))||(r.FarledReached&&!r.Discharged)||(Rooms.Rooms[Regiment.Quay].Visited&&!r.Discharged)||(Rooms.Rooms[Regiment.Farled].Visited&&!r.FarledReached))throw new System.IO.InvalidDataException("Ogiltig regementesexpedition");
+            ||(Regiment.Ids.Any(id=>Rooms.Rooms[id].Visited)&&!Rooms.GroveSecured)||(r.FarewellSeen&&!r.Discharged)||(r.DeathExplained&&!r.CaptainMet)||(r.CaptainMet&&!Rooms.Rooms[Regiment.Barracks].Visited)||(r.OrdersTaken&&!r.CaptainMet)||(r.ProofTaken&&!Rooms.Rooms[Regiment.Barracks].Visited)||(r.MusterPassed&&!r.OrdersTaken)||(r.ShortcutOpen&&!Rooms.Rooms[Regiment.Flags].Visited)||(r.Discharged&&(!r.MarshalDefeated||!r.OrdersTaken))||(r.FarledReached&&!r.Discharged)||(Rooms.Rooms[Regiment.Quay].Visited&&!r.Discharged)||(Rooms.Rooms[Regiment.Farled].Visited&&!r.FarledReached))throw new System.IO.InvalidDataException("Ogiltig regementesexpedition");
         var bosses=Enemies.Where(e=>e.Kind==EnemyKind.RootMarshal).ToArray();
         if(Rooms.Rooms[Regiment.Parade].Visited?(bosses.Length!=1||bosses[0].Dead!=r.MarshalDefeated):bosses.Length!=0)throw new System.IO.InvalidDataException("Ogiltig rotmarskalk");
     }

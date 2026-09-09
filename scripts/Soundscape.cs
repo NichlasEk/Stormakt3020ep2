@@ -25,6 +25,8 @@ public partial class Soundscape : Node
     private float _namesMix;
     public bool Boss;
     public bool Discovery;
+    public bool Remembrance;
+    private float _remembranceMix;
     public bool Cinematic;
     public float Volume=.75f;
     public bool Speaking=>_voice.Playing;
@@ -39,7 +41,7 @@ public partial class Soundscape : Node
             if(ResourceLoader.Exists($"res://assets/audio/voice-{name}.ogg"))_clips["voice-"+name]=GD.Load<AudioStream>($"res://assets/audio/voice-{name}.ogg");
         foreach(var id in JourneyDialogue.Load().Keys)
             if(ResourceLoader.Exists($"res://assets/audio/voice-{id}.ogg"))_clips["voice-"+id]=GD.Load<AudioStream>($"res://assets/audio/voice-{id}.ogg");
-        foreach(var id in JourneyDialogue.Rooms().Keys.Concat(JourneyDialogue.Archive().Keys).Concat(JourneyDialogue.Roots().Keys).Concat(JourneyDialogue.Regiment().Keys).Concat(JourneyDialogue.Mine().Keys).Concat(JourneyDialogue.Foundry().Keys).Concat(JourneyDialogue.Uppsala().Keys))
+        foreach(var id in JourneyDialogue.Rooms().Keys.Concat(JourneyDialogue.Archive().Keys).Concat(JourneyDialogue.Roots().Keys).Concat(JourneyDialogue.Regiment().Keys).Concat(JourneyDialogue.Mine().Keys).Concat(JourneyDialogue.Foundry().Keys).Concat(JourneyDialogue.Uppsala().Keys).Concat(JourneyDialogue.Continuity().Keys))
             if(ResourceLoader.Exists($"res://assets/audio/voice-{id}.ogg"))_clips["voice-"+id]=GD.Load<AudioStream>($"res://assets/audio/voice-{id}.ogg");
         foreach(var name in new[]{"ship-engine","mine-valve","mine-warning","mine-steam","door-unlock","door-creak","door-hit","door-break","pump-pressure","pump-drain","stone-door","oath-lock","oath-rush","oath-impact","vault-ambience"})
             _clips[name]=GD.Load<AudioStream>($"res://assets/audio/{name}.ogg");
@@ -58,7 +60,8 @@ public partial class Soundscape : Node
         float db=Volume<=0||Cinematic?-80:Mathf.LinearToDb(Volume);
         _bossMix=Mathf.MoveToward(_bossMix,Boss?1:0,(float)delta*.7f);
         _namesMix=Mathf.MoveToward(_namesMix,Discovery&&_clips.ContainsKey("names-score")?1:0,(float)delta*.45f);
-        float duck=Speaking?-19:Discovery?-15:-10;
+        _remembranceMix=Mathf.MoveToward(_remembranceMix,Remembrance?1:0,(float)delta*.35f);
+        float duck=(Speaking?-19:Discovery?-15:-10)-60*_remembranceMix;
         _music.VolumeDb=db+duck+Mathf.LinearToDb(Math.Max(.0001f,(1-_bossMix)*(1-_namesMix)));
         _bossMusic.VolumeDb=db+duck+Mathf.LinearToDb(Math.Max(.0001f,_bossMix));
         _namesMusic.VolumeDb=db+duck+Mathf.LinearToDb(Math.Max(.0001f,_namesMix*(1-_bossMix)));
