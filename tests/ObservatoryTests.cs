@@ -39,7 +39,7 @@ public static class ObservatoryTests
                 check(workshopDoor.Broken,"Workshop oak door can be smashed from the far side");
                 for(int i=0;i<180;i++)g.Step(default);
                 Use(Observatory.Diagram);Use(Observatory.Cabinet);check(g.ObservatoryState.DiagramRead&&g.ObservatoryState.KeyTaken,"Diagram and key acquired");
-                g.Inventory.Drops.Clear();int drops=g.Inventory.NextId;Use(Observatory.Cabinet);check(g.Inventory.NextId==drops,"Cache cannot duplicate loot");Walk("observatory-machine");Fight();
+                g.Inventory.Drops.Clear();int drops=g.Inventory.NextId;Save();check(g.ObservatoryState.CabinetOpened&&g.ObservatoryState.KeyTaken,"Empty cabinet and its key persist after reload");Use(Observatory.Cabinet);check(g.Events.Any(e=>e.Text.Contains("Gömman är tömd")),"Empty cabinet explains key status");check(g.Inventory.NextId==drops,"Cache cannot duplicate loot");Walk("observatory-machine");Fight();
                 Use(Observatory.Brakes[0]);Use(Observatory.Brakes[0]);Use(Observatory.Brakes[2]);check(g.ObservatoryState.Aligned,"Diagram solves physical brakes");Use(Observatory.Shortcut);check(g.ObservatoryState.ShortcutOpen,"Workshop key opens maintenance shortcut");
                 Walk("observatory-shortcut");Walk("observatory-shortcut",true);Walk("observatory-dome");
                 var boss=g.Enemies.Single(e=>e.Kind==EnemyKind.ZenithGuardian);g.Player=Observatory.Boss+new Vector2(0,55);for(int i=0;i<100;i++)g.Step(new(default,-Vector2.UnitY,true,false,false,false,false,false,false,false));check(boss.Health==boss.MaxHealth,"Dormant machine waits for investigation");

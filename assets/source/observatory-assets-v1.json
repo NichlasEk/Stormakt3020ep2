@@ -102,5 +102,9 @@
   "assets/video/observatory-dome-v1.ogv": {
     "bytes": 2060564,
     "sha256": "880b6952d75b731b67fcac58342dc9d38d51ffd115eeabb9898a717a010c8cd0"
+  },
+  "assets/art/room-observatory-workshop-empty-v1.png": {
+    "bytes": 2701595,
+    "sha256": "344db0141c83feb0e1b4b8e6095769f3529e216e41b9e0b71815bc983b70f51d"
   }
 }

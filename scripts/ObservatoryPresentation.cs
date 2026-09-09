@@ -7,7 +7,7 @@ using NVec=System.Numerics.Vector2;
 public partial class Main
 {
     private readonly Dictionary<string,Texture2D> _observatoryArt=new();
-    private Texture2D? _meridianOpen,_martaArt,_zenithArt;
+    private Texture2D? _meridianOpen,_martaArt,_zenithArt,_workshopEmpty;
     private readonly Vector2[] _zenithFeet=new Vector2[4];
     private readonly float[] _zenithScale=new float[4];
     private bool _observatorySlot;
@@ -23,6 +23,7 @@ public partial class Main
     {
         if(_zenithArt!=null)return;
         foreach(var id in Observatory.Ids)_observatoryArt[id]=GD.Load<Texture2D>("res://assets/art/room-"+id+"-v1.png");
+        _workshopEmpty=GD.Load<Texture2D>("res://assets/art/room-observatory-workshop-empty-v1.png");
         _meridianOpen=GD.Load<Texture2D>("res://assets/art/room-meridian-observatory-open-v1.png");
         _martaArt=SpriteCutout.Load("res://assets/art/marta-vinge-v1.png",chromaKey:new Color(0,1,0));
         _zenithArt=GD.Load<Texture2D>("res://assets/art/zenith-guardian-v1.png");
@@ -97,7 +98,7 @@ public partial class Main
         bool Near(NVec p)=>NVec.Distance(_game.Player,p)<75&&_game.ClearPath(_game.Player,p);
         if(_game.Rooms!.Current==Meridian.Hall&&_game.CabinState.Briefed&&Near(Observatory.Gate)&&!o.EntryOpen)label="Öppna vägen till observatoriet";
         if(_game.Rooms.Current==Observatory.Quarters&&Near(Observatory.Talk))label="Tala med Märta Vinge";
-        if(_game.Rooms.Current==Observatory.Workshop){if(Near(Observatory.Diagram))label="Läs stjärndiagrammet";else if(Near(Observatory.Cabinet))label="Undersök Märtas gömma";}
+        if(_game.Rooms.Current==Observatory.Workshop){if(Near(Observatory.Diagram))label="Läs stjärndiagrammet";else if(Near(Observatory.Cabinet))label=o.CabinetOpened?"Gömman är tömd · verkstadsnyckeln tagen":"Öppna Märtas gömma";}
         if(_game.Rooms.Current==Observatory.Machine)
         {
             if(Near(Observatory.Shortcut)&&!o.ShortcutOpen)label="Lås upp underhållsdörren";
@@ -106,5 +107,5 @@ public partial class Main
         if(_game.Rooms.Current==Observatory.Dome){if(Near(Observatory.Wake)&&!o.Awake)label="Undersök drivverket";else if(Near(Observatory.Original))label=o.Defeated?"Läs den strukna destinationen":"Originalet är bevakat";}
         if(label=="")return false;Panel(new Rect2(260,475,760,53),.93f);Centered("E / B · "+label,640,507,17,Gold);return true;
     }
-    private void DisposeObservatoryArt(){foreach(var t in _observatoryArt.Values)t.Dispose();_meridianOpen?.Dispose();_martaArt?.Dispose();_zenithArt?.Dispose();}
+    private void DisposeObservatoryArt(){foreach(var t in _observatoryArt.Values)t.Dispose();_workshopEmpty?.Dispose();_meridianOpen?.Dispose();_martaArt?.Dispose();_zenithArt?.Dispose();}
 }

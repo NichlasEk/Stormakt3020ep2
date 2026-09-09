@@ -79,9 +79,10 @@ public sealed partial class Combat
             {if(!o.DiagramRead){o.DiagramRead=true;Emit("radio",Player,"observatory-diagram");Emit("checkpoint",Player);}Emit("campaign",Player,"STJÄRNDIAGRAMMET: Ställ vänster broms på II, den främre på 0 och höger på I. Motvikterna följer markeringarna på golvet. Märta har ritat en säker väg genom verket.");return true;}
             if(near(Observatory.Cabinet))
             {
+                if(o.CabinetOpened){Emit("room-notice",Player,"Gömman är tömd. Verkstadsnyckeln är tagen och passar underhållsdörren vid motvikterna.");return true;}
                 if(!safe){Emit("room-notice",Player,"Vakterna har verkstadsnyckeln. Säkra rummet.");return true;}
                 if(!o.KeyTaken){o.KeyTaken=true;Emit("inscription",Player,"VERKSTADSNYCKEL");Emit("radio",Player,"observatory-key");}
-                if(!o.CabinetOpened){o.CabinetOpened=true;DropItem("forge-hammer",new(875,355));Emit("campaign",Player,"MÄRTAS GÖMMA: En förstärkt hammare och en anteckning: Elin, om de flyttar oss innan jag kommer, lämna lampan i fönstret.");Emit("checkpoint",Player);}return true;
+                if(!o.CabinetOpened){o.CabinetOpened=true;Emit("room-sound",Player,"door-creak");DropItem("forge-hammer",new(875,355));Emit("campaign",Player,"MÄRTAS GÖMMA: En förstärkt hammare och en anteckning: Elin, om de flyttar oss innan jag kommer, lämna lampan i fönstret.");Emit("checkpoint",Player);}return true;
             }
         }
         if(Rooms.Current==Observatory.Machine)

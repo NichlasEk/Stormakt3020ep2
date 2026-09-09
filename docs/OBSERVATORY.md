@@ -2,6 +2,14 @@
 
 0.19 fortsätter huvudrutten efter Ebbas genomgång i rymdfregattens kajuta. Fyra nya målade rum gör att expeditionen nu har 27 beständiga platser. Originalspelet och de två Rudbeck-PDF:erna är orörda.
 
+## 0.19.1 · Synligt tömd gömma
+
+Märtas gömma får en öppen, tom bild när den har plundrats. Dörren förblir synligt öppen efter återbesök och laddning, även i tidigare sparningar där gömman redan öppnats. E-texten bekräftar att verkstadsnyckeln är tagen; ett nytt tryck beskriver var den används utan att ge fler föremål. Ny bild: `assets/art/room-observatory-workshop-empty-v1.png` (edit av verkstadsbakgrunden; exakt prompt i syskonfil).
+
+Linux-exporten `dist/AtlandsArv-0.19.1-cache/` har passerat nativekontrollen och används av `play.sh`.
+
+Verifierat med 39 012 simulationskontroller, inklusive sparning/laddning, upprepad undersökning utan nya belöningar och användning av nyckeln.
+
 ## Spela
 
 Starta `./play.sh` och fortsätt din sparning. Tala färdigt med Ebba om ordern, kartan, gjutformen och stjärnplåten. Gå sedan tillbaka till Meridiansalen och använd **E/B vid högra porten**. Äldre sparningar får de nya rummen utan att inventarium, avlösning, resor eller kajutsamtal nollställs.
