@@ -1,0 +1,11 @@
+{
+  "parts": [
+    "meridian-after-sentence-0.wav",
+    "meridian-after-sentence-1.wav",
+    "meridian-after-sentence-2.wav",
+    "meridian-after-sentence-3.wav"
+  ],
+  "sha256": "76a41b19b2893fab16f9327adeb1a57e4aa21cefb83286a10c2bda9d60bc7384",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

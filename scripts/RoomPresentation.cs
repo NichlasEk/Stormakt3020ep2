@@ -10,7 +10,7 @@ public partial class Main
     private bool _roomsSlot,_roomChecks;
     private void StartStandardExpedition()
     {
-        _uppsalaSlot=false;_shipTime=0;_pendingStoryFilm="";_radioBreath=0;_foundrySlot=_mineSlot=_regimentSlot=false;
+        _meridianSlot=false;_uppsalaSlot=false;_shipTime=0;_pendingStoryFilm="";_radioBreath=0;_foundrySlot=_mineSlot=_regimentSlot=false;
         // A shore continuation keeps its original save slot. Prefer whichever room expedition
         // was played most recently, without overwriting the other independent run.
         var quay=ProjectSettings.GlobalizePath("user://quay-save.json");
@@ -24,7 +24,7 @@ public partial class Main
     }
     private void StartRooms()
     {
-        _uppsalaSlot=false;_shipTime=0;_pendingStoryFilm="";_radioBreath=0;_foundrySlot=false;_mineSlot=false;_regimentSlot=false;_doorSlot=false;
+        _meridianSlot=false;_uppsalaSlot=false;_shipTime=0;_pendingStoryFilm="";_radioBreath=0;_foundrySlot=false;_mineSlot=false;_regimentSlot=false;_doorSlot=false;
         LoadWaterArt();
         _roomsSlot=true;_atlandSlot=_portSlot=false;
         if(!_testMode&&System.IO.File.Exists(SavePath)){ResumeSave();return;}

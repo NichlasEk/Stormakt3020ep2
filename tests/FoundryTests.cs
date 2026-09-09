@@ -20,17 +20,17 @@ public static class FoundryTests
         void Use(Vector2 p){run.Player=p;run.Step(default);run.Step(new(default,Vector2.UnitY,false,false,false,false,false,false,false,true));}
         void Walk(bool back)
         {
-            var route=ConnectedWorld.Route(RoomLinks.All.Last());if(back)Array.Reverse(route);run.Player=route[0]-run.WorldOrigin;
+            var route=ConnectedWorld.Route(RoomLinks.All.Single(l=>l.Id=="foundry"));if(back)Array.Reverse(route);run.Player=route[0]-run.WorldOrigin;
             foreach(var target in route.Skip(1))
             {int t=0;while(Vector2.Distance(run.Player+run.WorldOrigin,target)>5&&t++<3000){var before=run.Player+run.WorldOrigin;var move=Vector2.Normalize(target-before);run.Step(new(move,move,false,false,false,false,false,false,false,false));check(Vector2.Distance(before,run.Player+run.WorldOrigin)<9,"Foundry crossing never teleports");}check(t<3000,"Foundry route traversable "+back);}
             check(run.Rooms!.Current==(back?Mine.Coolway:Foundry.Room),"Foundry correct arrival");Save();
         }
         try
         {
-            run.Rooms!.Rooms.Remove(Uppsala.Court);run.Rooms.Rooms.Remove(Foundry.Room);run.Rooms.Doors.Remove("foundry");run.Rooms.LayoutVersion=7;run.Health=68;Save();
-            check(run.Rooms!.LayoutVersion==9&&run.Rooms.Rooms.Count==20&&!run.Rooms.Rooms[Foundry.Room].Visited&&run.Health==68,"Published mine save gains unopened foundry");
+            foreach(var id in Uppsala.Ids)run.Rooms!.Rooms.Remove(id);run.Rooms!.Doors.Remove("uppsala-clock");run.Rooms.Doors.Remove("meridian-hall");run.Rooms.Rooms.Remove(Foundry.Room);run.Rooms.Doors.Remove("foundry");run.Rooms.LayoutVersion=7;run.Health=68;Save();
+            check(run.Rooms!.LayoutVersion==10&&run.Rooms.Rooms.Count==22&&!run.Rooms.Rooms[Foundry.Room].Visited&&run.Health==68,"Published mine save gains unopened foundry");
             run.Rooms.ConnectionRevision=4;run.Player=new(1100,390);Save();check(Vector2.Distance(run.Player,new(1180,650))<1,"Old wall-strip position recovered onto main floor");
-            var link=RoomLinks.All.Last();var route=ConnectedWorld.Route(link);var shift=run.WorldOrigin;
+            var link=RoomLinks.All.Single(l=>l.Id=="foundry");var route=ConnectedWorld.Route(link);var shift=run.WorldOrigin;
             check(!run.ClearPath(route[0]-shift,route[1]-shift),"Closed foundry gate blocks the arch");
             var across=Vector2.Normalize(ConnectedWorld.Side(route[0],route[1]));
             for(int offset=-100;offset<=100;offset+=10)check(!run.ClearPath(route[0]-shift+across*offset,route[1]-shift+across*offset),"Foundry jambs prevent slipping around closed gate "+offset);

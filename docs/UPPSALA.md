@@ -1,5 +1,7 @@
 # 0.16 · Karl CCLV till Uppsala
 
+**Fortsättningen är nu byggd i [0.17 · Meridiansalen](MERIDIAN.md).** Nedan bevaras leveransbeskrivningen för första Uppsalagården.
+
 2026-09-08. Resan till Uppsala och den första spelbara gården är byggda. Huvudrutten har tjugo beständiga platser. Meridiansalen bakom gårdens port är nästa byggmål, inte en färdig bana.
 
 ## Spela

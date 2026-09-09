@@ -17,7 +17,7 @@ public partial class Main
     }
     private void StartAtland()
     {
-        _uppsalaSlot=false;_shipTime=0;_pendingStoryFilm="";_radioBreath=0;_foundrySlot=false;_mineSlot=false;_regimentSlot=false;
+        _meridianSlot=false;_uppsalaSlot=false;_shipTime=0;_pendingStoryFilm="";_radioBreath=0;_foundrySlot=false;_mineSlot=false;_regimentSlot=false;
         _doorSlot=false;
         _atlandSlot=true;
         if(!_testMode&&System.IO.File.Exists(SavePath)){ResumeSave();return;}

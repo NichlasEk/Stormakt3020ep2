@@ -12,13 +12,14 @@ public partial class Main
     private string _shipDestination="";
     private void LoadUppsalaArt()
     {
+        LoadMeridianArt();
         _uppsalaArt??=GD.Load<Texture2D>("res://assets/art/room-uppsala-court-v1.png");
         _quayFrigate??=GD.Load<Texture2D>("res://assets/art/room-quay-frigate-v1.png");
         _flightArt??=GD.Load<Texture2D>("res://assets/art/flight-uppsala-v1.png");
     }
     private void StartUppsala(bool fresh=false)
     {
-        LoadWaterArt();_uppsalaSlot=true;_foundrySlot=_mineSlot=_regimentSlot=_doorSlot=_roomsSlot=_portSlot=_atlandSlot=false;_boatTime=_shipTime=0;_pendingStoryFilm="";_radioBreath=0;
+        LoadWaterArt();_meridianSlot=false;_uppsalaSlot=true;_foundrySlot=_mineSlot=_regimentSlot=_doorSlot=_roomsSlot=_portSlot=_atlandSlot=false;_boatTime=_shipTime=0;_pendingStoryFilm="";_radioBreath=0;
         if(!fresh&&!_testMode&&System.IO.File.Exists(SavePath)){ResumeSave();return;}
         _game=Combat.NewUppsalaPreview(_order);ApplyDeveloperSettings();_particles.Clear();_floating.Clear();_radioQueue.Clear();_radio="";_radioTime=0;_sound.StopVoice();
         _bannerTime=_campaignTextTime=_revealTime=0;_camera=G(_game.Player)+new Vector2(0,-60);RememberRenderPositions();ChangeScreen(Screen.Game);Save();HandleCue(new("radio",_game.Player,"uppsala-ready"));
@@ -57,7 +58,8 @@ public partial class Main
     }
     private bool DrawUppsalaPrompt()
     {
-        if(!_game.InConnectedWorld)return false;string label="";
+        if(DrawMeridianPrompt())return true;
+        if(!_game.InConnectedWorld||_game.InMeridian)return false;string label="";
         bool Near(NVec p)=>NVec.Distance(p,_game.Player)<80&&_game.ClearPath(p,_game.Player);
         if(_game.Rooms!.Current==Regiment.Quay&&_game.FoundryState.PlateTaken&&Near(Uppsala.Board))label="E / B · Ombord på Karl CCLV · Uppsala";
         if(_game.InUppsala)
@@ -77,13 +79,13 @@ public partial class Main
             int ring=i;var at=G(Uppsala.Centers[i]);
             layers.Add((at.Y+38,()=>
             {
-                PaintForeground(_uppsalaArt!,new Vector2[]{at+new Vector2(-56,-47),at+new Vector2(56,-47),at+new Vector2(56,35),at+new Vector2(-56,35)});
+                PaintForeground(_game.MeridianState.CourtOpen?_uppsalaOpen!:_uppsalaArt!,new Vector2[]{at+new Vector2(-56,-47),at+new Vector2(56,-47),at+new Vector2(56,35),at+new Vector2(-56,35)});
                 if(!_game.CanSeeRoomPoint(Uppsala.Rings[ring]+Uppsala.Origin-_game.WorldOrigin))return;
                 int direction=_game.UppsalaState.Rings[ring];var v=new Vector2[]{new(0,-18),new(30,0),new(0,18),new(-30,0)}[direction];
                 DrawLine(at+new Vector2(0,-15),at+new Vector2(0,-15)+v,_game.UppsalaState.Aligned?Teal:Gold,3,true);
                 Text(Uppsala.Names[ring]+" · "+Uppsala.Directions[direction],at+new Vector2(-62,65),10,Gold);
             }));
         }
-        layers.Add((430,()=>PaintForeground(_uppsalaArt!,new Vector2[]{new(630,302),new(780,302),new(780,429),new(630,429)})));
+        layers.Add((430,()=>PaintForeground(_game.MeridianState.CourtOpen?_uppsalaOpen!:_uppsalaArt!,new Vector2[]{new(630,302),new(780,302),new(780,429),new(630,429)})));
     }
 }

@@ -1,0 +1,5 @@
+# room-clockwalk-v1
+
+Generated with the built-in imagegen tool, 2026-09-09. Production prompt specification:
+
+Production 2D isometric game background, 1536x1024. Ruined Swedish baroque clock corridor, dark historical oil painting, soot-stained stone, dull brass, decayed oak, weak amber morning light and autumn leaves. Fixed orthographic isometric view with rear walls above and broad diamond floor in lower two thirds; no vanishing point. Open stone entry at left x120 y420 and tall open arch at rear-right x1340 y440, thick posts and unblocked thresholds. Weathered handless clock at x560 y200 with chains and pendulum; desk below at x520 y410; small strike lever at x820 y600 and worn circular patrol mark nearby. Empty center for movement and combat; clockwork behind rather than obstructing floor. Restrained umber, blue-grey, old gold; serious rough matte painted game asset, not cute, not glossy, not 3D/Blender/render/concept sheet. No people, UI, text, arrows, glow or high foreground obstruction.

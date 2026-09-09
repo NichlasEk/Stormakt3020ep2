@@ -1,0 +1,9 @@
+{
+  "parts": [
+    "meridian-fight-sentence-0.wav",
+    "meridian-fight-sentence-1.wav"
+  ],
+  "sha256": "cd8cb21c29da48498d84b6eff83bf04deafd3ab710c373431b2bd3ea574f5bd3",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

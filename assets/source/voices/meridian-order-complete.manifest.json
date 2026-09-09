@@ -1,0 +1,11 @@
+{
+  "parts": [
+    "meridian-order-sentence-0.wav",
+    "meridian-order-sentence-1.wav",
+    "meridian-order-sentence-2.wav",
+    "meridian-order-sentence-3.wav"
+  ],
+  "sha256": "493092f9de80c66d652b8ccb287a829fddc1225fe3a4112294d2b06ae29a4262",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

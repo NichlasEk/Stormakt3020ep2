@@ -1,0 +1,11 @@
+{
+  "text": "Det räcker.",
+  "voice_instruction": "A mature Swedish male astronomer, restrained clear baritone, weary educated authority, measured natural speech, humane and serious rather than theatrical, precise intelligible Swedish.",
+  "language": "sv",
+  "model_backend": "dots.tts-mf",
+  "output_format": "wav",
+  "normalize": false,
+  "seed": 30221128,
+  "prompt_text": "Morgonen ligger kvar över gården. Jag har räknat alla slagen. Ingen annan har skrivit sitt namn under ordern. Låt mig läsa den en gång till.",
+  "dots_num_steps": 16
+}

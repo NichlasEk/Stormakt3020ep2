@@ -1,6 +1,6 @@
 # Stormakt 3020: Atlands arv — storyboard och dialog
 
-Arbetsversion 2 · 2026-09-09 · berättelsepass 0.16.1, ovanpå spelversion 0.16.
+Arbetsversion 3 · 2026-09-09 · avstämd mot kapitel 0.17, Meridiansalen.
 
 Detta är vår gemensamma berättelseöversikt. Läs scenkorten i ordning för handling, spelarens insats och vad publiken får veta. Replik-ID länkar tanken till det faktiska manuset; hela nuvarande JSON-manuset finns i dialogbilagan längst ned. Föreslagna repliker har egna arbetsnamn och får inte förväxlas med inspelat innehåll.
 
@@ -271,7 +271,7 @@ Soldaterna tonar bort under avskedet och kaptenens plats förblir tom efter avl�
 
 ## 12 · Uppsalas felvända himmel
 
-**Status:** första gården är spelbar. Inre porten är stängd och nästa rum ännu inte byggt.
+**Status:** spelbart. Datumavtrycket öppnar nu porten till Klockgången; en återresa krävs inte för att gå vidare.
 
 **Bild:** astronomisk gård, universitetets slitna murverk, domkyrkans torn, skeppets ramp och tre små kompassinstrument. Platserna är spelets konstnärliga gestaltning, inte ett dokumentärt stadsbesök.
 
@@ -286,27 +286,53 @@ Soldaterna tonar bort under avskedet och kaptenens plats förblir tom efter avl�
 | Datumet | Undersök sigillet vid porten. | `uppsala-secured`: datumet finns inte i almanackan och hör till Meridiansalen. |
 | Återfärd | Ta avtrycket tillbaka till Ebba. | `uppsala-return`. Ringar, besegrade vakter och fynd ligger kvar vid återbesök. |
 
-**Nuvarande slutpunkt:** ett datum som inte borde finnas, och en morgon som hålls kvar bakom porten. Fyndet är säkrat. Spelet fortsätter ännu inte in i Meridiansalen.
+**Övergång:** datumavtrycket används vid den målade porten (`meridian-door`). Karl går in i Klockgången. Detta ersätter den tidigare slutpunkten vid sigillet; skeppets återresa är fortfarande valfri.
 
-**Gestaltningslucka:** ”samma morgon, om och om igen” sägs av Hedvig men visas inte ännu genom ett bevittnat tidsvarv. En sådan scen bör komma innan nästa stora förklaring.
+**Visat i fortsättningen:** den lokala upprepningen av vaktens väg och klockslaget i Klockgången. Den visar att något upprepas här, inte att vi därmed vet hur hela staden eller himlen fungerar.
 
-## 13 · Meridiansalen — förslag till nästa storyboard
+## 13 · Klockgångens återkomst
 
-**Status:** nytt berättelseförslag, inte byggt, inte inspelat, inte ett fastslaget slut.
+**Status:** byggt och inspelat i 0.17. Fysisk gång från Instrumentgårdens öppnade port.
 
-1. **Återkomst med tydningen.** Hedvig har jämfört datumet med expeditionens handlingar. Karl får ett konkret sätt att öppna den målade porten, inte en ny fristående teleportpunkt. Avgör i design om återresan ska krävas eller om radiosamtalet kan ske på plats.
-2. **Ett bevis på upprepningen.** En smal solstrimma passerar en ristning. Ett sandglas rinner ut. Samma klockslag slår igen medan ristningen åter hamnar i skugga. Karl kan stå kvar och se det ske en andra gång. Detta är en möjlig gestaltning, inte en beslutad tidsmekanik.
-3. **Människan inne i rutinen.** En ny förvaltare eller vittnesperson kan berätta vad som går förlorat om morgonen släpps fri. Identitet, porträtt och röst måste utvecklas tillsammans. Ingen ny roll räknas som färdig bara för att den har ett namn i dokumentet.
-4. **Avsikt kontra följd.** Låt handlingar och konkreta spår visa vem som upprätthåller tillståndet. Koppla till kollegiet först när scenen faktiskt har bevis; låt mytens makter behålla självständighet.
-5. **Ett verkligt val.** Spelaren ska förstå vilka människor eller platser som påverkas. Valets alternativ och slut är öppna. Undvik att erbjuda en moralisk knapp vars följd inte går att ana.
+**Bild:** stort stannat urverk, liggare, slagverksspak, ett vändmärke på stengolvet och en öppen siktlinje genom gången.
 
-**Replikförslag, först efter ett synligt tidsvarv:**
+**Handling:** läs liggaren, starta slagverket och stå kvar genom två slag. Samma vakt går till märket, vänder och går tillbaka. Samma inspelade radiomeddelande hörs igen. Karl och hans fynd återställs inte. Vakten är en återklang, inte en återuppstående fiende som kan ge oändligt byte.
 
-> **Ebba, `proposal-meridian-repeat`:** Den där klockan slog nyss. Karl, stå kvar. Jag tar tiden.
+**Dialog:** `meridian-entry` → `meridian-ledger` (vid liggaren) → `meridian-repeat` (samma klipp två gånger) → `meridian-noticed` → `meridian-anchor`.
+
+> **Ebba, `meridian-repeat`:** Klockan slår. Vakten vänder vid märket.
 >
-> **Hedvig, `proposal-meridian-cost`:** Frågan är inte bara vem som stängde morgonen. Vi måste veta vad de försökte hålla ute.
+> **Ebba, `meridian-noticed`:** Vänta. Samma ord igen. Och vakten vänder på samma ställe.
 
-Den sista meningen introducerar en möjlighet, inte sanningen om slutet. Den får bara tas vidare om vi väljer den riktningen tillsammans.
+**Vändning:** efter två slag kan Karl hålla plåtens märke mot spärren. Vakten fortsätter förbi sin gamla vändpunkt. Dörren till Meridiansalen lossnar. `meridian-open` kvitterar att något faktiskt har ändrats.
+
+## 14 · Meridianväktaren och de tre instrumenten
+
+**Status:** byggt och inspelat. Ny egen syntetisk röst, radioporträtt och fyra målade 2D-poser. Väktaren står vid sitt verk; han glider inte runt med stillastående ben.
+
+> **Väktaren, `meridian-warden`:** Stanna där. Jag håller morgonen på plats. Ni vet inte vad som väntar när den är över.
+
+**Handling:** undersök plåten vid astronomens bord. Hedvig skiljer de nya instrumentlägena från gårdens: solen mot öster, äpplet mot väster, nyckeln mot söder (`meridian-plate`). När Karl ingriper försvarar väktaren verket (`meridian-fight`). Han håller en lokal timme kvar; hans ansvar för hela Atland är inte fastslaget.
+
+**Strid:** mätlinjer varnas och låser sitt mål före slaget. Vrid det aktiva instrumentet rätt (`meridian-tactic`), angrip i öppningen och fortsätt till nästa när en tredjedel av motståndet brutits. Alla tre instrumenten krävs. Takten ökar under andra halvan (`meridian-rage`).
+
+**Ton:** mänsklig rädsla och felaktigt ansvarstagande, inte en lustig trollkarl. Hans exakta tjänstetitel, namn och koppling till kollegiet är inte färdigutredda.
+
+## 15 · Ordern som inte fick träda i kraft
+
+**Status:** byggt och inspelat; kapitlets provspelningsstopp.
+
+**Bild:** väktaren sjunker ned på knä och behåller livet. En smal ljusstrimma förskjuts över salens golv.
+
+> **Väktaren, `meridian-fallen`:** Jag kunde inte ta tillbaka ordern. Bara hindra dagen då den skulle gälla.
+
+Ebba märker att solen rört sig (`meridian-after`). Karl undersöker handlingen vid den fortsatt förseglade inre porten.
+
+> **Hedvig, `meridian-order`:** En förflyttningsorder. Den gäller hela kvarteret. Målet är överstruket. Originalet finns i observatoriet.
+
+**Vad vi nu vet:** väktaren har försökt skjuta upp en förflyttningsorder genom att hindra nästa dag. Hans påstående får stöd av en verklig handling, men orderns ursprung, mål och verkställande är fortfarande okända. Vi har inte bestämt att detta är samma ed som höll regementet kvar.
+
+**Återväg:** `meridian-stop` ber Karl ta handlingen till expeditionen. Rum, instrument och besegrad väktare förblir förändrade. Det övre observatoriet är inte byggt. Nästa steg är att diskutera fyndet och sedan utforma ett begripligt val kring ordern, med kända berörda människor och följder.
 
 ## Kontinuitetsregister — vad spelaren vet när
 
@@ -317,7 +343,7 @@ Den sista meningen introducerar en möjlighet, inte sanningen om slutet. Den få
 | De döda | Regementets avsikt; sjukrulla och kaptenens antydningar. | Avlösning och kvarlämnad båt. | Behöver explicit replik och tydligare synligt efterspel. |
 | Det fortsatta arbetet | Hammare efter avstängd luft. | Kronfogdens instrument och plåt. | Beställare, drivkraft, verkligt ändamål. |
 | Felvänd riktning | Intro och lundens nordliga sol. | Stjärnplatta, kompassproblem, Uppsalas instrument. | Varför kartan placerade Uppsala vid en annan kust. |
-| Den instängda morgonen | Uppsalas instrument svarar. | Daterat sigill vid Meridiansalen. | Inget synligt tidsvarv eller slutgiltig orsak ännu. |
+| Den instängda morgonen | Uppsalas instrument svarar. | Upprepade klockslag och vaktens väg, sedan väktarens förflyttningsorder. | Orderns ursprung och mål; hur mycket av Uppsala som påverkas. |
 | Mytiska makter | Rötter och Atland-motiv. | Stämning och undersökningsspår. | Nornornas roll och relation till de mänskliga institutionerna. |
 
 ## Nästa manuspass, före fler stora avslöjanden
@@ -325,14 +351,14 @@ Den sista meningen introducerar en möjlighet, inte sanningen om slutet. Den få
 1. **Genomfört i 0.16.1:** uttrycklig död/vila-dialog, avskedsorder, film och stilla efterspel.
 2. **Begreppen karta/form/plåt förtydligade i 0.16.1.** Karl/personen kontra skeppets namn återstår att stämma av.
 3. Ge direktstartande spelare tillräcklig kartbakgrund och se över äldre prologens hemfärdsreplik.
-4. Låt spelaren se minst ett av Uppsalas påståenden bevisas på plats innan nästa förklaring.
-5. Bestäm Meridiansalens mänskliga konflikt och först därefter dess nya röstroll, strid och val.
+4. **Genomfört i 0.17:** lokal upprepning bevittnas i Klockgången innan väktarens förklaring.
+5. **Första konflikten byggd i 0.17:** väktaren försöker skjuta upp en förflyttningsorder. Diskutera orderns mål och observatoriets nästa scen före ett större val.
 
 De nio replikerna i `continuity-radio.json` är införda och inspelade i detta pass. Vid nästa manusändring: ändra berört JSON-manus, producera den nya rösten, kontrollera utlösning och pauser i scenen och uppdatera storyboardens status. Att filen finns betyder inte att repliken faktiskt går att höra i huvudrutten.
 
 ## Dialogbilaga — befintliga JSON-manus, ordagrant
 
-Nedan följer den befintliga texten från samtliga tio berättelsefiler `*-radio.json` vid denna avstämning. Gruppordningen följer berättelsen; ordningen inom varje grupp är filens ordning, inte en garanti om uppspelning. Scenkorten ovan anger placering och alternativ. De äldsta grundreplikerna för Likvarvet ligger dessutom i `scripts/Main.cs`; denna bilaga gör inte anspråk på att ersätta hela den äldre prologens manus.
+Nedan följer den befintliga texten från samtliga elva berättelsefiler `*-radio.json` vid denna avstämning. Gruppordningen följer berättelsen; ordningen inom varje grupp är filens ordning, inte en garanti om uppspelning. Scenkorten ovan anger placering och alternativ. De äldsta grundreplikerna för Likvarvet ligger dessutom i `scripts/Main.cs`; denna bilaga gör inte anspråk på att ersätta hela den äldre prologens manus.
 
 <!-- DIALOGUE-SNAPSHOT -->
 
@@ -683,5 +709,73 @@ Källa: [continuity-radio.json](../assets/story/continuity-radio.json).
 **`continuity-home` · Ebba Grip**
 
 > Ta stjärnplåten tillbaka till båten. Vi lämnar ingen kvar i berget. Sedan följer vi stjärnorna.
+
+### 13–15 · Klockgången och Meridiansalen
+
+Källa: [meridian-radio.json](../assets/story/meridian-radio.json).
+
+**`meridian-door` · Hedvig Rålamb**
+
+> Datumet visar när porten står öppen. Använd avtrycket i låset.
+
+**`meridian-entry` · Ebba Grip**
+
+> Karl. Det går en vakt under klockan. Han verkar inte ha sett dig.
+
+**`meridian-repeat` · Ebba Grip**
+
+> Klockan slår. Vakten vänder vid märket.
+
+**`meridian-noticed` · Ebba Grip**
+
+> Vänta. Samma ord igen. Och vakten vänder på samma ställe.
+
+**`meridian-ledger` · Hedvig Rålamb**
+
+> Alla poster i liggaren har samma klockslag. Men bläcket är olika gammalt. De har skrivit samma morgon i åratal.
+
+**`meridian-anchor` · Hedvig Rålamb**
+
+> Plåten kommer utifrån. Håll märket mot spärren. Låt klockan slå färdigt.
+
+**`meridian-open` · Ebba Grip**
+
+> Nu gick han förbi märket. Gången är öppen, Karl. Fortsätt. Jag räknar slagen härifrån.
+
+**`meridian-warden` · Meridianväktaren**
+
+> Stanna där. Jag håller morgonen på plats. Ni vet inte vad som väntar när den är över.
+
+**`meridian-plate` · Hedvig Rålamb**
+
+> Lägg plåten vid instrumenten. Dess märken visar tre lägen. Solen mot öster. Äpplet mot väster. Nyckeln mot söder.
+
+**`meridian-fight` · Meridianväktaren**
+
+> Rör inte verket. Jag har burit denna timme längre än ni har burit ert namn.
+
+**`meridian-tactic` · Hedvig Rålamb**
+
+> Han vrider instrumenten ur läge. Rätta det som rör sig. När verket tappar takten kan du nå honom.
+
+**`meridian-rage` · Meridianväktaren**
+
+> Det räcker. Ingen mer dag skall skrivas i mitt namn.
+
+**`meridian-fallen` · Meridianväktaren**
+
+> Jag kunde inte ta tillbaka ordern. Bara hindra dagen då den skulle gälla.
+
+**`meridian-after` · Ebba Grip**
+
+> Karl. Solen flyttade sig. Bara en aning. Hör efter vad han försökte hålla tillbaka.
+
+**`meridian-order` · Hedvig Rålamb**
+
+> En förflyttningsorder. Den gäller hela kvarteret. Målet är överstruket. Originalet finns i observatoriet.
+
+**`meridian-stop` · Ebba Grip**
+
+> Ta handlingen med dig. Han får stanna här under uppsikt. Vi öppnar inte nästa port förrän vi vet vart den leder.
 
 <!-- END-DIALOGUE-SNAPSHOT -->

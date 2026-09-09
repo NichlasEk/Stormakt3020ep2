@@ -6,8 +6,8 @@ namespace Atland;
 public static class Uppsala
 {
     public const string Court="uppsala-court";
-    public static readonly string[] Ids={Court};
-    public static bool Known(string id)=>id==Court;
+    public static readonly string[] Ids={Court,Meridian.Clock,Meridian.Hall};
+    public static bool Known(string id)=>Array.IndexOf(Ids,id)>=0;
     public static readonly Vector2 Origin=new(42000,1000),Board=new(1010,570),Ramp=new(280,455),Desk=new(700,440),Seal=new(1040,455);
     public static readonly Vector2[] Rings={new(465,550),new(795,610),new(1120,705)};
     public static readonly Vector2[] Centers={new(465,487),new(795,550),new(1120,640)};
@@ -26,8 +26,8 @@ public sealed partial class Combat
 {
     [JsonIgnore] public bool InUppsala=>InConnectedWorld&&Uppsala.Known(Rooms!.Current);
     [JsonIgnore] public UppsalaRun UppsalaState=>Rooms!.Uppsala;
-    [JsonIgnore] public string UppsalaGoal=>!UppsalaState.ClueRead?"Läs astronomens anvisning":!UppsalaState.Aligned?"Rikta gårdens tre instrument":!UppsalaState.Secured?"Skydda stjärnplattan":!UppsalaState.KeyTaken?"Undersök portens daterade sigill":"Återvänd med datumet till Ebba";
-    [JsonIgnore] public Vector2 UppsalaObjective=>UppsalaState.KeyTaken?Uppsala.Ramp:!UppsalaState.ClueRead?Uppsala.Desk:!UppsalaState.Aligned?Uppsala.Rings[Enumerable.Range(0,3).First(i=>UppsalaState.Rings[i]!=Uppsala.Target[i])]:Uppsala.Seal;
+    [JsonIgnore] public string UppsalaGoal=>InMeridian?MeridianGoal:!UppsalaState.ClueRead?"Läs astronomens anvisning":!UppsalaState.Aligned?"Rikta gårdens tre instrument":!UppsalaState.Secured?"Skydda stjärnplattan":!UppsalaState.KeyTaken?"Undersök portens daterade sigill":MeridianState.OrderTaken?"Återvänd med ordern till Ebba":MeridianState.CourtOpen?"Fortsätt genom porten till klockgången":"Öppna porten med datumavtrycket";
+    [JsonIgnore] public Vector2 UppsalaObjective=>InMeridian?(Rooms!.Current==Meridian.Clock?(!MeridianState.LedgerRead?Meridian.Ledger:!MeridianState.ClockAnchored?Meridian.Bell:Meridian.ClockExit):!MeridianState.PlateSet?Meridian.Plate:MeridianState.WardenDefeated?Meridian.Order:MeridianState.Exposed>0?Meridian.Warden:Meridian.Controls[MeridianState.Breaks%3]):UppsalaState.KeyTaken?(MeridianState.OrderTaken?Uppsala.Ramp:Meridian.CourtGate):!UppsalaState.ClueRead?Uppsala.Desk:!UppsalaState.Aligned?Uppsala.Rings[Enumerable.Range(0,3).First(i=>UppsalaState.Rings[i]!=Uppsala.Target[i])]:Uppsala.Seal;
     public static Combat NewUppsalaPreview(Order order)
     {
         var g=NewFoundryPreview(order);g.FoundryState.GateOpen=true;g.EnterConnectedRoom(Foundry.Room);
@@ -35,7 +35,7 @@ public sealed partial class Combat
         g.EnterConnectedRoom(Regiment.Quay);g.Player=Uppsala.Board;g.Events.Clear();g.UpdateRoomSight(true);g.ValidateRooms();return g;
     }
     public bool CanShipTravel(string destination)=>InConnectedWorld&&!Dead&&FoundryState.PlateTaken&&
-        ((Rooms!.Current==Regiment.Quay&&destination==Uppsala.Court&&Vector2.Distance(Player,Uppsala.Board)<72)||(InUppsala&&destination==Regiment.Quay&&Vector2.Distance(Player,Uppsala.Ramp)<72))&&EncounterEnemies.All(e=>e.Dead)&&Shots.All(s=>s.Reflected)&&Hazards.All(h=>h.Friendly);
+        ((Rooms!.Current==Regiment.Quay&&destination==Uppsala.Court&&Vector2.Distance(Player,Uppsala.Board)<72)||(Rooms!.Current==Uppsala.Court&&destination==Regiment.Quay&&Vector2.Distance(Player,Uppsala.Ramp)<72))&&EncounterEnemies.All(e=>e.Dead)&&Shots.All(s=>s.Reflected)&&Hazards.All(h=>h.Friendly);
     public bool FinishShipTravel(string destination)
     {
         if(!CanShipTravel(destination))return false;
@@ -46,13 +46,14 @@ public sealed partial class Combat
     }
     private void AdvanceUppsala()
     {
-        if(!InUppsala||!UppsalaState.Aligned||UppsalaState.Secured||EncounterEnemies.Any(e=>!e.Dead))return;
+        if(!InUppsala||Rooms!.Current!=Uppsala.Court||!UppsalaState.Aligned||UppsalaState.Secured||EncounterEnemies.Any(e=>!e.Dead))return;
         UppsalaState.Secured=true;Emit("room-notice",Player,"Gården är säkrad · undersök portens sigill");Emit("checkpoint",Player);
     }
     private bool StepUppsala(Func<Vector2,bool> near)
     {
         if(!InConnectedWorld)return false;
-        if((Rooms!.Current==Regiment.Quay&&near(Uppsala.Board)&&FoundryState.PlateTaken)||(InUppsala&&near(Uppsala.Ramp)))
+        if(StepMeridian(near))return true;
+        if((Rooms!.Current==Regiment.Quay&&near(Uppsala.Board)&&FoundryState.PlateTaken)||(Rooms!.Current==Uppsala.Court&&near(Uppsala.Ramp)))
         {
             var destination=InUppsala?Regiment.Quay:Uppsala.Court;
             if(!CanShipTravel(destination)){Emit("room-notice",Player,"Säkra platsen innan du går ombord.");return true;}
@@ -74,7 +75,7 @@ public sealed partial class Combat
         {
             if(!u.Secured){Emit("room-notice",Player,"Portens datum saknar en morgon. Undersök gårdens instrument.");return true;}
             if(!u.KeyTaken){u.KeyTaken=true;DropItem("memory",Uppsala.Seal);Emit("radio",Player,"uppsala-secured");Emit("checkpoint",Player);}
-            Emit("campaign",Player,"MERIDIANSALENS DATUM: Nyckelavtrycket är säkrat i fältdagboken. Meridiansalen förblir förseglad. Hedvig måste tyda datumet innan den instängda morgonen kan släppas fri. Ta avtrycket tillbaka till Ebba.");return true;
+            Emit("campaign",Player,"MERIDIANSALENS DATUM: Nyckelavtrycket är säkrat i fältdagboken. Datumet anger portens öppningstid. För in avtrycket i låset vid porten för att nå klockgången.");return true;
         }
         return true;
     }

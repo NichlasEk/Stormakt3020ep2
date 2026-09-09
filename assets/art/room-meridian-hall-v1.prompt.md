@@ -1,0 +1,5 @@
+# room-meridian-hall-v1
+
+Generated with the built-in imagegen tool, 2026-09-09. Production prompt specification:
+
+Production 2D isometric action RPG room background, 1536x1024. Ruined Swedish baroque observatory Meridian Hall. Rich dark historical oil painting, fixed orthographic isometric camera, worn matte stone and tarnished brass, umber, soot blue, faded gold. Rear walls above broad unobstructed diamond floor. Open thick stone entrance through left edge x120 y430. Vast wall astronomical instrument, faded painted ceiling fragments and shallow book shelves. Three small low brass instrument pedestals centered x500 y510, x790 y580, x1100 y650, each under 110px wide and 65px tall. Thin floor-engraved meridian circles with room for sword combat. Survey desk against rear wall x820 y360. Sealed ornate future door at rear-right x1330 y390. Restrained amber morning light, dust and brittle papers at edges. No people, UI, text, arrows, glow beams, sci-fi consoles or perspective vanishing point. Serious hand-painted environment, not 3D/Blender/render/concept sheet or cute glossy plastic. Low natural foreground rim.

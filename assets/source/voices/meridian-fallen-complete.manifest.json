@@ -1,0 +1,9 @@
+{
+  "parts": [
+    "meridian-fallen-sentence-0.wav",
+    "meridian-fallen-sentence-1.wav"
+  ],
+  "sha256": "ed834c5f6b5f302d090d4e6aed1d10efb7095c325b35d2678a8715651d593abe",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

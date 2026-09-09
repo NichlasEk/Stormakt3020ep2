@@ -1,0 +1,10 @@
+{
+  "parts": [
+    "meridian-tactic-sentence-0.wav",
+    "meridian-tactic-sentence-1.wav",
+    "meridian-tactic-sentence-2.wav"
+  ],
+  "sha256": "655394fd0ec29906ea3afdd278b34a71ec466fb63870966626b8f2553eb3d2e9",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

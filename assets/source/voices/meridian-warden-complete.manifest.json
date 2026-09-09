@@ -1,0 +1,10 @@
+{
+  "parts": [
+    "meridian-warden-sentence-0.wav",
+    "meridian-warden-sentence-1.wav",
+    "meridian-warden-sentence-2.wav"
+  ],
+  "sha256": "1dad90b539ac2936d333182fb8d418bcb0b0e03018711bf9ae59eb116ae7637c",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

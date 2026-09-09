@@ -1,0 +1,10 @@
+{
+  "parts": [
+    "meridian-ledger-sentence-0.wav",
+    "meridian-ledger-sentence-1.wav",
+    "meridian-ledger-sentence-2.wav"
+  ],
+  "sha256": "2a5be226160cb06eb98a5d25c030a18cc915865e09a47a4a4b4987c4d570ad5a",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

@@ -1,5 +1,9 @@
 # Checkpoint · Vägen under vattnet · 2026-09-06
 
+## 0.17 · Morgonen som inte tar slut
+
+Instrumentgården fortsätter genom Klockgången till Meridiansalen: lokal tidsupprepning, tre instrument i väktarens strid, sexton nya röster, nytt porträtt och ett beständigt orderfynd. Två nya rum, 22 platser totalt. Separat prov: `./play.sh -- --meridian`. [Kapitel, provspelning och verifiering](MERIDIAN.md).
+
 ## 0.16.1 · Avlösningen
 
 Nio nya röstklipp och radiokort, tydligare död/vila och karta/gjutform/stjärnplåt, ett bestående stilla efterspel och en ny film i videobiblioteket. [Innehåll, sparkompatibilitet och provspelning](NARRATIVE-POLISH.md).

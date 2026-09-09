@@ -1,0 +1,10 @@
+{
+  "parts": [
+    "meridian-noticed-sentence-0.wav",
+    "meridian-noticed-sentence-1.wav",
+    "meridian-noticed-sentence-2.wav"
+  ],
+  "sha256": "9964b779ccf38cdedf5ed9abdb5cc07e93fa9a4e4c3fd12cf2984e01221a80de",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

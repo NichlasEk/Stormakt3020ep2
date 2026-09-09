@@ -1,0 +1,16 @@
+{
+  "method": "original deterministic PCM",
+  "seed": 30220920,
+  "files": [
+    {
+      "file": "meridian-bell.ogg",
+      "seconds": 3.5,
+      "sha256": "7ca71df4cac075025ba1462bff87555e990de82194f4cd69d0f62beabb226fb4"
+    },
+    {
+      "file": "meridian-turn.ogg",
+      "seconds": 0.8,
+      "sha256": "04664baa2f32112ce3096ab3bec25daa0321ee990533d1770a51619d162f6ca5"
+    }
+  ]
+}

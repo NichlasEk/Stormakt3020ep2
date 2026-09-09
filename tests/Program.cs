@@ -5,6 +5,7 @@ using System.Text.Json;
 int checks=0;
 void Check(bool condition,string message){if(!condition)throw new Exception(message);checks++;}
 Controls Input(Vector2 move=default,Vector2 aim=default,bool attack=false,bool heavy=false,bool dodge=false,bool guard=false,bool swap=false,bool heal=false,bool support=false,bool interact=false)=>new(move,aim,attack,heavy,dodge,guard,swap,heal,support,interact);
+if(args.Contains("--meridian-only")){MeridianTests.Run(Check);Console.WriteLine($"PASS MERIDIAN · {checks}");return;}
 if(args.Contains("--narrative-only")){NarrativeTests.Run(Check);Console.WriteLine($"PASS NARRATIVE · {checks}");return;}
 if(args.Contains("--uppsala-only")){UppsalaTests.Run(Check);Console.WriteLine($"PASS UPPSALA · {checks}");return;}
 if(args.Contains("--foundry-only")){FoundryTests.Run(Check);Console.WriteLine($"PASS FOUNDRY · {checks}");return;}
@@ -392,3 +393,5 @@ FoundryTests.Run(Check);Console.WriteLine($"PASS FOUNDRY · {checks} assertions"
 UppsalaTests.Run(Check);Console.WriteLine($"PASS UPPSALA · {checks} assertions");
 
 NarrativeTests.Run(Check);Console.WriteLine($"PASS NARRATIVE · {checks} assertions");
+
+MeridianTests.Run(Check);Console.WriteLine($"PASS MERIDIAN · {checks} assertions");

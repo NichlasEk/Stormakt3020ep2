@@ -7,7 +7,7 @@ using System.Text.Json.Serialization;
 namespace Atland;
 
 public enum Weapon { Saber, Hammer }
-public enum EnemyKind { Guard, Pikeman, Gunner, Collector, OathGuardian, RootMarshal, RootSoldier, CrownBailiff }
+public enum EnemyKind { Guard, Pikeman, Gunner, Collector, OathGuardian, RootMarshal, RootSoldier, CrownBailiff, MeridianWarden }
 // Keep the first four values stable for existing saves.
 public enum Phase { Quay, Collector, Discovery, Complete, Names, Testimony, Extraction, Warehouse, Shore, Reveal, Duel, Campaign }
 public enum TestimonyChoice { None, Broadcast, Cipher }
@@ -48,7 +48,7 @@ public sealed class Hazard
     public Vector2 Position;
     public float Timer;
     public float Radius;
-    public bool Friendly,Roots,Steam,Forge;
+    public bool Friendly,Roots,Steam,Forge,Meridian;
 }
 public sealed class Seal
 {
@@ -158,7 +158,7 @@ public sealed partial class Combat
     }
     public void Spawn(EnemyKind kind, Vector2 pos)
     {
-        float hp = kind == EnemyKind.CrownBailiff ? 880 : kind == EnemyKind.RootMarshal ? 820 : kind == EnemyKind.RootSoldier ? 115 : kind == EnemyKind.OathGuardian ? 720 : kind == EnemyKind.Collector ? 620 : kind == EnemyKind.Pikeman ? 105 : kind == EnemyKind.Gunner ? 65 : 85;
+        float hp = kind == EnemyKind.MeridianWarden ? 720 : kind == EnemyKind.CrownBailiff ? 880 : kind == EnemyKind.RootMarshal ? 820 : kind == EnemyKind.RootSoldier ? 115 : kind == EnemyKind.OathGuardian ? 720 : kind == EnemyKind.Collector ? 620 : kind == EnemyKind.Pikeman ? 105 : kind == EnemyKind.Gunner ? 65 : 85;
         Enemies.Add(new Fighter { HomeRoom=Rooms?.Current??"", Id = NextId++, Kind = kind, Position = pos, Health = hp, MaxHealth = hp, Cooldown = .8f + NextId * .17f });
     }
     public void Emit(string kind, Vector2 at, string text = "", float value = 0) => Events.Add(new(kind, at, text, value));
@@ -234,10 +234,11 @@ public sealed partial class Combat
                     if (Vector2.DistanceSquared(shot.Position,enemy.Position)<30*30) { DamageEnemy(enemy,65,shot.Position,true);shot.Life=0;break; }
         }
         Shots.RemoveAll(s=>s.Life<=0);
-        StepFoundryClock(dt);
+        StepFoundryClock(dt);StepMeridianClock(dt);
         StepMinePressure(dt);
         foreach (var hazard in Hazards)
         {
+            if(hazard.Meridian&&MeridianState.WardenDefeated){hazard.Timer=0;continue;}
             if(hazard.Forge&&FoundryState.BailiffDefeated){hazard.Timer=0;continue;}
             hazard.Timer-=dt;
             if(hazard.Timer<=0)
@@ -352,6 +353,7 @@ public sealed partial class Combat
             if(e.Health>=e.MaxHealth&&!CanSeeRoomPoint(e.Position))return;
             e.Alerted=true;e.Cooldown=Math.Max(e.Cooldown,.8f);
         }
+        if(e.Kind==EnemyKind.MeridianWarden){StepMeridianWarden(e,dt);return;}
         if(e.Kind==EnemyKind.CrownBailiff){StepCrownBailiff(e,dt);return;}
         if(e.Kind==EnemyKind.RootMarshal){StepRootMarshal(e,dt);return;}
         if(e.Kind==EnemyKind.RootSoldier&&e.State==0&&e.Cooldown<=0&&Vector2.Distance(e.Position,Player)<300&&ClearPath(e.Position,Player)){Hazards.Add(new(){Position=Player,Timer=1.3f,Radius=48,Roots=true});e.Cooldown=5;}
@@ -416,12 +418,16 @@ public sealed partial class Combat
         if(e.Dead)return;
         if(e.Kind==EnemyKind.Pikeman && e.State==0 && !stagger && Vector2.Dot(e.Facing,Normal(source-e.Position,e.Facing))>.4f)
         {damage*=.3f;Emit("block",e.Position,"BRYT GARDEN");}
+        if(e.Kind==EnemyKind.MeridianWarden){if(!MeridianState.PlateSet||MeridianState.Breaks==0)return;damage*=MeridianState.Exposed>0?1.5f:.2f;
+            float floor=e.MaxHealth*Math.Clamp(3-MeridianState.Breaks,0,2)/3f;damage=Math.Min(damage,Math.Max(0,e.Health-floor));if(damage<=0)return;
+            if(e.Health-damage<=floor&&floor>0){MeridianState.Exposed=0;e.State=0;e.Cooldown=1.5f;Emit("inscription",Player,"NÄSTA INSTRUMENT SVARAR");}}
         if(e.Kind==EnemyKind.CrownBailiff)damage*=e.State is 2 or 3?1.35f:.65f;
         if(e.Kind==EnemyKind.RootMarshal)damage*=RegimentState.Exposed>0?1.45f:.28f;
         if(e.Kind==EnemyKind.OathGuardian)damage*=e.State==3?1.65f:.18f;
         e.Health=Math.Max(0,e.Health-damage);e.Hurt=.16f;
-        if(stagger && e.Kind is not (EnemyKind.Collector or EnemyKind.OathGuardian or EnemyKind.RootMarshal or EnemyKind.CrownBailiff)){e.State=3;e.Timer=.5f;e.Position=MoveBody(e.Position,e.Position+Normal(e.Position-source,Vector2.UnitX)*12);}
+        if(stagger && e.Kind is not (EnemyKind.Collector or EnemyKind.OathGuardian or EnemyKind.RootMarshal or EnemyKind.CrownBailiff or EnemyKind.MeridianWarden)){e.State=3;e.Timer=.5f;e.Position=MoveBody(e.Position,e.Position+Normal(e.Position-source,Vector2.UnitX)*12);}
         HitStop=Weapon==Weapon.Hammer?.055f:.035f;Emit("hit",e.Position,((int)damage).ToString(),damage);
+        if(e.Dead&&e.Kind==EnemyKind.MeridianWarden){e.Retired=true;MeridianState.WardenDefeated=true;foreach(var h in Hazards.Where(h=>h.Meridian))h.Timer=0;Emit("radio",e.Position,"meridian-fallen");Emit("radio",e.Position,"meridian-after");Emit("inscription",e.Position,"MORGONEN GÅR VIDARE");Emit("checkpoint",Player);return;}
         if(e.Dead){Kills++;Stamina=Math.Min(100,Stamina+10);Emit("death",e.Position);if(e.Kind==EnemyKind.CrownBailiff&&Rooms!=null){FoundryState.BailiffDefeated=true;Emit("radio",Player,"foundry-fallen");Emit("checkpoint",Player);}else if(e.Kind==EnemyKind.RootMarshal&&Rooms!=null){RegimentState.MarshalDefeated=true;Emit("inscription",e.Position,"MARSKALKENS ED ÄR BRUTEN");Emit("checkpoint",Player);}else if(e.Kind==EnemyKind.OathGuardian&&Rooms!=null){Rooms.OathDefeated=true;Emit("radio",Player,"rooms-fallen");DropItem("crown-helm",e.Position);Emit("inscription",e.Position,"EDEN ÄR BRUTEN");Emit("checkpoint",Player);}else DropEnemyLoot(e);}
     }
     private void DamagePlayer(float damage,Vector2 source)

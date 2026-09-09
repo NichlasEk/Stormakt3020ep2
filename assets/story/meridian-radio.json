@@ -1,0 +1,66 @@
+{
+  "meridian-door": [
+    "hedvig",
+    "Datumet visar när porten står öppen. Använd avtrycket i låset."
+  ],
+  "meridian-entry": [
+    "ebba",
+    "Karl. Det går en vakt under klockan. Han verkar inte ha sett dig."
+  ],
+  "meridian-repeat": [
+    "ebba",
+    "Klockan slår. Vakten vänder vid märket."
+  ],
+  "meridian-noticed": [
+    "ebba",
+    "Vänta. Samma ord igen. Och vakten vänder på samma ställe."
+  ],
+  "meridian-ledger": [
+    "hedvig",
+    "Alla poster i liggaren har samma klockslag. Men bläcket är olika gammalt. De har skrivit samma morgon i åratal."
+  ],
+  "meridian-anchor": [
+    "hedvig",
+    "Plåten kommer utifrån. Håll märket mot spärren. Låt klockan slå färdigt."
+  ],
+  "meridian-open": [
+    "ebba",
+    "Nu gick han förbi märket. Gången är öppen, Karl. Fortsätt. Jag räknar slagen härifrån."
+  ],
+  "meridian-warden": [
+    "meridian",
+    "Stanna där. Jag håller morgonen på plats. Ni vet inte vad som väntar när den är över."
+  ],
+  "meridian-plate": [
+    "hedvig",
+    "Lägg plåten vid instrumenten. Dess märken visar tre lägen. Solen mot öster. Äpplet mot väster. Nyckeln mot söder."
+  ],
+  "meridian-fight": [
+    "meridian",
+    "Rör inte verket. Jag har burit denna timme längre än ni har burit ert namn."
+  ],
+  "meridian-tactic": [
+    "hedvig",
+    "Han vrider instrumenten ur läge. Rätta det som rör sig. När verket tappar takten kan du nå honom."
+  ],
+  "meridian-rage": [
+    "meridian",
+    "Det räcker. Ingen mer dag skall skrivas i mitt namn."
+  ],
+  "meridian-fallen": [
+    "meridian",
+    "Jag kunde inte ta tillbaka ordern. Bara hindra dagen då den skulle gälla."
+  ],
+  "meridian-after": [
+    "ebba",
+    "Karl. Solen flyttade sig. Bara en aning. Hör efter vad han försökte hålla tillbaka."
+  ],
+  "meridian-order": [
+    "hedvig",
+    "En förflyttningsorder. Den gäller hela kvarteret. Målet är överstruket. Originalet finns i observatoriet."
+  ],
+  "meridian-stop": [
+    "ebba",
+    "Ta handlingen med dig. Han får stanna här under uppsikt. Vi öppnar inte nästa port förrän vi vet vart den leder."
+  ]
+}

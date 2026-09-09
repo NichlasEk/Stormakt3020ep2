@@ -59,7 +59,7 @@ public partial class Main
             var delta=G(ConnectedWorld.Origin(id)-_game.WorldOrigin);if(!WorldRectVisible(delta,new(1536,1024)))continue;
             _paintRoom=id;var local=new List<(float Depth,Action Draw)>();
             if(id is PortRooms.Pump or PortRooms.Cistern)AddWaterLayers(local);
-            AddOathLayers(local);AddArchiveLayers(local);AddRootwayLayers(local);AddRegimentLayers(local);AddMineLayers(local);AddFoundryLayers(local);AddUppsalaLayers(local);AddOlderArchLayers(local);AddPaintedArchLayers(local);
+            AddOathLayers(local);AddArchiveLayers(local);AddRootwayLayers(local);AddRegimentLayers(local);AddMineLayers(local);AddFoundryLayers(local);AddUppsalaLayers(local);AddMeridianLayers(local);AddOlderArchLayers(local);AddPaintedArchLayers(local);
             if(id==PortRooms.Lodge)
             {
                 local.Add((623,()=>PaintForeground(_lodgePassageArt!,new Vector2[]{new(677,513),new(720,490),new(722,466),new(753,450),new(812,454),new(874,477),new(882,572),new(791,621),new(677,566)})));
@@ -74,7 +74,7 @@ public partial class Main
         _paintRoom=null;LoadDoorArt();
         foreach(var l in RoomLinks.All)
         {
-            if(l.Id is "chamber" or "archive" or "mine-entry" or "foundry")continue;
+            if(l.Id is "chamber" or "archive" or "mine-entry" or "foundry" or "uppsala-clock")continue;
             var at=G(ConnectedWorld.Center(l)-_game.WorldOrigin);if(!WorldRectVisible(at-new Vector2(210,240),new(420,420)))continue;
             var center=ConnectedWorld.Center(l)-_game.WorldOrigin;
             var path=ConnectedWorld.Route(l);var approach=NVec.Normalize(ConnectedWorld.Painted(l)?path[1]-path[0]:path[2]-path[1])*65;
@@ -178,7 +178,7 @@ public partial class Main
         Vector2 At(string id)
         {
             int index=Array.IndexOf(ConnectedWorld.RoomIds,id), row=index/7, column=index%7;
-            return new Vector2(110+(row%2==0?column:6-column)*175,250+row*115);
+            return new Vector2(110+(row%2==0?column:6-column)*175,210+row*90);
         }
         var r=_game.Rooms!;
         foreach(var l in RoomLinks.All)

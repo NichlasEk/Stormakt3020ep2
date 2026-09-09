@@ -1,0 +1,9 @@
+{
+  "parts": [
+    "meridian-rage-sentence-0.wav",
+    "meridian-rage-sentence-1.wav"
+  ],
+  "sha256": "7b66751ee5021953cf5402bc4a23f6acb2aa238ab5b674592c38021e2fbc1cc2",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

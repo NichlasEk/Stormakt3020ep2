@@ -39,7 +39,7 @@ public static class MineTests
             foreach(var id in Mine.Ids.Concat(Uppsala.Ids))g.Rooms!.Rooms.Remove(id);
             foreach(var l in RoomLinks.All.Skip(15))g.Rooms!.Doors.Remove(l.Id);
             g.Rooms!.LayoutVersion=6;g.Health=73;Save();
-            check(g.Rooms!.LayoutVersion==9&&g.Rooms.Rooms.Count==20&&g.Health==73&&g.RegimentState.FarledReached,"Published regiment saves gain unexplored mine without resetting story or health");
+            check(g.Rooms!.LayoutVersion==10&&g.Rooms.Rooms.Count==22&&g.Health==73&&g.RegimentState.FarledReached,"Published regiment saves gain unexplored mine without resetting story or health");
             check(Mine.Ids.All(id=>!g.Rooms.Rooms[id].Visited),"New mine starts unexplored");
             var gate=RoomLinks.All.First(l=>l.Id=="mine-entry");var center=ConnectedWorld.Center(gate)-g.WorldOrigin;
             check(!g.ClearPath(center-new Vector2(0,60),center+new Vector2(0,60)),"Closed painted mine gate blocks movement and sight");

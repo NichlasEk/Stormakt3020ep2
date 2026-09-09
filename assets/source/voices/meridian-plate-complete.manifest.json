@@ -1,0 +1,12 @@
+{
+  "parts": [
+    "meridian-plate-sentence-0.wav",
+    "meridian-plate-sentence-1.wav",
+    "meridian-plate-sentence-2.wav",
+    "meridian-plate-sentence-3.wav",
+    "meridian-plate-sentence-4.wav"
+  ],
+  "sha256": "c520063888a5b54046db63c1982b85a87217981b627ee348ebe0b5d8c9153f6c",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

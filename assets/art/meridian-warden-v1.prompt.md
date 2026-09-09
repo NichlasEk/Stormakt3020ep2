@@ -1,0 +1,5 @@
+# meridian-warden-v1
+
+Generated with the built-in imagegen tool, 2026-09-09. Production prompt specification:
+
+Production 2D painted sprite sheet, square, genuine transparent alpha. Four cells in exact 2x2 grid, no borders/labels/background/ground shadows. Same gaunt late-middle-aged Swedish baroque astronomer-official, receding dark-grey hair tied back, stern tired face, natural tall human proportions, worn midnight-blue robe over battered brigandine, brown boots, small tarnished brass instruments on belt, narrow ceremonial measuring staff. No wizard hat, crown, giant shoulders or cartoon proportions. Upper-left full-body quiet front three-quarter down-right; upper-right same view raising measuring rod in stern command; lower-left rear three-quarter up-right; lower-right exhausted kneeling on one knee, staff lowered. Entire figure and staff inside each cell, ample margins, consistent scale and feet near cell lower center. Fixed isometric view from 35 degrees above, clean silhouette, realistic dark historical oil-painted texture, matte umber/blue/old gold. True 2D game sprites, not 3D/Blender/render/concept art, not cute, no white fringe, alpha in every gap.

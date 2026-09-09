@@ -1,0 +1,9 @@
+{
+  "parts": [
+    "meridian-door-sentence-0.wav",
+    "meridian-door-sentence-1.wav"
+  ],
+  "sha256": "47fb5b743765d8bb293f82b683cf33fe498c24caedddd7cf4a94c2b3842b5c5c",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}
