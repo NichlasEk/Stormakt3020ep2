@@ -94,3 +94,5 @@ Testerna kontrollerar täckning av alla rum/bosstyper, aktivering och avslut av 
 47 loopar, 57,38 minuter totalt, stereo 48 kHz. Alla uppmätta nivåer ligger inom 0,3 LUFS från −22 och topparna under −2 dBTP. Hela testsamlingen klarade 117 636 kontroller; det utökade separata musikprovet klarade 98.
 
 Native-kontrollen är godkänd för samtliga 47 strömmar, musikval, övertoning, dialogdämpning, tyst huvudvolym, filmtystnad och bibliotekets återgång utan ändrat kampanjtillstånd. Biblioteksbild: `artifacts/music-library.png`.
+
+Även Linux-exportens native-kontroll är godkänd. `play.sh` startar `dist/AtlandsArv-0.22-soundtrack`, med körfil, PCK och .NET-assembly verifierade tillsammans.
