@@ -2,7 +2,7 @@
 
 ## 0.24 · Ebba går ned
 
-Aktuell Linux-version: `dist/AtlandsArv-0.24-ebba/`. Starta med `./play.sh`.
+Aktuell Linux-version: `dist/AtlandsArv-0.24.1-port/`. Starta med `./play.sh`.
 
 Karl blir kvarhållen i Kungaminnets kontrollsluss. Ta över Ebba ombord, hämta hennes sabel och tjänstepistol och följ servicevägen till Sigillmästaren. Fyra nya målade rum, separat utrustning för båda hjältarna, 24 svenska röstklipp, fem musikstycken och en kort romantisk återföreningsfilm. Totalt 41 platser och 57 musikspår. Fortsätt efter Saltkällans avrapportering genom att tala med Ebba igen. Separat prov: `./play.sh -- --rescue` (nytt prov: `--rescue-new`). [Spelväg, manus och kontroller](docs/EBBA-RESCUE.md).
 

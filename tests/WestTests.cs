@@ -25,7 +25,15 @@ public static class WestTests
             try
             {
                 foreach(var id in West.Ids.Concat(Salt.Ids).Concat(Rescue.Ids))g.Rooms!.Rooms.Remove(id);foreach(var l in RoomLinks.All.Where(l=>(l.Id.StartsWith("gamla-west-")||(l.Id.StartsWith("salt-")||l.Id.StartsWith("rescue-")))))g.Rooms!.Doors.Remove(l.Id);g.Rooms!.LayoutVersion=13;Save();check(g.Rooms.LayoutVersion==16&&g.Rooms.Rooms.Count==41&&g.GamlaState.Debriefed,"Published Gamla save migrated");
-                Cross("gamla-west-entry");Fight();var gate=RoomLinks.All.Single(l=>l.Id=="gamla-west-scale");check(!RoomLinks.Open(g.Rooms!,gate),"Scale locked before instructions");Use(West.Register);check(g.WestState.RegisterRead,"Instructions read");Cross("gamla-west-scale");
+                // Walk from the room floor, not from a teleported portal mouth.
+                var entrance=RoomLinks.All.Single(l=>l.Id=="gamla-west-entry");float lane=weapon==Weapon.Saber?(order==Order.Artillery?1240:1260):(order==Order.Artillery?1300:1330);
+                var leaf=g.Rooms!.Doors[entrance.Id];leaf.Locked=false;leaf.TargetOpen=false;leaf.Openness=0;g.Player=new(lane,600);
+                for(int i=0;i<180;i++)g.Step(new(-Vector2.UnitY,-Vector2.UnitY,false,false,false,false,false,false,false,false));
+                check(g.Passage==null&&g.Rooms.Current==Gamla.Registry,"Closed registry door still blocks entry");
+                g.Player=new(lane,600);leaf.TargetOpen=true;for(int i=0;i<90;i++)g.Step(default);
+                int approachTicks=0;var mouth=ConnectedWorld.Route(entrance)[1]-g.WorldOrigin;
+                while(g.Passage==null&&approachTicks++<300){var dir=-Vector2.UnitY;g.Step(new(dir,dir,false,false,false,false,false,false,false,false));}
+                check(g.Passage!=null,$"Registry doorway reachable from room floor: {g.Player}");while(g.Passage!=null)g.Step(default);Save();Fight();var gate=RoomLinks.All.Single(l=>l.Id=="gamla-west-scale");check(!RoomLinks.Open(g.Rooms!,gate),"Scale locked before instructions");Use(West.Register);check(g.WestState.RegisterRead,"Instructions read");Cross("gamla-west-scale");
                 var boss=g.Enemies.Single(e=>e.Kind==EnemyKind.MusterOfficer);float hp=boss.Health;g.Player=boss.Position+new Vector2(0,65);for(int i=0;i<55;i++)g.Step(new(default,-Vector2.UnitY,true,false,false,false,false,false,false,false));check(boss.Health==hp,"Boss protected while weights loaded");
                 Fight();check(g.WestState.Defeated&&g.WestState.Reinforced,"Defeat and reinforcement phase persisted");Cross("gamla-west-exit");Use(West.Record);Use(West.Talk);check(!g.WestState.ElinMet,"Listen before leaving");Use(West.Talk);check(g.WestState.ElinMet,"Elin rescued");int loot=g.Inventory.NextId;Use(West.Talk);check(g.Inventory.NextId==loot,"No duplicate rescue reward");Save();
                 Cross("gamla-west-exit",true);Cross("gamla-west-scale",true);Cross("gamla-west-entry",true);Cross("gamla-registry",true);Cross("gamla-mound",true);Use(Gamla.Board);check(g.InCabin,"Back aboard");Use(Cabin.Talk);check(g.WestState.Debriefed&&g.Events.Any(e=>e.Text=="west-aboard"),"Elin speaks aboard with Ebba");Use(West.Aboard);check(g.Events.Any(e=>e.Text=="west-aboard"),"Elin can be addressed aboard");Save();Console.WriteLine($"WEST {order}/{weapon}: rescued Elin, returned aboard, {g.Health}hp");

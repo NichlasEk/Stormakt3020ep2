@@ -12,7 +12,7 @@ public static class ConnectedWorld
     public static readonly string[] RoomIds=PortRooms.Ids.Concat(Regiment.Ids).Concat(Mine.Ids).Concat(Uppsala.Ids).ToArray();
     public const int Revision=5;
     public static bool Painted(RoomLink link)=>true;
-    public static float MouthWidth(RoomLink link)=>link.Id switch{"meridian-hall"=>.65f,"lodge"=>.8f,"pump" or "cistern"=>.75f,"archive"=>1.15f,"gallery"=>.42f,"shortcut"=>.38f,"chamber"=>.42f,_=>.36f};
+    public static float MouthWidth(RoomLink link)=>link.Id switch{"gamla-west-entry"=>.72f,"meridian-hall"=>.65f,"lodge"=>.8f,"pump" or "cistern"=>.75f,"archive"=>1.15f,"gallery"=>.42f,"shortcut"=>.38f,"chamber"=>.42f,_=>.36f};
     public static Vector2 Origin(string id)=>Gamla.Known(id)?Gamla.Origin(id):Observatory.Known(id)?Observatory.Origin(id):id==Cabin.Room?new(50000,1000):id==Meridian.Clock?new(44100,550):id==Meridian.Hall?new(46200,750):Uppsala.Known(id)?Uppsala.Origin:Mine.Known(id)?Mine.Origin(id):Regiment.Known(id)?Regiment.Origin(id):id switch
     {
         PortRooms.Court=>new(0,0),PortRooms.Lodge=>new(2100,482.5f),PortRooms.Pump=>new(4200,1275),
@@ -64,7 +64,7 @@ public static class ConnectedWorld
     {var h=Hinge(l);var d=(Center(l)-h)*2;float a=open*MathF.PI/2;return h+new Vector2(d.X*MathF.Cos(a)-d.Y*2*MathF.Sin(a),d.X*.5f*MathF.Sin(a)+d.Y*MathF.Cos(a));}
     public static readonly Dictionary<string,Vector2[][]> Floors=RoomIds.ToDictionary(id=>id,id=>new[]{Ground(id).Select(p=>p+Origin(id)).ToArray()});
     public static Vector2[] PassageFor(RoomLink l,int segment)
-    {var route=Route(l);var a=route[segment-1];var b=route[segment];var side=Side(a,b)*(Painted(l)&&(segment==1||segment==route.Length-1)?(segment==1?MouthWidth(l):.4f):1);var along=Vector2.Normalize(b-a)*3;return new[]{a-along-side,b+along-side,b+along+side,a-along+side};}
+    {var route=Route(l);var a=route[segment-1];var b=route[segment];if(l.Id=="gamla-west-entry"&&segment==1)a-=Vector2.Normalize(b-a)*100;var side=Side(a,b)*(Painted(l)&&(segment==1||segment==route.Length-1)?(segment==1?MouthWidth(l):.4f):1);var along=Vector2.Normalize(b-a)*3;return new[]{a-along-side,b+along-side,b+along+side,a-along+side};}
     public static readonly Dictionary<string,Vector2[][]> Corridors=RoomLinks.All.ToDictionary(l=>l.Id,l=>Enumerable.Range(1,Route(l).Length-1).Select(i=>PassageFor(l,i)).ToArray());
     public sealed class Shape
     {

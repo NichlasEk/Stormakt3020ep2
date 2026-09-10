@@ -142,3 +142,7 @@ Kartan visar vägen, gjutformen tillverkar stjärnplåten, plåten riktar minnes
 Bildproduktionens manifest: `assets/source/art/rescue-assets-v1.json`. Röstreferenser, begäranden, masterfiler, musikmaster och LTX-arbetsflöde finns under `assets/source/`.
 
 Linux-export: `dist/AtlandsArv-0.24-ebba/AtlandsArv.x86_64`. Hela exportmappen skall hållas tillsammans, inklusive `data_AtlandsArv_linuxbsd_x86_64/AtlandsArv.dll`. `play.sh` startar den här versionen. Native exportprov och musikprov med samtliga 57 strömmar har passerat.
+
+## 0.24.1 · Väntrummets port
+
+Den gångbara öppningen till Västra vågen var bara 72 bildpunkter bred trots den betydligt bredare målade porten. Öppningen är nu 144 bildpunkter, ansluter ordentligt till rummets golv och har en bred övergångszon. Dörrblad och kollision följer samma bredd. Regressionen reproducerades med rak gång från vänster sida; nya tester går från fyra lägen på golvet och kontrollerar även stängd dörr. 116 västra-vägen-kontroller, 86 räddningskontroller och native passageprov passerar. Linux-version: `dist/AtlandsArv-0.24.1-port/`. Befintliga sparningar används som tidigare.

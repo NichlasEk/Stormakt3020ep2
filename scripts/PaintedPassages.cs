@@ -39,7 +39,15 @@ public sealed partial class Combat
                 if(!RoomLinks.Open(Rooms,link))continue;
                 var door=Rooms.Doors[link.Id];if(HasWorldDoor(link)&&!door.Broken&&door.Openness<.85f)continue;
                 var route=OrientedPassage(link,Rooms.Current);var mouth=route[1]-WorldOrigin;
-                if(Vector2.Distance(Player,mouth)>55||Vector2.Dot(input.Move,route[1]-route[0])<=0)continue;
+                bool reached=Vector2.Distance(Player,mouth)<=55;
+                if(link.Id=="gamla-west-entry"&&Rooms.Current==link.A)
+                {
+                    // The painted arch is wider than the old circular trigger.
+                    var axis=Vector2.Normalize(route[1]-route[0]);var delta=Player-mouth;
+                    float depth=Vector2.Dot(delta,axis),side=Math.Abs(delta.X*axis.Y-delta.Y*axis.X);
+                    reached=depth>=-55&&depth<=30&&side<=64;
+                }
+                if(!reached||Vector2.Dot(input.Move,route[1]-route[0])<=0)continue;
                 Passage=new(){Link=link.Id,From=Rooms.Current,Start=Player};AttackTime=AttackBuffer=DodgeTime=0;Emit("checkpoint",Player);break;
             }
             if(Passage==null)return false;

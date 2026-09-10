@@ -18,6 +18,12 @@ public partial class Main
                 await ToSignal(GetTree(),SceneTree.SignalName.ProcessFrame);await ToSignal(RenderingServer.Singleton,RenderingServer.SignalName.FramePostDraw);
                 var path=ProjectSettings.GlobalizePath("res://artifacts/"+name+".png");System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(path)!);using var img=GetViewport().GetTexture().GetImage();if(img.SavePng(path)!=Error.Ok)throw new Exception("Capture failed");
             }
+            Enter(Gamla.Registry,new(1240,600));var entry=RoomLinks.All.Single(l=>l.Id=="gamla-west-entry");var entryDoor=_game.Rooms!.Doors[entry.Id];entryDoor.Locked=false;entryDoor.TargetOpen=true;entryDoor.Openness=1;
+            await Capture("registry-door-approach");
+            for(int i=0;i<200&&_game.Passage==null;i++)_game.Step(new(-NVec.UnitY,-NVec.UnitY,false,false,false,false,false,false,false,false));
+            if(_game.Passage==null)throw new Exception("Registry entry unreachable from left side of painted opening");
+            for(int i=0;i<20;i++)_game.Step(default);await Capture("registry-door-entering");while(_game.Passage!=null)_game.Step(default);
+            if(_game.Rooms.Current!=West.Control)throw new Exception("Registry entry led to wrong room");
             Enter(West.Control,new(770,575));await Capture("west-control");foreach(var e in _game.Enemies)e.Health=0;_game.WestState.RegisterRead=true;
             Enter(West.Hall,new(750,665));var boss=_game.Enemies.Single(e=>e.Kind==EnemyKind.MusterOfficer);boss.State=1;boss.Timer=.9f;boss.LockedAim=_game.Player;await Capture("west-boss");
             _game.WestState.Exposed=7;_game.WestState.Brakes=3;boss.State=2;await Capture("west-boss-exposed");boss.Health=0;_game.WestState.Defeated=true;_game.WestState.Exposed=0;
