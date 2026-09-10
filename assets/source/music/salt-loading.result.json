@@ -1,0 +1,26 @@
+[
+  {
+    "file": "/v1/audio?path=%2Fhome%2Fnichlas%2Fai%2Feutherstudio%2FACE-Step-1.5%2F.cache%2Facestep%2Ftmp%2Fapi_audio%2F6cb5f55e-9269-096c-fac5-198aaa11e262.wav",
+    "wave": "",
+    "status": 1,
+    "create_time": 1789042612,
+    "env": "development",
+    "prompt": "Dark Swedish historical dungeon exploration, restrained bowed bass viols, distant frame drum, sparse nyckelharpa phrases, damp abandoned loading quay beneath royal burial mounds, minor lament, no vocals no modern synth, slow tension, matte intimate acoustic texture",
+    "lyrics": "[Instrumental]",
+    "metas": {
+      "bpm": 66,
+      "duration": 72.73,
+      "genres": "N/A",
+      "keyscale": "D minor",
+      "timesignature": "4/4",
+      "prompt": "Dark Swedish historical dungeon exploration, restrained bowed bass viols, distant frame drum, sparse nyckelharpa phrases, damp abandoned loading quay beneath royal burial mounds, minor lament, no vocals no modern synth, slow tension, matte intimate acoustic texture",
+      "lyrics": "[Instrumental]"
+    },
+    "generation_info": "**\ud83c\udfb5 Total generation time (1 song): 5.30s**\n- 5.30s per song\n- DiT phase (1 song): 5.30s",
+    "seed_value": "30221000",
+    "lm_model": "acestep-5Hz-lm-1.7B",
+    "dit_model": "acestep-v15-turbo",
+    "progress": 1.0,
+    "stage": "succeeded"
+  }
+]

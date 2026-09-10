@@ -1,0 +1,11 @@
+{
+  "text": "Det vet jag. Kom hit. Du behöver inte bevisa det för mig.",
+  "voice_instruction": "An adult Swedish woman around forty, observatory technician, clear natural Swedish pronunciation, grounded warm mezzo voice, tired but brave and precise, soft steady delivery, no theatrical acting.",
+  "language": "sv",
+  "model_backend": "dots.tts-mf",
+  "output_format": "wav",
+  "normalize": false,
+  "seed": 30221019,
+  "prompt_text": "Jag heter Märta Vinge. Jag arbetar med instrumenten i observatoriet. Min syster väntar på mig. Vi har hållit lampan tänd varje natt och jag tänker inte lämna henne här.",
+  "dots_num_steps": 4
+}

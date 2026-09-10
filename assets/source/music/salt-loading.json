@@ -1,0 +1,22 @@
+{
+  "id": "salt-loading",
+  "master": "assets/source/music/salt-loading.flac",
+  "file": "assets/audio/music/salt-loading.ogg",
+  "duration": 65.45454545454545,
+  "overlap_seconds": 3.6363636363636362,
+  "filter": "[0:a]asplit=3[h][b][t];[h]atrim=0:3.6363636363636362,asetpts=PTS-STARTPTS[head];[b]atrim=3.6363636363636362:65.45454545454545,asetpts=PTS-STARTPTS[body];[t]atrim=65.45454545454545:69.0909090909091,asetpts=PTS-STARTPTS[tail];[tail][head]acrossfade=d=3.6363636363636362:c1=tri:c2=tri[join];[body][join]concat=n=2:v=0:a=1,loudnorm=I=-22:TP=-3:LRA=8[out]",
+  "levels": {
+    "input_i": "-22.02",
+    "input_tp": "-8.29",
+    "input_lra": "7.00",
+    "input_thresh": "-32.92",
+    "output_i": "-21.88",
+    "output_tp": "-8.51",
+    "output_lra": "7.00",
+    "output_thresh": "-32.79",
+    "normalization_type": "dynamic",
+    "target_offset": "-0.12"
+  },
+  "sha256": "9b1f3dcb2650078a991ae6a589091c0e287d48750bbc7c8cbbc59df66cfe80cb",
+  "gain_correction_db": 0.019999999999999574
+}

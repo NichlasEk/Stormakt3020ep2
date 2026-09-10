@@ -1,0 +1,9 @@
+{
+  "parts": [
+    "salt-rising-sentence-0.wav",
+    "salt-rising-sentence-1.wav"
+  ],
+  "sha256": "00fe7051cd1534e1c1bca642d21cab6d14c10a1badcfbf7c568620e87a81ecc2",
+  "backend": "voxcpm2",
+  "synthetic_reference": true
+}

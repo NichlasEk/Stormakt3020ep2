@@ -1,0 +1,9 @@
+{
+  "parts": [
+    "salt-watcher-sentence-0.wav",
+    "salt-watcher-sentence-1.wav"
+  ],
+  "sha256": "d451ff805adbbea2de0193c2d4c7f22de372bf1a7cb268223db6299274128746",
+  "backend": "voxcpm2",
+  "synthetic_reference": true
+}

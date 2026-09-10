@@ -1,0 +1,11 @@
+{
+  "text": "Tillförseln öppnas. Stå kvar vid ert tilldelade namn.",
+  "voice_instruction": "Swedish adult male sluice keeper, deep calm weathered bass, clear intelligible natural Swedish, grave responsibility and controlled authority, no monstrous distortion, no comedy.",
+  "language": "sv",
+  "model_backend": "voxcpm2",
+  "output_format": "wav",
+  "normalize": false,
+  "seed": 30221040,
+  "prompt_text": "Jag vakar över källan. Varje vittne står under mitt ansvar. Ingen lämnar platsen innan överföringen är avslutad.",
+  "dots_num_steps": 4
+}

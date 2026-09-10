@@ -1,0 +1,10 @@
+{
+  "parts": [
+    "salt-chains-sentence-0.wav",
+    "salt-chains-sentence-1.wav",
+    "salt-chains-sentence-2.wav"
+  ],
+  "sha256": "af4577de9ad4e32f01ca68302db3d9c9254b5ce802138df7a8d7f29159a2870f",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

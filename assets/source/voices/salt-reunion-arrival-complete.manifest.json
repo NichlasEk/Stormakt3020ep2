@@ -1,0 +1,9 @@
+{
+  "parts": [
+    "salt-reunion-arrival-sentence-0.wav",
+    "salt-reunion-arrival-sentence-1.wav"
+  ],
+  "sha256": "2e81c5e64a915f83dbf5cd8e917ef4aa07bda3fc37d73114121ba37a15481790",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

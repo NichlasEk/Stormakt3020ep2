@@ -1,0 +1,10 @@
+{
+  "parts": [
+    "salt-fallen-sentence-0.wav",
+    "salt-fallen-sentence-1.wav",
+    "salt-fallen-sentence-2.wav"
+  ],
+  "sha256": "ed66fee36b0164710f620ed0de586e51d7a38af6b2b8485ffcd8c67d8e88baef",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

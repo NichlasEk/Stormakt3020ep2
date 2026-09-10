@@ -1,0 +1,22 @@
+{
+  "id": "salt-archive",
+  "master": "assets/source/music/salt-archive.flac",
+  "file": "assets/audio/music/salt-archive.ogg",
+  "duration": 72.0,
+  "overlap_seconds": 4.0,
+  "filter": "[0:a]asplit=3[h][b][t];[h]atrim=0:4.0,asetpts=PTS-STARTPTS[head];[b]atrim=4.0:72.0,asetpts=PTS-STARTPTS[body];[t]atrim=72.0:76.0,asetpts=PTS-STARTPTS[tail];[tail][head]acrossfade=d=4.0:c1=tri:c2=tri[join];[body][join]concat=n=2:v=0:a=1,loudnorm=I=-22:TP=-3:LRA=8[out]",
+  "levels": {
+    "input_i": "-22.00",
+    "input_tp": "-7.86",
+    "input_lra": "5.80",
+    "input_thresh": "-32.60",
+    "output_i": "-21.88",
+    "output_tp": "-7.88",
+    "output_lra": "5.20",
+    "output_thresh": "-32.40",
+    "normalization_type": "dynamic",
+    "target_offset": "-0.12"
+  },
+  "sha256": "eff05cb229a31e81c10793affac8cc69c5f18802b3ee99d5d8b62858cb0b81aa",
+  "gain_correction_db": -0.28000000000000114
+}

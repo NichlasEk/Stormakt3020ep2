@@ -1084,4 +1084,104 @@ Källa: [west-radio.json](../assets/story/west-radio.json).
 
 > Säg till Märta att jag behöll mitt namn. Hon kommer att förstå.
 
+
+## Saltkällan · implementerade repliker i 0.23
+
+Se [scenföljd och kunskapsgränser](SALTSPRING.md).
+
+**`salt-reunion-arrival` · ebba**
+
+> Skytteln har hämtat Märta från observatoriet. Elin, hon väntar här hos oss.
+
+**`salt-reunion-marta` · marta**
+
+> Elin. Jag har läst ditt namn varje kväll. Jag vågade inte sluta.
+
+**`salt-reunion-elin` · elin**
+
+> Jag är här. Och jag heter fortfarande Elin Vinge.
+
+**`salt-reunion-answer` · marta**
+
+> Det vet jag. Kom hit. Du behöver inte bevisa det för mig.
+
+**`salt-reunion-route` · ebba**
+
+> Ni stannar ombord. Karl, vi går ned genom porten bakom vågen. Den leder till Saltkällans lastplats.
+
+**`salt-loading` · ebba**
+
+> Tomma bårar. Inga gravar. Följ spåren, Karl. Vi vet ännu inte om de andra lever.
+
+**`salt-manifest` · ebba**
+
+> Här står att levande vittnen skall bekräfta äldre namn. Leveransen går till källans minnesverk. Det här är mottagarens egen instruktion.
+
+**`salt-stairs` · marta**
+
+> Rören matar vatten till namnplåtarna. Stäng tillförseln vid hjulet, annars når du inte arkivet.
+
+**`salt-drained` · ebba**
+
+> Vattnet sjunker. Den inre porten är fri.
+
+**`salt-archive` · marta**
+
+> De vill få minnesverket att godta nya människor som de gamla kungarnas vittnen. Namnen är nycklar till deras befogenheter.
+
+**`salt-proof` · ebba**
+
+> Kartan visar vägen. Gjutformen tillverkar plåten. Stjärnplåten ställer in verket. Men det är en levande människas intyg som skall öppna det. Därför behövde de Elin.
+
+**`salt-watcher` · saltwarden**
+
+> Vittnena står under mitt beskydd. Ingen återkallar en bekräftad överföring.
+
+**`salt-chains` · ebba**
+
+> Kedjorna styr luckorna. Dra i spelen för att sänka vattnet. Håll dig undan där golvet mörknar.
+
+**`salt-rising` · saltwarden**
+
+> Tillförseln öppnas. Stå kvar vid ert tilldelade namn.
+
+**`salt-second` · ebba**
+
+> Han lämnar sitt fäste. Se upp för kedjan, Karl.
+
+**`salt-fallen` · ebba**
+
+> Väktaren är nere. Stäng verket vid pulpeten. Vi måste få upp dem innan vattnet stiger igen.
+
+**`salt-release` · marta**
+
+> Kvarhållningen är bruten. Jag har röster i ledningen. De lever, Karl. Skytteln tar emot dem vid lastplatsen.
+
+**`salt-order` · ebba**
+
+> Beställningen är signerad av Riksantikvariens kansli. De begär tillträde till Kungaminnets innersta valv. Jag tar originalet. Ingen skall kunna skriva om det här också.
+
+**`salt-return` · elin**
+
+> De fick tillbaka sina egna namn. Tack. Jag vill träffa dem när de orkar.
+
+**`salt-debrief` · ebba**
+
+> Alla från liggaren är räknade ombord. Nästa spår är kansliets beställning. I kväll avslutar vi räkningen här.
+
+**`salt-cache` · marta**
+
+> En underhållskista. De som arbetade här lämnade en väg ut åt sig själva.
+
 <!-- END-DIALOGUE-SNAPSHOT -->
+
+
+## Nästa etapp efter Saltkällan · Ebba tar över (förslag efter användarens riktning)
+
+Detta är ännu inte spelbart. Saltkällans avrapportering avslutar nuvarande etapp.
+
+Karl följer kansliets beställning in i Kungaminnet. En fälla skiljer honom från återvägen; radions sista meddelande är begripligt men ofullständigt. Ebba tar själv befälet på marken och blir spelbar ombord på fregatten. Bytet skall vara tydligt i bild, kontroller och sparning. Karls inventarium bevaras separat.
+
+Ebba har sabel och tjänstepistol, en egen rörelsestil och egna riktade gång-/stridsbilder. Hon skall kunna vinna strider själv, inte bara vara ett tillfälligt pusselverktyg. Hedvig kan hålla radiokontakten medan Ebba leder räddningen. Kapitlet ger ett nytt perspektiv på redan kända miljöer innan hon når fällans maskineri.
+
+Återföreningen får bli romantisk: Karl inser att hon kom själv; Ebba släpper sin befälsroll ett ögonblick. En kyss och en stilla paus före nästa order. Humorn kommer ur repliker och situation, aldrig töntig figurdesign. Slutliga repliker och fällans exakta funktion skrivs innan implementation; det skall vara en trovärdig följd av kansliets försvar, inte att Karl plötsligt tappar omdömet.

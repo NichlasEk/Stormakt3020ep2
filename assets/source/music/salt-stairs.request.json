@@ -1,0 +1,21 @@
+{
+  "prompt": "Nordic baroque underground exploration instrumental, plucked theorbo repeating descending motif, low bowed strings, isolated copper bell, slow footsteps beneath stone, ancient salt encrusted staircase, restrained haunting and calm, no choir no singing no modern beat",
+  "lyrics": "[Instrumental]",
+  "vocal_language": "unknown",
+  "audio_duration": 66.67,
+  "audio_format": "wav",
+  "task_type": "text2music",
+  "batch_size": 1,
+  "thinking": false,
+  "use_cot_caption": false,
+  "use_cot_language": false,
+  "use_cot_metas": false,
+  "use_format": false,
+  "bpm": 72,
+  "key_scale": "A minor",
+  "time_signature": "4/4",
+  "inference_steps": 8,
+  "guidance_scale": 7,
+  "use_random_seed": false,
+  "seed": 30221001
+}

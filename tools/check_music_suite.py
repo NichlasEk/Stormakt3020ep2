@@ -1,13 +1,16 @@
 #!/usr/bin/env python3
 """Measure every delivered loop, correct integrated gain, and verify duration/peak/silence."""
 from pathlib import Path
-import subprocess,json,hashlib
+import subprocess,json,hashlib,sys
 ROOT=Path(__file__).resolve().parents[1]
 def measure(p):
  text=subprocess.run(['ffmpeg','-hide_banner','-i',str(p),'-af','loudnorm=I=-22:TP=-3:LRA=8:print_format=json','-f','null','-'],capture_output=True,text=True,check=True).stderr
  return json.JSONDecoder().raw_decode(text[text.rfind('{'):])[0]
-report=[]
+report_path=ROOT/'assets/source/music/quality-report.json'
+report=json.loads(report_path.read_text()) if len(sys.argv)>1 and report_path.exists() else []
+report=[row for row in report if row['id'] not in sys.argv[1:]]
 for t in json.loads((ROOT/'assets/story/music.json').read_text()):
+ if len(sys.argv)>1 and t['id'] not in sys.argv[1:]:continue
  p=ROOT/'assets/audio/music'/f"{t['id']}.ogg";levels=measure(p);gain=-22-float(levels['input_i'])
  if abs(gain)>.2:
   tmp=p.with_suffix('.normalized.ogg');subprocess.run(['ffmpeg','-y','-v','error','-i',str(p),'-af',f'volume={gain}dB','-c:a','libvorbis','-q:a','5',str(tmp)],check=True);tmp.replace(p);levels=measure(p)

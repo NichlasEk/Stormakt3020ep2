@@ -1,0 +1,10 @@
+{
+  "parts": [
+    "salt-reunion-marta-sentence-0.wav",
+    "salt-reunion-marta-sentence-1.wav",
+    "salt-reunion-marta-sentence-2.wav"
+  ],
+  "sha256": "41c4c8f0916ddbd773d06f2736a3ee0c98effa05b28646e5150682097bd6fdb0",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

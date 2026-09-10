@@ -1,0 +1,21 @@
+{
+  "prompt": "Solemn old Swedish archive instrumental score, chamber viols in close harmony, breathy wooden flute and sparse clavichord, deep black water and forbidden ledger, quiet discovery and human sorrow, no vocals, rich dark acoustic oil painted mood, no pop",
+  "lyrics": "[Instrumental]",
+  "vocal_language": "unknown",
+  "audio_duration": 80.0,
+  "audio_format": "wav",
+  "task_type": "text2music",
+  "batch_size": 1,
+  "thinking": false,
+  "use_cot_caption": false,
+  "use_cot_language": false,
+  "use_cot_metas": false,
+  "use_format": false,
+  "bpm": 60,
+  "key_scale": "E minor",
+  "time_signature": "4/4",
+  "inference_steps": 8,
+  "guidance_scale": 7,
+  "use_random_seed": false,
+  "seed": 30221002
+}

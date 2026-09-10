@@ -1,0 +1,26 @@
+[
+  {
+    "file": "/v1/audio?path=%2Fhome%2Fnichlas%2Fai%2Feutherstudio%2FACE-Step-1.5%2F.cache%2Facestep%2Ftmp%2Fapi_audio%2Fc4f25902-d7d1-a545-414e-5224bdfc87d9.wav",
+    "wave": "",
+    "status": 1,
+    "create_time": 1789042632,
+    "env": "development",
+    "prompt": "Nordic baroque underground exploration instrumental, plucked theorbo repeating descending motif, low bowed strings, isolated copper bell, slow footsteps beneath stone, ancient salt encrusted staircase, restrained haunting and calm, no choir no singing no modern beat",
+    "lyrics": "[Instrumental]",
+    "metas": {
+      "bpm": 72,
+      "duration": 66.67,
+      "genres": "N/A",
+      "keyscale": "A minor",
+      "timesignature": "4/4",
+      "prompt": "Nordic baroque underground exploration instrumental, plucked theorbo repeating descending motif, low bowed strings, isolated copper bell, slow footsteps beneath stone, ancient salt encrusted staircase, restrained haunting and calm, no choir no singing no modern beat",
+      "lyrics": "[Instrumental]"
+    },
+    "generation_info": "**\ud83c\udfb5 Total generation time (1 song): 1.84s**\n- 1.84s per song\n- DiT phase (1 song): 1.84s",
+    "seed_value": "30221001",
+    "lm_model": "acestep-5Hz-lm-1.7B",
+    "dit_model": "acestep-v15-turbo",
+    "progress": 1.0,
+    "stage": "succeeded"
+  }
+]

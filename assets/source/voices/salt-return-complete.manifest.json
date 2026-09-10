@@ -1,0 +1,10 @@
+{
+  "parts": [
+    "salt-return-sentence-0.wav",
+    "salt-return-sentence-1.wav",
+    "salt-return-sentence-2.wav"
+  ],
+  "sha256": "759cdc89414f30b4b0eaa0a8680dc7dc4584ceb6fb3b7c4975d0fa5f7eb74a93",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

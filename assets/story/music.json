@@ -515,5 +515,60 @@
     "duration": 81.2903,
     "seed": 30221046,
     "prompt": "Original instrumental soundtrack for a serious dark Swedish historical fantasy action RPG. Matte seventeenth century oil painting in music. Acoustic chamber-orchestral Nordic baroque palette, memorable distinct melody, no existing tune quotation. Final bureaucratic tribunal under ancient skies. Dark baroque organ and urgent string fugue, grave brass, decisive martial percussion. 124 BPM in A minor. Continuous even energy and repeated phrases for a game loop, enter immediately, no intro silence or ending cadence, no fadeout. No vocals, speech, choir, pop, EDM, modern drum kit, trailer braams or comedy."
+  },
+  {
+    "id": "salt-loading",
+    "title": "Tomma bårar",
+    "file": "res://assets/audio/music/salt-loading.ogg",
+    "bpm": 66,
+    "key": "D minor",
+    "bars": 18,
+    "duration": 72.73,
+    "seed": 30221000,
+    "prompt": "Dark Swedish historical dungeon exploration, restrained bowed bass viols, distant frame drum, sparse nyckelharpa phrases, damp abandoned loading quay beneath royal burial mounds, minor lament, no vocals no modern synth, slow tension, matte intimate acoustic texture"
+  },
+  {
+    "id": "salt-stairs",
+    "title": "Saltets trappa",
+    "file": "res://assets/audio/music/salt-stairs.ogg",
+    "bpm": 72,
+    "key": "A minor",
+    "bars": 18,
+    "duration": 66.67,
+    "seed": 30221001,
+    "prompt": "Nordic baroque underground exploration instrumental, plucked theorbo repeating descending motif, low bowed strings, isolated copper bell, slow footsteps beneath stone, ancient salt encrusted staircase, restrained haunting and calm, no choir no singing no modern beat"
+  },
+  {
+    "id": "salt-archive",
+    "title": "De lånade namnen",
+    "file": "res://assets/audio/music/salt-archive.ogg",
+    "bpm": 60,
+    "key": "E minor",
+    "bars": 18,
+    "duration": 80.0,
+    "seed": 30221002,
+    "prompt": "Solemn old Swedish archive instrumental score, chamber viols in close harmony, breathy wooden flute and sparse clavichord, deep black water and forbidden ledger, quiet discovery and human sorrow, no vocals, rich dark acoustic oil painted mood, no pop"
+  },
+  {
+    "id": "salt-spring",
+    "title": "Minnesverkets vatten",
+    "file": "res://assets/audio/music/salt-spring.ogg",
+    "bpm": 68,
+    "key": "D minor",
+    "bars": 18,
+    "duration": 70.59,
+    "seed": 30221003,
+    "prompt": "Ancient subterranean memory machine in a Swedish historical dark fantasy, deep sustained viols, slow resonant bronze bells, restrained bowed nyckelharpa, immense black cistern, awe and dread, sparse stately baroque harmony, seamless instrumental exploration no vocals"
+  },
+  {
+    "id": "boss-salt",
+    "title": "Saltväktarens kedjor",
+    "file": "res://assets/audio/music/boss-salt.ogg",
+    "bpm": 112,
+    "key": "D minor",
+    "bars": 24,
+    "duration": 55.71,
+    "seed": 30221004,
+    "prompt": "Intense Swedish historical action boss battle instrumental, heavy low orchestral drums and rattling chain percussion, urgent ostinato strings, dark trombones and nyckelharpa motif, alternating weighty attacks and brief breath, serious grim naval baroque, no vocals no electronic dance music no electric guitar"
   }
 ]

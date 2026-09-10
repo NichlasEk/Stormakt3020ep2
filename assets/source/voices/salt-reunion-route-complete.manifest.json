@@ -1,0 +1,10 @@
+{
+  "parts": [
+    "salt-reunion-route-sentence-0.wav",
+    "salt-reunion-route-sentence-1.wav",
+    "salt-reunion-route-sentence-2.wav"
+  ],
+  "sha256": "3e6bbd8dc8a0169f9355aa4a552a2da1c3c04fe07e02bba941db839c156c7568",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

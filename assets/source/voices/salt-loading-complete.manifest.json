@@ -1,0 +1,11 @@
+{
+  "parts": [
+    "salt-loading-sentence-0.wav",
+    "salt-loading-sentence-1.wav",
+    "salt-loading-sentence-2.wav",
+    "salt-loading-sentence-3.wav"
+  ],
+  "sha256": "3c2348d08f20bad19c8a41d1b818811f83e51549c9906acb7a067a350b3dd7ad",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

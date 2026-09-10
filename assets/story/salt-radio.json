@@ -1,0 +1,86 @@
+{
+  "salt-reunion-arrival": [
+    "ebba",
+    "Skytteln har hämtat Märta från observatoriet. Elin, hon väntar här hos oss."
+  ],
+  "salt-reunion-marta": [
+    "marta",
+    "Elin. Jag har läst ditt namn varje kväll. Jag vågade inte sluta."
+  ],
+  "salt-reunion-elin": [
+    "elin",
+    "Jag är här. Och jag heter fortfarande Elin Vinge."
+  ],
+  "salt-reunion-answer": [
+    "marta",
+    "Det vet jag. Kom hit. Du behöver inte bevisa det för mig."
+  ],
+  "salt-reunion-route": [
+    "ebba",
+    "Ni stannar ombord. Karl, vi går ned genom porten bakom vågen. Den leder till Saltkällans lastplats."
+  ],
+  "salt-loading": [
+    "ebba",
+    "Tomma bårar. Inga gravar. Följ spåren, Karl. Vi vet ännu inte om de andra lever."
+  ],
+  "salt-manifest": [
+    "ebba",
+    "Här står att levande vittnen skall bekräfta äldre namn. Leveransen går till källans minnesverk. Det här är mottagarens egen instruktion."
+  ],
+  "salt-stairs": [
+    "marta",
+    "Rören matar vatten till namnplåtarna. Stäng tillförseln vid hjulet, annars når du inte arkivet."
+  ],
+  "salt-drained": [
+    "ebba",
+    "Vattnet sjunker. Den inre porten är fri."
+  ],
+  "salt-archive": [
+    "marta",
+    "De vill få minnesverket att godta nya människor som de gamla kungarnas vittnen. Namnen är nycklar till deras befogenheter."
+  ],
+  "salt-proof": [
+    "ebba",
+    "Kartan visar vägen. Gjutformen tillverkar plåten. Stjärnplåten ställer in verket. Men det är en levande människas intyg som skall öppna det. Därför behövde de Elin."
+  ],
+  "salt-watcher": [
+    "saltwarden",
+    "Vittnena står under mitt beskydd. Ingen återkallar en bekräftad överföring."
+  ],
+  "salt-chains": [
+    "ebba",
+    "Kedjorna styr luckorna. Dra i spelen för att sänka vattnet. Håll dig undan där golvet mörknar."
+  ],
+  "salt-rising": [
+    "saltwarden",
+    "Tillförseln öppnas. Stå kvar vid ert tilldelade namn."
+  ],
+  "salt-second": [
+    "ebba",
+    "Han lämnar sitt fäste. Se upp för kedjan, Karl."
+  ],
+  "salt-fallen": [
+    "ebba",
+    "Väktaren är nere. Stäng verket vid pulpeten. Vi måste få upp dem innan vattnet stiger igen."
+  ],
+  "salt-release": [
+    "marta",
+    "Kvarhållningen är bruten. Jag har röster i ledningen. De lever, Karl. Skytteln tar emot dem vid lastplatsen."
+  ],
+  "salt-order": [
+    "ebba",
+    "Beställningen är signerad av Riksantikvariens kansli. De begär tillträde till Kungaminnets innersta valv. Jag tar originalet. Ingen skall kunna skriva om det här också."
+  ],
+  "salt-return": [
+    "elin",
+    "De fick tillbaka sina egna namn. Tack. Jag vill träffa dem när de orkar."
+  ],
+  "salt-debrief": [
+    "ebba",
+    "Alla från liggaren är räknade ombord. Nästa spår är kansliets beställning. I kväll avslutar vi räkningen här."
+  ],
+  "salt-cache": [
+    "marta",
+    "En underhållskista. De som arbetade här lämnade en väg ut åt sig själva."
+  ]
+}

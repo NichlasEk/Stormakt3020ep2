@@ -1,5 +1,11 @@
 # Från arenor till expeditioner
 
+## 0.23 · Saltkällan och systrarna
+
+Märta och Elin återförenas ombord. Fyra nya målade rum leder till Saltväktaren, med kedjespel, stigande vatten, gömma, räddning och beständig genväg tillbaka. 21 nya röstklipp med radiokort, fem egna musikspår och en kort LTX-film. Totalt 37 platser och 52 musikspår. Fortsätt genom högra porten bakom Västra vågen efter samtalet med Ebba. Separat prov: `./play.sh -- --salt`. [Spelväg, manus och kontroller](SALTSPRING.md).
+
+Nästa planerade etapp: Karl fångas i Kungaminnet, Ebba blir spelbar och räddar honom. Romantiskt efterspel ingår i riktningen; detta kapitel är ännu inte byggt.
+
 ## 0.22 · Egen musik genom expeditionen
 
 47 nya instrumentala spår: ett per rum, separata bossar, prolog, färder och avlösning. Automatisk övertoning och musikbibliotek i inställningarna. [Musik, kopplingar och kontroller](SOUNDTRACK.md).

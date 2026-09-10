@@ -13,7 +13,7 @@ public partial class Main
     private bool _observatorySlot;
     private void StartObservatory(bool fresh=false)
     {
-        LoadWaterArt();_westSlot=false;_gamlaSlot=false;_observatorySlot=true;_meridianSlot=_uppsalaSlot=_foundrySlot=_mineSlot=_regimentSlot=_doorSlot=_roomsSlot=_portSlot=_atlandSlot=false;
+        LoadWaterArt();_saltSlot=false;_westSlot=false;_gamlaSlot=false;_observatorySlot=true;_meridianSlot=_uppsalaSlot=_foundrySlot=_mineSlot=_regimentSlot=_doorSlot=_roomsSlot=_portSlot=_atlandSlot=false;
         _boatTime=_shipTime=0;_pendingStoryFilm="";_radioBreath=0;
         if(!fresh&&!_testMode&&System.IO.File.Exists(SavePath)){ResumeSave();return;}
         _game=Combat.NewObservatoryPreview(_order);ApplyDeveloperSettings();_camera=G(_game.Player)+new Vector2(0,-60);_particles.Clear();_floating.Clear();_radioQueue.Clear();_radio="";_radioTime=0;_sound.StopVoice();
@@ -64,7 +64,7 @@ public partial class Main
         {
             var at=G(Observatory.Marta);layers.Add((at.Y,()=>
             {
-                if(!_game.CanSeeRoomPoint(Observatory.Talk+ConnectedWorld.Origin(room)-_game.WorldOrigin))return;
+                if(_game.WestState.Debriefed||!_game.CanSeeRoomPoint(Observatory.Talk+ConnectedWorld.Origin(room)-_game.WorldOrigin))return;
                 DrawColoredPolygon(new[]{at+new Vector2(-22,0),at+new Vector2(0,-9),at+new Vector2(25,0),at+new Vector2(0,9)},new Color(0,0,0,.3f));
                 float scale=172f/1365;DrawTextureRect(_martaArt!,new Rect2(at-new Vector2(520,1420)*scale,_martaArt!.GetSize()*scale),false);
             }));

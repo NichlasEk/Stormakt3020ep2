@@ -1,0 +1,9 @@
+{
+  "parts": [
+    "salt-archive-sentence-0.wav",
+    "salt-archive-sentence-1.wav"
+  ],
+  "sha256": "4eede6614fc8191194ef9034db4f66ffea35094794ab11a1626ea4126653cd58",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

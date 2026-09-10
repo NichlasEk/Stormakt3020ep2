@@ -1,0 +1,10 @@
+{
+  "parts": [
+    "salt-reunion-answer-sentence-0.wav",
+    "salt-reunion-answer-sentence-1.wav",
+    "salt-reunion-answer-sentence-2.wav"
+  ],
+  "sha256": "843d133259183f035afda563ff84a376e02ad4a3539cd19cbc2cbdca0c875d41",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

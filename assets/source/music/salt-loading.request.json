@@ -1,0 +1,21 @@
+{
+  "prompt": "Dark Swedish historical dungeon exploration, restrained bowed bass viols, distant frame drum, sparse nyckelharpa phrases, damp abandoned loading quay beneath royal burial mounds, minor lament, no vocals no modern synth, slow tension, matte intimate acoustic texture",
+  "lyrics": "[Instrumental]",
+  "vocal_language": "unknown",
+  "audio_duration": 72.73,
+  "audio_format": "wav",
+  "task_type": "text2music",
+  "batch_size": 1,
+  "thinking": false,
+  "use_cot_caption": false,
+  "use_cot_language": false,
+  "use_cot_metas": false,
+  "use_format": false,
+  "bpm": 66,
+  "key_scale": "D minor",
+  "time_signature": "4/4",
+  "inference_steps": 8,
+  "guidance_scale": 7,
+  "use_random_seed": false,
+  "seed": 30221000
+}

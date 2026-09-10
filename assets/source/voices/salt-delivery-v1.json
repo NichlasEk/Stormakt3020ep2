@@ -1,0 +1,128 @@
+{
+  "salt-reunion-arrival": {
+    "text": "Skytteln har hämtat Märta från observatoriet. Elin, hon väntar här hos oss.",
+    "transcription": "Skytten har hämtat Marta från Observatoriet. Elin, hon väntar här hos oss.",
+    "file": "assets/audio/voice-salt-reunion-arrival.ogg",
+    "sha256": "f5d3eaefad6eb32363302b86c5040e802e3e9f0554dfbd836ede89c80b675f1b"
+  },
+  "salt-reunion-marta": {
+    "text": "Elin. Jag har läst ditt namn varje kväll. Jag vågade inte sluta.",
+    "transcription": "Elin, jag har läst ditt namn varje kväll, jag vågade inte sluta.",
+    "file": "assets/audio/voice-salt-reunion-marta.ogg",
+    "sha256": "d0d8c8c3eb9df4113452bb5232239445e7c3840d251979ea5c324632296a1dad"
+  },
+  "salt-reunion-elin": {
+    "text": "Jag är här. Och jag heter fortfarande Elin Vinge.",
+    "transcription": "Jag är här och jag heter fortfarande Elin Vinge.",
+    "file": "assets/audio/voice-salt-reunion-elin.ogg",
+    "sha256": "7ad0cf685076743a5a7ff78f7cf9a9f3a5f2da78c3ac2ce404287693c7262012"
+  },
+  "salt-reunion-answer": {
+    "text": "Det vet jag. Kom hit. Du behöver inte bevisa det för mig.",
+    "transcription": "Det vet jag. Kom hit. Du behöver inte bevisa det för mig.",
+    "file": "assets/audio/voice-salt-reunion-answer.ogg",
+    "sha256": "ace67c0f542b051afba5c686d00161aee5d78529033eba55471ba1162ee5041d"
+  },
+  "salt-reunion-route": {
+    "text": "Ni stannar ombord. Karl, vi går ned genom porten bakom vågen. Den leder till Saltkällans lastplats.",
+    "transcription": "Ni stannar om bord. Carl, vi går ner genom porten bakom vågen. Den leder till saldkällans lastplats.",
+    "file": "assets/audio/voice-salt-reunion-route.ogg",
+    "sha256": "8fae730196b7be3e9fda159a2c9a931021cb865f9174b10451d26646618b7767"
+  },
+  "salt-loading": {
+    "text": "Tomma bårar. Inga gravar. Följ spåren, Karl. Vi vet ännu inte om de andra lever.",
+    "transcription": "Tomma borar. Inga gravar. Följ spåren, Carl. Vi vet ännu inte om de andra lever.",
+    "file": "assets/audio/voice-salt-loading.ogg",
+    "sha256": "8751a279594cfd7fea6bfdc3e2d65438a046620a29efce8fe9cc977461776abe"
+  },
+  "salt-manifest": {
+    "text": "Här står att levande vittnen skall bekräfta äldre namn. Leveransen går till källans minnesverk. Det här är mottagarens egen instruktion.",
+    "transcription": "Här står att levande vittnen ska bekräfta äldrenamn. Leveransen går till källans minnesverk. Det här är mottagarens egen instruktion.",
+    "file": "assets/audio/voice-salt-manifest.ogg",
+    "sha256": "fd79a16f1a33c823b9340b2f7dce605925d2117e4f2343439d3996244b760ba5"
+  },
+  "salt-stairs": {
+    "text": "Rören matar vatten till namnplåtarna. Stäng tillförseln vid hjulet, annars når du inte arkivet.",
+    "transcription": "Rör en mat av vatten till namnplåtarna. Stäng till försen vid hjulet, annars når du inte arkivet.",
+    "file": "assets/audio/voice-salt-stairs.ogg",
+    "sha256": "e84b9e2ce771bdcae266875c832a86fec35b1091e2ae4c3f01d3d25b31cf8aae"
+  },
+  "salt-drained": {
+    "text": "Vattnet sjunker. Den inre porten är fri.",
+    "transcription": "Vattnet sjunker. Den inreporten är fri.",
+    "file": "assets/audio/voice-salt-drained.ogg",
+    "sha256": "46dee73f2c015647018a0e4de0df00e91a47a8d84f709c128f12c1e82fa12afd"
+  },
+  "salt-archive": {
+    "text": "De vill få minnesverket att godta nya människor som de gamla kungarnas vittnen. Namnen är nycklar till deras befogenheter.",
+    "transcription": "De vill få minnesverket att godta nya människor som de gamla kungarnas vittnen. Namnen ennycklar till deras befogenheter.",
+    "file": "assets/audio/voice-salt-archive.ogg",
+    "sha256": "5768c2f5bcb3a5fe37088e2fe3ccef44f6a85d757371981dd89d3189395f5600"
+  },
+  "salt-proof": {
+    "text": "Kartan visar vägen. Gjutformen tillverkar plåten. Stjärnplåten ställer in verket. Men det är en levande människas intyg som skall öppna det. Därför behövde de Elin.",
+    "transcription": "Kartan visar vägen, djutformen tillverkar plåten, styrenplåten ställer inverket. Men det är en levande människas intyg som ska öppna det. Därför behövde de elin.",
+    "file": "assets/audio/voice-salt-proof.ogg",
+    "sha256": "a9c3a99fc0720cef65a751e41fb49de429a2136f8d5b51d95a3e89c7248c9a94"
+  },
+  "salt-watcher": {
+    "text": "Vittnena står under mitt beskydd. Ingen återkallar en bekräftad överföring.",
+    "transcription": "Vittna står under mitt beskydd. Ingen återkallar en bekräftad överföring.",
+    "file": "assets/audio/voice-salt-watcher.ogg",
+    "sha256": "526482d5b1e4e21d1762ec528915e004a3b96216082e7decf2c199b9071be829"
+  },
+  "salt-chains": {
+    "text": "Kedjorna styr luckorna. Dra i spelen för att sänka vattnet. Håll dig undan där golvet mörknar.",
+    "transcription": "Kedjorna styr lukorna. Dra i spelen för att sänka vattnet. Håll i undan där golvet mörknar.",
+    "file": "assets/audio/voice-salt-chains.ogg",
+    "sha256": "e1783c8d039a8bf370ebfb64d33bf1d4fa131d611e402a5ccdb4f36ac438cd17"
+  },
+  "salt-rising": {
+    "text": "Tillförseln öppnas. Stå kvar vid ert tilldelade namn.",
+    "transcription": "till försen öppnas. Stå kvar vid er tilldelade namn.",
+    "file": "assets/audio/voice-salt-rising.ogg",
+    "sha256": "cbcd64915ac743d3d695912f531b601b74591e93cc47349643076438b008e0f5"
+  },
+  "salt-second": {
+    "text": "Han lämnar sitt fäste. Se upp för kedjan, Karl.",
+    "transcription": "Han lämnar sitt fäste. Se upp för kedjan, Karl.",
+    "file": "assets/audio/voice-salt-second.ogg",
+    "sha256": "4e5b078e56e3af60aee63fe9534c1995d23c4faac8cc64e5507dda7f45922ec7"
+  },
+  "salt-fallen": {
+    "text": "Väktaren är nere. Stäng verket vid pulpeten. Vi måste få upp dem innan vattnet stiger igen.",
+    "transcription": "Väktaren är nere. Stäng verket vid pulpet än. Vi måste få upp dem innan vattnet stiger igen.",
+    "file": "assets/audio/voice-salt-fallen.ogg",
+    "sha256": "a4963615a08592c6e0f2cfe87fc354963c35dd42b4191eb35c20a2d4c861dcac"
+  },
+  "salt-release": {
+    "text": "Kvarhållningen är bruten. Jag har röster i ledningen. De lever, Karl. Skytteln tar emot dem vid lastplatsen.",
+    "transcription": "Kvarhållningen är bruten. Jag har röster i ledningen. De lever Carl. Skyttan tar emot dem vid lassplatsen.",
+    "file": "assets/audio/voice-salt-release.ogg",
+    "sha256": "012407e268069ae49fac17d821b3b0f804c1818feb7be5520d2ad36df7848874"
+  },
+  "salt-order": {
+    "text": "Beställningen är signerad av Riksantikvariens kansli. De begär tillträde till Kungaminnets innersta valv. Jag tar originalet. Ingen skall kunna skriva om det här också.",
+    "transcription": "Beställningen är signerad av riksantikvariens kansli. De begär tillträde till kungaminnets innersta valv. Jag tar originalet. Ingen ska kunna skriva om det här också.",
+    "file": "assets/audio/voice-salt-order.ogg",
+    "sha256": "3bfd5d0bc8ddfcab059bce146c7b87ef07e66dceb4907166c8f2844eb6a4b9c8"
+  },
+  "salt-return": {
+    "text": "De fick tillbaka sina egna namn. Tack. Jag vill träffa dem när de orkar.",
+    "transcription": "De fick tillbaka sina egna namn. Tack! Jag vill träffa dem när de orkar.",
+    "file": "assets/audio/voice-salt-return.ogg",
+    "sha256": "7ef173c923a3905bbfb6591c504c8db283f36a5c680dafce0df0f32c6a88f618"
+  },
+  "salt-debrief": {
+    "text": "Alla från liggaren är räknade ombord. Nästa spår är kansliets beställning. I kväll avslutar vi räkningen här.",
+    "transcription": "Alla frånliggaren är räknade om bord. Nästa spår är Kanslids beställning. I kväll avslutar vi räkningen här.",
+    "file": "assets/audio/voice-salt-debrief.ogg",
+    "sha256": "c1719d24ff9de0bf4a82696c269358f0018dbf549e5c863bf44b3dca9ba312da"
+  },
+  "salt-cache": {
+    "text": "En underhållskista. De som arbetade här lämnade en väg ut åt sig själva.",
+    "transcription": "En underhållskista, de som arbetade här lämnar den väg utåt sig själva.",
+    "file": "assets/audio/voice-salt-cache.ogg",
+    "sha256": "22d53072cb8235081cda404d4117327d7924977adf64b33fd19ddf3316df87db"
+  }
+}

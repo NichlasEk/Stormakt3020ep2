@@ -1,0 +1,9 @@
+{
+  "parts": [
+    "salt-reunion-elin-sentence-0.wav",
+    "salt-reunion-elin-sentence-1.wav"
+  ],
+  "sha256": "6432ab1d9eb96676bd260ae3e793f3fcc93ea6e87f92f12b6aeeb23661ff8c3f",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

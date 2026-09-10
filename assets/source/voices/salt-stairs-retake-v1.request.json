@@ -1,0 +1,10 @@
+{
+  "text": "Rören matar vatten till namnplåtarna. Stäng tillförseln vid hjulet, annars når du inte arkivet.",
+  "prompt_text": "Jag heter Märta Vinge. Jag arbetar med instrumenten i observatoriet. Min syster väntar på mig. Vi har hållit lampan tänd varje natt och jag tänker inte lämna henne här.",
+  "voice_instruction": "An adult Swedish woman around forty, observatory technician, clear natural Swedish pronunciation, grounded warm mezzo voice, tired but brave and precise, soft steady delivery, no theatrical acting.",
+  "model_backend": "voxcpm2",
+  "language": "sv",
+  "output_format": "wav",
+  "normalize": false,
+  "seed": 30221012
+}

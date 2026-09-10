@@ -1,0 +1,22 @@
+{
+  "id": "boss-salt",
+  "master": "assets/source/music/boss-salt.flac",
+  "file": "assets/audio/music/boss-salt.ogg",
+  "duration": 51.42857142857143,
+  "overlap_seconds": 2.142857142857143,
+  "filter": "[0:a]asplit=3[h][b][t];[h]atrim=0:2.142857142857143,asetpts=PTS-STARTPTS[head];[b]atrim=2.142857142857143:51.42857142857142,asetpts=PTS-STARTPTS[body];[t]atrim=51.42857142857142:53.57142857142857,asetpts=PTS-STARTPTS[tail];[tail][head]acrossfade=d=2.142857142857143:c1=tri:c2=tri[join];[body][join]concat=n=2:v=0:a=1,loudnorm=I=-22:TP=-3:LRA=8[out]",
+  "levels": {
+    "input_i": "-22.01",
+    "input_tp": "-5.05",
+    "input_lra": "3.90",
+    "input_thresh": "-32.02",
+    "output_i": "-21.49",
+    "output_tp": "-4.15",
+    "output_lra": "3.30",
+    "output_thresh": "-31.50",
+    "normalization_type": "dynamic",
+    "target_offset": "-0.51"
+  },
+  "sha256": "aaaceb23ac898d4efaec29318cdc03c6526491449e9bc6ba228b618ddefa5cf0",
+  "gain_correction_db": -0.9400000000000013
+}

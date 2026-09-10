@@ -11,12 +11,12 @@ public partial class Main
     private bool _gamlaSlot;
     private void LoadGamlaArt()
     {
-        LoadWestArt();if(_nilsArt!=null)return;foreach(var id in Gamla.Ids)_gamlaArt[id]=GD.Load<Texture2D>("res://assets/art/room-"+id+"-v1.png");
+        LoadSaltArt();LoadWestArt();if(_nilsArt!=null)return;foreach(var id in Gamla.Ids)_gamlaArt[id]=GD.Load<Texture2D>("res://assets/art/room-"+id+"-v1.png");
         _nilsArt=SpriteCutout.Load("res://assets/art/nils-berg-v1.png",chromaKey:new Color(0,1,0));
     }
     private void StartGamla(bool fresh=false)
     {
-        LoadWaterArt();_westSlot=false;_gamlaSlot=true;_observatorySlot=_meridianSlot=_uppsalaSlot=_foundrySlot=_mineSlot=_regimentSlot=_doorSlot=_roomsSlot=_portSlot=_atlandSlot=false;
+        LoadWaterArt();_saltSlot=false;_westSlot=false;_gamlaSlot=true;_observatorySlot=_meridianSlot=_uppsalaSlot=_foundrySlot=_mineSlot=_regimentSlot=_doorSlot=_roomsSlot=_portSlot=_atlandSlot=false;
         _boatTime=_shipTime=0;_pendingStoryFilm="";_radioBreath=0;
         if(!fresh&&!_testMode&&System.IO.File.Exists(SavePath)){ResumeSave();return;}
         _game=Combat.NewGamlaPreview(_order);ApplyDeveloperSettings();_camera=G(_game.Player)+new Vector2(0,-60);_particles.Clear();_floating.Clear();_radioQueue.Clear();_radio="";_radioTime=0;_sound.StopVoice();_bannerTime=_campaignTextTime=_revealTime=0;
@@ -64,12 +64,12 @@ public partial class Main
     }
     private bool DrawGamlaPrompt()
     {
-        if(DrawWestPrompt())return true;if(!_game.InGamla||_game.InWest)return false;string text="";var s=_game.GamlaState;
+        if(DrawSaltPrompt())return true;if(DrawWestPrompt())return true;if(!_game.InGamla||_game.InWest)return false;string text="";var s=_game.GamlaState;
         bool Near(NVec p)=>NVec.Distance(_game.Player,p)<72&&_game.ClearPath(_game.Player,p);
         if(_game.Rooms!.Current==Gamla.Landing){if(Near(Gamla.Board))text="Gå ombord · Ebba väntar";else if(Near(Gamla.Camp))text="Undersök uppställningen";}
         if(_game.Rooms.Current==Gamla.Passage&&Near(Gamla.Ledger))text="Läs transportliggaren";
         if(_game.Rooms.Current==Gamla.Registry&&Near(Gamla.Talk))text=s.Conversation==0?"Tala med Nils Berg":s.Conversation==1?"Fråga om Elin":"Nils vittnesmål";
         if(text!=""){Panel(new Rect2(260,475,760,53),.93f);Centered("E / B · "+text,640,507,17,Gold);}return text!="";
     }
-    private void DisposeGamlaArt(){foreach(var image in _gamlaArt.Values)image.Dispose();_nilsArt?.Dispose();_elinArt?.Dispose();_officerArt?.Dispose();_registryWestOpen?.Dispose();}
+    private void DisposeGamlaArt(){_saltArt?.Dispose();_saltWalkArt?.Dispose();_saltRefugeOpen?.Dispose();foreach(var image in _gamlaArt.Values)image.Dispose();_nilsArt?.Dispose();_elinArt?.Dispose();_officerArt?.Dispose();_registryWestOpen?.Dispose();}
 }

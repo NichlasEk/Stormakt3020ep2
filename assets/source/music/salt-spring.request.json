@@ -1,0 +1,21 @@
+{
+  "prompt": "Ancient subterranean memory machine in a Swedish historical dark fantasy, deep sustained viols, slow resonant bronze bells, restrained bowed nyckelharpa, immense black cistern, awe and dread, sparse stately baroque harmony, seamless instrumental exploration no vocals",
+  "lyrics": "[Instrumental]",
+  "vocal_language": "unknown",
+  "audio_duration": 70.59,
+  "audio_format": "wav",
+  "task_type": "text2music",
+  "batch_size": 1,
+  "thinking": false,
+  "use_cot_caption": false,
+  "use_cot_language": false,
+  "use_cot_metas": false,
+  "use_format": false,
+  "bpm": 68,
+  "key_scale": "D minor",
+  "time_signature": "4/4",
+  "inference_steps": 8,
+  "guidance_scale": 7,
+  "use_random_seed": false,
+  "seed": 30221003
+}

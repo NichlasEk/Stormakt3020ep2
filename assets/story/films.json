@@ -57,5 +57,13 @@
     "duration": 8.041666666666666,
     "description": "Fregatten sjunker ned vid högarna. Vägen fortsätter genom den gamla stentrappan.",
     "captions": []
+  },
+  {
+    "id": "salt-reveal",
+    "title": "Saltkällans minnesverk",
+    "file": "res://assets/video/salt-reveal-v1.ogv",
+    "duration": 8.041666666666666,
+    "description": "Kopparringarna över det svarta vattnet. En första blick in i minnesverket.",
+    "captions": []
   }
 ]

@@ -1,0 +1,9 @@
+{
+  "parts": [
+    "salt-drained-sentence-0.wav",
+    "salt-drained-sentence-1.wav"
+  ],
+  "sha256": "427247df20bdd68520b046db55a6379e73094fed994843e9aae1810b7edf3a93",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

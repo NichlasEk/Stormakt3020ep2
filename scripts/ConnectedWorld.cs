@@ -25,7 +25,8 @@ public static class ConnectedWorld
     {PortRooms.Lodge=>new[]{Navigation.Expand(JourneyLayout.WarehouseObstacle,22)},PortRooms.Pump=>new[]{PortRooms.PumpBasin},PortRooms.Cistern=>new[]{PortRooms.CisternBasin},PortRooms.Gallery=>new[]{PortRooms.Lectern},PortRooms.Chamber=>PortRooms.OathObstacles,PortRooms.Archive=>new[]{ArchiveRoom.Table},PortRooms.Grove=>new[]{Rootway.Slab},_=>Array.Empty<Vector2[]>()};
     public static Vector2[] Route(RoomLink l)
     {
-        if(l.Id.StartsWith("gamla-"))return new[]{Origin(l.A)+l.AtA,Origin(l.A)+l.AtA+new Vector2(0,-105),Origin(l.A)+l.AtA+new Vector2(0,-250),Origin(l.B)+l.AtB+new Vector2(-180,-90),Origin(l.B)+l.AtB,Origin(l.B)+l.ArrivalB};
+        if(l.Id=="salt-return")return new[]{Origin(l.A)+l.AtA,Origin(l.A)+new Vector2(840,345),Origin(l.A)+new Vector2(790,190),Origin(l.B)+new Vector2(770,250),Origin(l.B)+new Vector2(770,345),Origin(l.B)+l.ArrivalB};
+        if(l.Id.StartsWith("gamla-")||l.Id.StartsWith("salt-"))return new[]{Origin(l.A)+l.AtA,Origin(l.A)+l.AtA+new Vector2(0,-105),Origin(l.A)+l.AtA+new Vector2(0,-250),Origin(l.B)+l.AtB+new Vector2(-180,-90),Origin(l.B)+l.AtB,Origin(l.B)+l.ArrivalB};
         if(l.Id.StartsWith("observatory-"))
         {
             if(l.Id=="observatory-shortcut")return new[]{Origin(l.A)+new Vector2(760,445),Origin(l.A)+new Vector2(760,330),Origin(l.A)+new Vector2(760,-120),new Vector2(51800,2100),new Vector2(51800,3500),Origin(l.B)+new Vector2(760,1130),Origin(l.B)+new Vector2(760,970),Origin(l.B)+new Vector2(760,880)};
@@ -116,7 +117,7 @@ public sealed partial class Combat
     public void EnableConnectedWorld()
     {
         if(!InRooms||InDoorTrial||InConnectedWorld)return;
-        var r=Rooms!;foreach(var id in Regiment.Ids.Concat(Mine.Ids).Concat(Uppsala.Ids))r.Rooms.TryAdd(id,new());r.LayoutVersion=14;r.Connected=true;r.ConnectionRevision=ConnectedWorld.Revision;
+        var r=Rooms!;foreach(var id in Regiment.Ids.Concat(Mine.Ids).Concat(Uppsala.Ids))r.Rooms.TryAdd(id,new());r.LayoutVersion=15;r.Connected=true;r.ConnectionRevision=ConnectedWorld.Revision;
         foreach(var e in Enemies)e.HomeRoom=r.Current;
         foreach(var pair in r.Rooms)
         {
@@ -128,7 +129,7 @@ public sealed partial class Combat
         foreach(var l in RoomLinks.All)r.Doors[l.Id]=new(){Locked=!RoomLinks.Open(r,l),TargetOpen=RoomLinks.Open(r,l),Openness=RoomLinks.Open(r,l)?1:0};
         UpdateRoomSight(true);
     }
-    public static bool HasWorldDoor(RoomLink l)=>(l.Id.StartsWith("observatory-")&&l.Id!="observatory-machine")||l.Gate is PassageGate.Key or PassageGate.Shortcut or PassageGate.Archive or PassageGate.RootGate or PassageGate.RegimentExit or PassageGate.RegimentShortcut or PassageGate.MineShortcut or PassageGate.Meridian or PassageGate.GamlaLedger or PassageGate.WestAccess or PassageGate.WestRegister or PassageGate.WestRelease;
+    public static bool HasWorldDoor(RoomLink l)=>l.Id.StartsWith("salt-")||(l.Id.StartsWith("observatory-")&&l.Id!="observatory-machine")||l.Gate is PassageGate.Key or PassageGate.Shortcut or PassageGate.Archive or PassageGate.RootGate or PassageGate.RegimentExit or PassageGate.RegimentShortcut or PassageGate.MineShortcut or PassageGate.Meridian or PassageGate.GamlaLedger or PassageGate.WestAccess or PassageGate.WestRegister or PassageGate.WestRelease;
     private bool WorldGround(Vector2 world){foreach(var p in ConnectedWorld.FloorShapes)if(p.Contains(world))return true;return false;}
     [JsonIgnore] private int _solidStamp=int.MinValue;
     [JsonIgnore] private ConnectedWorld.Shape[] _worldSolids=Array.Empty<ConnectedWorld.Shape>();

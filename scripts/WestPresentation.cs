@@ -18,7 +18,7 @@ public partial class Main
     }
     private void StartWest(bool fresh=false)
     {
-        LoadWaterArt();_westSlot=true;_gamlaSlot=_observatorySlot=_meridianSlot=_uppsalaSlot=_foundrySlot=_mineSlot=_regimentSlot=_doorSlot=_roomsSlot=_portSlot=_atlandSlot=false;
+        LoadWaterArt();_saltSlot=false;_westSlot=true;_gamlaSlot=_observatorySlot=_meridianSlot=_uppsalaSlot=_foundrySlot=_mineSlot=_regimentSlot=_doorSlot=_roomsSlot=_portSlot=_atlandSlot=false;
         _boatTime=_shipTime=0;_pendingStoryFilm="";_radioBreath=0;
         if(!fresh&&!_testMode&&System.IO.File.Exists(SavePath)){ResumeSave();return;}
         _game=Combat.NewWestPreview(_order);ApplyDeveloperSettings();_camera=G(_game.Player)+new Vector2(0,-60);_particles.Clear();_floating.Clear();_radioQueue.Clear();_radio="";_sound.StopVoice();_bannerTime=_campaignTextTime=_revealTime=0;RememberRenderPositions();ChangeScreen(Screen.Game);Save();Notice("Västra vågen · separat prov · öppna väntrummets högra port");

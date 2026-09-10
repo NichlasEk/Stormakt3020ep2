@@ -1,0 +1,11 @@
+{
+  "parts": [
+    "salt-order-sentence-0.wav",
+    "salt-order-sentence-1.wav",
+    "salt-order-sentence-2.wav",
+    "salt-order-sentence-3.wav"
+  ],
+  "sha256": "a59a7d5cb3c488577babfb226317d63eb3741a1ea13d7b3ff54c655ee3e0c88f",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

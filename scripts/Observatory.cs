@@ -70,6 +70,7 @@ public sealed partial class Combat
         bool safe=EncounterEnemies.All(e=>e.Dead);
         if(Rooms.Current==Observatory.Quarters&&near(Observatory.Talk))
         {
+            if(WestState.Debriefed){Emit("room-notice",Player,"Märta är ombord hos Elin.");return true;}
             if(!safe){Emit("room-notice",Player,"Driv bort vakterna från bostäderna först.");return true;}
             if(!o.MartaMet){o.MartaMet=true;Emit("radio",Player,"observatory-marta");Emit("radio",Player,"observatory-list");Emit("checkpoint",Player);}else Emit("radio",Player,"observatory-marta-repeat");return true;
         }

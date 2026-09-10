@@ -6,7 +6,7 @@ public sealed class MusicDirector
     private string _room="";
     private int _bossId=-1;
     public static string BossCue(EnemyKind kind,bool tribunal=false)=>kind switch
-    {EnemyKind.OathGuardian=>"boss-oath",EnemyKind.RootMarshal=>"boss-marshal",EnemyKind.CrownBailiff=>"boss-bailiff",EnemyKind.MeridianWarden=>"boss-meridian",EnemyKind.ZenithGuardian=>"boss-zenith",EnemyKind.MusterOfficer=>"boss-muster",EnemyKind.Collector=>tribunal?"boss-tribunal":"boss-collector",_=>""};
+    {EnemyKind.SaltWarden=>"boss-salt",EnemyKind.OathGuardian=>"boss-oath",EnemyKind.RootMarshal=>"boss-marshal",EnemyKind.CrownBailiff=>"boss-bailiff",EnemyKind.MeridianWarden=>"boss-meridian",EnemyKind.ZenithGuardian=>"boss-zenith",EnemyKind.MusterOfficer=>"boss-muster",EnemyKind.Collector=>tribunal?"boss-tribunal":"boss-collector",_=>""};
     public string Select(Combat g,bool bossSeen=false,bool boat=false,bool ship=false,bool menu=false)
     {
         if(menu){_room="";_bossId=-1;return "prologue-quay";}

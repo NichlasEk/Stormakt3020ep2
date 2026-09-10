@@ -26,8 +26,8 @@ public sealed partial class Combat
 {
     [JsonIgnore] public bool InCabin=>InConnectedWorld&&Rooms!.Current==Cabin.Room;
     [JsonIgnore] public CabinRun CabinState=>Rooms!.Cabin;
-    [JsonIgnore] public string CabinGoal=>WestState.ElinMet?(WestState.Debriefed?"Elin är trygg · nästa spår är Saltkällan":"Tala med Ebba och Elin"):GamlaState.WitnessMet?(GamlaState.Debriefed?"Nästa etapp · Västra vågen":"Lämna Nils kvittens till Ebba"):ObservatoryState.Debriefed?"Gamla Uppsala är nästa mål":ObservatoryState.OriginalTaken?"Visa originalet för Ebba":!CabinState.Briefed?"Tala med Ebba vid bordet":!CabinState.Rested?"Lägg om såren ombord":"Ordern är hos Ebba";
-    [JsonIgnore] public Vector2 CabinObjective=>WestState.ElinMet&&!WestState.Debriefed?Cabin.Talk:GamlaState.WitnessMet&&!GamlaState.Debriefed?Cabin.Talk:ObservatoryState.OriginalTaken&&!ObservatoryState.Debriefed?Cabin.Talk:!CabinState.Briefed?Cabin.Talk:!CabinState.Rested?Cabin.Rest:Cabin.Entry;
+    [JsonIgnore] public string CabinGoal=>WestState.Debriefed?(SaltState.Debriefed?"Vittnena är trygga · kansliets order hos Ebba":SaltState.Released?"Lämna beställningen till Ebba":SaltState.Reunited?"Till Saltkällan · porten bakom vågen":"Tala med Ebba · systrarnas återförening"):WestState.ElinMet?(WestState.Debriefed?"Elin är trygg · nästa spår är Saltkällan":"Tala med Ebba och Elin"):GamlaState.WitnessMet?(GamlaState.Debriefed?"Nästa etapp · Västra vågen":"Lämna Nils kvittens till Ebba"):ObservatoryState.Debriefed?"Gamla Uppsala är nästa mål":ObservatoryState.OriginalTaken?"Visa originalet för Ebba":!CabinState.Briefed?"Tala med Ebba vid bordet":!CabinState.Rested?"Lägg om såren ombord":"Ordern är hos Ebba";
+    [JsonIgnore] public Vector2 CabinObjective=>WestState.Debriefed&&(!SaltState.Reunited||SaltState.Released&&!SaltState.Debriefed)?Cabin.Talk:WestState.ElinMet&&!WestState.Debriefed?Cabin.Talk:GamlaState.WitnessMet&&!GamlaState.Debriefed?Cabin.Talk:ObservatoryState.OriginalTaken&&!ObservatoryState.Debriefed?Cabin.Talk:!CabinState.Briefed?Cabin.Talk:!CabinState.Rested?Cabin.Rest:Cabin.Entry;
     public bool BoardCabin()
     {
         if(!InConnectedWorld||!MeridianState.OrderTaken||!CanShipTravel(Rooms!.Current==Uppsala.Court?Regiment.Quay:Uppsala.Court))return false;
@@ -43,7 +43,7 @@ public sealed partial class Combat
     }
     private bool StepCabin(Func<Vector2,bool> near)
     {
-        if(!InCabin)return false;var c=CabinState;
+        if(!InCabin)return false;if(SaltCabin(near))return true;var c=CabinState;
         if(near(Cabin.Entry)){LeaveCabin();return true;}
         if(near(Cabin.Helm)){if(ObservatoryState.Debriefed)Emit("gamla-travel",Player,c.ReturnRoom==Gamla.Landing?Uppsala.Court:Gamla.Landing);else LeaveCabin(true);return true;}
         if(near(Cabin.Talk))

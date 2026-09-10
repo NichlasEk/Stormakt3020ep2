@@ -28,7 +28,7 @@ public static class ObservatoryTests
             }
             try
             {
-                g.Rooms!.LayoutVersion=11;foreach(var id in Observatory.Ids.Concat(Gamla.Ids))g.Rooms.Rooms.Remove(id);foreach(var l in RoomLinks.All.Where(l=>l.Id.StartsWith("observatory-")||l.Id.StartsWith("gamla-")))g.Rooms.Doors.Remove(l.Id);Save();check(g.Rooms!.LayoutVersion==14&&g.Rooms.Rooms.Count==33&&g.CabinState.Briefed,"Old cabin save migrates without resetting story");
+                g.Rooms!.LayoutVersion=11;foreach(var id in Observatory.Ids.Concat(Gamla.Ids))g.Rooms.Rooms.Remove(id);foreach(var l in RoomLinks.All.Where(l=>l.Id.StartsWith("observatory-")||(l.Id.StartsWith("gamla-")||l.Id.StartsWith("salt-"))))g.Rooms.Doors.Remove(l.Id);Save();check(g.Rooms!.LayoutVersion==15&&g.Rooms.Rooms.Count==37&&g.CabinState.Briefed,"Old cabin save migrates without resetting story");
                 Use(Observatory.Gate);check(g.ObservatoryState.EntryOpen,"Ebba briefing unlocks observatory");Walk("observatory-entry");Fight();Use(Observatory.Talk);check(g.ObservatoryState.MartaMet,"Marta survives and gives the personal stakes");
                 Walk("observatory-workshop");Fight();
                 var workshopDoor=g.Rooms!.Doors["observatory-workshop"];var workshopLink=RoomLinks.All.Single(l=>l.Id=="observatory-workshop");

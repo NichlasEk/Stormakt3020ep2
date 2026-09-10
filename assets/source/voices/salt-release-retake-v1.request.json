@@ -1,0 +1,10 @@
+{
+  "text": "Kvarhållningen är bruten. Jag har röster i ledningen. De lever, Karl. Skytteln tar emot dem vid lastplatsen.",
+  "prompt_text": "Jag heter Märta Vinge. Jag arbetar med instrumenten i observatoriet. Min syster väntar på mig. Vi har hållit lampan tänd varje natt och jag tänker inte lämna henne här.",
+  "voice_instruction": "An adult Swedish woman around forty, observatory technician, clear natural Swedish pronunciation, grounded warm mezzo voice, tired but brave and precise, soft steady delivery, no theatrical acting.",
+  "model_backend": "voxcpm2",
+  "language": "sv",
+  "output_format": "wav",
+  "normalize": false,
+  "seed": 30221012
+}

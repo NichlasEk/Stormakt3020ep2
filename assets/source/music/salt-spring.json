@@ -1,0 +1,22 @@
+{
+  "id": "salt-spring",
+  "master": "assets/source/music/salt-spring.flac",
+  "file": "assets/audio/music/salt-spring.ogg",
+  "duration": 63.529411764705884,
+  "overlap_seconds": 3.5294117647058822,
+  "filter": "[0:a]asplit=3[h][b][t];[h]atrim=0:3.5294117647058822,asetpts=PTS-STARTPTS[head];[b]atrim=3.5294117647058822:63.529411764705884,asetpts=PTS-STARTPTS[body];[t]atrim=63.529411764705884:67.05882352941177,asetpts=PTS-STARTPTS[tail];[tail][head]acrossfade=d=3.5294117647058822:c1=tri:c2=tri[join];[body][join]concat=n=2:v=0:a=1,loudnorm=I=-22:TP=-3:LRA=8[out]",
+  "levels": {
+    "input_i": "-22.01",
+    "input_tp": "-7.99",
+    "input_lra": "6.40",
+    "input_thresh": "-32.21",
+    "output_i": "-21.37",
+    "output_tp": "-7.42",
+    "output_lra": "5.10",
+    "output_thresh": "-31.52",
+    "normalization_type": "dynamic",
+    "target_offset": "-0.63"
+  },
+  "sha256": "0eccb22712ac3f57082ed04193461eaabaa4161597c3bdaf5d1a8a75ad2ef911",
+  "gain_correction_db": -1.0500000000000007
+}

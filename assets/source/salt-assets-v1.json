@@ -1,0 +1,65 @@
+[
+  {
+    "file": "assets/art/room-salt-loading-v1.png",
+    "sha256": "495430760f4332215db87d28115bd5daaa496bdaa4fc10275a69daecc739ac61",
+    "production": "Built-in image generator; 2D painted room or chroma-key sprite sheet",
+    "dimensions": [
+      1536,
+      1024
+    ]
+  },
+  {
+    "file": "assets/art/room-salt-stairs-v1.png",
+    "sha256": "71fbc4b681d05611c314e10ac76c363657fd168b995c7949cf0f8fee1c598682",
+    "production": "Built-in image generator; 2D painted room or chroma-key sprite sheet",
+    "dimensions": [
+      1536,
+      1024
+    ]
+  },
+  {
+    "file": "assets/art/room-salt-archive-v1.png",
+    "sha256": "f7c1bd6f6ec5322cfe18b92a818cd79c31d9d4a0cce7f75bf27cd96dc4bbe9e7",
+    "production": "Built-in image generator; 2D painted room or chroma-key sprite sheet",
+    "dimensions": [
+      1536,
+      1024
+    ]
+  },
+  {
+    "file": "assets/art/room-salt-spring-v1.png",
+    "sha256": "27911778500828106d3e53b7b5fc67ba5f48f264fe38d7164682c8c2fc29a610",
+    "production": "Built-in image generator; 2D painted room or chroma-key sprite sheet",
+    "dimensions": [
+      1536,
+      1024
+    ]
+  },
+  {
+    "file": "assets/art/room-west-salt-open-v1.png",
+    "sha256": "b820b5aec27c6b6d0dc2791563a61bc65a175200b7fb9d29bac0da441e61a0f1",
+    "production": "Built-in image generator; 2D painted room or chroma-key sprite sheet",
+    "dimensions": [
+      1536,
+      1024
+    ]
+  },
+  {
+    "file": "assets/art/salt-warden-v1.png",
+    "sha256": "8645d71c0f393d47e676f3c9f8566fc908ad9dff97e734e802dfbc96ec1145a4",
+    "production": "Built-in image generator; 2D painted room or chroma-key sprite sheet",
+    "dimensions": [
+      1536,
+      1024
+    ]
+  },
+  {
+    "file": "assets/art/salt-warden-walk-v1.png",
+    "sha256": "82f6b9589a9376462a223d92368213bc1d2c0c3aafe932ea5b73810c660fd741",
+    "production": "Built-in image generator; 2D painted room or chroma-key sprite sheet",
+    "dimensions": [
+      1536,
+      1024
+    ]
+  }
+]

@@ -1,0 +1,22 @@
+{
+  "id": "salt-stairs",
+  "master": "assets/source/music/salt-stairs.flac",
+  "file": "assets/audio/music/salt-stairs.ogg",
+  "duration": 60.0,
+  "overlap_seconds": 3.3333333333333335,
+  "filter": "[0:a]asplit=3[h][b][t];[h]atrim=0:3.3333333333333335,asetpts=PTS-STARTPTS[head];[b]atrim=3.3333333333333335:60.0,asetpts=PTS-STARTPTS[body];[t]atrim=60.0:63.333333333333336,asetpts=PTS-STARTPTS[tail];[tail][head]acrossfade=d=3.3333333333333335:c1=tri:c2=tri[join];[body][join]concat=n=2:v=0:a=1,loudnorm=I=-22:TP=-3:LRA=8[out]",
+  "levels": {
+    "input_i": "-21.98",
+    "input_tp": "-6.30",
+    "input_lra": "7.10",
+    "input_thresh": "-32.62",
+    "output_i": "-21.60",
+    "output_tp": "-3.98",
+    "output_lra": "6.60",
+    "output_thresh": "-32.17",
+    "normalization_type": "dynamic",
+    "target_offset": "-0.40"
+  },
+  "sha256": "8e58e44c10a975b5a6135963a427abfdeea2af9003382f687db3430bd1477236",
+  "gain_correction_db": -0.9600000000000009
+}

@@ -1,0 +1,9 @@
+{
+  "parts": [
+    "salt-second-sentence-0.wav",
+    "salt-second-sentence-1.wav"
+  ],
+  "sha256": "eca4250e0869879c4362214ce2831a588988c8a64e94ea1b27b66db6efaf857d",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

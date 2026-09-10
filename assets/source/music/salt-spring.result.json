@@ -1,0 +1,26 @@
+[
+  {
+    "file": "/v1/audio?path=%2Fhome%2Fnichlas%2Fai%2Feutherstudio%2FACE-Step-1.5%2F.cache%2Facestep%2Ftmp%2Fapi_audio%2F373e21ef-028f-55ca-fe3d-302cfb1dde05.wav",
+    "wave": "",
+    "status": 1,
+    "create_time": 1789042658,
+    "env": "development",
+    "prompt": "Ancient subterranean memory machine in a Swedish historical dark fantasy, deep sustained viols, slow resonant bronze bells, restrained bowed nyckelharpa, immense black cistern, awe and dread, sparse stately baroque harmony, seamless instrumental exploration no vocals",
+    "lyrics": "[Instrumental]",
+    "metas": {
+      "bpm": 68,
+      "duration": 70.59,
+      "genres": "N/A",
+      "keyscale": "D minor",
+      "timesignature": "4/4",
+      "prompt": "Ancient subterranean memory machine in a Swedish historical dark fantasy, deep sustained viols, slow resonant bronze bells, restrained bowed nyckelharpa, immense black cistern, awe and dread, sparse stately baroque harmony, seamless instrumental exploration no vocals",
+      "lyrics": "[Instrumental]"
+    },
+    "generation_info": "**\ud83c\udfb5 Total generation time (1 song): 1.68s**\n- 1.68s per song\n- DiT phase (1 song): 1.68s",
+    "seed_value": "30221003",
+    "lm_model": "acestep-5Hz-lm-1.7B",
+    "dit_model": "acestep-v15-turbo",
+    "progress": 1.0,
+    "stage": "succeeded"
+  }
+]

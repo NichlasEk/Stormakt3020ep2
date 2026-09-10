@@ -1,0 +1,12 @@
+{
+  "parts": [
+    "salt-proof-sentence-0.wav",
+    "salt-proof-sentence-1.wav",
+    "salt-proof-sentence-2.wav",
+    "salt-proof-sentence-3.wav",
+    "salt-proof-sentence-4.wav"
+  ],
+  "sha256": "c4c114c8f17ab2d4c1592f6ec7422e5a88ee344fc8ba68a7ebcce8a152ec339a",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

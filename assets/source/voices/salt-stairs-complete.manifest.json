@@ -1,0 +1,9 @@
+{
+  "parts": [
+    "salt-stairs-sentence-0.wav",
+    "salt-stairs-sentence-1.wav"
+  ],
+  "sha256": "8596ee8331c72fd5af0fddf75bdd0344edf227c88cdf3bca46245529c493e2fa",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

@@ -280,5 +280,35 @@
     "seconds": 77.5,
     "lufs": -22.02,
     "true_peak_db": -8.73
+  },
+  {
+    "id": "salt-loading",
+    "seconds": 65.5,
+    "lufs": -22.02,
+    "true_peak_db": -8.29
+  },
+  {
+    "id": "salt-stairs",
+    "seconds": 60.0,
+    "lufs": -21.98,
+    "true_peak_db": -6.3
+  },
+  {
+    "id": "salt-archive",
+    "seconds": 72.0,
+    "lufs": -22.0,
+    "true_peak_db": -7.86
+  },
+  {
+    "id": "salt-spring",
+    "seconds": 63.6,
+    "lufs": -22.01,
+    "true_peak_db": -7.99
+  },
+  {
+    "id": "boss-salt",
+    "seconds": 51.5,
+    "lufs": -22.01,
+    "true_peak_db": -5.05
   }
 ]

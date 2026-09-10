@@ -48,6 +48,7 @@ public sealed class RoomRun
     public CabinRun Cabin=new();
     public ObservatoryRun Observatory=new();
     public WestRun West=new();
+    public SaltRun Salt=new();
     public GamlaRun Gamla=new();
     public bool ChartExplained;
     public bool Connected;
@@ -211,7 +212,7 @@ public sealed partial class Combat
         Emit("checkpoint",Player);
     }
 
-    public bool RoomRadioRelevant(string id)=>(id.StartsWith("west-",StringComparison.Ordinal)||id.StartsWith("gamla-",StringComparison.Ordinal)||id.StartsWith("observatory-",StringComparison.Ordinal)||id.StartsWith("cabin-",StringComparison.Ordinal)||id.StartsWith("meridian-",StringComparison.Ordinal)||id.StartsWith("uppsala-",StringComparison.Ordinal)||id.StartsWith("continuity-",StringComparison.Ordinal))?InRooms:id switch
+    public bool RoomRadioRelevant(string id)=>(id.StartsWith("salt-",StringComparison.Ordinal)||id.StartsWith("west-",StringComparison.Ordinal)||id.StartsWith("gamla-",StringComparison.Ordinal)||id.StartsWith("observatory-",StringComparison.Ordinal)||id.StartsWith("cabin-",StringComparison.Ordinal)||id.StartsWith("meridian-",StringComparison.Ordinal)||id.StartsWith("uppsala-",StringComparison.Ordinal)||id.StartsWith("continuity-",StringComparison.Ordinal))?InRooms:id switch
     {
         "regiment-entry" or "regiment-captain" or "regiment-orders" or "regiment-proof" or "regiment-names" or "regiment-pass" or "regiment-marshal" or "regiment-freed" or "regiment-boat"=>InRooms,
         "roots-entry" or "roots-winch" or "roots-secured"=>InRooms,
@@ -286,8 +287,9 @@ public sealed partial class Combat
         if(r.Connected&&r.LayoutVersion==12)
         {if(r.Rooms is null||r.Rooms.Count!=27)throw new System.IO.InvalidDataException("Ogiltig äldre observatoriekarta");foreach(var id in Gamla.InitialIds)r.Rooms.Add(id,new());foreach(var l in RoomLinks.All.Where(l=>l.Id.StartsWith("gamla-")&&!l.Id.StartsWith("gamla-west-")))r.Doors.Add(l.Id,new(){Locked=!RoomLinks.Open(r,l),TargetOpen=RoomLinks.Open(r,l),Openness=RoomLinks.Open(r,l)?1:0});r.LayoutVersion=13;}
         if(r.Connected&&r.LayoutVersion==13){if(r.Rooms is null||r.Rooms.Count!=30)throw new System.IO.InvalidDataException("Ogiltig äldre högkarta");foreach(var id in West.Ids)r.Rooms.Add(id,new());foreach(var l in RoomLinks.All.Where(l=>l.Id.StartsWith("gamla-west-")))r.Doors.Add(l.Id,new(){Locked=!RoomLinks.Open(r,l),TargetOpen=RoomLinks.Open(r,l),Openness=RoomLinks.Open(r,l)?1:0});r.LayoutVersion=14;}
+        if(r.Connected&&r.LayoutVersion==14){if(r.Rooms is null||r.Rooms.Count!=33)throw new System.IO.InvalidDataException("Ogiltig äldre vågkarta");foreach(var id in Salt.Ids)r.Rooms.Add(id,new());foreach(var l in RoomLinks.All.Where(l=>l.Id.StartsWith("salt-")))r.Doors.Add(l.Id,new(){Locked=!RoomLinks.Open(r,l),TargetOpen=RoomLinks.Open(r,l),Openness=RoomLinks.Open(r,l)?1:0});r.LayoutVersion=15;}
         if(!InCampaign||CampaignStage!=0||Region!=Region.Atland||CampaignFinished||!PortRooms.Known(r.Current)
-            ||r.Rooms is null||r.LayoutVersion!=(r.Connected?14:5)||r.Rooms.Count!=(r.Connected?ConnectedWorld.RoomIds.Length:9)||(r.Connected?ConnectedWorld.RoomIds:PortRooms.Ids).Any(id=>!r.Rooms.ContainsKey(id))
+            ||r.Rooms is null||r.LayoutVersion!=(r.Connected?15:5)||r.Rooms.Count!=(r.Connected?ConnectedWorld.RoomIds.Length:9)||(r.Connected?ConnectedWorld.RoomIds:PortRooms.Ids).Any(id=>!r.Rooms.ContainsKey(id))
             ||r.Rooms.Any(p=>p.Value is null||p.Value.Enemies is null||p.Value.Enemies.Count>100||p.Value.Explored is null||p.Value.Explored.Length!=RoomSight.Bytes||(!p.Value.Visited&&p.Value.Explored.Any(b=>b!=0)))
             ||!r.Rooms[PortRooms.Court].Visited||!r.Rooms[r.Current].Visited||r.Rooms[r.Current].Enemies.Count!=0
             ||(r.DoorOpen&&!r.KeyTaken&&!(InConnectedWorld&&r.Doors is not null&&r.Doors.TryGetValue("lodge",out var brokenDoor)&&brokenDoor.Broken))||(r.Rooms[PortRooms.Lodge].Visited&&!r.DoorOpen)||(r.CacheTaken&&!r.Rooms[PortRooms.Lodge].Visited)
@@ -311,7 +313,7 @@ public sealed partial class Combat
         var archiveActors=ActorsInRoom(PortRooms.Archive);
         if((ArchiveChoice==0&&archiveActors.Count!=0)||(ArchiveChoice!=0&&archiveActors.Count!=(ArchiveChoice==1?3:1))
             ||(r.ArchiveSecured&&archiveActors.Any(e=>!e.Dead)))throw new System.IO.InvalidDataException("Ogiltig arkivkontroll");
-        ValidateRootway();ValidateConnectedWorld();ValidateRegiment();ValidateMine();ValidateFoundry();ValidateUppsala();ValidateMeridian();ValidateCabin();ValidateObservatory();ValidatePaintedPassage();ValidateGamla();ValidateWest();
+        ValidateRootway();ValidateConnectedWorld();ValidateRegiment();ValidateMine();ValidateFoundry();ValidateUppsala();ValidateMeridian();ValidateCabin();ValidateObservatory();ValidatePaintedPassage();ValidateGamla();ValidateWest();ValidateSalt();
         if(Inventory.Drops.Any(d=>d.Room!=""&&!PortRooms.Known(d.Room)))throw new System.IO.InvalidDataException("Ogiltigt fyndrum");
     }
 }
