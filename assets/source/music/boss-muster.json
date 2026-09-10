@@ -1,0 +1,22 @@
+{
+  "id": "boss-muster",
+  "master": "assets/source/music/boss-muster.flac",
+  "file": "assets/audio/music/boss-muster.ogg",
+  "duration": 85.71428571428571,
+  "overlap_seconds": 2.142857142857143,
+  "filter": "[0:a]asplit=3[h][b][t];[h]atrim=0:2.142857142857143,asetpts=PTS-STARTPTS[head];[b]atrim=2.142857142857143:85.71428571428572,asetpts=PTS-STARTPTS[body];[t]atrim=85.71428571428572:87.85714285714286,asetpts=PTS-STARTPTS[tail];[tail][head]acrossfade=d=2.142857142857143:c1=tri:c2=tri[join];[body][join]concat=n=2:v=0:a=1,loudnorm=I=-22:TP=-3:LRA=8[out]",
+  "levels": {
+    "input_i": "-22.00",
+    "input_tp": "-8.19",
+    "input_lra": "9.30",
+    "input_thresh": "-32.74",
+    "output_i": "-21.47",
+    "output_tp": "-6.93",
+    "output_lra": "7.20",
+    "output_thresh": "-31.87",
+    "normalization_type": "dynamic",
+    "target_offset": "-0.53"
+  },
+  "sha256": "7e8ad38b6457265d33a15b9b0b18c10d0cf1e076ffd1116615c73bc072b76bd6",
+  "gain_correction_db": -1.4400000000000013
+}

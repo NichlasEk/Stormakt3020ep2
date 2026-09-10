@@ -1,0 +1,22 @@
+{
+  "id": "boss-tribunal",
+  "master": "assets/source/music/boss-tribunal.flac",
+  "file": "assets/audio/music/boss-tribunal.ogg",
+  "duration": 77.41935483870968,
+  "overlap_seconds": 1.935483870967742,
+  "filter": "[0:a]asplit=3[h][b][t];[h]atrim=0:1.935483870967742,asetpts=PTS-STARTPTS[head];[b]atrim=1.935483870967742:77.41935483870968,asetpts=PTS-STARTPTS[body];[t]atrim=77.41935483870968:79.35483870967742,asetpts=PTS-STARTPTS[tail];[tail][head]acrossfade=d=1.935483870967742:c1=tri:c2=tri[join];[body][join]concat=n=2:v=0:a=1,loudnorm=I=-22:TP=-3:LRA=8[out]",
+  "levels": {
+    "input_i": "-22.02",
+    "input_tp": "-8.73",
+    "input_lra": "6.00",
+    "input_thresh": "-32.38",
+    "output_i": "-21.80",
+    "output_tp": "-8.32",
+    "output_lra": "5.50",
+    "output_thresh": "-32.07",
+    "normalization_type": "dynamic",
+    "target_offset": "-0.20"
+  },
+  "sha256": "4bc0f8288e4dde8d24f9e70aa442a9f0040a9226f4ac069238f80bb6874a68db",
+  "gain_correction_db": -0.8200000000000003
+}

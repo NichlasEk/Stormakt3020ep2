@@ -1,0 +1,22 @@
+{
+  "id": "cistern",
+  "master": "assets/source/music/cistern.flac",
+  "file": "assets/audio/music/cistern.ogg",
+  "duration": 90.0,
+  "overlap_seconds": 3.75,
+  "filter": "[0:a]asplit=3[h][b][t];[h]atrim=0:3.75,asetpts=PTS-STARTPTS[head];[b]atrim=3.75:90.0,asetpts=PTS-STARTPTS[body];[t]atrim=90.0:93.75,asetpts=PTS-STARTPTS[tail];[tail][head]acrossfade=d=3.75:c1=tri:c2=tri[join];[body][join]concat=n=2:v=0:a=1,loudnorm=I=-22:TP=-3:LRA=8[out]",
+  "levels": {
+    "input_i": "-22.00",
+    "input_tp": "-8.66",
+    "input_lra": "5.50",
+    "input_thresh": "-32.17",
+    "output_i": "-21.89",
+    "output_tp": "-8.66",
+    "output_lra": "5.10",
+    "output_thresh": "-32.00",
+    "normalization_type": "dynamic",
+    "target_offset": "-0.11"
+  },
+  "sha256": "6bb63b1b224ef4d037ba598ff2a7846c955dd4523dcfd5db273e45a050ac8573",
+  "gain_correction_db": -0.5399999999999991
+}

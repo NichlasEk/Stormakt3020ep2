@@ -1,0 +1,22 @@
+{
+  "id": "archive",
+  "master": "assets/source/music/archive.flac",
+  "file": "assets/audio/music/archive.ogg",
+  "duration": 84.70588235294117,
+  "overlap_seconds": 3.5294117647058822,
+  "filter": "[0:a]asplit=3[h][b][t];[h]atrim=0:3.5294117647058822,asetpts=PTS-STARTPTS[head];[b]atrim=3.5294117647058822:84.70588235294117,asetpts=PTS-STARTPTS[body];[t]atrim=84.70588235294117:88.23529411764706,asetpts=PTS-STARTPTS[tail];[tail][head]acrossfade=d=3.5294117647058822:c1=tri:c2=tri[join];[body][join]concat=n=2:v=0:a=1,loudnorm=I=-22:TP=-3:LRA=8[out]",
+  "levels": {
+    "input_i": "-22.00",
+    "input_tp": "-8.72",
+    "input_lra": "5.80",
+    "input_thresh": "-32.23",
+    "output_i": "-21.64",
+    "output_tp": "-8.78",
+    "output_lra": "4.80",
+    "output_thresh": "-31.82",
+    "normalization_type": "dynamic",
+    "target_offset": "-0.36"
+  },
+  "sha256": "e92725f7c2fe9ed50868de935b3ace688a51cf913e149e3683be449bd67b0e07",
+  "gain_correction_db": -1.0799999999999983
+}

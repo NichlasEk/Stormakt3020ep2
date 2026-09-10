@@ -1,0 +1,22 @@
+{
+  "id": "gamla-west-control",
+  "master": "assets/source/music/gamla-west-control.flac",
+  "file": "assets/audio/music/gamla-west-control.ogg",
+  "duration": 62.608695652173914,
+  "overlap_seconds": 2.608695652173913,
+  "filter": "[0:a]asplit=3[h][b][t];[h]atrim=0:2.608695652173913,asetpts=PTS-STARTPTS[head];[b]atrim=2.608695652173913:62.608695652173914,asetpts=PTS-STARTPTS[body];[t]atrim=62.608695652173914:65.21739130434783,asetpts=PTS-STARTPTS[tail];[tail][head]acrossfade=d=2.608695652173913:c1=tri:c2=tri[join];[body][join]concat=n=2:v=0:a=1,loudnorm=I=-22:TP=-3:LRA=8[out]",
+  "levels": {
+    "input_i": "-22.05",
+    "input_tp": "-7.36",
+    "input_lra": "6.50",
+    "input_thresh": "-32.30",
+    "output_i": "-22.29",
+    "output_tp": "-6.92",
+    "output_lra": "5.30",
+    "output_thresh": "-32.54",
+    "normalization_type": "dynamic",
+    "target_offset": "0.29"
+  },
+  "sha256": "f270856c1a560862860cb153aaa940e3155270232c4ec7d628d2f51f7b218dfc",
+  "gain_correction_db": 0.05000000000000071
+}

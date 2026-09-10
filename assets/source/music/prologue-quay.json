@@ -1,0 +1,22 @@
+{
+  "id": "prologue-quay",
+  "master": "assets/source/music/prologue-quay.flac",
+  "file": "assets/audio/music/prologue-quay.ogg",
+  "duration": 61.276595744680854,
+  "overlap_seconds": 2.5531914893617023,
+  "filter": "[0:a]asplit=3[h][b][t];[h]atrim=0:2.5531914893617023,asetpts=PTS-STARTPTS[head];[b]atrim=2.5531914893617023:61.276595744680854,asetpts=PTS-STARTPTS[body];[t]atrim=61.276595744680854:63.829787234042556,asetpts=PTS-STARTPTS[tail];[tail][head]acrossfade=d=2.5531914893617023:c1=tri:c2=tri[join];[body][join]concat=n=2:v=0:a=1,loudnorm=I=-22:TP=-3:LRA=8[out]",
+  "levels": {
+    "input_i": "-22.01",
+    "input_tp": "-8.42",
+    "input_lra": "3.40",
+    "input_thresh": "-32.26",
+    "output_i": "-21.47",
+    "output_tp": "-7.62",
+    "output_lra": "2.70",
+    "output_thresh": "-31.66",
+    "normalization_type": "dynamic",
+    "target_offset": "-0.53"
+  },
+  "sha256": "2e9c440be097b5c9bd796b56b458daa2af761e5b96e8af5bab9fa92721b282af",
+  "gain_correction_db": -1.8900000000000006
+}

@@ -1,0 +1,22 @@
+{
+  "id": "ship-cabin",
+  "master": "assets/source/music/ship-cabin.flac",
+  "file": "assets/audio/music/ship-cabin.ogg",
+  "duration": 84.70588235294117,
+  "overlap_seconds": 3.5294117647058822,
+  "filter": "[0:a]asplit=3[h][b][t];[h]atrim=0:3.5294117647058822,asetpts=PTS-STARTPTS[head];[b]atrim=3.5294117647058822:84.70588235294117,asetpts=PTS-STARTPTS[body];[t]atrim=84.70588235294117:88.23529411764706,asetpts=PTS-STARTPTS[tail];[tail][head]acrossfade=d=3.5294117647058822:c1=tri:c2=tri[join];[body][join]concat=n=2:v=0:a=1,loudnorm=I=-22:TP=-3:LRA=8[out]",
+  "levels": {
+    "input_i": "-22.01",
+    "input_tp": "-9.52",
+    "input_lra": "4.70",
+    "input_thresh": "-32.16",
+    "output_i": "-21.76",
+    "output_tp": "-8.65",
+    "output_lra": "4.10",
+    "output_thresh": "-31.88",
+    "normalization_type": "dynamic",
+    "target_offset": "-0.24"
+  },
+  "sha256": "faaa23b3f98283da10a4be4abec324f1533ffaf3e99782be54c3c9a6f5b95cde",
+  "gain_correction_db": -0.9200000000000017
+}

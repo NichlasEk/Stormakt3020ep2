@@ -1,0 +1,22 @@
+{
+  "id": "court",
+  "master": "assets/source/music/court.flac",
+  "file": "assets/audio/music/court.ogg",
+  "duration": 68.57142857142857,
+  "overlap_seconds": 2.857142857142857,
+  "filter": "[0:a]asplit=3[h][b][t];[h]atrim=0:2.857142857142857,asetpts=PTS-STARTPTS[head];[b]atrim=2.857142857142857:68.57142857142857,asetpts=PTS-STARTPTS[body];[t]atrim=68.57142857142857:71.42857142857143,asetpts=PTS-STARTPTS[tail];[tail][head]acrossfade=d=2.857142857142857:c1=tri:c2=tri[join];[body][join]concat=n=2:v=0:a=1,loudnorm=I=-22:TP=-3:LRA=8[out]",
+  "levels": {
+    "input_i": "-22.02",
+    "input_tp": "-8.61",
+    "input_lra": "4.30",
+    "input_thresh": "-32.10",
+    "output_i": "-22.10",
+    "output_tp": "-8.42",
+    "output_lra": "4.10",
+    "output_thresh": "-32.15",
+    "normalization_type": "dynamic",
+    "target_offset": "0.10"
+  },
+  "sha256": "826d3b6bf3cf13e41e4db5dbe950b2c8fe393fd09b382dc31e0777035b8989c1",
+  "gain_correction_db": 0.41000000000000014
+}

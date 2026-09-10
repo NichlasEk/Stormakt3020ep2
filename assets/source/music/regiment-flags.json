@@ -1,0 +1,22 @@
+{
+  "id": "regiment-flags",
+  "master": "assets/source/music/regiment-flags.flac",
+  "file": "assets/audio/music/regiment-flags.ogg",
+  "duration": 61.276595744680854,
+  "overlap_seconds": 2.5531914893617023,
+  "filter": "[0:a]asplit=3[h][b][t];[h]atrim=0:2.5531914893617023,asetpts=PTS-STARTPTS[head];[b]atrim=2.5531914893617023:61.276595744680854,asetpts=PTS-STARTPTS[body];[t]atrim=61.276595744680854:63.829787234042556,asetpts=PTS-STARTPTS[tail];[tail][head]acrossfade=d=2.5531914893617023:c1=tri:c2=tri[join];[body][join]concat=n=2:v=0:a=1,loudnorm=I=-22:TP=-3:LRA=8[out]",
+  "levels": {
+    "input_i": "-22.00",
+    "input_tp": "-8.83",
+    "input_lra": "4.20",
+    "input_thresh": "-32.52",
+    "output_i": "-21.80",
+    "output_tp": "-7.71",
+    "output_lra": "3.80",
+    "output_thresh": "-32.12",
+    "normalization_type": "dynamic",
+    "target_offset": "-0.20"
+  },
+  "sha256": "c96f9071f8a3070f79671db90ea80b8fc2e9ff2bd6785926e4c4ea856cd0a257",
+  "gain_correction_db": -0.9100000000000001
+}

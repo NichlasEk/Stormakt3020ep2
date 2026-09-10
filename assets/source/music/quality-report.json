@@ -1,0 +1,284 @@
+[
+  {
+    "id": "court",
+    "seconds": 68.6,
+    "lufs": -22.02,
+    "true_peak_db": -8.61
+  },
+  {
+    "id": "lodge",
+    "seconds": 65.5,
+    "lufs": -21.99,
+    "true_peak_db": -6.95
+  },
+  {
+    "id": "pump",
+    "seconds": 60.0,
+    "lufs": -22.01,
+    "true_peak_db": -8.17
+  },
+  {
+    "id": "cistern",
+    "seconds": 90.0,
+    "lufs": -22.0,
+    "true_peak_db": -8.66
+  },
+  {
+    "id": "gallery",
+    "seconds": 80.0,
+    "lufs": -22.01,
+    "true_peak_db": -8.73
+  },
+  {
+    "id": "chamber",
+    "seconds": 72.0,
+    "lufs": -22.02,
+    "true_peak_db": -8.37
+  },
+  {
+    "id": "archive",
+    "seconds": 84.8,
+    "lufs": -22.0,
+    "true_peak_db": -8.72
+  },
+  {
+    "id": "roots",
+    "seconds": 67.0,
+    "lufs": -22.0,
+    "true_peak_db": -8.04
+  },
+  {
+    "id": "grove",
+    "seconds": 87.3,
+    "lufs": -22.0,
+    "true_peak_db": -8.86
+  },
+  {
+    "id": "regiment-trail",
+    "seconds": 64.0,
+    "lufs": -22.02,
+    "true_peak_db": -5.98
+  },
+  {
+    "id": "regiment-barracks",
+    "seconds": 93.0,
+    "lufs": -22.01,
+    "true_peak_db": -8.55
+  },
+  {
+    "id": "regiment-flags",
+    "seconds": 61.3,
+    "lufs": -22.0,
+    "true_peak_db": -8.83
+  },
+  {
+    "id": "regiment-parade",
+    "seconds": 65.5,
+    "lufs": -22.02,
+    "true_peak_db": -7.51
+  },
+  {
+    "id": "regiment-quay",
+    "seconds": 82.3,
+    "lufs": -22.0,
+    "true_peak_db": -5.58
+  },
+  {
+    "id": "regiment-farled",
+    "seconds": 73.9,
+    "lufs": -22.0,
+    "true_peak_db": -9.21
+  },
+  {
+    "id": "mine-mouth",
+    "seconds": 70.3,
+    "lufs": -22.0,
+    "true_peak_db": -6.06
+  },
+  {
+    "id": "mine-bellows",
+    "seconds": 55.4,
+    "lufs": -22.03,
+    "true_peak_db": -9.0
+  },
+  {
+    "id": "mine-coolway",
+    "seconds": 80.0,
+    "lufs": -21.99,
+    "true_peak_db": -8.6
+  },
+  {
+    "id": "mine-foundry",
+    "seconds": 62.7,
+    "lufs": -22.02,
+    "true_peak_db": -8.68
+  },
+  {
+    "id": "uppsala-court",
+    "seconds": 68.6,
+    "lufs": -22.02,
+    "true_peak_db": -7.14
+  },
+  {
+    "id": "uppsala-clock",
+    "seconds": 60.0,
+    "lufs": -22.01,
+    "true_peak_db": -9.2
+  },
+  {
+    "id": "uppsala-meridian",
+    "seconds": 75.8,
+    "lufs": -22.02,
+    "true_peak_db": -9.9
+  },
+  {
+    "id": "ship-cabin",
+    "seconds": 84.8,
+    "lufs": -22.01,
+    "true_peak_db": -9.52
+  },
+  {
+    "id": "observatory-quarters",
+    "seconds": 77.9,
+    "lufs": -22.02,
+    "true_peak_db": -8.51
+  },
+  {
+    "id": "observatory-workshop",
+    "seconds": 64.0,
+    "lufs": -21.85,
+    "true_peak_db": -9.08
+  },
+  {
+    "id": "observatory-machine",
+    "seconds": 56.5,
+    "lufs": -22.0,
+    "true_peak_db": -7.63
+  },
+  {
+    "id": "observatory-dome",
+    "seconds": 73.9,
+    "lufs": -22.01,
+    "true_peak_db": -7.86
+  },
+  {
+    "id": "gamla-landing",
+    "seconds": 75.8,
+    "lufs": -22.02,
+    "true_peak_db": -6.98
+  },
+  {
+    "id": "gamla-passage",
+    "seconds": 82.3,
+    "lufs": -22.02,
+    "true_peak_db": -6.87
+  },
+  {
+    "id": "gamla-registry",
+    "seconds": 72.0,
+    "lufs": -21.99,
+    "true_peak_db": -6.69
+  },
+  {
+    "id": "gamla-west-control",
+    "seconds": 62.7,
+    "lufs": -22.05,
+    "true_peak_db": -7.36
+  },
+  {
+    "id": "gamla-west-hall",
+    "seconds": 67.0,
+    "lufs": -22.02,
+    "true_peak_db": -8.96
+  },
+  {
+    "id": "gamla-west-refuge",
+    "seconds": 90.0,
+    "lufs": -21.99,
+    "true_peak_db": -8.52
+  },
+  {
+    "id": "prologue-quay",
+    "seconds": 61.3,
+    "lufs": -22.01,
+    "true_peak_db": -8.42
+  },
+  {
+    "id": "prologue-warehouse",
+    "seconds": 65.5,
+    "lufs": -22.04,
+    "true_peak_db": -7.74
+  },
+  {
+    "id": "prologue-shore",
+    "seconds": 80.0,
+    "lufs": -22.01,
+    "true_peak_db": -8.3
+  },
+  {
+    "id": "travel-boat",
+    "seconds": 72.0,
+    "lufs": -22.14,
+    "true_peak_db": -8.36
+  },
+  {
+    "id": "travel-ship",
+    "seconds": 53.4,
+    "lufs": -22.19,
+    "true_peak_db": -9.49
+  },
+  {
+    "id": "remembrance",
+    "seconds": 96.0,
+    "lufs": -22.08,
+    "true_peak_db": -8.29
+  },
+  {
+    "id": "boss-collector",
+    "seconds": 79.993333,
+    "lufs": -22.03,
+    "true_peak_db": -8.11
+  },
+  {
+    "id": "boss-oath",
+    "seconds": 76.2,
+    "lufs": -22.01,
+    "true_peak_db": -9.94
+  },
+  {
+    "id": "boss-marshal",
+    "seconds": 72.8,
+    "lufs": -22.03,
+    "true_peak_db": -9.75
+  },
+  {
+    "id": "boss-bailiff",
+    "seconds": 82.8,
+    "lufs": -22.01,
+    "true_peak_db": -9.37
+  },
+  {
+    "id": "boss-meridian",
+    "seconds": 75.0,
+    "lufs": -22.04,
+    "true_peak_db": -9.48
+  },
+  {
+    "id": "boss-zenith",
+    "seconds": 69.6,
+    "lufs": -22.02,
+    "true_peak_db": -9.19
+  },
+  {
+    "id": "boss-muster",
+    "seconds": 85.8,
+    "lufs": -22.0,
+    "true_peak_db": -8.19
+  },
+  {
+    "id": "boss-tribunal",
+    "seconds": 77.5,
+    "lufs": -22.02,
+    "true_peak_db": -8.73
+  }
+]

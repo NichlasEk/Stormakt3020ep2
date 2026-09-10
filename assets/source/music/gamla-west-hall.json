@@ -1,0 +1,22 @@
+{
+  "id": "gamla-west-hall",
+  "master": "assets/source/music/gamla-west-hall.flac",
+  "file": "assets/audio/music/gamla-west-hall.ogg",
+  "duration": 66.97674418604652,
+  "overlap_seconds": 2.7906976744186047,
+  "filter": "[0:a]asplit=3[h][b][t];[h]atrim=0:2.7906976744186047,asetpts=PTS-STARTPTS[head];[b]atrim=2.7906976744186047:66.9767441860465,asetpts=PTS-STARTPTS[body];[t]atrim=66.9767441860465:69.76744186046511,asetpts=PTS-STARTPTS[tail];[tail][head]acrossfade=d=2.7906976744186047:c1=tri:c2=tri[join];[body][join]concat=n=2:v=0:a=1,loudnorm=I=-22:TP=-3:LRA=8[out]",
+  "levels": {
+    "input_i": "-22.02",
+    "input_tp": "-8.96",
+    "input_lra": "5.30",
+    "input_thresh": "-32.08",
+    "output_i": "-21.82",
+    "output_tp": "-8.93",
+    "output_lra": "5.70",
+    "output_thresh": "-31.86",
+    "normalization_type": "dynamic",
+    "target_offset": "-0.18"
+  },
+  "sha256": "988fd68113748c009a58dd1b11bd422ae47ee87767e455defea117c30ba68c02",
+  "gain_correction_db": -0.5399999999999991
+}

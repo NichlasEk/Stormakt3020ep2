@@ -1,0 +1,22 @@
+{
+  "id": "observatory-quarters",
+  "master": "assets/source/music/observatory-quarters.flac",
+  "file": "assets/audio/music/observatory-quarters.ogg",
+  "duration": 77.83783783783784,
+  "overlap_seconds": 3.2432432432432434,
+  "filter": "[0:a]asplit=3[h][b][t];[h]atrim=0:3.2432432432432434,asetpts=PTS-STARTPTS[head];[b]atrim=3.2432432432432434:77.83783783783784,asetpts=PTS-STARTPTS[body];[t]atrim=77.83783783783784:81.08108108108108,asetpts=PTS-STARTPTS[tail];[tail][head]acrossfade=d=3.2432432432432434:c1=tri:c2=tri[join];[body][join]concat=n=2:v=0:a=1,loudnorm=I=-22:TP=-3:LRA=8[out]",
+  "levels": {
+    "input_i": "-22.02",
+    "input_tp": "-8.51",
+    "input_lra": "3.90",
+    "input_thresh": "-32.07",
+    "output_i": "-21.73",
+    "output_tp": "-7.96",
+    "output_lra": "4.50",
+    "output_thresh": "-31.78",
+    "normalization_type": "dynamic",
+    "target_offset": "-0.27"
+  },
+  "sha256": "5a393d53b402e3376108a7b6b4a725a896bd44449d545e462b1d89bdfa4ce1f6",
+  "gain_correction_db": 0.2699999999999996
+}

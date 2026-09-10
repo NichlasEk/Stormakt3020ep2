@@ -1,0 +1,22 @@
+{
+  "id": "travel-ship",
+  "master": "assets/source/music/travel-ship.flac",
+  "file": "assets/audio/music/travel-ship.ogg",
+  "duration": 53.333333333333336,
+  "overlap_seconds": 2.2222222222222223,
+  "filter": "[0:a]asplit=3[h][b][t];[h]atrim=0:2.2222222222222223,asetpts=PTS-STARTPTS[head];[b]atrim=2.2222222222222223:53.333333333333336,asetpts=PTS-STARTPTS[body];[t]atrim=53.333333333333336:55.55555555555556,asetpts=PTS-STARTPTS[tail];[tail][head]acrossfade=d=2.2222222222222223:c1=tri:c2=tri[join];[body][join]concat=n=2:v=0:a=1,loudnorm=I=-22:TP=-3:LRA=8[out]",
+  "levels": {
+    "input_i": "-22.19",
+    "input_tp": "-9.49",
+    "input_lra": "3.90",
+    "input_thresh": "-32.39",
+    "output_i": "-21.98",
+    "output_tp": "-9.40",
+    "output_lra": "3.20",
+    "output_thresh": "-32.12",
+    "normalization_type": "dynamic",
+    "target_offset": "-0.02"
+  },
+  "sha256": "39fd45714143fff880c02e7e170db79671a35c68c400b96d25063de7c621beac",
+  "gain_correction_db": 0.19000000000000128
+}

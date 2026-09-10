@@ -1,0 +1,22 @@
+{
+  "id": "roots",
+  "master": "assets/source/music/roots.flac",
+  "file": "assets/audio/music/roots.ogg",
+  "duration": 66.97674418604652,
+  "overlap_seconds": 2.7906976744186047,
+  "filter": "[0:a]asplit=3[h][b][t];[h]atrim=0:2.7906976744186047,asetpts=PTS-STARTPTS[head];[b]atrim=2.7906976744186047:66.9767441860465,asetpts=PTS-STARTPTS[body];[t]atrim=66.9767441860465:69.76744186046511,asetpts=PTS-STARTPTS[tail];[tail][head]acrossfade=d=2.7906976744186047:c1=tri:c2=tri[join];[body][join]concat=n=2:v=0:a=1,loudnorm=I=-22:TP=-3:LRA=8[out]",
+  "levels": {
+    "input_i": "-22.00",
+    "input_tp": "-8.04",
+    "input_lra": "6.20",
+    "input_thresh": "-32.17",
+    "output_i": "-21.65",
+    "output_tp": "-7.20",
+    "output_lra": "5.60",
+    "output_thresh": "-31.81",
+    "normalization_type": "dynamic",
+    "target_offset": "-0.35"
+  },
+  "sha256": "198a2751474b2970ff91493dadeb92ee2d6346472b19874d6307773345f1f76f",
+  "gain_correction_db": -0.8500000000000014
+}

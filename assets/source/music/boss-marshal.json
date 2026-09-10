@@ -1,0 +1,22 @@
+{
+  "id": "boss-marshal",
+  "master": "assets/source/music/boss-marshal.flac",
+  "file": "assets/audio/music/boss-marshal.ogg",
+  "duration": 72.72727272727272,
+  "overlap_seconds": 1.8181818181818181,
+  "filter": "[0:a]asplit=3[h][b][t];[h]atrim=0:1.8181818181818181,asetpts=PTS-STARTPTS[head];[b]atrim=1.8181818181818181:72.72727272727273,asetpts=PTS-STARTPTS[body];[t]atrim=72.72727272727273:74.54545454545455,asetpts=PTS-STARTPTS[tail];[tail][head]acrossfade=d=1.8181818181818181:c1=tri:c2=tri[join];[body][join]concat=n=2:v=0:a=1,loudnorm=I=-22:TP=-3:LRA=8[out]",
+  "levels": {
+    "input_i": "-22.03",
+    "input_tp": "-9.75",
+    "input_lra": "3.70",
+    "input_thresh": "-32.38",
+    "output_i": "-21.68",
+    "output_tp": "-9.30",
+    "output_lra": "3.00",
+    "output_thresh": "-32.03",
+    "normalization_type": "dynamic",
+    "target_offset": "-0.32"
+  },
+  "sha256": "b64256d13079c1fa8e677a6d0a1e1fb09cf1400e927dd0ad4a9bdb2e9591b7bb",
+  "gain_correction_db": -0.7600000000000016
+}

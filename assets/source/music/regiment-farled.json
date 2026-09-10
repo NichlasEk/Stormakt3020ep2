@@ -1,0 +1,22 @@
+{
+  "id": "regiment-farled",
+  "master": "assets/source/music/regiment-farled.flac",
+  "file": "assets/audio/music/regiment-farled.ogg",
+  "duration": 73.84615384615385,
+  "overlap_seconds": 3.076923076923077,
+  "filter": "[0:a]asplit=3[h][b][t];[h]atrim=0:3.076923076923077,asetpts=PTS-STARTPTS[head];[b]atrim=3.076923076923077:73.84615384615385,asetpts=PTS-STARTPTS[body];[t]atrim=73.84615384615385:76.92307692307693,asetpts=PTS-STARTPTS[tail];[tail][head]acrossfade=d=3.076923076923077:c1=tri:c2=tri[join];[body][join]concat=n=2:v=0:a=1,loudnorm=I=-22:TP=-3:LRA=8[out]",
+  "levels": {
+    "input_i": "-22.00",
+    "input_tp": "-9.21",
+    "input_lra": "7.70",
+    "input_thresh": "-32.34",
+    "output_i": "-22.06",
+    "output_tp": "-7.24",
+    "output_lra": "4.90",
+    "output_thresh": "-32.24",
+    "normalization_type": "dynamic",
+    "target_offset": "0.06"
+  },
+  "sha256": "67c822d0e0de91fa1791f0b938d6b01f0d40f19ad11f2d01beaee19ff2a090f6",
+  "gain_correction_db": -0.8299999999999983
+}

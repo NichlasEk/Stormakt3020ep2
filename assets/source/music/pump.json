@@ -1,0 +1,22 @@
+{
+  "id": "pump",
+  "master": "assets/source/music/pump.flac",
+  "file": "assets/audio/music/pump.ogg",
+  "duration": 60.0,
+  "overlap_seconds": 2.5,
+  "filter": "[0:a]asplit=3[h][b][t];[h]atrim=0:2.5,asetpts=PTS-STARTPTS[head];[b]atrim=2.5:60.0,asetpts=PTS-STARTPTS[body];[t]atrim=60.0:62.5,asetpts=PTS-STARTPTS[tail];[tail][head]acrossfade=d=2.5:c1=tri:c2=tri[join];[body][join]concat=n=2:v=0:a=1,loudnorm=I=-22:TP=-3:LRA=8[out]",
+  "levels": {
+    "input_i": "-22.01",
+    "input_tp": "-8.17",
+    "input_lra": "4.60",
+    "input_thresh": "-32.13",
+    "output_i": "-22.06",
+    "output_tp": "-8.37",
+    "output_lra": "4.50",
+    "output_thresh": "-32.20",
+    "normalization_type": "dynamic",
+    "target_offset": "0.06"
+  },
+  "sha256": "2f4bb528243c82d16fdd921f9c9bbdcf75a39050513f8e2291fdced09bb5074b",
+  "gain_correction_db": -1.370000000000001
+}

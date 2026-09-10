@@ -1,0 +1,22 @@
+{
+  "id": "regiment-barracks",
+  "master": "assets/source/music/regiment-barracks.flac",
+  "file": "assets/audio/music/regiment-barracks.ogg",
+  "duration": 92.90322580645162,
+  "overlap_seconds": 3.870967741935484,
+  "filter": "[0:a]asplit=3[h][b][t];[h]atrim=0:3.870967741935484,asetpts=PTS-STARTPTS[head];[b]atrim=3.870967741935484:92.90322580645162,asetpts=PTS-STARTPTS[body];[t]atrim=92.90322580645162:96.7741935483871,asetpts=PTS-STARTPTS[tail];[tail][head]acrossfade=d=3.870967741935484:c1=tri:c2=tri[join];[body][join]concat=n=2:v=0:a=1,loudnorm=I=-22:TP=-3:LRA=8[out]",
+  "levels": {
+    "input_i": "-22.01",
+    "input_tp": "-8.55",
+    "input_lra": "7.40",
+    "input_thresh": "-32.43",
+    "output_i": "-21.98",
+    "output_tp": "-7.18",
+    "output_lra": "6.30",
+    "output_thresh": "-32.23",
+    "normalization_type": "dynamic",
+    "target_offset": "-0.02"
+  },
+  "sha256": "b2b769631fae38f171348b2f9a130eb170960d4df9a551a8a7e2fb664ed87265",
+  "gain_correction_db": -0.7800000000000011
+}

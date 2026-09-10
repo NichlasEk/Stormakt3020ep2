@@ -1,0 +1,22 @@
+{
+  "id": "gamla-landing",
+  "master": "assets/source/music/gamla-landing.flac",
+  "file": "assets/audio/music/gamla-landing.ogg",
+  "duration": 75.78947368421052,
+  "overlap_seconds": 3.1578947368421053,
+  "filter": "[0:a]asplit=3[h][b][t];[h]atrim=0:3.1578947368421053,asetpts=PTS-STARTPTS[head];[b]atrim=3.1578947368421053:75.78947368421052,asetpts=PTS-STARTPTS[body];[t]atrim=75.78947368421052:78.94736842105263,asetpts=PTS-STARTPTS[tail];[tail][head]acrossfade=d=3.1578947368421053:c1=tri:c2=tri[join];[body][join]concat=n=2:v=0:a=1,loudnorm=I=-22:TP=-3:LRA=8[out]",
+  "levels": {
+    "input_i": "-22.02",
+    "input_tp": "-6.98",
+    "input_lra": "7.60",
+    "input_thresh": "-32.36",
+    "output_i": "-21.63",
+    "output_tp": "-5.64",
+    "output_lra": "7.00",
+    "output_thresh": "-31.96",
+    "normalization_type": "dynamic",
+    "target_offset": "-0.37"
+  },
+  "sha256": "3b33926ba00f24aa6b3835540032e5047f8558650fb8d496631c5b29b8ec627e",
+  "gain_correction_db": -1.0399999999999991
+}

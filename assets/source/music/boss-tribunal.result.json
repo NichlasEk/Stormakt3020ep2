@@ -1,0 +1,26 @@
+[
+  {
+    "file": "/v1/audio?path=%2Fhome%2Fnichlas%2Fai%2Feutherstudio%2FACE-Step-1.5%2F.cache%2Facestep%2Ftmp%2Fapi_audio%2F6e1579cc-8266-5bd1-5305-1f5d76cd211e.wav",
+    "wave": "",
+    "status": 1,
+    "create_time": 1789019577,
+    "env": "development",
+    "prompt": "Original instrumental soundtrack for a serious dark Swedish historical fantasy action RPG. Matte seventeenth century oil painting in music. Acoustic chamber-orchestral Nordic baroque palette, memorable distinct melody, no existing tune quotation. Final bureaucratic tribunal under ancient skies. Dark baroque organ and urgent string fugue, grave brass, decisive martial percussion. 124 BPM in A minor. Continuous even energy and repeated phrases for a game loop, enter immediately, no intro silence or ending cadence, no fadeout. No vocals, speech, choir, pop, EDM, modern drum kit, trailer braams or comedy.",
+    "lyrics": "[Instrumental]",
+    "metas": {
+      "bpm": 124,
+      "duration": 81.2903,
+      "genres": "N/A",
+      "keyscale": "A minor",
+      "timesignature": "4/4",
+      "prompt": "Original instrumental soundtrack for a serious dark Swedish historical fantasy action RPG. Matte seventeenth century oil painting in music. Acoustic chamber-orchestral Nordic baroque palette, memorable distinct melody, no existing tune quotation. Final bureaucratic tribunal under ancient skies. Dark baroque organ and urgent string fugue, grave brass, decisive martial percussion. 124 BPM in A minor. Continuous even energy and repeated phrases for a game loop, enter immediately, no intro silence or ending cadence, no fadeout. No vocals, speech, choir, pop, EDM, modern drum kit, trailer braams or comedy.",
+      "lyrics": "[Instrumental]"
+    },
+    "generation_info": "**\ud83c\udfb5 Total generation time (1 song): 1.62s**\n- 1.62s per song\n- DiT phase (1 song): 1.62s",
+    "seed_value": "30221046",
+    "lm_model": "acestep-5Hz-lm-1.7B",
+    "dit_model": "acestep-v15-turbo",
+    "progress": 1.0,
+    "stage": "succeeded"
+  }
+]

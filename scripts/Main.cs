@@ -7,7 +7,7 @@ using NVec=System.Numerics.Vector2;
 
 public partial class Main : Node2D
 {
-    private enum Screen { Title, Briefing, Game, Pause, Settings, Death, Ending, Testimony, Journal, Inventory, Archive, Cinematic, Videos }
+    private enum Screen { Title, Briefing, Game, Pause, Settings, Death, Ending, Testimony, Journal, Inventory, Archive, Cinematic, Videos, Music }
     private Screen _screen=Screen.Title;
     private Screen _settingsReturn=Screen.Title;
     private Combat _game=Combat.New(Order.Artillery);
@@ -48,6 +48,7 @@ public partial class Main : Node2D
     private bool _capturePending;
     private int _testTicks;
     private bool _atlandSlot,_portSlot,_portChecks;
+    private readonly MusicDirector _musicDirector=new();
     private string SavePath=>ProjectSettings.GlobalizePath(_westSlot?"user://west-preview-save.json":_gamlaSlot?"user://gamla-preview-save.json":_observatorySlot?"user://observatory-preview-save.json":_meridianSlot?"user://meridian-preview-save.json":_uppsalaSlot?"user://uppsala-preview-save.json":_foundrySlot?"user://foundry-preview-save.json":_mineSlot?"user://mine-preview-save.json":_regimentSlot?"user://regiment-preview-save.json":_doorSlot?"user://door-trial-save.json":_roomsSlot?"user://rooms-save.json":_portSlot?"user://port-save.json":_atlandSlot?"user://atland-save.json":"user://quay-save.json");
     private string ManualPath=>ProjectSettings.GlobalizePath(_westSlot?"user://west-preview-manual-save.json":_gamlaSlot?"user://gamla-preview-manual-save.json":_observatorySlot?"user://observatory-preview-manual-save.json":_meridianSlot?"user://meridian-preview-manual-save.json":_uppsalaSlot?"user://uppsala-preview-manual-save.json":_foundrySlot?"user://foundry-preview-manual-save.json":_mineSlot?"user://mine-preview-manual-save.json":_regimentSlot?"user://regiment-preview-manual-save.json":_doorSlot?"user://door-trial-manual-save.json":_roomsSlot?"user://rooms-manual-save.json":_portSlot?"user://port-manual-save.json":_atlandSlot?"user://atland-manual-save.json":"user://manual-save.json");
     private const float Zoom=1.12f;
@@ -77,7 +78,7 @@ public partial class Main : Node2D
     private static NVec N(Vector2 v)=>new(v.X,v.Y);
     public override void _Ready()
     {
-        var args=OS.GetCmdlineUserArgs();_doorChecks=args.Contains("--door-check");_filmCheck=args.Contains("--cinematic-check");_filmPreview=args.Contains("--gate-film");_introPreview=args.Contains("--intro-film");_rootwayChecks=args.Contains("--rootway-check")||_filmCheck;_archiveChecks=args.Contains("--archive-check")||_rootwayChecks;_roomAudioChecks=args.Contains("--room-audio-check");_oathChecks=args.Contains("--oath-check")||_roomAudioChecks||_archiveChecks;_waterChecks=args.Contains("--water-check");_fogChecks=args.Contains("--fog-check");_roomChecks=args.Contains("--rooms-check");_inventoryChecks=args.Contains("--inventory-check");_portChecks=args.Contains("--port-check");_sceneChecks=args.Contains("--west-check")||args.Contains("--gamla-check")||args.Contains("--observatory-check")||args.Contains("--cabin-check")||args.Contains("--meridian-check")||args.Contains("--narrative-check")||args.Contains("--uppsala-check")||args.Contains("--gait-check")||args.Contains("--foundry-check")||args.Contains("--mine-check")||args.Contains("--regiment-check")||args.Contains("--ports-check")||args.Contains("--root-arch-check")||args.Contains("--arch-check")||args.Contains("--world-check")||args.Contains("--scene-check")||_portChecks||_inventoryChecks||_roomChecks||_fogChecks||_waterChecks||_oathChecks||_doorChecks;_uiChecks=args.Contains("--ui-check");
+        var args=OS.GetCmdlineUserArgs();_doorChecks=args.Contains("--door-check");_filmCheck=args.Contains("--cinematic-check");_filmPreview=args.Contains("--gate-film");_introPreview=args.Contains("--intro-film");_rootwayChecks=args.Contains("--rootway-check")||_filmCheck;_archiveChecks=args.Contains("--archive-check")||_rootwayChecks;_roomAudioChecks=args.Contains("--room-audio-check");_oathChecks=args.Contains("--oath-check")||_roomAudioChecks||_archiveChecks;_waterChecks=args.Contains("--water-check");_fogChecks=args.Contains("--fog-check");_roomChecks=args.Contains("--rooms-check");_inventoryChecks=args.Contains("--inventory-check");_portChecks=args.Contains("--port-check");_sceneChecks=args.Contains("--music-check")||args.Contains("--west-check")||args.Contains("--gamla-check")||args.Contains("--observatory-check")||args.Contains("--cabin-check")||args.Contains("--meridian-check")||args.Contains("--narrative-check")||args.Contains("--uppsala-check")||args.Contains("--gait-check")||args.Contains("--foundry-check")||args.Contains("--mine-check")||args.Contains("--regiment-check")||args.Contains("--ports-check")||args.Contains("--root-arch-check")||args.Contains("--arch-check")||args.Contains("--world-check")||args.Contains("--scene-check")||_portChecks||_inventoryChecks||_roomChecks||_fogChecks||_waterChecks||_oathChecks||_doorChecks;_uiChecks=args.Contains("--ui-check");
         _serif=GD.Load<Font>("res://assets/fonts/NotoSerif-Regular.ttf");_sans=GD.Load<Font>("res://assets/fonts/NotoSans-Regular.ttf");
         _background=GD.Load<Texture2D>("res://assets/art/likvarvet-scale-v5.png");
         _radioPortraits=GD.Load<Texture2D>("res://assets/art/radio-cast-v1.png");
@@ -95,6 +96,7 @@ public partial class Main : Node2D
         if(args.Contains("--rooms")||_roomChecks||_fogChecks||_waterChecks||_oathChecks)StartRooms();
         if(args.Contains("--capture-title"))_smokeCapture=true;
         if(args.Contains("--doors")||args.Contains("--doors-new")||_doorChecks)StartDoorTrial(args.Contains("--doors-new"));
+        if(args.Contains("--music-check")){RunMusicChecks();return;}
         if(args.Contains("--west-check")){RunWestChecks();return;}
         if(args.Contains("--west")||args.Contains("--west-new")){StartWest(args.Contains("--west-new"));return;}
         if(args.Contains("--gamla-check")){RunGamlaChecks();return;}
@@ -198,7 +200,7 @@ public partial class Main : Node2D
         else if(_screen==Screen.Pause)ChangeScreen(_game.Phase==Phase.Testimony?Screen.Testimony:Screen.Game);
         else if(_screen==Screen.Settings)ChangeScreen(_settingsReturn);
         else if(_screen==Screen.Briefing)ChangeScreen(Screen.Title);
-        else if(_screen==Screen.Videos)ChangeScreen(Screen.Settings);
+        else if(_screen is Screen.Videos or Screen.Music)ChangeScreen(Screen.Settings);
         else if(_screen is Screen.Journal or Screen.Archive)ChangeScreen(Screen.Game);
         else if(_screen==Screen.Inventory){_inventoryMouseRelease=true;ChangeScreen(_inventoryReturn);}
         else if(_screen==Screen.Testimony)ChangeScreen(Screen.Pause);
@@ -206,6 +208,7 @@ public partial class Main : Node2D
     }
     private void Activate(string id)
     {
+        if(id.StartsWith("music:",StringComparison.Ordinal)){_previewScore=id[6..];return;}
         if(id.StartsWith("film:",StringComparison.Ordinal)){StartFilm(id[5..],true);return;}
         if(InventoryAction(id))return;
         switch(id)
@@ -219,6 +222,9 @@ public partial class Main : Node2D
             case "foundry-preview":StartFoundry();break;
             case "mine-preview":StartMine();break;
             case "regiment-preview":StartRegiment();break;
+            case "music-library":_musicPage=0;_previewScore=_sound.RequestedScore;ChangeScreen(Screen.Music);break;
+            case "music-prev":_musicPage--;break;
+            case "music-next":_musicPage++;break;
             case "videos":_videoPage=0;ChangeScreen(Screen.Videos);break;
             case "film-prev":_videoPage=Math.Max(0,_videoPage-1);break;
             case "film-next":_videoPage++;break;
@@ -435,6 +441,8 @@ public partial class Main : Node2D
     {
         float dt=(float)delta;StepFilm(dt);StepBoat(dt);StepShip(dt);StepNarrative(dt);_clock+=dt;_noticeTime=Math.Max(0,_noticeTime-dt);if(_screen==Screen.Game)_campaignTextTime=Math.Max(0,_campaignTextTime-dt);
         _sound.Boss=(_game.Phase==Phase.Collector||(_game.Phase==Phase.Extraction&&_game.Enemies.Any(e=>!e.Dead))||(_game.InCampaign&&_game.Enemies.Any(e=>!e.Dead&&e.Kind is (EnemyKind.Collector or EnemyKind.OathGuardian or EnemyKind.RootMarshal or EnemyKind.CrownBailiff or EnemyKind.MeridianWarden or EnemyKind.ZenithGuardian or EnemyKind.MusterOfficer)&&_game.CanSeeRoomPoint(e.Position)))) && _screen is Screen.Game or Screen.Pause;
+        _sound.MusicPreview=_screen==Screen.Music;
+        if(_screen==Screen.Music)_sound.SelectScore(_previewScore);else _sound.SelectScore(_musicDirector.Select(_game,_sound.Boss,_boatTime>0,_shipTime>0,_screen is Screen.Title or Screen.Briefing));
         _sound.Remembrance=_game.InRegiment&&_game.RegimentState.Discharged;
         _sound.Discovery=_game.Phase is Phase.Names or Phase.Testimony || _game.Region==Region.Shore || _game.Rooms?.Current is PortRooms.Gallery or PortRooms.Cistern or PortRooms.Archive;
         _sound.Cabin=_game.InCabin&&_shipTime<=0;
@@ -561,6 +569,7 @@ public partial class Main : Node2D
         else if(_screen==Screen.Briefing)DrawBriefing();
         else if(_screen==Screen.Ending)DrawEnding();
         else if(_screen==Screen.Testimony)DrawTestimony();
+        else if(_screen==Screen.Music)DrawMusicMenu();
         else if(_screen==Screen.Videos)DrawVideoMenu();
         else if(_screen==Screen.Archive)DrawArchiveDocuments();
         else if(_screen==Screen.Journal)DrawJournal();
@@ -827,6 +836,7 @@ public partial class Main : Node2D
     {
         Centered("Inställningar",640,165,40,Pale,true);Centered($"Ljudvolym  {Math.Round(_volume*100)} %",640,239,20,Gold);
         Button(new Rect2(455,264,177,45),"Sänk","volume-");Button(new Rect2(648,264,177,45),"Höj","volume+");
+        Button(new Rect2(880,329,320,49),"Utvecklare · Musikbibliotek","music-library");
         Button(new Rect2(455,329,370,49),"Kameraskakning: "+(_cameraShake?"på":"av"),"shake");
         Button(new Rect2(455,394,370,49),"Växla helskärm  ·  F11","fullscreen");Button(new Rect2(420,459,440,49),"Utvecklarläge: överlevnad "+(_developerSurvival?"PÅ":"AV"),"dev-survival");
         Centered("Karl tar skada men överlever på minst 1 liv.",640,534,15,Muted);

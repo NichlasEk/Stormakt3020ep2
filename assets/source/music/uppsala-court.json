@@ -1,0 +1,22 @@
+{
+  "id": "uppsala-court",
+  "master": "assets/source/music/uppsala-court.flac",
+  "file": "assets/audio/music/uppsala-court.ogg",
+  "duration": 68.57142857142857,
+  "overlap_seconds": 2.857142857142857,
+  "filter": "[0:a]asplit=3[h][b][t];[h]atrim=0:2.857142857142857,asetpts=PTS-STARTPTS[head];[b]atrim=2.857142857142857:68.57142857142857,asetpts=PTS-STARTPTS[body];[t]atrim=68.57142857142857:71.42857142857143,asetpts=PTS-STARTPTS[tail];[tail][head]acrossfade=d=2.857142857142857:c1=tri:c2=tri[join];[body][join]concat=n=2:v=0:a=1,loudnorm=I=-22:TP=-3:LRA=8[out]",
+  "levels": {
+    "input_i": "-22.02",
+    "input_tp": "-7.14",
+    "input_lra": "5.10",
+    "input_thresh": "-32.18",
+    "output_i": "-21.80",
+    "output_tp": "-6.26",
+    "output_lra": "5.00",
+    "output_thresh": "-31.97",
+    "normalization_type": "dynamic",
+    "target_offset": "-0.20"
+  },
+  "sha256": "2e4f8ccce944474a058bbb1462c76dfe00d0d9b7dc7f27d45bef5cd18fe17d3e",
+  "gain_correction_db": -0.5799999999999983
+}

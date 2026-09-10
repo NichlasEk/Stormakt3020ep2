@@ -1,5 +1,9 @@
 # Från arenor till expeditioner
 
+## 0.22 · Egen musik genom expeditionen
+
+47 nya instrumentala spår: ett per rum, separata bossar, prolog, färder och avlösning. Automatisk övertoning och musikbibliotek i inställningarna. [Musik, kopplingar och kontroller](SOUNDTRACK.md).
+
 ## 0.21 · Västra vågen
 
 Tre nya målade rum, Mönstringsförrättaren med bromsstrid, Elin Vinge och 17 nya röstklipp. Fortsätt genom väntrummets högra port efter avrapporteringen till Ebba. Separat prov: `./play.sh -- --west`. [Spelväg, assets och kontroller](WESTERN-SCALE.md).

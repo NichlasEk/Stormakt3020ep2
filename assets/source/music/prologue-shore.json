@@ -1,0 +1,22 @@
+{
+  "id": "prologue-shore",
+  "master": "assets/source/music/prologue-shore.flac",
+  "file": "assets/audio/music/prologue-shore.ogg",
+  "duration": 80.0,
+  "overlap_seconds": 3.3333333333333335,
+  "filter": "[0:a]asplit=3[h][b][t];[h]atrim=0:3.3333333333333335,asetpts=PTS-STARTPTS[head];[b]atrim=3.3333333333333335:80.00000000000001,asetpts=PTS-STARTPTS[body];[t]atrim=80.00000000000001:83.33333333333334,asetpts=PTS-STARTPTS[tail];[tail][head]acrossfade=d=3.3333333333333335:c1=tri:c2=tri[join];[body][join]concat=n=2:v=0:a=1,loudnorm=I=-22:TP=-3:LRA=8[out]",
+  "levels": {
+    "input_i": "-22.01",
+    "input_tp": "-8.30",
+    "input_lra": "6.30",
+    "input_thresh": "-32.10",
+    "output_i": "-21.84",
+    "output_tp": "-7.99",
+    "output_lra": "4.80",
+    "output_thresh": "-31.91",
+    "normalization_type": "dynamic",
+    "target_offset": "-0.16"
+  },
+  "sha256": "baa472a4bd25be39c912ecdb44d69ed21322b513051e5f42c4342ef9ae3c1637",
+  "gain_correction_db": -0.5199999999999996
+}

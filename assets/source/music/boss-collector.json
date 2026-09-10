@@ -1,0 +1,22 @@
+{
+  "id": "boss-collector",
+  "master": "assets/source/music/boss-collector.flac",
+  "file": "assets/audio/music/boss-collector.ogg",
+  "duration": 80.0,
+  "overlap_seconds": 2.0,
+  "filter": "[0:a]asplit=3[h][b][t];[h]atrim=0:2.0,asetpts=PTS-STARTPTS[head];[b]atrim=2.0:80.0,asetpts=PTS-STARTPTS[body];[t]atrim=80.0:82.0,asetpts=PTS-STARTPTS[tail];[tail][head]acrossfade=d=2.0:c1=tri:c2=tri[join];[body][join]concat=n=2:v=0:a=1,loudnorm=I=-22:TP=-3:LRA=8[out]",
+  "levels": {
+    "input_i": "-22.03",
+    "input_tp": "-8.11",
+    "input_lra": "2.40",
+    "input_thresh": "-32.03",
+    "output_i": "-21.68",
+    "output_tp": "-7.32",
+    "output_lra": "2.00",
+    "output_thresh": "-31.68",
+    "normalization_type": "dynamic",
+    "target_offset": "-0.32"
+  },
+  "sha256": "570defe72436f402d480c7708d495073c56b831eb474fc2bd0017493435512bd",
+  "gain_correction_db": -0.8000000000000007
+}

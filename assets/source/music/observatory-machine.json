@@ -1,0 +1,22 @@
+{
+  "id": "observatory-machine",
+  "master": "assets/source/music/observatory-machine.flac",
+  "file": "assets/audio/music/observatory-machine.ogg",
+  "duration": 56.470588235294116,
+  "overlap_seconds": 2.3529411764705883,
+  "filter": "[0:a]asplit=3[h][b][t];[h]atrim=0:2.3529411764705883,asetpts=PTS-STARTPTS[head];[b]atrim=2.3529411764705883:56.47058823529412,asetpts=PTS-STARTPTS[body];[t]atrim=56.47058823529412:58.82352941176471,asetpts=PTS-STARTPTS[tail];[tail][head]acrossfade=d=2.3529411764705883:c1=tri:c2=tri[join];[body][join]concat=n=2:v=0:a=1,loudnorm=I=-22:TP=-3:LRA=8[out]",
+  "levels": {
+    "input_i": "-22.00",
+    "input_tp": "-7.63",
+    "input_lra": "4.10",
+    "input_thresh": "-32.06",
+    "output_i": "-21.78",
+    "output_tp": "-7.39",
+    "output_lra": "3.50",
+    "output_thresh": "-31.86",
+    "normalization_type": "dynamic",
+    "target_offset": "-0.22"
+  },
+  "sha256": "83b86c76dd03c9291a5dd50eb10116c61fd40a889661174df580a6bae58fcfa2",
+  "gain_correction_db": -0.6700000000000017
+}

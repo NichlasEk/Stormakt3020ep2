@@ -1,0 +1,22 @@
+{
+  "id": "boss-zenith",
+  "master": "assets/source/music/boss-zenith.flac",
+  "file": "assets/audio/music/boss-zenith.ogg",
+  "duration": 69.56521739130434,
+  "overlap_seconds": 1.7391304347826086,
+  "filter": "[0:a]asplit=3[h][b][t];[h]atrim=0:1.7391304347826086,asetpts=PTS-STARTPTS[head];[b]atrim=1.7391304347826086:69.56521739130434,asetpts=PTS-STARTPTS[body];[t]atrim=69.56521739130434:71.30434782608695,asetpts=PTS-STARTPTS[tail];[tail][head]acrossfade=d=1.7391304347826086:c1=tri:c2=tri[join];[body][join]concat=n=2:v=0:a=1,loudnorm=I=-22:TP=-3:LRA=8[out]",
+  "levels": {
+    "input_i": "-22.02",
+    "input_tp": "-9.19",
+    "input_lra": "3.20",
+    "input_thresh": "-32.31",
+    "output_i": "-21.42",
+    "output_tp": "-8.15",
+    "output_lra": "2.50",
+    "output_thresh": "-31.57",
+    "normalization_type": "dynamic",
+    "target_offset": "-0.58"
+  },
+  "sha256": "a974faff2ff13369128a1fed76e0e54a357f290566c03e1db08681ac1e086556",
+  "gain_correction_db": -1.3299999999999983
+}

@@ -1,0 +1,21 @@
+{
+  "prompt": "Original instrumental soundtrack for a serious dark Swedish historical fantasy action RPG. Matte seventeenth century oil painting in music. Acoustic chamber-orchestral Nordic baroque palette, memorable distinct melody, no existing tune quotation. Empty river quay beyond the battlefield. Rocking harp and solo cor anglais, soft low strings, tired relief and distant water. 70 BPM in A minor. Continuous even energy and repeated phrases for a game loop, enter immediately, no intro silence or ending cadence, no fadeout. No vocals, speech, choir, pop, EDM, modern drum kit, trailer braams or comedy.",
+  "lyrics": "[Instrumental]",
+  "vocal_language": "unknown",
+  "audio_duration": 89.1429,
+  "audio_format": "wav",
+  "task_type": "text2music",
+  "batch_size": 1,
+  "thinking": false,
+  "use_cot_caption": false,
+  "use_cot_language": false,
+  "use_cot_metas": false,
+  "use_format": false,
+  "bpm": 70,
+  "key_scale": "A minor",
+  "time_signature": "4/4",
+  "inference_steps": 8,
+  "guidance_scale": 7,
+  "use_random_seed": false,
+  "seed": 30221013
+}

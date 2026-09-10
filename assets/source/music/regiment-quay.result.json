@@ -1,0 +1,26 @@
+[
+  {
+    "file": "/v1/audio?path=%2Fhome%2Fnichlas%2Fai%2Feutherstudio%2FACE-Step-1.5%2F.cache%2Facestep%2Ftmp%2Fapi_audio%2F3bf43a4a-d2f7-2944-ac39-6efe65aefa36.wav",
+    "wave": "",
+    "status": 1,
+    "create_time": 1789019099,
+    "env": "development",
+    "prompt": "Original instrumental soundtrack for a serious dark Swedish historical fantasy action RPG. Matte seventeenth century oil painting in music. Acoustic chamber-orchestral Nordic baroque palette, memorable distinct melody, no existing tune quotation. Empty river quay beyond the battlefield. Rocking harp and solo cor anglais, soft low strings, tired relief and distant water. 70 BPM in A minor. Continuous even energy and repeated phrases for a game loop, enter immediately, no intro silence or ending cadence, no fadeout. No vocals, speech, choir, pop, EDM, modern drum kit, trailer braams or comedy.",
+    "lyrics": "[Instrumental]",
+    "metas": {
+      "bpm": 70,
+      "duration": 89.1429,
+      "genres": "N/A",
+      "keyscale": "A minor",
+      "timesignature": "4/4",
+      "prompt": "Original instrumental soundtrack for a serious dark Swedish historical fantasy action RPG. Matte seventeenth century oil painting in music. Acoustic chamber-orchestral Nordic baroque palette, memorable distinct melody, no existing tune quotation. Empty river quay beyond the battlefield. Rocking harp and solo cor anglais, soft low strings, tired relief and distant water. 70 BPM in A minor. Continuous even energy and repeated phrases for a game loop, enter immediately, no intro silence or ending cadence, no fadeout. No vocals, speech, choir, pop, EDM, modern drum kit, trailer braams or comedy.",
+      "lyrics": "[Instrumental]"
+    },
+    "generation_info": "**\ud83c\udfb5 Total generation time (1 song): 1.82s**\n- 1.82s per song\n- DiT phase (1 song): 1.82s",
+    "seed_value": "30221013",
+    "lm_model": "acestep-5Hz-lm-1.7B",
+    "dit_model": "acestep-v15-turbo",
+    "progress": 1.0,
+    "stage": "succeeded"
+  }
+]

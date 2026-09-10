@@ -1,0 +1,22 @@
+{
+  "id": "uppsala-meridian",
+  "master": "assets/source/music/uppsala-meridian.flac",
+  "file": "assets/audio/music/uppsala-meridian.ogg",
+  "duration": 75.78947368421052,
+  "overlap_seconds": 3.1578947368421053,
+  "filter": "[0:a]asplit=3[h][b][t];[h]atrim=0:3.1578947368421053,asetpts=PTS-STARTPTS[head];[b]atrim=3.1578947368421053:75.78947368421052,asetpts=PTS-STARTPTS[body];[t]atrim=75.78947368421052:78.94736842105263,asetpts=PTS-STARTPTS[tail];[tail][head]acrossfade=d=3.1578947368421053:c1=tri:c2=tri[join];[body][join]concat=n=2:v=0:a=1,loudnorm=I=-22:TP=-3:LRA=8[out]",
+  "levels": {
+    "input_i": "-22.02",
+    "input_tp": "-9.90",
+    "input_lra": "3.40",
+    "input_thresh": "-32.14",
+    "output_i": "-21.50",
+    "output_tp": "-9.25",
+    "output_lra": "2.30",
+    "output_thresh": "-31.62",
+    "normalization_type": "dynamic",
+    "target_offset": "-0.50"
+  },
+  "sha256": "4d2badca6e89a99bd8219c843d22adfde50e6d14901a7a8106940c509d6d38bf",
+  "gain_correction_db": -1.0599999999999987
+}

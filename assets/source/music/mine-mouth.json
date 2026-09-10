@@ -1,0 +1,22 @@
+{
+  "id": "mine-mouth",
+  "master": "assets/source/music/mine-mouth.flac",
+  "file": "assets/audio/music/mine-mouth.ogg",
+  "duration": 70.2439024390244,
+  "overlap_seconds": 2.926829268292683,
+  "filter": "[0:a]asplit=3[h][b][t];[h]atrim=0:2.926829268292683,asetpts=PTS-STARTPTS[head];[b]atrim=2.926829268292683:70.2439024390244,asetpts=PTS-STARTPTS[body];[t]atrim=70.2439024390244:73.17073170731707,asetpts=PTS-STARTPTS[tail];[tail][head]acrossfade=d=2.926829268292683:c1=tri:c2=tri[join];[body][join]concat=n=2:v=0:a=1,loudnorm=I=-22:TP=-3:LRA=8[out]",
+  "levels": {
+    "input_i": "-22.00",
+    "input_tp": "-6.06",
+    "input_lra": "4.10",
+    "input_thresh": "-32.24",
+    "output_i": "-21.96",
+    "output_tp": "-4.75",
+    "output_lra": "4.20",
+    "output_thresh": "-32.10",
+    "normalization_type": "dynamic",
+    "target_offset": "-0.04"
+  },
+  "sha256": "724efb5e35f33a5e5fcc9ece9e26b701693ffc538a8e9beda2cbc3666a8f8b3b",
+  "gain_correction_db": -1.1400000000000006
+}

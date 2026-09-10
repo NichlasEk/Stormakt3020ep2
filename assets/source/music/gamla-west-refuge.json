@@ -1,0 +1,22 @@
+{
+  "id": "gamla-west-refuge",
+  "master": "assets/source/music/gamla-west-refuge.flac",
+  "file": "assets/audio/music/gamla-west-refuge.ogg",
+  "duration": 90.0,
+  "overlap_seconds": 3.75,
+  "filter": "[0:a]asplit=3[h][b][t];[h]atrim=0:3.75,asetpts=PTS-STARTPTS[head];[b]atrim=3.75:90.0,asetpts=PTS-STARTPTS[body];[t]atrim=90.0:93.75,asetpts=PTS-STARTPTS[tail];[tail][head]acrossfade=d=3.75:c1=tri:c2=tri[join];[body][join]concat=n=2:v=0:a=1,loudnorm=I=-22:TP=-3:LRA=8[out]",
+  "levels": {
+    "input_i": "-21.99",
+    "input_tp": "-8.52",
+    "input_lra": "4.50",
+    "input_thresh": "-32.04",
+    "output_i": "-22.13",
+    "output_tp": "-9.15",
+    "output_lra": "4.20",
+    "output_thresh": "-32.18",
+    "normalization_type": "dynamic",
+    "target_offset": "0.13"
+  },
+  "sha256": "ad0e07273c88149976463d42fe25cb0c8ac92c0f886ee5e3c4d88113b0409209",
+  "gain_correction_db": -0.4299999999999997
+}

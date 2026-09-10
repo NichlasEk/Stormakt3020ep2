@@ -1,0 +1,26 @@
+[
+  {
+    "file": "/v1/audio?path=%2Fhome%2Fnichlas%2Fai%2Feutherstudio%2FACE-Step-1.5%2F.cache%2Facestep%2Ftmp%2Fapi_audio%2F096d292f-f089-2ff7-3c10-c6d634d5a8ce.wav",
+    "wave": "",
+    "status": 1,
+    "create_time": 1789018967,
+    "env": "development",
+    "prompt": "Original instrumental soundtrack for a serious dark Swedish historical fantasy action RPG. Matte seventeenth century oil painting in music. Acoustic chamber-orchestral Nordic baroque palette, memorable distinct melody, no existing tune quotation. Gallery of erased witnesses. Solo mournful viola da gamba, answering flute, quiet lute, humane grief and dignity. 72 BPM in A minor. Continuous even energy and repeated phrases for a game loop, enter immediately, no intro silence or ending cadence, no fadeout. No vocals, speech, choir, pop, EDM, modern drum kit, trailer braams or comedy.",
+    "lyrics": "[Instrumental]",
+    "metas": {
+      "bpm": 72,
+      "duration": 86.6667,
+      "genres": "N/A",
+      "keyscale": "A minor",
+      "timesignature": "4/4",
+      "prompt": "Original instrumental soundtrack for a serious dark Swedish historical fantasy action RPG. Matte seventeenth century oil painting in music. Acoustic chamber-orchestral Nordic baroque palette, memorable distinct melody, no existing tune quotation. Gallery of erased witnesses. Solo mournful viola da gamba, answering flute, quiet lute, humane grief and dignity. 72 BPM in A minor. Continuous even energy and repeated phrases for a game loop, enter immediately, no intro silence or ending cadence, no fadeout. No vocals, speech, choir, pop, EDM, modern drum kit, trailer braams or comedy.",
+      "lyrics": "[Instrumental]"
+    },
+    "generation_info": "**\ud83c\udfb5 Total generation time (1 song): 1.75s**\n- 1.75s per song\n- DiT phase (1 song): 1.75s",
+    "seed_value": "30221004",
+    "lm_model": "acestep-5Hz-lm-1.7B",
+    "dit_model": "acestep-v15-turbo",
+    "progress": 1.0,
+    "stage": "succeeded"
+  }
+]

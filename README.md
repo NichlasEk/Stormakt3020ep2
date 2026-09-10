@@ -1,5 +1,9 @@
 # Stormakt 3020: Atlands arv
 
+## 0.22 · Egen musik genom expeditionen
+
+47 nya instrumentala spår: ett per rum, separata bossar, prolog, färder och avlösning. Automatisk övertoning och musikbibliotek i inställningarna. [Musik, kopplingar och kontroller](docs/SOUNDTRACK.md).
+
 ## 0.21 · Västra vågen
 
 Tre nya målade rum, Mönstringsförrättaren med bromsstrid, Elin Vinge och 17 nya röstklipp. Fortsätt genom väntrummets högra port efter avrapporteringen till Ebba. Separat prov: `./play.sh -- --west`. [Spelväg, assets och kontroller](docs/WESTERN-SCALE.md).

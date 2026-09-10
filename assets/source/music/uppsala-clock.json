@@ -1,0 +1,22 @@
+{
+  "id": "uppsala-clock",
+  "master": "assets/source/music/uppsala-clock.flac",
+  "file": "assets/audio/music/uppsala-clock.ogg",
+  "duration": 60.0,
+  "overlap_seconds": 2.5,
+  "filter": "[0:a]asplit=3[h][b][t];[h]atrim=0:2.5,asetpts=PTS-STARTPTS[head];[b]atrim=2.5:60.0,asetpts=PTS-STARTPTS[body];[t]atrim=60.0:62.5,asetpts=PTS-STARTPTS[tail];[tail][head]acrossfade=d=2.5:c1=tri:c2=tri[join];[body][join]concat=n=2:v=0:a=1,loudnorm=I=-22:TP=-3:LRA=8[out]",
+  "levels": {
+    "input_i": "-22.01",
+    "input_tp": "-9.20",
+    "input_lra": "3.30",
+    "input_thresh": "-32.13",
+    "output_i": "-21.47",
+    "output_tp": "-7.39",
+    "output_lra": "2.40",
+    "output_thresh": "-31.54",
+    "normalization_type": "dynamic",
+    "target_offset": "-0.53"
+  },
+  "sha256": "81bfe3860cf40ef49b93a66cd6b435639d6837138e6d804809b9522a8b6e88b8",
+  "gain_correction_db": -1.879999999999999
+}

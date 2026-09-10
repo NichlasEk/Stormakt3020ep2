@@ -1,0 +1,22 @@
+{
+  "id": "regiment-parade",
+  "master": "assets/source/music/regiment-parade.flac",
+  "file": "assets/audio/music/regiment-parade.ogg",
+  "duration": 65.45454545454545,
+  "overlap_seconds": 2.727272727272727,
+  "filter": "[0:a]asplit=3[h][b][t];[h]atrim=0:2.727272727272727,asetpts=PTS-STARTPTS[head];[b]atrim=2.727272727272727:65.45454545454544,asetpts=PTS-STARTPTS[body];[t]atrim=65.45454545454544:68.18181818181817,asetpts=PTS-STARTPTS[tail];[tail][head]acrossfade=d=2.727272727272727:c1=tri:c2=tri[join];[body][join]concat=n=2:v=0:a=1,loudnorm=I=-22:TP=-3:LRA=8[out]",
+  "levels": {
+    "input_i": "-22.02",
+    "input_tp": "-7.51",
+    "input_lra": "4.30",
+    "input_thresh": "-32.26",
+    "output_i": "-21.35",
+    "output_tp": "-6.34",
+    "output_lra": "3.70",
+    "output_thresh": "-31.50",
+    "normalization_type": "dynamic",
+    "target_offset": "-0.65"
+  },
+  "sha256": "8f62b1e6baf9868b06dc61cb6649240a85cb98bb2acaf81a350310461986e8c9",
+  "gain_correction_db": -1.4400000000000013
+}

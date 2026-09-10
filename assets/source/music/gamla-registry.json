@@ -1,0 +1,22 @@
+{
+  "id": "gamla-registry",
+  "master": "assets/source/music/gamla-registry.flac",
+  "file": "assets/audio/music/gamla-registry.ogg",
+  "duration": 72.0,
+  "overlap_seconds": 3.0,
+  "filter": "[0:a]asplit=3[h][b][t];[h]atrim=0:3.0,asetpts=PTS-STARTPTS[head];[b]atrim=3.0:72.0,asetpts=PTS-STARTPTS[body];[t]atrim=72.0:75.0,asetpts=PTS-STARTPTS[tail];[tail][head]acrossfade=d=3.0:c1=tri:c2=tri[join];[body][join]concat=n=2:v=0:a=1,loudnorm=I=-22:TP=-3:LRA=8[out]",
+  "levels": {
+    "input_i": "-21.99",
+    "input_tp": "-6.69",
+    "input_lra": "3.60",
+    "input_thresh": "-32.03",
+    "output_i": "-21.94",
+    "output_tp": "-6.02",
+    "output_lra": "3.30",
+    "output_thresh": "-31.99",
+    "normalization_type": "dynamic",
+    "target_offset": "-0.06"
+  },
+  "sha256": "5e915ed9c8a5197812e32c560497e0c66998a1438e3a37cd06c67c2b678ef867",
+  "gain_correction_db": -0.5799999999999983
+}

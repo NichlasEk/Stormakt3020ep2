@@ -1,0 +1,22 @@
+{
+  "id": "travel-boat",
+  "master": "assets/source/music/travel-boat.flac",
+  "file": "assets/audio/music/travel-boat.ogg",
+  "duration": 72.0,
+  "overlap_seconds": 3.0,
+  "filter": "[0:a]asplit=3[h][b][t];[h]atrim=0:3.0,asetpts=PTS-STARTPTS[head];[b]atrim=3.0:72.0,asetpts=PTS-STARTPTS[body];[t]atrim=72.0:75.0,asetpts=PTS-STARTPTS[tail];[tail][head]acrossfade=d=3.0:c1=tri:c2=tri[join];[body][join]concat=n=2:v=0:a=1,loudnorm=I=-22:TP=-3:LRA=8[out]",
+  "levels": {
+    "input_i": "-22.14",
+    "input_tp": "-8.36",
+    "input_lra": "6.50",
+    "input_thresh": "-32.26",
+    "output_i": "-22.03",
+    "output_tp": "-8.21",
+    "output_lra": "6.30",
+    "output_thresh": "-32.12",
+    "normalization_type": "dynamic",
+    "target_offset": "0.03"
+  },
+  "sha256": "fa1c91d217accf22ee3323a38ea33c66dc0768e2fb2decdbe2fede500bcc60dd",
+  "gain_correction_db": 0.14000000000000057
+}

@@ -1,0 +1,22 @@
+{
+  "id": "regiment-quay",
+  "master": "assets/source/music/regiment-quay.flac",
+  "file": "assets/audio/music/regiment-quay.ogg",
+  "duration": 82.28571428571428,
+  "overlap_seconds": 3.4285714285714284,
+  "filter": "[0:a]asplit=3[h][b][t];[h]atrim=0:3.4285714285714284,asetpts=PTS-STARTPTS[head];[b]atrim=3.4285714285714284:82.28571428571428,asetpts=PTS-STARTPTS[body];[t]atrim=82.28571428571428:85.71428571428571,asetpts=PTS-STARTPTS[tail];[tail][head]acrossfade=d=3.4285714285714284:c1=tri:c2=tri[join];[body][join]concat=n=2:v=0:a=1,loudnorm=I=-22:TP=-3:LRA=8[out]",
+  "levels": {
+    "input_i": "-22.00",
+    "input_tp": "-5.58",
+    "input_lra": "3.90",
+    "input_thresh": "-32.00",
+    "output_i": "-21.82",
+    "output_tp": "-5.15",
+    "output_lra": "3.40",
+    "output_thresh": "-31.82",
+    "normalization_type": "dynamic",
+    "target_offset": "-0.18"
+  },
+  "sha256": "e68f36b467518a598105e965ced67697bf8a4cef4f4077da36df96b70352bc6b",
+  "gain_correction_db": -0.879999999999999
+}

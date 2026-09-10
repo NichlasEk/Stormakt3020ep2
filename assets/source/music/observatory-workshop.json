@@ -1,0 +1,22 @@
+{
+  "id": "observatory-workshop",
+  "master": "assets/source/music/observatory-workshop.flac",
+  "file": "assets/audio/music/observatory-workshop.ogg",
+  "duration": 64.0,
+  "overlap_seconds": 2.6666666666666665,
+  "filter": "[0:a]asplit=3[h][b][t];[h]atrim=0:2.6666666666666665,asetpts=PTS-STARTPTS[head];[b]atrim=2.6666666666666665:63.99999999999999,asetpts=PTS-STARTPTS[body];[t]atrim=63.99999999999999:66.66666666666666,asetpts=PTS-STARTPTS[tail];[tail][head]acrossfade=d=2.6666666666666665:c1=tri:c2=tri[join];[body][join]concat=n=2:v=0:a=1,loudnorm=I=-22:TP=-3:LRA=8[out]",
+  "levels": {
+    "input_i": "-21.85",
+    "input_tp": "-9.08",
+    "input_lra": "3.90",
+    "input_thresh": "-31.87",
+    "output_i": "-22.22",
+    "output_tp": "-9.45",
+    "output_lra": "3.40",
+    "output_thresh": "-32.23",
+    "normalization_type": "dynamic",
+    "target_offset": "0.22"
+  },
+  "sha256": "863685083c55ea13d80ac0ceb85c54a106fc91256a4a432ecf384034a4e88075",
+  "gain_correction_db": -0.14999999999999858
+}

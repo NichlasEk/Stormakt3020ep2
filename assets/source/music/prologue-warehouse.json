@@ -1,0 +1,22 @@
+{
+  "id": "prologue-warehouse",
+  "master": "assets/source/music/prologue-warehouse.flac",
+  "file": "assets/audio/music/prologue-warehouse.ogg",
+  "duration": 65.45454545454545,
+  "overlap_seconds": 2.727272727272727,
+  "filter": "[0:a]asplit=3[h][b][t];[h]atrim=0:2.727272727272727,asetpts=PTS-STARTPTS[head];[b]atrim=2.727272727272727:65.45454545454544,asetpts=PTS-STARTPTS[body];[t]atrim=65.45454545454544:68.18181818181817,asetpts=PTS-STARTPTS[tail];[tail][head]acrossfade=d=2.727272727272727:c1=tri:c2=tri[join];[body][join]concat=n=2:v=0:a=1,loudnorm=I=-22:TP=-3:LRA=8[out]",
+  "levels": {
+    "input_i": "-22.04",
+    "input_tp": "-7.74",
+    "input_lra": "6.60",
+    "input_thresh": "-32.16",
+    "output_i": "-21.66",
+    "output_tp": "-7.13",
+    "output_lra": "6.50",
+    "output_thresh": "-31.80",
+    "normalization_type": "dynamic",
+    "target_offset": "-0.34"
+  },
+  "sha256": "fdfffc88a476d2420e20db62303fec746a46a4e49223fd97e1c05ca1def31512",
+  "gain_correction_db": 0.03999999999999915
+}

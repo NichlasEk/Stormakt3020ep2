@@ -1,0 +1,22 @@
+{
+  "id": "remembrance",
+  "master": "assets/source/music/remembrance.flac",
+  "file": "assets/audio/music/remembrance.ogg",
+  "duration": 96.0,
+  "overlap_seconds": 4.0,
+  "filter": "[0:a]asplit=3[h][b][t];[h]atrim=0:4.0,asetpts=PTS-STARTPTS[head];[b]atrim=4.0:96.0,asetpts=PTS-STARTPTS[body];[t]atrim=96.0:100.0,asetpts=PTS-STARTPTS[tail];[tail][head]acrossfade=d=4.0:c1=tri:c2=tri[join];[body][join]concat=n=2:v=0:a=1,loudnorm=I=-22:TP=-3:LRA=8[out]",
+  "levels": {
+    "input_i": "-22.08",
+    "input_tp": "-8.29",
+    "input_lra": "2.90",
+    "input_thresh": "-32.16",
+    "output_i": "-22.22",
+    "output_tp": "-8.42",
+    "output_lra": "2.80",
+    "output_thresh": "-32.25",
+    "normalization_type": "dynamic",
+    "target_offset": "0.22"
+  },
+  "sha256": "1d0a5171fe8c55ea20b43a3b8eddcccb7ceec116592e540a69fdcc357b87b6eb",
+  "gain_correction_db": 0.0799999999999983
+}

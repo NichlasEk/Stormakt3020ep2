@@ -1,0 +1,22 @@
+{
+  "id": "mine-bellows",
+  "master": "assets/source/music/mine-bellows.flac",
+  "file": "assets/audio/music/mine-bellows.ogg",
+  "duration": 55.38461538461538,
+  "overlap_seconds": 2.3076923076923075,
+  "filter": "[0:a]asplit=3[h][b][t];[h]atrim=0:2.3076923076923075,asetpts=PTS-STARTPTS[head];[b]atrim=2.3076923076923075:55.38461538461538,asetpts=PTS-STARTPTS[body];[t]atrim=55.38461538461538:57.692307692307686,asetpts=PTS-STARTPTS[tail];[tail][head]acrossfade=d=2.3076923076923075:c1=tri:c2=tri[join];[body][join]concat=n=2:v=0:a=1,loudnorm=I=-22:TP=-3:LRA=8[out]",
+  "levels": {
+    "input_i": "-22.03",
+    "input_tp": "-9.00",
+    "input_lra": "4.40",
+    "input_thresh": "-32.38",
+    "output_i": "-21.49",
+    "output_tp": "-7.69",
+    "output_lra": "3.90",
+    "output_thresh": "-31.75",
+    "normalization_type": "dynamic",
+    "target_offset": "-0.51"
+  },
+  "sha256": "2599b7adbedd4e166d7229ebd7cd7305e9176d5ef66df65b03c98efac553116f",
+  "gain_correction_db": -1.0599999999999987
+}

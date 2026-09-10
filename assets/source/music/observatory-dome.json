@@ -1,0 +1,22 @@
+{
+  "id": "observatory-dome",
+  "master": "assets/source/music/observatory-dome.flac",
+  "file": "assets/audio/music/observatory-dome.ogg",
+  "duration": 73.84615384615385,
+  "overlap_seconds": 3.076923076923077,
+  "filter": "[0:a]asplit=3[h][b][t];[h]atrim=0:3.076923076923077,asetpts=PTS-STARTPTS[head];[b]atrim=3.076923076923077:73.84615384615385,asetpts=PTS-STARTPTS[body];[t]atrim=73.84615384615385:76.92307692307693,asetpts=PTS-STARTPTS[tail];[tail][head]acrossfade=d=3.076923076923077:c1=tri:c2=tri[join];[body][join]concat=n=2:v=0:a=1,loudnorm=I=-22:TP=-3:LRA=8[out]",
+  "levels": {
+    "input_i": "-22.01",
+    "input_tp": "-7.86",
+    "input_lra": "6.80",
+    "input_thresh": "-32.59",
+    "output_i": "-21.70",
+    "output_tp": "-7.11",
+    "output_lra": "4.70",
+    "output_thresh": "-32.10",
+    "normalization_type": "dynamic",
+    "target_offset": "-0.30"
+  },
+  "sha256": "d050024e78ab96a8afad8218e47ab97e534ae5420b3420275ca07bf0d0e1926e",
+  "gain_correction_db": -1.1999999999999993
+}

@@ -1,0 +1,22 @@
+{
+  "id": "mine-coolway",
+  "master": "assets/source/music/mine-coolway.flac",
+  "file": "assets/audio/music/mine-coolway.ogg",
+  "duration": 80.0,
+  "overlap_seconds": 3.3333333333333335,
+  "filter": "[0:a]asplit=3[h][b][t];[h]atrim=0:3.3333333333333335,asetpts=PTS-STARTPTS[head];[b]atrim=3.3333333333333335:80.00000000000001,asetpts=PTS-STARTPTS[body];[t]atrim=80.00000000000001:83.33333333333334,asetpts=PTS-STARTPTS[tail];[tail][head]acrossfade=d=3.3333333333333335:c1=tri:c2=tri[join];[body][join]concat=n=2:v=0:a=1,loudnorm=I=-22:TP=-3:LRA=8[out]",
+  "levels": {
+    "input_i": "-21.99",
+    "input_tp": "-8.60",
+    "input_lra": "6.70",
+    "input_thresh": "-32.08",
+    "output_i": "-21.71",
+    "output_tp": "-7.75",
+    "output_lra": "6.10",
+    "output_thresh": "-31.80",
+    "normalization_type": "dynamic",
+    "target_offset": "-0.29"
+  },
+  "sha256": "0e6dccb3b1859dab602cde5b80aa83f4e9fdc56debd510abdcf6066b36c81d80",
+  "gain_correction_db": -0.3000000000000007
+}

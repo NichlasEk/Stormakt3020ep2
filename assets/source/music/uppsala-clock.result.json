@@ -1,0 +1,26 @@
+[
+  {
+    "file": "/v1/audio?path=%2Fhome%2Fnichlas%2Fai%2Feutherstudio%2FACE-Step-1.5%2F.cache%2Facestep%2Ftmp%2Fapi_audio%2F7569d3b3-7fd9-13fb-1ae7-c3c820009815.wav",
+    "wave": "",
+    "status": 1,
+    "create_time": 1789019197,
+    "env": "development",
+    "prompt": "Original instrumental soundtrack for a serious dark Swedish historical fantasy action RPG. Matte seventeenth century oil painting in music. Acoustic chamber-orchestral Nordic baroque palette, memorable distinct melody, no existing tune quotation. Clock corridor repeating the same morning. Repeated pizzicato strings, small bell accents, harpsichord canon, slightly uncanny restrained clockwork. 96 BPM in G minor. Continuous even energy and repeated phrases for a game loop, enter immediately, no intro silence or ending cadence, no fadeout. No vocals, speech, choir, pop, EDM, modern drum kit, trailer braams or comedy.",
+    "lyrics": "[Instrumental]",
+    "metas": {
+      "bpm": 96,
+      "duration": 65.0,
+      "genres": "N/A",
+      "keyscale": "G minor",
+      "timesignature": "4/4",
+      "prompt": "Original instrumental soundtrack for a serious dark Swedish historical fantasy action RPG. Matte seventeenth century oil painting in music. Acoustic chamber-orchestral Nordic baroque palette, memorable distinct melody, no existing tune quotation. Clock corridor repeating the same morning. Repeated pizzicato strings, small bell accents, harpsichord canon, slightly uncanny restrained clockwork. 96 BPM in G minor. Continuous even energy and repeated phrases for a game loop, enter immediately, no intro silence or ending cadence, no fadeout. No vocals, speech, choir, pop, EDM, modern drum kit, trailer braams or comedy.",
+      "lyrics": "[Instrumental]"
+    },
+    "generation_info": "**\ud83c\udfb5 Total generation time (1 song): 1.52s**\n- 1.52s per song\n- DiT phase (1 song): 1.52s",
+    "seed_value": "30221020",
+    "lm_model": "acestep-5Hz-lm-1.7B",
+    "dit_model": "acestep-v15-turbo",
+    "progress": 1.0,
+    "stage": "succeeded"
+  }
+]
