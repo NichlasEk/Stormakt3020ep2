@@ -1,5 +1,7 @@
 # Stormakt 3020: Atlands arv
 
+Aktuell fortsättningspunkt: [Handoff · 2026-09-10](docs/HANDOFF.md) — version 0.24.1, verifiering, sparningar och nästa arbete.
+
 ## 0.24 · Ebba går ned
 
 Aktuell Linux-version: `dist/AtlandsArv-0.24.1-port/`. Starta med `./play.sh`.

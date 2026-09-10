@@ -1,5 +1,7 @@
 # Checkpoint · Vägen under vattnet · 2026-09-06
 
+Aktuell fortsättningspunkt: [Handoff · 2026-09-10](HANDOFF.md) — version 0.24.1, verifiering, sparningar och nästa arbete.
+
 ## 0.24 · Ebba går ned
 
 Karl blir kvarhållen i Kungaminnets kontrollsluss. Ta över Ebba ombord, hämta hennes sabel och tjänstepistol och följ servicevägen till Sigillmästaren. Fyra nya målade rum, separat utrustning för båda hjältarna, 24 svenska röstklipp, fem musikstycken och en kort romantisk återföreningsfilm. Totalt 41 platser och 57 musikspår. Fortsätt efter Saltkällans avrapportering genom att tala med Ebba igen. Separat prov: `./play.sh -- --rescue` (nytt prov: `--rescue-new`). [Spelväg, manus och kontroller](EBBA-RESCUE.md).

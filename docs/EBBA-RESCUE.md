@@ -141,7 +141,7 @@ Kartan visar vägen, gjutformen tillverkar stjärnplåten, plåten riktar minnes
 
 Bildproduktionens manifest: `assets/source/art/rescue-assets-v1.json`. Röstreferenser, begäranden, masterfiler, musikmaster och LTX-arbetsflöde finns under `assets/source/`.
 
-Linux-export: `dist/AtlandsArv-0.24-ebba/AtlandsArv.x86_64`. Hela exportmappen skall hållas tillsammans, inklusive `data_AtlandsArv_linuxbsd_x86_64/AtlandsArv.dll`. `play.sh` startar den här versionen. Native exportprov och musikprov med samtliga 57 strömmar har passerat.
+Linux-export: `dist/AtlandsArv-0.24-ebba/AtlandsArv.x86_64`. Hela exportmappen skall hållas tillsammans, inklusive `data_AtlandsArv_linuxbsd_x86_64/AtlandsArv.dll`. Detta var exporten före portfixen; `play.sh` startar nu 0.24.1 nedan. Native exportprov och musikprov med samtliga 57 strömmar har passerat.
 
 ## 0.24.1 · Väntrummets port
 
