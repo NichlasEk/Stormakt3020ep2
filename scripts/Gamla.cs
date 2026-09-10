@@ -7,18 +7,18 @@ public static class Gamla
 {
     public const string Landing="gamla-landing",Passage="gamla-passage",Registry="gamla-registry";
     public static readonly string[] InitialIds={Landing,Passage,Registry};
-    public static readonly string[] Ids=InitialIds.Concat(West.Ids).Concat(Salt.Ids).ToArray();
+    public static readonly string[] Ids=InitialIds.Concat(West.Ids).Concat(Salt.Ids).Concat(Rescue.Ids).ToArray();
     public static bool Known(string id)=>Array.IndexOf(Ids,id)>=0;
-    public static string Name(string id)=>Salt.Known(id)?Salt.Name(id):West.Known(id)?West.Name(id):id switch{Landing=>"Kungshögarnas uppställningsplats",Passage=>"Gången under högen",_=>"De överfördas väntrum"};
+    public static string Name(string id)=>Rescue.Known(id)?Rescue.Name(id):Salt.Known(id)?Salt.Name(id):West.Known(id)?West.Name(id):id switch{Landing=>"Kungshögarnas uppställningsplats",Passage=>"Gången under högen",_=>"De överfördas väntrum"};
     public static Vector2 Origin(string id)=>new(60000+Array.IndexOf(Ids,id)*2100,1200+Array.IndexOf(Ids,id)*250);
     public static readonly Vector2 Board=new(365,485),Camp=new(320,655),Ledger=new(865,390),Nils=new(900,390),Talk=new(925,460);
-    public static Vector2[] Ground(string id)=>Salt.Known(id)?Salt.RoomGround(id):West.Known(id)?West.Ground:id switch
+    public static Vector2[] Ground(string id)=>Rescue.Known(id)?Rescue.Ground:Salt.Known(id)?Salt.RoomGround(id):West.Known(id)?West.Ground:id switch
     {
         Landing=>new Vector2[]{new(260,480),new(405,440),new(750,470),new(1175,455),new(1300,545),new(1360,780),new(1040,900),new(500,850),new(200,730)},
         Passage=>new Vector2[]{new(65,460),new(300,390),new(780,350),new(1000,380),new(1360,410),new(1440,550),new(1220,775),new(780,930),new(310,810),new(60,550)},
         _=>new Vector2[]{new(75,465),new(300,410),new(700,350),new(1010,355),new(1300,480),new(1380,690),new(1060,850),new(680,935),new(300,790),new(70,550)}
     };
-    public static Vector2[][] Obstacles(string id)=>Salt.Known(id)?Salt.Obstacles(id):West.Known(id)?West.Obstacles(id):id switch
+    public static Vector2[][] Obstacles(string id)=>Rescue.Known(id)?Rescue.Obstacles(id):Salt.Known(id)?Salt.Obstacles(id):West.Known(id)?West.Obstacles(id):id switch
     {
         Passage=>new[]{new Vector2[]{new(620,425),new(740,360),new(960,415),new(975,530),new(875,570),new(620,495)}},
         Registry=>new[]{new Vector2[]{new(550,510),new(590,492),new(770,568),new(768,638),new(733,654),new(550,568)},new Vector2[]{new(880,380),new(900,372),new(923,383),new(923,405),new(900,415),new(880,403)}},
@@ -34,8 +34,8 @@ public sealed partial class Combat
 {
     [JsonIgnore] public bool InGamla=>InConnectedWorld&&Gamla.Known(Rooms!.Current);
     [JsonIgnore] public GamlaRun GamlaState=>Rooms!.Gamla;
-    [JsonIgnore] public string GamlaGoal=>InSalt?SaltGoal:WestState.Debriefed?(SaltState.Released?"Återvänd till Ebba":SaltState.Reunited?"Till porten bakom Västra vågen":"Till Ebba · systrarnas återförening"):InWest?WestGoal:WestState.ElinMet?"Återvänd med Elin till Ebba":GamlaState.Debriefed?"Fortsätt genom väntrummets västra port":GamlaState.WitnessMet?"Ta Nils vittnesmål till Ebba":Rooms!.Current==Gamla.Landing?!GamlaState.CampRead?"Undersök den övergivna uppställningen":"Följ trappan in under högen":Rooms.Current==Gamla.Passage?!GamlaState.LedgerRead?"Säkra gången · läs transportliggaren":"Fortsätt genom den inre porten":"Säkra väntrummet · tala med Nils";
-    [JsonIgnore] public Vector2 GamlaObjective=>InSalt?SaltObjective:WestState.Debriefed&&SaltState.Reunited&&!SaltState.Released?(Rooms!.Current==Gamla.Landing?new(1175,495):Rooms.Current==Gamla.Passage?new(1300,465):Rooms.Current==Gamla.Registry?new(1300,460):new(1400,490)):InWest?WestObjective:GamlaState.Debriefed&&!WestState.ElinMet?(Rooms!.Current==Gamla.Registry?new(1300,460):Rooms.Current==Gamla.Passage?new(1300,465):new(1175,495)):GamlaState.WitnessMet?(Rooms!.Current==Gamla.Landing?Gamla.Board:new(100,490)):Rooms!.Current==Gamla.Landing?GamlaState.CampRead?new(1175,495):Gamla.Camp:Rooms.Current==Gamla.Passage?GamlaState.LedgerRead?new(1300,465):Gamla.Ledger:Gamla.Talk;
+    [JsonIgnore] public string GamlaGoal=>InRescue?RescueGoal:RescueState.Briefed&&!RescueState.Reunited?"Till Kungaminnet · följ Saltkällans högra port":InSalt?SaltGoal:WestState.Debriefed?(SaltState.Released?"Återvänd till Ebba":SaltState.Reunited?"Till porten bakom Västra vågen":"Till Ebba · systrarnas återförening"):InWest?WestGoal:WestState.ElinMet?"Återvänd med Elin till Ebba":GamlaState.Debriefed?"Fortsätt genom väntrummets västra port":GamlaState.WitnessMet?"Ta Nils vittnesmål till Ebba":Rooms!.Current==Gamla.Landing?!GamlaState.CampRead?"Undersök den övergivna uppställningen":"Följ trappan in under högen":Rooms.Current==Gamla.Passage?!GamlaState.LedgerRead?"Säkra gången · läs transportliggaren":"Fortsätt genom den inre porten":"Säkra väntrummet · tala med Nils";
+    [JsonIgnore] public Vector2 GamlaObjective=>InRescue?RescueObjective:RescueState.Briefed&&!RescueState.Reunited?(Rooms!.Current==Gamla.Landing?new(1175,495):Rooms.Current==Gamla.Passage?new(1300,465):Rooms.Current==Gamla.Registry?new(1300,460):new(1400,490)):InSalt?SaltObjective:WestState.Debriefed&&SaltState.Reunited&&!SaltState.Released?(Rooms!.Current==Gamla.Landing?new(1175,495):Rooms.Current==Gamla.Passage?new(1300,465):Rooms.Current==Gamla.Registry?new(1300,460):new(1400,490)):InWest?WestObjective:GamlaState.Debriefed&&!WestState.ElinMet?(Rooms!.Current==Gamla.Registry?new(1300,460):Rooms.Current==Gamla.Passage?new(1300,465):new(1175,495)):GamlaState.WitnessMet?(Rooms!.Current==Gamla.Landing?Gamla.Board:new(100,490)):Rooms!.Current==Gamla.Landing?GamlaState.CampRead?new(1175,495):Gamla.Camp:Rooms.Current==Gamla.Passage?GamlaState.LedgerRead?new(1300,465):Gamla.Ledger:Gamla.Talk;
     public static Combat NewGamlaPreview(Order order)
     {
         var g=NewObservatoryPreview(order);g.ObservatoryState.EntryOpen=g.ObservatoryState.MartaMet=g.ObservatoryState.DiagramRead=g.ObservatoryState.Aligned=true;g.ObservatoryState.Brakes=(int[])Observatory.Target.Clone();
@@ -54,7 +54,7 @@ public sealed partial class Combat
     }
     private void EnterGamla(string room)
     {
-        if(Salt.Known(room)){EnterSalt(room);return;}
+        if(Rescue.Known(room)){EnterRescue(room);return;}if(Salt.Known(room)){EnterSalt(room);return;}
         if(West.Known(room)){EnterWest(room);return;}
         if(room==Gamla.Landing){Spawn(EnemyKind.Guard,new(720,600));Spawn(EnemyKind.Gunner,new(1080,665));}
         if(room==Gamla.Passage){Spawn(EnemyKind.Guard,new(930,600));Spawn(EnemyKind.Pikeman,new(1100,690));Spawn(EnemyKind.Gunner,new(430,640));Emit("radio",Player,"gamla-below");}
@@ -62,7 +62,7 @@ public sealed partial class Combat
     }
     private bool StepGamla(Func<Vector2,bool> near)
     {
-        if(StepSalt(near))return true;if(StepWest(near))return true;if(!InGamla)return false;var s=GamlaState;bool safe=EncounterEnemies.All(e=>e.Dead);
+        if(StepRescue(near))return true;if(StepSalt(near))return true;if(StepWest(near))return true;if(!InGamla)return false;var s=GamlaState;bool safe=EncounterEnemies.All(e=>e.Dead);
         if(Rooms!.Current==Gamla.Landing)
         {
             if(near(Gamla.Board))

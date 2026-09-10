@@ -1,10 +1,15 @@
 # Från arenor till expeditioner
 
+## 0.24 · Ebba går ned
+
+Karl blir kvarhållen i Kungaminnets kontrollsluss. Ta över Ebba ombord, hämta hennes sabel och tjänstepistol och följ servicevägen till Sigillmästaren. Fyra nya målade rum, separat utrustning för båda hjältarna, 24 svenska röstklipp, fem musikstycken och en kort romantisk återföreningsfilm. Totalt 41 platser och 57 musikspår. Fortsätt efter Saltkällans avrapportering genom att tala med Ebba igen. Separat prov: `./play.sh -- --rescue` (nytt prov: `--rescue-new`). [Spelväg, manus och kontroller](EBBA-RESCUE.md).
+
+
 ## 0.23 · Saltkällan och systrarna
 
 Märta och Elin återförenas ombord. Fyra nya målade rum leder till Saltväktaren, med kedjespel, stigande vatten, gömma, räddning och beständig genväg tillbaka. 21 nya röstklipp med radiokort, fem egna musikspår och en kort LTX-film. Totalt 37 platser och 52 musikspår. Fortsätt genom högra porten bakom Västra vågen efter samtalet med Ebba. Separat prov: `./play.sh -- --salt`. [Spelväg, manus och kontroller](SALTSPRING.md).
 
-Nästa planerade etapp: Karl fångas i Kungaminnet, Ebba blir spelbar och räddar honom. Romantiskt efterspel ingår i riktningen; detta kapitel är ännu inte byggt.
+Denna planerade fortsättning är genomförd i 0.24 ovan. Nästa ännu obebyggda etapp är Kungaminnets innersta valv.
 
 ## 0.22 · Egen musik genom expeditionen
 

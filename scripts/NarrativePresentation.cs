@@ -16,16 +16,18 @@ public partial class Main
     {
         if(_screen!=Screen.Game)return;
         if(_radioTime<=0&&!_sound.Speaking)_radioBreath=Math.Max(0,_radioBreath-dt);
+        if(_pendingStoryFilm==""&&_game.Rooms?.Rescue is {Reunited:true,KissSeen:false})_pendingStoryFilm="rescue-reunion";
         if(_pendingStoryFilm=="")return;
         _restFade=Math.Min(1,_restFade+dt/9);
         if(_radioTime>0||_sound.Speaking||_radioQueue.Count>0||_radioBreath>0)return;
         var id=_pendingStoryFilm;_pendingStoryFilm="";StartFilm(id);
         if(_screen==Screen.Cinematic)
-        {_game.RegimentState.FarewellSeen=true;Save();}
-        else {QueueRadio("continuity-silence");QueueRadio("continuity-names");}
+        {if(id=="rescue-reunion")_game.RescueState.KissSeen=true;else _game.RegimentState.FarewellSeen=true;Save();}
+        else if(id=="rescue-reunion"){_game.RescueState.KissSeen=true;QueueRadio("rescue-after-karl");QueueRadio("rescue-after-ebba");Save();}else {QueueRadio("continuity-silence");QueueRadio("continuity-names");}
     }
     private void FinishNarrativeFilm()
     {
+        if(_activeFilm?.Id=="rescue-reunion"&&_filmReturn==Screen.Game){_radio="";_radioTime=0;_radioBreath=1.5f;QueueRadio("rescue-after-karl");QueueRadio("rescue-after-ebba");return;}
         if(_activeFilm?.Id!="regiment-rest"||_filmReturn!=Screen.Game)return;
         _radio="";_radioTime=0;_radioBreath=1.5f;
         QueueRadio("continuity-silence");QueueRadio("continuity-names");

@@ -1,0 +1,22 @@
+{
+  "id": "rescue-prison",
+  "master": "assets/source/music/rescue-prison.flac",
+  "file": "assets/audio/music/rescue-prison.ogg",
+  "duration": 74.48275862068967,
+  "overlap_seconds": 4.137931034482759,
+  "filter": "[0:a]asplit=3[h][b][t];[h]atrim=0:4.137931034482759,asetpts=PTS-STARTPTS[head];[b]atrim=4.137931034482759:74.48275862068965,asetpts=PTS-STARTPTS[body];[t]atrim=74.48275862068965:78.62068965517241,asetpts=PTS-STARTPTS[tail];[tail][head]acrossfade=d=4.137931034482759:c1=tri:c2=tri[join];[body][join]concat=n=2:v=0:a=1,loudnorm=I=-22:TP=-3:LRA=8[out]",
+  "levels": {
+    "input_i": "-21.98",
+    "input_tp": "-6.06",
+    "input_lra": "7.90",
+    "input_thresh": "-32.51",
+    "output_i": "-22.11",
+    "output_tp": "-6.30",
+    "output_lra": "6.70",
+    "output_thresh": "-32.48",
+    "normalization_type": "dynamic",
+    "target_offset": "0.11"
+  },
+  "sha256": "dedec2d2b20b41b9ef73ac48c62eb5be9e8fcec42c8ac40efb2e6c3b0e70f142",
+  "gain_correction_db": -0.5700000000000003
+}

@@ -1,0 +1,22 @@
+{
+  "id": "rescue-machine",
+  "master": "assets/source/music/rescue-machine.flac",
+  "file": "assets/audio/music/rescue-machine.ogg",
+  "duration": 58.37837837837838,
+  "overlap_seconds": 3.2432432432432434,
+  "filter": "[0:a]asplit=3[h][b][t];[h]atrim=0:3.2432432432432434,asetpts=PTS-STARTPTS[head];[b]atrim=3.2432432432432434:58.378378378378386,asetpts=PTS-STARTPTS[body];[t]atrim=58.378378378378386:61.62162162162163,asetpts=PTS-STARTPTS[tail];[tail][head]acrossfade=d=3.2432432432432434:c1=tri:c2=tri[join];[body][join]concat=n=2:v=0:a=1,loudnorm=I=-22:TP=-3:LRA=8[out]",
+  "levels": {
+    "input_i": "-22.00",
+    "input_tp": "-5.28",
+    "input_lra": "6.80",
+    "input_thresh": "-32.78",
+    "output_i": "-22.59",
+    "output_tp": "-5.05",
+    "output_lra": "5.30",
+    "output_thresh": "-33.38",
+    "normalization_type": "dynamic",
+    "target_offset": "0.59"
+  },
+  "sha256": "7b2bcb838344958d4932ae5fa0c53e92eac67b421c861fdf35ad91601c61cf3e",
+  "gain_correction_db": -0.28000000000000114
+}

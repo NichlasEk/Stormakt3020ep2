@@ -1,0 +1,26 @@
+[
+  {
+    "file": "/v1/audio?path=%2Fhome%2Fnichlas%2Fai%2Feutherstudio%2FACE-Step-1.5%2F.cache%2Facestep%2Ftmp%2Fapi_audio%2F94c80230-7fb9-c8be-a920-59356acad335.wav",
+    "wave": "",
+    "status": 1,
+    "create_time": 1789045848,
+    "env": "development",
+    "prompt": "Ancient Swedish royal registry instrumental, muted viol consort and low harpsichord, single distant bronze chime, solemn restrained Nordic baroque exploration, rough stone and forbidden names, no vocals",
+    "lyrics": "[Instrumental]",
+    "metas": {
+      "bpm": 66,
+      "duration": 72.73,
+      "genres": "N/A",
+      "keyscale": "D minor",
+      "timesignature": "4/4",
+      "prompt": "Ancient Swedish royal registry instrumental, muted viol consort and low harpsichord, single distant bronze chime, solemn restrained Nordic baroque exploration, rough stone and forbidden names, no vocals",
+      "lyrics": "[Instrumental]"
+    },
+    "generation_info": "**\ud83c\udfb5 Total generation time (1 song): 2.53s**\n- 2.53s per song\n- DiT phase (1 song): 2.53s",
+    "seed_value": "30221100",
+    "lm_model": "acestep-5Hz-lm-1.7B",
+    "dit_model": "acestep-v15-turbo",
+    "progress": 1.0,
+    "stage": "succeeded"
+  }
+]

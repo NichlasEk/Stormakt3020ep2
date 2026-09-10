@@ -1,0 +1,10 @@
+{
+  "text": "En stund. Sedan går vi hem tillsammans.",
+  "prompt_text": "Karl, håll dig nära kajen. Flottan väntar ute i dimman. Jag vill ha alla tillbaka ombord innan gryningen. Vi har förlorat nog med folk för kungars gamla drömmar.",
+  "voice_instruction": "An adult Swedish female naval commander, low warm confident voice, crisp Swedish pronunciation, restrained urgency, intimate and natural, dry intelligence.",
+  "model_backend": "voxcpm2",
+  "language": "sv",
+  "output_format": "wav",
+  "normalize": false,
+  "seed": 30221149
+}

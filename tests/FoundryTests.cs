@@ -27,8 +27,8 @@ public static class FoundryTests
         }
         try
         {
-            foreach(var id in Uppsala.Ids)run.Rooms!.Rooms.Remove(id);run.Rooms!.Doors.Remove("uppsala-clock");run.Rooms.Doors.Remove("meridian-hall");run.Rooms.Rooms.Remove(Foundry.Room);run.Rooms.Doors.Remove("foundry");foreach(var fresh in Observatory.Ids.Concat(Gamla.Ids))run.Rooms.Rooms.Remove(fresh);foreach(var fresh in RoomLinks.All.Where(l=>l.Id.StartsWith("observatory-")||(l.Id.StartsWith("gamla-")||l.Id.StartsWith("salt-"))))run.Rooms.Doors.Remove(fresh.Id);run.Rooms.LayoutVersion=7;run.Health=68;Save();
-            check(run.Rooms!.LayoutVersion==15&&run.Rooms.Rooms.Count==37&&!run.Rooms.Rooms[Foundry.Room].Visited&&run.Health==68,"Published mine save gains unopened foundry");
+            foreach(var id in Uppsala.Ids)run.Rooms!.Rooms.Remove(id);run.Rooms!.Doors.Remove("uppsala-clock");run.Rooms.Doors.Remove("meridian-hall");run.Rooms.Rooms.Remove(Foundry.Room);run.Rooms.Doors.Remove("foundry");foreach(var fresh in Observatory.Ids.Concat(Gamla.Ids))run.Rooms.Rooms.Remove(fresh);foreach(var fresh in RoomLinks.All.Where(l=>l.Id.StartsWith("observatory-")||(l.Id.StartsWith("gamla-")||(l.Id.StartsWith("salt-")||l.Id.StartsWith("rescue-")))))run.Rooms.Doors.Remove(fresh.Id);run.Rooms.LayoutVersion=7;run.Health=68;Save();
+            check(run.Rooms!.LayoutVersion==16&&run.Rooms.Rooms.Count==41&&!run.Rooms.Rooms[Foundry.Room].Visited&&run.Health==68,"Published mine save gains unopened foundry");
             run.Rooms.ConnectionRevision=4;run.Player=new(1100,390);Save();check(Vector2.Distance(run.Player,new(1180,650))<1,"Old wall-strip position recovered onto main floor");
             var link=RoomLinks.All.Single(l=>l.Id=="foundry");var route=ConnectedWorld.Route(link);var shift=run.WorldOrigin;
             check(!run.ClearPath(route[0]-shift,route[1]-shift),"Closed foundry gate blocks the arch");

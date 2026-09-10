@@ -23,8 +23,8 @@ public static class GamlaTests
             }
             try
             {
-                foreach(var id in Gamla.Ids)g.Rooms!.Rooms.Remove(id);foreach(var l in RoomLinks.All.Where(l=>(l.Id.StartsWith("gamla-")||l.Id.StartsWith("salt-"))))g.Rooms!.Doors.Remove(l.Id);g.Rooms!.LayoutVersion=12;Save();
-                check(g.Rooms!.LayoutVersion==15&&g.Rooms.Rooms.Count==37&&g.ObservatoryState.Debriefed,"Observatory saves gain Gamla Uppsala");
+                foreach(var id in Gamla.Ids)g.Rooms!.Rooms.Remove(id);foreach(var l in RoomLinks.All.Where(l=>(l.Id.StartsWith("gamla-")||(l.Id.StartsWith("salt-")||l.Id.StartsWith("rescue-")))))g.Rooms!.Doors.Remove(l.Id);g.Rooms!.LayoutVersion=12;Save();
+                check(g.Rooms!.LayoutVersion==16&&g.Rooms.Rooms.Count==41&&g.ObservatoryState.Debriefed,"Observatory saves gain Gamla Uppsala");
                 Use(Cabin.Helm);check(g.Events.Any(e=>e.Kind=="gamla-travel"&&e.Text==Gamla.Landing),"Cabin helm offers new expedition");check(g.FinishGamlaFlight(Gamla.Landing),"Frigate lands at royal mounds");Fight();Use(Gamla.Camp);check(g.GamlaState.CampRead,"Camp distinguishes people from graves");Cross("gamla-mound");Fight();
                 var gate=RoomLinks.All.Single(l=>l.Id=="gamla-registry");g.Player=gate.AtA;for(int i=0;i<110;i++)g.Step(new(-Vector2.UnitY,-Vector2.UnitY,false,false,false,false,false,false,false,false));check(g.Passage==null&&g.Rooms!.Current==Gamla.Passage,"Closed door prevents transition");
                 Use(Gamla.Ledger);check(g.GamlaState.LedgerRead,"Receipt opens inner lock");Cross("gamla-registry");Fight();Use(Gamla.Talk);check(g.GamlaState.Conversation==1&&!g.GamlaState.WitnessMet,"Listen before asking about Elin");Use(Gamla.Talk);check(g.GamlaState.WitnessMet,"Nils witnessed Elin alive");

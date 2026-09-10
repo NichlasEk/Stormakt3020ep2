@@ -11,7 +11,10 @@ public partial class Main
         if(_inventoryBackground!=null)return;
         _inventoryBackground=GD.Load<Texture2D>("res://assets/art/inventory-background-v1.png");
         foreach(var item in Items.All)
-            _inventoryItemArt.Add(item.Id,GD.Load<Texture2D>($"res://assets/art/inventory-item-{item.Id}-v1.png"));
+        {
+            int column=item.Id=="admiral-saber"?0:item.Id=="service-pistol"?1:item.Id=="admiral-coat"?2:-1;
+            _inventoryItemArt.Add(item.Id,column<0?GD.Load<Texture2D>($"res://assets/art/inventory-item-{item.Id}-v1.png"):new AtlasTexture{Atlas=GD.Load<Texture2D>("res://assets/art/inventory-ebba-v1.png"),Region=column==0?new Rect2(10,105,490,740):column==1?new Rect2(515,250,500,620):new Rect2(1030,185,500,600)});
+        }
     }
     private void PaintedInventoryItem(ItemDefinition item,Vector2 center,float size)
     {

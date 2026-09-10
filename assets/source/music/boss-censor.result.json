@@ -1,0 +1,26 @@
+[
+  {
+    "file": "/v1/audio?path=%2Fhome%2Fnichlas%2Fai%2Feutherstudio%2FACE-Step-1.5%2F.cache%2Facestep%2Ftmp%2Fapi_audio%2F4ca0a7da-d62e-6bd7-e05d-78c1898328a0.wav",
+    "wave": "",
+    "status": 1,
+    "create_time": 1789045902,
+    "env": "development",
+    "prompt": "Fast precise fencing and pistol boss battle, angular baroque string ostinato, low timpani, severe bass trombone answers and harpsichord, relentless bureaucratic menace, heroic female admiral, dynamic instrumental no vocals no rock no EDM",
+    "lyrics": "[Instrumental]",
+    "metas": {
+      "bpm": 120,
+      "duration": 52.0,
+      "genres": "N/A",
+      "keyscale": "C minor",
+      "timesignature": "4/4",
+      "prompt": "Fast precise fencing and pistol boss battle, angular baroque string ostinato, low timpani, severe bass trombone answers and harpsichord, relentless bureaucratic menace, heroic female admiral, dynamic instrumental no vocals no rock no EDM",
+      "lyrics": "[Instrumental]"
+    },
+    "generation_info": "**\ud83c\udfb5 Total generation time (1 song): 1.61s**\n- 1.61s per song\n- DiT phase (1 song): 1.61s",
+    "seed_value": "30221104",
+    "lm_model": "acestep-5Hz-lm-1.7B",
+    "dit_model": "acestep-v15-turbo",
+    "progress": 1.0,
+    "stage": "succeeded"
+  }
+]

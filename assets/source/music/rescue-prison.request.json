@@ -1,0 +1,21 @@
+{
+  "prompt": "Lonely chamber cello, faint bowed nyckelharpa and sparse cold glass harmonics, a royal commander trapped by his name, intimate tense silence between phrases, historical Nordic dark fantasy instrumental no vocals",
+  "lyrics": "[Instrumental]",
+  "vocal_language": "unknown",
+  "audio_duration": 82.76,
+  "audio_format": "wav",
+  "task_type": "text2music",
+  "batch_size": 1,
+  "thinking": false,
+  "use_cot_caption": false,
+  "use_cot_language": false,
+  "use_cot_metas": false,
+  "use_format": false,
+  "bpm": 58,
+  "key_scale": "G minor",
+  "time_signature": "4/4",
+  "inference_steps": 8,
+  "guidance_scale": 7,
+  "use_random_seed": false,
+  "seed": 30221101
+}

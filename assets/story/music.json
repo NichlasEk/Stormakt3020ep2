@@ -570,5 +570,60 @@
     "duration": 55.71,
     "seed": 30221004,
     "prompt": "Intense Swedish historical action boss battle instrumental, heavy low orchestral drums and rattling chain percussion, urgent ostinato strings, dark trombones and nyckelharpa motif, alternating weighty attacks and brief breath, serious grim naval baroque, no vocals no electronic dance music no electric guitar"
+  },
+  {
+    "id": "rescue-hall",
+    "title": "Kungaminnets förhall",
+    "file": "res://assets/audio/music/rescue-hall.ogg",
+    "bpm": 66,
+    "key": "D minor",
+    "bars": 18,
+    "duration": 72.73,
+    "seed": 30221100,
+    "prompt": "Ancient Swedish royal registry instrumental, muted viol consort and low harpsichord, single distant bronze chime, solemn restrained Nordic baroque exploration, rough stone and forbidden names, no vocals"
+  },
+  {
+    "id": "rescue-prison",
+    "title": "Namnet som blev kvar",
+    "file": "res://assets/audio/music/rescue-prison.ogg",
+    "bpm": 58,
+    "key": "G minor",
+    "bars": 18,
+    "duration": 82.76,
+    "seed": 30221101,
+    "prompt": "Lonely chamber cello, faint bowed nyckelharpa and sparse cold glass harmonics, a royal commander trapped by his name, intimate tense silence between phrases, historical Nordic dark fantasy instrumental no vocals"
+  },
+  {
+    "id": "rescue-service",
+    "title": "Amiralen går i land",
+    "file": "res://assets/audio/music/rescue-service.ogg",
+    "bpm": 88,
+    "key": "D minor",
+    "bars": 20,
+    "duration": 60.0,
+    "seed": 30221102,
+    "prompt": "Resolute Swedish admiral rescue mission, plucked cello pulse, agile chamber strings and soft frame drum with breathy wooden flute, courage and urgency without bombast, warm developing melody, dark baroque instrumental no vocals"
+  },
+  {
+    "id": "rescue-machine",
+    "title": "Kansliets försegling",
+    "file": "res://assets/audio/music/rescue-machine.ogg",
+    "bpm": 74,
+    "key": "C minor",
+    "bars": 18,
+    "duration": 64.86,
+    "seed": 30221103,
+    "prompt": "Subterranean antique machine of brass seals, low organ breathing, measured viola ostinato and metallic ticking, restrained ominous historical fantasy instrumental, dusty acoustic texture, no vocals"
+  },
+  {
+    "id": "boss-censor",
+    "title": "Sigillmästarens återkallelse",
+    "file": "res://assets/audio/music/boss-censor.ogg",
+    "bpm": 120,
+    "key": "C minor",
+    "bars": 24,
+    "duration": 52.0,
+    "seed": 30221104,
+    "prompt": "Fast precise fencing and pistol boss battle, angular baroque string ostinato, low timpani, severe bass trombone answers and harpsichord, relentless bureaucratic menace, heroic female admiral, dynamic instrumental no vocals no rock no EDM"
   }
 ]

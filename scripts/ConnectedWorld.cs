@@ -26,7 +26,7 @@ public static class ConnectedWorld
     public static Vector2[] Route(RoomLink l)
     {
         if(l.Id=="salt-return")return new[]{Origin(l.A)+l.AtA,Origin(l.A)+new Vector2(840,345),Origin(l.A)+new Vector2(790,190),Origin(l.B)+new Vector2(770,250),Origin(l.B)+new Vector2(770,345),Origin(l.B)+l.ArrivalB};
-        if(l.Id.StartsWith("gamla-")||l.Id.StartsWith("salt-"))return new[]{Origin(l.A)+l.AtA,Origin(l.A)+l.AtA+new Vector2(0,-105),Origin(l.A)+l.AtA+new Vector2(0,-250),Origin(l.B)+l.AtB+new Vector2(-180,-90),Origin(l.B)+l.AtB,Origin(l.B)+l.ArrivalB};
+        if(l.Id.StartsWith("gamla-")||(l.Id.StartsWith("salt-")||l.Id.StartsWith("rescue-")))return new[]{Origin(l.A)+l.AtA,Origin(l.A)+l.AtA+new Vector2(0,-105),Origin(l.A)+l.AtA+new Vector2(0,-250),Origin(l.B)+l.AtB+new Vector2(-180,-90),Origin(l.B)+l.AtB,Origin(l.B)+l.ArrivalB};
         if(l.Id.StartsWith("observatory-"))
         {
             if(l.Id=="observatory-shortcut")return new[]{Origin(l.A)+new Vector2(760,445),Origin(l.A)+new Vector2(760,330),Origin(l.A)+new Vector2(760,-120),new Vector2(51800,2100),new Vector2(51800,3500),Origin(l.B)+new Vector2(760,1130),Origin(l.B)+new Vector2(760,970),Origin(l.B)+new Vector2(760,880)};
@@ -117,7 +117,7 @@ public sealed partial class Combat
     public void EnableConnectedWorld()
     {
         if(!InRooms||InDoorTrial||InConnectedWorld)return;
-        var r=Rooms!;foreach(var id in Regiment.Ids.Concat(Mine.Ids).Concat(Uppsala.Ids))r.Rooms.TryAdd(id,new());r.LayoutVersion=15;r.Connected=true;r.ConnectionRevision=ConnectedWorld.Revision;
+        var r=Rooms!;foreach(var id in Regiment.Ids.Concat(Mine.Ids).Concat(Uppsala.Ids))r.Rooms.TryAdd(id,new());r.LayoutVersion=16;r.Connected=true;r.ConnectionRevision=ConnectedWorld.Revision;
         foreach(var e in Enemies)e.HomeRoom=r.Current;
         foreach(var pair in r.Rooms)
         {
@@ -129,19 +129,19 @@ public sealed partial class Combat
         foreach(var l in RoomLinks.All)r.Doors[l.Id]=new(){Locked=!RoomLinks.Open(r,l),TargetOpen=RoomLinks.Open(r,l),Openness=RoomLinks.Open(r,l)?1:0};
         UpdateRoomSight(true);
     }
-    public static bool HasWorldDoor(RoomLink l)=>l.Id.StartsWith("salt-")||(l.Id.StartsWith("observatory-")&&l.Id!="observatory-machine")||l.Gate is PassageGate.Key or PassageGate.Shortcut or PassageGate.Archive or PassageGate.RootGate or PassageGate.RegimentExit or PassageGate.RegimentShortcut or PassageGate.MineShortcut or PassageGate.Meridian or PassageGate.GamlaLedger or PassageGate.WestAccess or PassageGate.WestRegister or PassageGate.WestRelease;
+    public static bool HasWorldDoor(RoomLink l)=>(l.Id.StartsWith("salt-")||l.Id.StartsWith("rescue-"))||(l.Id.StartsWith("observatory-")&&l.Id!="observatory-machine")||l.Gate is PassageGate.Key or PassageGate.Shortcut or PassageGate.Archive or PassageGate.RootGate or PassageGate.RegimentExit or PassageGate.RegimentShortcut or PassageGate.MineShortcut or PassageGate.Meridian or PassageGate.GamlaLedger or PassageGate.WestAccess or PassageGate.WestRegister or PassageGate.WestRelease;
     private bool WorldGround(Vector2 world){foreach(var p in ConnectedWorld.FloorShapes)if(p.Contains(world))return true;return false;}
     [JsonIgnore] private int _solidStamp=int.MinValue;
     [JsonIgnore] private ConnectedWorld.Shape[] _worldSolids=Array.Empty<ConnectedWorld.Shape>();
     private ConnectedWorld.Shape[] CachedWorldSolids()
     {
-        int stamp=17;foreach(var l in RoomLinks.All){var d=Rooms!.Doors[l.Id];stamp=unchecked(stamp*31+BitConverter.SingleToInt32Bits(d.Openness)+(RoomLinks.Open(Rooms,l)?1:0)+(d.Broken?7:0));}
+        int stamp=IsEbba?19:17;foreach(var l in RoomLinks.All){var d=Rooms!.Doors[l.Id];stamp=unchecked(stamp*31+BitConverter.SingleToInt32Bits(d.Openness)+(RoomLinks.Open(Rooms,l)?1:0)+(d.Broken?7:0));}
         if(stamp!=_solidStamp){_solidStamp=stamp;_worldSolids=WorldSolids().Select(p=>new ConnectedWorld.Shape(p)).ToArray();}return _worldSolids;
     }
     private static bool Blocked(ConnectedWorld.Shape[] solids,Vector2 p){foreach(var o in solids)if(o.Contains(p))return true;return false;}
     public IEnumerable<Vector2[]> WorldSolids()
     {
-        foreach(var p in ConnectedWorld.Solids)yield return p;
+        foreach(var p in ConnectedWorld.Solids){if(IsEbba&&p.All(v=>Vector2.Distance(v,ConnectedWorld.Origin(Cabin.Room)+Cabin.Ebba)<40))continue;yield return p;}
         foreach(var link in RoomLinks.All)
         {
             var d=Rooms!.Doors[link.Id];

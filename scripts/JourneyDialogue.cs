@@ -4,6 +4,7 @@ using System.Text.Json;
 namespace Atland;
 public static class JourneyDialogue
 {
+    public static Dictionary<string,string[]> Rescue()=>JsonSerializer.Deserialize<Dictionary<string,string[]>>(FileAccess.GetFileAsString("res://assets/story/rescue-radio.json"))!;
     public static Dictionary<string,string[]> Salt()=>JsonSerializer.Deserialize<Dictionary<string,string[]>>(FileAccess.GetFileAsString("res://assets/story/salt-radio.json"))!;
     public static Dictionary<string,string[]> West()=>JsonSerializer.Deserialize<Dictionary<string,string[]>>(FileAccess.GetFileAsString("res://assets/story/west-radio.json"))!;
     public static Dictionary<string,string[]> Gamla()=>JsonSerializer.Deserialize<Dictionary<string,string[]>>(FileAccess.GetFileAsString("res://assets/story/gamla-radio.json"))!;

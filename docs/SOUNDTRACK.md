@@ -1,5 +1,7 @@
 # 0.22 · Musik för varje plats
 
+0.24 lägger till Kungaminnets fyra rum och Sigillmästaren: totalt 57 spår, cirka 67,6 minuter. De nya spåren är loudness-kontrollerade kring −22 LUFS.
+
 0.23 lägger till Saltkällans fyra rum och Saltväktarens strid: totalt 52 spår, cirka 62,6 minuter. Biblioteket är tyst tills ett spår väljs och spelar exklusivt utan bakgrundsmusik.
 
 Musikpasset ersätter den tidigare återanvändningen av tre grundspår med 47 egna lokalt genererade instrumentala stycken, sammanlagt cirka 57 minuter musik:

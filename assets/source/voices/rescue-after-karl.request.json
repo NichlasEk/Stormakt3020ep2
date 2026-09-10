@@ -1,0 +1,10 @@
+{
+  "text": "Du räddade mitt liv, Ebba.",
+  "prompt_text": "Jag heter Karl. Jag följer vägen ned mot porten. Ebba, håll radion öppen. När vi kommer tillbaka vill jag tala med dig, utan någon som lyssnar.",
+  "voice_instruction": "Adult Swedish male commander age thirty-five, warm low baritone, natural clear Swedish, calm and direct with restrained vulnerability, dignified but human, no caricature or impersonation.",
+  "model_backend": "voxcpm2",
+  "language": "sv",
+  "output_format": "wav",
+  "normalize": false,
+  "seed": 30221150
+}

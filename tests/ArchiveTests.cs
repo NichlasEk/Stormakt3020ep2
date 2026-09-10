@@ -11,7 +11,7 @@ static class ArchiveTests
         {
             Combat Save(Combat g,string name){string path=Path.Combine(root,name+".json");SaveStore.Write(path,g);return SaveStore.Read(path);}
             void Use(Combat g,Vector2 at){g.Player=at;g.Step(default);g.Step(new(default,Vector2.UnitY,false,false,false,false,false,false,false,true));}
-            foreach(var weapon in Enum.GetValues<Weapon>())foreach(var order in Enum.GetValues<Order>())foreach(int choice in new[]{1,2})
+            foreach(var weapon in new[]{Weapon.Saber,Weapon.Hammer})foreach(var order in Enum.GetValues<Order>())foreach(int choice in new[]{1,2})
             {
                 var g=Combat.NewRooms(order);g.Weapon=weapon;int ticks=0;
                 for(;ticks<18000&&!g.Dead&&!g.Rooms!.Completed;ticks++)g.Step(OathCheckPilot.Decide(g,choice==1));

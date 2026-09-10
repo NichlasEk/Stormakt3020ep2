@@ -1,0 +1,50 @@
+{
+  "generator": "OpenAI image generation tool",
+  "rendering": "Painted 2D textures; runtime green-key cutout for actors; atlas regions for inventory; no Blender actors",
+  "files": [
+    {
+      "path": "assets/art/ebba-play-front-v1.png",
+      "sha256": "9a6d2ae78e0e0ced3279a7e708f003df61a60fa1b77b1060cb2c11274beb8794"
+    },
+    {
+      "path": "assets/art/ebba-play-back-v1.png",
+      "sha256": "bb16743b6f8d513e36d5758b52d672c1b1e2a55212b2dc2a58a5d63e2925407c"
+    },
+    {
+      "path": "assets/art/ebba-play-walk-v1.png",
+      "sha256": "0d123b802c311f0e0f49b13ec6c7b4d9bfbf82430cf62a7c6487dc8c1f27ee0f"
+    },
+    {
+      "path": "assets/art/rescue-censor-v1.png",
+      "sha256": "5642861f9005b4166368aa101ff9eccbd706ee182ff2b78ecd0238f932c525d5"
+    },
+    {
+      "path": "assets/art/rescue-reunion-v1.png",
+      "sha256": "cae94440322ea36b9c9b842d9ccf7ef71aa977091db58376a7fdb7cc4d5f20ab"
+    },
+    {
+      "path": "assets/art/inventory-ebba-v1.png",
+      "sha256": "7004c1a18f34f23a273271539818ee9907ae5238b96e31fd50f443ac483e728b"
+    },
+    {
+      "path": "assets/art/room-salt-rescue-open-v1.png",
+      "sha256": "7aa2e325641c1bf9b1145d430a1b05be80b379d67a9c95c40036dbbe09e2c8d5"
+    },
+    {
+      "path": "assets/art/room-rescue-hall-v1.png",
+      "sha256": "229930f1e99d9371775fa2e92e567971a39a51339419a170b3dc576a52ed1875"
+    },
+    {
+      "path": "assets/art/room-rescue-prison-v1.png",
+      "sha256": "7b24c515385f4ff8b2d1c608d42a515d163aacf3b0e0887e1e977fff1a8ec38d"
+    },
+    {
+      "path": "assets/art/room-rescue-service-v1.png",
+      "sha256": "ed39f7756c3ed8c092c46d6e17c9ee8c788a79ac64b3edee8f4a5f46713c0b4d"
+    },
+    {
+      "path": "assets/art/room-rescue-machine-v1.png",
+      "sha256": "d7dc0f9fa3b74157078f976f127ab037488336393ab0844edd5b797cfb20a265"
+    }
+  ]
+}

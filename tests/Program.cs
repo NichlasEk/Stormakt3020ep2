@@ -7,6 +7,7 @@ void Check(bool condition,string message){if(!condition)throw new Exception(mess
 Controls Input(Vector2 move=default,Vector2 aim=default,bool attack=false,bool heavy=false,bool dodge=false,bool guard=false,bool swap=false,bool heal=false,bool support=false,bool interact=false)=>new(move,aim,attack,heavy,dodge,guard,swap,heal,support,interact);
 if(args.Contains("--painted-only")){PaintedPassageTests.Run(Check);Console.WriteLine($"PASS PAINTED · {checks}");return;}
 if(args.Contains("--music-only")){MusicTests.Run(Check);Console.WriteLine($"PASS MUSIC · {checks}");return;}
+if(args.Contains("--rescue-only")){RescueTests.Run(Check);Console.WriteLine($"PASS RESCUE · {checks}");return;}
 if(args.Contains("--salt-only")){SaltTests.Run(Check);Console.WriteLine($"PASS SALT · {checks}");return;}
 if(args.Contains("--west-only")){WestTests.Run(Check);Console.WriteLine($"PASS WEST · {checks}");return;}
 if(args.Contains("--gamla-only")){GamlaTests.Run(Check);Console.WriteLine($"PASS GAMLA · {checks}");return;}
@@ -404,7 +405,7 @@ NarrativeTests.Run(Check);Console.WriteLine($"PASS NARRATIVE · {checks} asserti
 MeridianTests.Run(Check);Console.WriteLine($"PASS MERIDIAN · {checks} assertions");
 PaintedPassageTests.Run(Check);
 GamlaTests.Run(Check);
-WestTests.Run(Check);SaltTests.Run(Check);
+WestTests.Run(Check);SaltTests.Run(Check);RescueTests.Run(Check);
 MusicTests.Run(Check);
 ObservatoryTests.Run(Check);
 CabinTests.Run(Check);Console.WriteLine($"PASS CABIN · {checks} assertions");

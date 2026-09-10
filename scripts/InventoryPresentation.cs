@@ -62,14 +62,14 @@ public partial class Main
     private void DrawInventory()
     {
         DrawTextureRect(_inventoryBackground!,new Rect2(0,0,1280,720),false);
-        Text("KARL CCLV · FÄLTUTRUSTNING",new Vector2(40,55),24,Pale,true);
+        Text(_game.HeroName+" · FÄLTUTRUSTNING",new Vector2(40,55),24,Pale,true);
         Text("Spelet är pausat",new Vector2(40,84),13,Muted);
         Button(new Rect2(375,96,151,43),"Inventarium","inv-tab-0",_inventoryTab==0);
         Button(new Rect2(537,96,151,43),"Stash","inv-tab-1",_inventoryTab==1);
         Button(new Rect2(699,96,151,43),"Stats","inv-tab-2",_inventoryTab==2);
         Text("UTRUSTAT",new Vector2(40,135),13,Gold);
         int row=0;
-        foreach(var slot in Enum.GetValues<GearSlot>())
+        foreach(var slot in new[]{GearSlot.Saber,_game.IsEbba?GearSlot.Pistol:GearSlot.Hammer,GearSlot.Armor,GearSlot.Helmet,GearSlot.Sigil})
         {
             var r=new Rect2(40,153+row*85,291,76);InventoryPanel(r,.64f);
             _game.Inventory.Equipped.TryGetValue(slot,out var item);bool selected=item!=null&&item.Id==_selectedItem;
@@ -140,8 +140,8 @@ public partial class Main
     private void DrawInventoryStats()
     {
         InventoryPanel(new Rect2(375,153,865,465),.78f);
-        Text("KARLS EGENSKAPER",new Vector2(401,187),17,Gold);
-        var rows=new (string,string)[]{("Liv",$"{Math.Ceiling(_game.Health)} / 100"),("Uthållighet",$"{Math.Ceiling(_game.Stamina)} / 100"),("Aktivt vapen",_game.WeaponName),("Grundhugg",$"{_game.AttackDamage:0.#} skada"),("Tungt hugg",$"{_game.AttackDamage*1.8f:0.#} skada"),("Skadeskydd",$"{_game.EquipmentArmor:0} %"),("Återhämtning i vila",$"{29+_game.EquipmentRecovery:0} uthållighet/s"),("Besegrade / parader",$"{_game.Kills} / {_game.Parries}")};
+        Text(_game.IsEbba?"EBBAS EGENSKAPER":"KARLS EGENSKAPER",new Vector2(401,187),17,Gold);
+        var rows=new (string,string)[]{("Liv",$"{Math.Ceiling(_game.Health)} / 100"),("Uthållighet",$"{Math.Ceiling(_game.Stamina)} / 100"),("Aktivt vapen",_game.WeaponName),(_game.Weapon==Weapon.Pistol?"Skott":"Grundhugg",$"{_game.AttackDamage:0.#} skada"),(_game.Weapon==Weapon.Pistol?"Riktat skott":"Tungt hugg",$"{_game.AttackDamage*(_game.Weapon==Weapon.Pistol?1.5f:1.8f):0.#} skada"),("Skadeskydd",$"{_game.EquipmentArmor:0} %"),("Återhämtning i vila",$"{29+_game.EquipmentRecovery:0} uthållighet/s"),("Besegrade / parader",$"{_game.Kills} / {_game.Parries}")};
         for(int i=0;i<rows.Length;i++){float y=229+i*40;Text(rows[i].Item1,new Vector2(401,y),17,Muted);Text(rows[i].Item2,new Vector2(768,y),17,Pale);}
         Wrapped("Skadan visas före kombinationer, ripost och fiendens gard. Skadeskyddet gäller även kulor och områdesskada.",new Vector2(401,575),810,13,Muted,19);
     }

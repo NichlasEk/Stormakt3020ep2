@@ -1,0 +1,26 @@
+[
+  {
+    "file": "/v1/audio?path=%2Fhome%2Fnichlas%2Fai%2Feutherstudio%2FACE-Step-1.5%2F.cache%2Facestep%2Ftmp%2Fapi_audio%2F7bd16a38-9d35-849d-5036-720790538f81.wav",
+    "wave": "",
+    "status": 1,
+    "create_time": 1789045864,
+    "env": "development",
+    "prompt": "Lonely chamber cello, faint bowed nyckelharpa and sparse cold glass harmonics, a royal commander trapped by his name, intimate tense silence between phrases, historical Nordic dark fantasy instrumental no vocals",
+    "lyrics": "[Instrumental]",
+    "metas": {
+      "bpm": 58,
+      "duration": 82.76,
+      "genres": "N/A",
+      "keyscale": "G minor",
+      "timesignature": "4/4",
+      "prompt": "Lonely chamber cello, faint bowed nyckelharpa and sparse cold glass harmonics, a royal commander trapped by his name, intimate tense silence between phrases, historical Nordic dark fantasy instrumental no vocals",
+      "lyrics": "[Instrumental]"
+    },
+    "generation_info": "**\ud83c\udfb5 Total generation time (1 song): 2.04s**\n- 2.04s per song\n- DiT phase (1 song): 2.04s",
+    "seed_value": "30221101",
+    "lm_model": "acestep-5Hz-lm-1.7B",
+    "dit_model": "acestep-v15-turbo",
+    "progress": 1.0,
+    "stage": "succeeded"
+  }
+]

@@ -1176,12 +1176,10 @@ Se [scenföljd och kunskapsgränser](SALTSPRING.md).
 <!-- END-DIALOGUE-SNAPSHOT -->
 
 
-## Nästa etapp efter Saltkällan · Ebba tar över (förslag efter användarens riktning)
+## 0.24 · Ebba går ned (implementerad scenföljd)
 
-Detta är ännu inte spelbart. Saltkällans avrapportering avslutar nuvarande etapp.
+Efter avrapporteringen om Saltkällan lämnar Ebba tillbaka kansliets beställning för kontrollen under högen. Karl följer mottagningsinstruktionen och fångas av en dold kvarhållning av originalets bärare. Ebba tar över på marken, Hedvig håller radion och Märta håller fregatten. Servicevägen leder runt huvudlåset till Sigillmästaren. Hans sigill återkallar Karls kvarhållning; det öppnar inte innersta valvet.
 
-Karl följer kansliets beställning in i Kungaminnet. En fälla skiljer honom från återvägen; radions sista meddelande är begripligt men ofullständigt. Ebba tar själv befälet på marken och blir spelbar ombord på fregatten. Bytet skall vara tydligt i bild, kontroller och sparning. Karls inventarium bevaras separat.
+Två direkta samtal med Karl följs av den ömsesidiga kyssen i **Bara du och jag**. De återvänder till fregatten och stannar där över kvällen. Kartan, gjutformen och stjärnplåten får inga nya betydelser i den här etappen.
 
-Ebba har sabel och tjänstepistol, en egen rörelsestil och egna riktade gång-/stridsbilder. Hon skall kunna vinna strider själv, inte bara vara ett tillfälligt pusselverktyg. Hedvig kan hålla radiokontakten medan Ebba leder räddningen. Kapitlet ger ett nytt perspektiv på redan kända miljöer innan hon når fällans maskineri.
-
-Återföreningen får bli romantisk: Karl inser att hon kom själv; Ebba släpper sin befälsroll ett ögonblick. En kyss och en stilla paus före nästa order. Humorn kommer ur repliker och situation, aldrig töntig figurdesign. Slutliga repliker och fällans exakta funktion skrivs innan implementation; det skall vara en trovärdig följd av kansliets försvar, inte att Karl plötsligt tappar omdömet.
+Full scenföljd och alla 24 repliker: [Ebba går ned](EBBA-RESCUE.md). Kungaminnets innersta valv är fortfarande kommande innehåll.

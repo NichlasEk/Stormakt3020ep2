@@ -49,8 +49,8 @@ public partial class Main : Node2D
     private int _testTicks;
     private bool _atlandSlot,_portSlot,_portChecks;
     private readonly MusicDirector _musicDirector=new();
-    private string SavePath=>ProjectSettings.GlobalizePath(_saltSlot?"user://salt-preview-save.json":_westSlot?"user://west-preview-save.json":_gamlaSlot?"user://gamla-preview-save.json":_observatorySlot?"user://observatory-preview-save.json":_meridianSlot?"user://meridian-preview-save.json":_uppsalaSlot?"user://uppsala-preview-save.json":_foundrySlot?"user://foundry-preview-save.json":_mineSlot?"user://mine-preview-save.json":_regimentSlot?"user://regiment-preview-save.json":_doorSlot?"user://door-trial-save.json":_roomsSlot?"user://rooms-save.json":_portSlot?"user://port-save.json":_atlandSlot?"user://atland-save.json":"user://quay-save.json");
-    private string ManualPath=>ProjectSettings.GlobalizePath(_saltSlot?"user://salt-preview-manual-save.json":_westSlot?"user://west-preview-manual-save.json":_gamlaSlot?"user://gamla-preview-manual-save.json":_observatorySlot?"user://observatory-preview-manual-save.json":_meridianSlot?"user://meridian-preview-manual-save.json":_uppsalaSlot?"user://uppsala-preview-manual-save.json":_foundrySlot?"user://foundry-preview-manual-save.json":_mineSlot?"user://mine-preview-manual-save.json":_regimentSlot?"user://regiment-preview-manual-save.json":_doorSlot?"user://door-trial-manual-save.json":_roomsSlot?"user://rooms-manual-save.json":_portSlot?"user://port-manual-save.json":_atlandSlot?"user://atland-manual-save.json":"user://manual-save.json");
+    private string SavePath=>ProjectSettings.GlobalizePath(_rescueSlot?"user://rescue-preview-save.json":_saltSlot?"user://salt-preview-save.json":_westSlot?"user://west-preview-save.json":_gamlaSlot?"user://gamla-preview-save.json":_observatorySlot?"user://observatory-preview-save.json":_meridianSlot?"user://meridian-preview-save.json":_uppsalaSlot?"user://uppsala-preview-save.json":_foundrySlot?"user://foundry-preview-save.json":_mineSlot?"user://mine-preview-save.json":_regimentSlot?"user://regiment-preview-save.json":_doorSlot?"user://door-trial-save.json":_roomsSlot?"user://rooms-save.json":_portSlot?"user://port-save.json":_atlandSlot?"user://atland-save.json":"user://quay-save.json");
+    private string ManualPath=>ProjectSettings.GlobalizePath(_rescueSlot?"user://rescue-preview-manual-save.json":_saltSlot?"user://salt-preview-manual-save.json":_westSlot?"user://west-preview-manual-save.json":_gamlaSlot?"user://gamla-preview-manual-save.json":_observatorySlot?"user://observatory-preview-manual-save.json":_meridianSlot?"user://meridian-preview-manual-save.json":_uppsalaSlot?"user://uppsala-preview-manual-save.json":_foundrySlot?"user://foundry-preview-manual-save.json":_mineSlot?"user://mine-preview-manual-save.json":_regimentSlot?"user://regiment-preview-manual-save.json":_doorSlot?"user://door-trial-manual-save.json":_roomsSlot?"user://rooms-manual-save.json":_portSlot?"user://port-manual-save.json":_atlandSlot?"user://atland-manual-save.json":"user://manual-save.json");
     private const float Zoom=1.12f;
     private static readonly Color Gold=new("b99a64"), Pale=new("ddd6c5"), Muted=new("9b9a8d"), Teal=new("93aaa0"), Red=new("c57761");
     private static readonly Dictionary<string,(string Speaker,string Text)> Radio=new()
@@ -78,7 +78,7 @@ public partial class Main : Node2D
     private static NVec N(Vector2 v)=>new(v.X,v.Y);
     public override void _Ready()
     {
-        var args=OS.GetCmdlineUserArgs();_doorChecks=args.Contains("--door-check");_filmCheck=args.Contains("--cinematic-check");_filmPreview=args.Contains("--gate-film");_introPreview=args.Contains("--intro-film");_rootwayChecks=args.Contains("--rootway-check")||_filmCheck;_archiveChecks=args.Contains("--archive-check")||_rootwayChecks;_roomAudioChecks=args.Contains("--room-audio-check");_oathChecks=args.Contains("--oath-check")||_roomAudioChecks||_archiveChecks;_waterChecks=args.Contains("--water-check");_fogChecks=args.Contains("--fog-check");_roomChecks=args.Contains("--rooms-check");_inventoryChecks=args.Contains("--inventory-check");_portChecks=args.Contains("--port-check");_sceneChecks=args.Contains("--salt-check")||args.Contains("--music-check")||args.Contains("--west-check")||args.Contains("--gamla-check")||args.Contains("--observatory-check")||args.Contains("--cabin-check")||args.Contains("--meridian-check")||args.Contains("--narrative-check")||args.Contains("--uppsala-check")||args.Contains("--gait-check")||args.Contains("--foundry-check")||args.Contains("--mine-check")||args.Contains("--regiment-check")||args.Contains("--ports-check")||args.Contains("--root-arch-check")||args.Contains("--arch-check")||args.Contains("--world-check")||args.Contains("--scene-check")||_portChecks||_inventoryChecks||_roomChecks||_fogChecks||_waterChecks||_oathChecks||_doorChecks;_uiChecks=args.Contains("--ui-check");
+        var args=OS.GetCmdlineUserArgs();_doorChecks=args.Contains("--door-check");_filmCheck=args.Contains("--cinematic-check");_filmPreview=args.Contains("--gate-film");_introPreview=args.Contains("--intro-film");_rootwayChecks=args.Contains("--rootway-check")||_filmCheck;_archiveChecks=args.Contains("--archive-check")||_rootwayChecks;_roomAudioChecks=args.Contains("--room-audio-check");_oathChecks=args.Contains("--oath-check")||_roomAudioChecks||_archiveChecks;_waterChecks=args.Contains("--water-check");_fogChecks=args.Contains("--fog-check");_roomChecks=args.Contains("--rooms-check");_inventoryChecks=args.Contains("--inventory-check");_portChecks=args.Contains("--port-check");_sceneChecks=args.Contains("--rescue-check")||args.Contains("--salt-check")||args.Contains("--music-check")||args.Contains("--west-check")||args.Contains("--gamla-check")||args.Contains("--observatory-check")||args.Contains("--cabin-check")||args.Contains("--meridian-check")||args.Contains("--narrative-check")||args.Contains("--uppsala-check")||args.Contains("--gait-check")||args.Contains("--foundry-check")||args.Contains("--mine-check")||args.Contains("--regiment-check")||args.Contains("--ports-check")||args.Contains("--root-arch-check")||args.Contains("--arch-check")||args.Contains("--world-check")||args.Contains("--scene-check")||_portChecks||_inventoryChecks||_roomChecks||_fogChecks||_waterChecks||_oathChecks||_doorChecks;_uiChecks=args.Contains("--ui-check");
         _serif=GD.Load<Font>("res://assets/fonts/NotoSerif-Regular.ttf");_sans=GD.Load<Font>("res://assets/fonts/NotoSans-Regular.ttf");
         _background=GD.Load<Texture2D>("res://assets/art/likvarvet-scale-v5.png");
         _radioPortraits=GD.Load<Texture2D>("res://assets/art/radio-cast-v1.png");
@@ -97,6 +97,8 @@ public partial class Main : Node2D
         if(args.Contains("--capture-title"))_smokeCapture=true;
         if(args.Contains("--doors")||args.Contains("--doors-new")||_doorChecks)StartDoorTrial(args.Contains("--doors-new"));
         if(args.Contains("--music-check")){RunMusicChecks();return;}
+        if(args.Contains("--rescue-check")){RunRescueChecks();return;}
+        if(args.Contains("--rescue")||args.Contains("--rescue-new")){StartRescue(args.Contains("--rescue-new"));return;}
         if(args.Contains("--salt-check")){RunSaltChecks();return;}
         if(args.Contains("--salt")||args.Contains("--salt-new")){StartSalt(args.Contains("--salt-new"));return;}
         if(args.Contains("--west-check")){RunWestChecks();return;}
@@ -239,7 +241,7 @@ public partial class Main : Node2D
             case "port":_roomsSlot=false;_portSlot=true;StartAtland();break;
             case "atland":_roomsSlot=false;_portSlot=false;StartAtland();break;
             case "new":ChangeScreen(Screen.Briefing);break;
-            case "continue":_saltSlot=false;_westSlot=false;_gamlaSlot=false;_observatorySlot=false;_meridianSlot=false;_uppsalaSlot=false;_shipTime=0;_pendingStoryFilm="";_radioBreath=0;_foundrySlot=false;_mineSlot=false;_regimentSlot=false;_doorSlot=false;_roomsSlot=false;_portSlot=false;_atlandSlot=false;ResumeSave();break;
+            case "continue":_rescueSlot=false;_saltSlot=false;_westSlot=false;_gamlaSlot=false;_observatorySlot=false;_meridianSlot=false;_uppsalaSlot=false;_shipTime=0;_pendingStoryFilm="";_radioBreath=0;_foundrySlot=false;_mineSlot=false;_regimentSlot=false;_doorSlot=false;_roomsSlot=false;_portSlot=false;_atlandSlot=false;ResumeSave();break;
             case "artillery":_order=Order.Artillery;break;
             case "medicine":_order=Order.Medicine;break;
             case "land":StartNew();break;
@@ -256,7 +258,7 @@ public partial class Main : Node2D
             case "shake":_cameraShake=!_cameraShake;SaveSettings();break;
             case "fullscreen":DisplayServer.WindowSetMode(DisplayServer.WindowGetMode()==DisplayServer.WindowMode.Fullscreen?DisplayServer.WindowMode.Windowed:DisplayServer.WindowMode.Fullscreen);break;
             case "back":Back();break;
-            case "title":_saltSlot=false;_westSlot=false;_gamlaSlot=false;_observatorySlot=false;_meridianSlot=false;_uppsalaSlot=false;_shipTime=0;_pendingStoryFilm="";_radioBreath=0;_foundrySlot=false;_mineSlot=false;_regimentSlot=false;_boatTime=0;_doorSlot=false;_roomsSlot=false;_portSlot=false;_atlandSlot=false;_sound.StopVoice();_radioQueue.Clear();_radio="";ChangeScreen(Screen.Title);break;
+            case "title":_rescueSlot=false;_saltSlot=false;_westSlot=false;_gamlaSlot=false;_observatorySlot=false;_meridianSlot=false;_uppsalaSlot=false;_shipTime=0;_pendingStoryFilm="";_radioBreath=0;_foundrySlot=false;_mineSlot=false;_regimentSlot=false;_boatTime=0;_doorSlot=false;_roomsSlot=false;_portSlot=false;_atlandSlot=false;_sound.StopVoice();_radioQueue.Clear();_radio="";ChangeScreen(Screen.Title);break;
             case "retry":if(_game.Duel){StartDuel();break;}if(System.IO.File.Exists(SavePath))ResumeSave();else StartNew();break;
             case "quit":GetTree().Quit();break;
         }
@@ -271,7 +273,7 @@ public partial class Main : Node2D
     }
     private void StartNew()
     {
-        _saltSlot=false;_westSlot=false;_gamlaSlot=false;_observatorySlot=false;_meridianSlot=false;_uppsalaSlot=false;_shipTime=0;_pendingStoryFilm="";_radioBreath=0;_foundrySlot=false;_mineSlot=false;_regimentSlot=false;_doorSlot=false;_roomsSlot=false;_portSlot=false;_atlandSlot=false;_game=Combat.New(_order,true);_game.PreferRoomRoute=!_testMode;_game.AtlandCampaign=!_integration;ApplyDeveloperSettings();_camera=G(_game.Player)+new Vector2(85,-80);_particles.Clear();_floating.Clear();_radioQueue.Clear();_radio="";_sound.StopVoice();
+        _rescueSlot=false;_saltSlot=false;_westSlot=false;_gamlaSlot=false;_observatorySlot=false;_meridianSlot=false;_uppsalaSlot=false;_shipTime=0;_pendingStoryFilm="";_radioBreath=0;_foundrySlot=false;_mineSlot=false;_regimentSlot=false;_doorSlot=false;_roomsSlot=false;_portSlot=false;_atlandSlot=false;_game=Combat.New(_order,true);_game.PreferRoomRoute=!_testMode;_game.AtlandCampaign=!_integration;ApplyDeveloperSettings();_camera=G(_game.Player)+new Vector2(85,-80);_particles.Clear();_floating.Clear();_radioQueue.Clear();_radio="";_sound.StopVoice();
         ChangeScreen(Screen.Game);_banner="BLEKINGES LIKVARV";_bannerTime=5;Save();
     }
     private void Save(bool manual=false)
@@ -353,6 +355,8 @@ public partial class Main : Node2D
         var p=G(cue.Position);
         switch(cue.Kind)
         {
+            case "hero-change":_selectedItem=-1;_inventoryPage=0;_camera=G(_game.Player)+new Vector2(0,-60);_particles.Clear();_floating.Clear();RememberRenderPositions();if(_game.IsEbba){_radioQueue.Clear();_radio="";_radioTime=0;_sound.StopVoice();}break;
+            case "rescue-reunion":_pendingStoryFilm="rescue-reunion";break;
             case "cabin-enter":_radioQueue.Clear();_radio="";_radioTime=0;_sound.StopVoice();break;
             case "story-film":QueueFarewell();break;
             case "ship-travel":BeginShipTravel(cue.Text);break;
@@ -442,7 +446,7 @@ public partial class Main : Node2D
     public override void _Process(double delta)
     {
         float dt=(float)delta;StepFilm(dt);StepBoat(dt);StepShip(dt);StepNarrative(dt);_clock+=dt;_noticeTime=Math.Max(0,_noticeTime-dt);if(_screen==Screen.Game)_campaignTextTime=Math.Max(0,_campaignTextTime-dt);
-        _sound.Boss=(_game.Phase==Phase.Collector||(_game.Phase==Phase.Extraction&&_game.Enemies.Any(e=>!e.Dead))||(_game.InCampaign&&_game.Enemies.Any(e=>!e.Dead&&e.Kind is (EnemyKind.Collector or EnemyKind.OathGuardian or EnemyKind.RootMarshal or EnemyKind.CrownBailiff or EnemyKind.MeridianWarden or EnemyKind.ZenithGuardian or EnemyKind.MusterOfficer or EnemyKind.SaltWarden)&&_game.CanSeeRoomPoint(e.Position)))) && _screen is Screen.Game or Screen.Pause;
+        _sound.Boss=(_game.Phase==Phase.Collector||(_game.Phase==Phase.Extraction&&_game.Enemies.Any(e=>!e.Dead))||(_game.InCampaign&&_game.Enemies.Any(e=>!e.Dead&&e.Kind is (EnemyKind.Collector or EnemyKind.OathGuardian or EnemyKind.RootMarshal or EnemyKind.CrownBailiff or EnemyKind.MeridianWarden or EnemyKind.ZenithGuardian or EnemyKind.MusterOfficer or EnemyKind.SaltWarden or EnemyKind.Censor)&&_game.CanSeeRoomPoint(e.Position)))) && _screen is Screen.Game or Screen.Pause;
         _sound.MusicPreview=_screen==Screen.Music;
         if(_screen==Screen.Music)_sound.SelectScore(_previewScore);else _sound.SelectScore(_musicDirector.Select(_game,_sound.Boss,_boatTime>0,_shipTime>0,_screen is Screen.Title or Screen.Briefing));
         _sound.Remembrance=_game.InRegiment&&_game.RegimentState.Discharged;
@@ -641,7 +645,7 @@ public partial class Main : Node2D
     }
     private void DrawTelegraph(Fighter e)
     {
-        if(e.Kind is EnemyKind.MusterOfficer or EnemyKind.SaltWarden)return;
+        if(e.Kind is EnemyKind.MusterOfficer or EnemyKind.SaltWarden or EnemyKind.Censor)return;
         if(e.Kind==EnemyKind.CrownBailiff)
         {
             var previous=G(e.Position);foreach(var point in _game.CrownStampPoints(e)){var at=G(point);DrawLine(previous,at,new Color(Gold,.5f),2,true);DrawArc(at,57,0,Mathf.Tau,40,new Color(Red,.75f),2,true);previous=at;}return;
@@ -659,6 +663,7 @@ public partial class Main : Node2D
     }
     private void Actor(Fighter e,bool dead)
     {
+        if(e.Kind==EnemyKind.Censor){DrawCensor(e);return;}
         if(e.Kind==EnemyKind.SaltWarden){DrawSaltWarden(e);return;}
         if(e.Kind==EnemyKind.MusterOfficer){DrawMusterOfficer(e);return;}
         if(e.Kind is EnemyKind.ZenithGuardian or EnemyKind.ZenithLock){DrawZenith(e);return;}
@@ -674,6 +679,7 @@ public partial class Main : Node2D
     }
     private void DrawPlayer()
     {
+        if(_game.IsEbba){DrawPlayableEbba();return;}
         int pose=_game.Guarding?5:_game.AttackTime>0?(_game.AttackContact?4:3):_game.Moving?(int)_game.Walk%2+1:0;
         DrawActor(_game.Weapon==Weapon.Saber?"karl-saber":"karl-hammer",RenderPlayer,G(_game.Facing),pose,_game.Hurt,_game.Dead,true,_game.Moving,_game.Walk,_game.AttackContact&&_game.AttackTime<_game.ContactTime+.09f);
         if(_game.AttackTime>0 && _game.AttackContact)
@@ -713,7 +719,7 @@ public partial class Main : Node2D
             if((_radioTime>0||_sound.Speaking)&&Radio.ContainsKey(_radio))DrawRadio();
             return;
         }
-        if(_game.DeveloperSurvival){Panel(new Rect2(20,132,240,29),.9f);Text("DEV · Karl överlever på 1 liv",new Vector2(30,152),12,Gold);}
+        if(_game.DeveloperSurvival){Panel(new Rect2(20,132,240,29),.9f);Text("DEV · Överlever på 1 liv",new Vector2(30,152),12,Gold);}
         Panel(new Rect2(20,18,294,60),.87f);Text("STORMAKT 3020",new Vector2(38,41),12,Gold);Text(_game.RegionName,new Vector2(38,65),20,Pale,true);
         Panel(new Rect2(928,18,332,102),.91f);Text(_game.Duel?"ÖVNING  /  SABEL":_game.InDoorTrial?"ATLAND  /  DÖRRPROV":_game.InRooms?"ATLAND  /  EXPEDITION":_game.InCampaign?$"ATLAND  /  BANA {_game.CampaignStage+1} AV 8":$"EXPEDITION  /  {(int)_game.Region+1:00}",new Vector2(946,42),12,Gold);
         string objective=_game.Phase switch
@@ -734,11 +740,11 @@ public partial class Main : Node2D
         if(_game.InRooms)DrawExplorationMap();
         if(!_game.InDoorTrial)DrawJourneyPrompt(foes);
         if(_game.InCampaign&&!_game.InDoorTrial)DrawCampaignStory();
-        var boss=_game.Enemies.FirstOrDefault(e=>e.Kind is (EnemyKind.Collector or EnemyKind.OathGuardian or EnemyKind.RootMarshal or EnemyKind.CrownBailiff or EnemyKind.MeridianWarden or EnemyKind.ZenithGuardian or EnemyKind.MusterOfficer or EnemyKind.SaltWarden)&&!e.Dead&&_game.CanSeeRoomPoint(e.Position));
-        if(boss!=null){Panel(new Rect2(354,20,542,59),.91f);Centered(boss.Kind==EnemyKind.SaltWarden?"SALTVÄKTAREN":boss.Kind==EnemyKind.MusterOfficer?(_game.WestState.Exposed>0?"MÖNSTRINGSFÖRRÄTTAREN · AVLASTAD":"MÖNSTRINGSFÖRRÄTTAREN"):boss.Kind==EnemyKind.ZenithGuardian?"ZENITVÄKTAREN":boss.Kind==EnemyKind.MeridianWarden?(_game.MeridianState.Exposed>0?"MERIDIANVÄKTAREN · TAKTEN BRYTS":"MERIDIANVÄKTAREN"):boss.Kind==EnemyKind.CrownBailiff?(_game.FoundryState.Cooling>0?"KRONFOGDEN · JÄRNET SVALNAR":"KRONFOGDEN"):boss.Kind==EnemyKind.RootMarshal?(_game.RegimentState.Exposed>0?"ROTMARSKALKEN · EDEN VACKLAR":"ROTMARSKALKEN"):boss.Kind==EnemyKind.OathGuardian?(boss.State==3?"EDSVÄKTAREN · EDEN VACKLAR":boss.Health<boss.MaxHealth*.5f?"EDSVÄKTAREN · FÖRTVIVLAD ED":"EDSVÄKTAREN"):_game.InCampaign?(_game.CampaignStage==7?"KOLLEGIETS VÄKTARE":"KRONFOGDEN"):"VARVETS INDRIVARE",625,42,14,Gold);WorldBar(new Vector2(378,56),490,boss.Health/boss.MaxHealth,Red);}
-        Panel(new Rect2(20,623,381,77),.96f);Text("KARL CCLV",new Vector2(38,646),13,Gold);Text($"{Math.Ceiling(_game.Health)} / 100",new Vector2(302,646),13,Pale);
+        var boss=_game.Enemies.FirstOrDefault(e=>e.Kind is (EnemyKind.Collector or EnemyKind.OathGuardian or EnemyKind.RootMarshal or EnemyKind.CrownBailiff or EnemyKind.MeridianWarden or EnemyKind.ZenithGuardian or EnemyKind.MusterOfficer or EnemyKind.SaltWarden or EnemyKind.Censor)&&!e.Dead&&_game.CanSeeRoomPoint(e.Position));
+        if(boss!=null){Panel(new Rect2(354,20,542,59),.91f);Centered(boss.Kind==EnemyKind.Censor?"SIGILLMÄSTAREN":boss.Kind==EnemyKind.SaltWarden?"SALTVÄKTAREN":boss.Kind==EnemyKind.MusterOfficer?(_game.WestState.Exposed>0?"MÖNSTRINGSFÖRRÄTTAREN · AVLASTAD":"MÖNSTRINGSFÖRRÄTTAREN"):boss.Kind==EnemyKind.ZenithGuardian?"ZENITVÄKTAREN":boss.Kind==EnemyKind.MeridianWarden?(_game.MeridianState.Exposed>0?"MERIDIANVÄKTAREN · TAKTEN BRYTS":"MERIDIANVÄKTAREN"):boss.Kind==EnemyKind.CrownBailiff?(_game.FoundryState.Cooling>0?"KRONFOGDEN · JÄRNET SVALNAR":"KRONFOGDEN"):boss.Kind==EnemyKind.RootMarshal?(_game.RegimentState.Exposed>0?"ROTMARSKALKEN · EDEN VACKLAR":"ROTMARSKALKEN"):boss.Kind==EnemyKind.OathGuardian?(boss.State==3?"EDSVÄKTAREN · EDEN VACKLAR":boss.Health<boss.MaxHealth*.5f?"EDSVÄKTAREN · FÖRTVIVLAD ED":"EDSVÄKTAREN"):_game.InCampaign?(_game.CampaignStage==7?"KOLLEGIETS VÄKTARE":"KRONFOGDEN"):"VARVETS INDRIVARE",625,42,14,Gold);WorldBar(new Vector2(378,56),490,boss.Health/boss.MaxHealth,Red);}
+        Panel(new Rect2(20,623,381,77),.96f);Text(_game.HeroName,new Vector2(38,646),13,Gold);Text($"{Math.Ceiling(_game.Health)} / 100",new Vector2(302,646),13,Pale);
         WorldBar(new Vector2(38,657),345,_game.Health/100,new Color("b6574d"),11);WorldBar(new Vector2(38,677),345,_game.Stamina/100,Teal,5);
-        Panel(new Rect2(417,623,470,77),.96f);Text(_game.WeaponName.ToUpperInvariant(),new Vector2(435,647),16,Gold);
+        Panel(new Rect2(417,623,470,77),.96f);Text(_game.WeaponName.ToUpperInvariant()+(_game.Weapon==Weapon.Pistol&&_game.RescueState.PistolReload>0?$" · {_game.RescueState.PistolReload:0.0}s":""),new Vector2(435,647),16,Gold);
         Text(_controller?"RB  Byt vapen     ↑  Tinktur ×"+_game.Potions:"TAB  Byt vapen     Q  Tinktur ×"+_game.Potions,new Vector2(435,674),14,Muted);
         Panel(new Rect2(903,623,357,77),.96f);Text(_game.Order==Order.Artillery?"ÖRLOGSBATTERI":"FÄLTSJUKVÅRD",new Vector2(921,647),14,Gold);
         Text(_game.InCabin?"Understödet vilar ombord":_game.SupportCooldown<=0?(_controller?"↓  Understöd redo":"F  Understöd redo"):$"Redo om {Math.Ceiling(_game.SupportCooldown)} s",new Vector2(921,674),16,_game.SupportCooldown<=0?Teal:Muted);
@@ -761,7 +767,7 @@ public partial class Main : Node2D
         else
         {
             if(_game.Phase==Phase.Discovery && NVec.Distance(_game.Player,Combat.ChartPosition)<100){Panel(new Rect2(430,526,420,52),.94f);Centered(_controller?"B  Undersök bronskartan":"E  Undersök bronskartan",640,558,19,Gold);}
-            else if(!_game.InDoorTrial&&_game.Elapsed<35&&(!_game.InCampaign||_campaignTextTime<=0)){Panel(new Rect2(282,552,716,43),.85f);Centered(_game.InCabin?(_controller?"Vänster spak Gå · B Tala / undersök":"WASD Gå · E Tala / undersök"):_controller?"X Hugg · Y Tungt · A Undanmanöver · LB Parad":"WASD Gå · Mus Sikta · Vänster Hugg · Höger Tungt · Space Undan · Shift Parad",640,578,14,Muted);}
+            else if(!_game.InDoorTrial&&_game.Elapsed<35&&(!_game.InCampaign||_campaignTextTime<=0)){Panel(new Rect2(282,552,716,43),.85f);Centered(_game.InCabin?(_controller?"Vänster spak Gå · B Tala / undersök":"WASD Gå · E Tala / undersök"):_game.Weapon==Weapon.Pistol?(_controller?"X Skjut · Y Riktat skott · A Undan · LB Parad":"WASD Gå · Mus Sikta · Vänster Skjut · Höger Riktat · Space Undan"):_controller?"X Hugg · Y Tungt · A Undanmanöver · LB Parad":"WASD Gå · Mus Sikta · Vänster Hugg · Höger Tungt · Space Undan · Shift Parad",640,578,14,Muted);}
         }
         Text(_controller?"START Paus · BACK Fynd":"ESC Paus · R Fynd · I Inventarium · C Stats",new Vector2(24,608),12,Muted);
     }
@@ -786,6 +792,8 @@ public partial class Main : Node2D
         float cell=_radioPortraits.GetWidth()/3f;
         var portraitRect=new Rect2(195,501,92,92);
         if(speaker=="ELIN VINGE")DrawTextureRectRegion(_elinArt!,portraitRect,new Rect2(365,75,290,300));
+        else if(speaker=="SIGILLMÄSTAREN")DrawTextureRectRegion(_censorArt!,portraitRect,new Rect2(320,20,145,145));
+        else if(speaker=="KARL CCLV")DrawTextureRectRegion(_karlRescue!,portraitRect,new Rect2(210,20,115,115));
         else if(speaker=="SALTVÄKTAREN")DrawTextureRectRegion(_saltArt!,portraitRect,new Rect2(320,20,150,150));
         else if(speaker=="MÖNSTRINGSFÖRRÄTTAREN")DrawTextureRectRegion(_officerArt!,portraitRect,new Rect2(325,20,125,135));
         else if(speaker=="NILS BERG")DrawTextureRectRegion(_nilsArt!,portraitRect,new Rect2(370,55,250,275));
@@ -843,7 +851,7 @@ public partial class Main : Node2D
         Button(new Rect2(880,329,320,49),"Utvecklare · Musikbibliotek","music-library");
         Button(new Rect2(455,329,370,49),"Kameraskakning: "+(_cameraShake?"på":"av"),"shake");
         Button(new Rect2(455,394,370,49),"Växla helskärm  ·  F11","fullscreen");Button(new Rect2(420,459,440,49),"Utvecklarläge: överlevnad "+(_developerSurvival?"PÅ":"AV"),"dev-survival");
-        Centered("Karl tar skada men överlever på minst 1 liv.",640,534,15,Muted);
+        Centered("Spelaren tar skada men överlever på minst 1 liv.",640,534,15,Muted);
         Button(new Rect2(205,550,420,43),"Utvecklarverktyg · Videobibliotek","videos");
         Button(new Rect2(645,550,440,43),"Prova regementet · separat sparning","regiment-preview");
         Button(new Rect2(205,609,420,38),"Prova gruvan · separat sparning","mine-preview");
@@ -855,7 +863,7 @@ public partial class Main : Node2D
     }
     private void DrawDeath()
     {
-        Centered("Havet väntar",640,235,46,Pale,true);Centered("Karl föll. Fältdagboken finns kvar.",640,279,18,Muted);
+        Centered("Havet väntar",640,235,46,Pale,true);Centered((_game.IsEbba?"Ebba":"Karl")+" föll. Fältdagboken finns kvar.",640,279,18,Muted);
         Button(new Rect2(445,345,390,52),"Återvänd till sparat läge","retry",true);Button(new Rect2(445,414,390,49),"Till huvudmenyn","title");
     }
     private void DrawEnding()

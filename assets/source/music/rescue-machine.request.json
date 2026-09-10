@@ -1,0 +1,21 @@
+{
+  "prompt": "Subterranean antique machine of brass seals, low organ breathing, measured viola ostinato and metallic ticking, restrained ominous historical fantasy instrumental, dusty acoustic texture, no vocals",
+  "lyrics": "[Instrumental]",
+  "vocal_language": "unknown",
+  "audio_duration": 64.86,
+  "audio_format": "wav",
+  "task_type": "text2music",
+  "batch_size": 1,
+  "thinking": false,
+  "use_cot_caption": false,
+  "use_cot_language": false,
+  "use_cot_metas": false,
+  "use_format": false,
+  "bpm": 74,
+  "key_scale": "C minor",
+  "time_signature": "4/4",
+  "inference_steps": 8,
+  "guidance_scale": 7,
+  "use_random_seed": false,
+  "seed": 30221103
+}

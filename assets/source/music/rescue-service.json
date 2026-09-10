@@ -1,0 +1,22 @@
+{
+  "id": "rescue-service",
+  "master": "assets/source/music/rescue-service.flac",
+  "file": "assets/audio/music/rescue-service.ogg",
+  "duration": 54.54545454545454,
+  "overlap_seconds": 2.727272727272727,
+  "filter": "[0:a]asplit=3[h][b][t];[h]atrim=0:2.727272727272727,asetpts=PTS-STARTPTS[head];[b]atrim=2.727272727272727:54.54545454545454,asetpts=PTS-STARTPTS[body];[t]atrim=54.54545454545454:57.272727272727266,asetpts=PTS-STARTPTS[tail];[tail][head]acrossfade=d=2.727272727272727:c1=tri:c2=tri[join];[body][join]concat=n=2:v=0:a=1,loudnorm=I=-22:TP=-3:LRA=8[out]",
+  "levels": {
+    "input_i": "-21.85",
+    "input_tp": "-8.13",
+    "input_lra": "7.50",
+    "input_thresh": "-32.20",
+    "output_i": "-22.00",
+    "output_tp": "-8.26",
+    "output_lra": "5.60",
+    "output_thresh": "-32.29",
+    "normalization_type": "dynamic",
+    "target_offset": "0.00"
+  },
+  "sha256": "e888f15c064c542ffd02981760e3ebf97eaec9dabce0b4a500bb211048bbf709",
+  "gain_correction_db": -0.14999999999999858
+}

@@ -1,0 +1,98 @@
+{
+  "rescue-brief": [
+    "ebba",
+    "Kansliets beställning passar låset bakom Saltkällan. Karl, kontrollera mottagningsrummet. Jag håller en väg ut åt dig."
+  ],
+  "rescue-entry": [
+    "hedvig",
+    "Det här är Kungaminnets förhall. Gamla namn gav tillträde. Kansliet försökte skaffa dem genom de levande vittnena."
+  ],
+  "rescue-writ": [
+    "hedvig",
+    "Originalets sigill öppnar kontrollslussen. Lägg handlingen på läsbordet. Jag följer utslaget härifrån."
+  ],
+  "rescue-trap-karl": [
+    "karl",
+    "Sigillet är godkänt. Vänta. Dörren stängs bakom mig. Ebba, låset tar mitt namn."
+  ],
+  "rescue-trap-hedvig": [
+    "hedvig",
+    "Karl? Jag har tappat honom. Kontrollen håller kvar den som bär originalet. Det stod inte i mottagningsordern."
+  ],
+  "rescue-takeover": [
+    "ebba",
+    "Märta, du har fartyget. Hedvig, följ mig på radion. Jag går ned själv."
+  ],
+  "rescue-armory": [
+    "hedvig",
+    "Din pistol och sabel ligger vid förbandskistan. Underhållsritningen visar en sidodörr i förhallen."
+  ],
+  "rescue-ready": [
+    "ebba",
+    "Jag har utrustningen. Håll kanalen fri."
+  ],
+  "rescue-service": [
+    "hedvig",
+    "Karls namn håller huvudlåset slutet. Din väg går genom serviceporten. Dess mekanik känner ingen rang."
+  ],
+  "rescue-lever": [
+    "ebba",
+    "Så. En dörr som går att öppna utan att lämna in sin själ."
+  ],
+  "rescue-censor": [
+    "censor",
+    "Originalets bärare är omhändertagen. Återkallelse medges endast av kansliets sigillmästare."
+  ],
+  "rescue-aim": [
+    "hedvig",
+    "Han måste sikta innan han skjuter. Bryt hans anfall med pistolen, eller ta skydd bakom pelarna."
+  ],
+  "rescue-second": [
+    "censor",
+    "Ert tillträde återkallas. Förseglingen skall bestå."
+  ],
+  "rescue-defeated": [
+    "ebba",
+    "Nu har jag ditt sigill. Hedvig, säg hur jag öppnar låset."
+  ],
+  "rescue-release": [
+    "hedvig",
+    "Sätt sigillet i pulpeten. Vrid från kvarhållning till återkallelse. Det frigör Karl, men lämnar Kungaminnets innersta valv stängt."
+  ],
+  "rescue-open": [
+    "ebba",
+    "Karl. Om du hör mig, gå undan från dörren. Jag kommer in."
+  ],
+  "rescue-karl-found": [
+    "karl",
+    "Jag hörde dig till slut. Du kom själv."
+  ],
+  "rescue-ebba-found": [
+    "ebba",
+    "Ja. Jag tänker inte nöja mig med din röst i en radio."
+  ],
+  "rescue-karl-close": [
+    "karl",
+    "Stanna här en stund. Bara du och jag."
+  ],
+  "rescue-ebba-close": [
+    "ebba",
+    "En stund. Sedan går vi hem tillsammans."
+  ],
+  "rescue-after-karl": [
+    "karl",
+    "Du räddade mitt liv, Ebba."
+  ],
+  "rescue-after-ebba": [
+    "ebba",
+    "Då får du vara rädd om det. Jag vill gärna träffa dig igen utan ett lås emellan."
+  ],
+  "rescue-debrief": [
+    "hedvig",
+    "Båda är ombord. Förseglingen är bruten, och vi har kansliets sigill. Innersta valvet väntar. Det gör det även i morgon."
+  ],
+  "rescue-rest": [
+    "ebba",
+    "I kväll stannar vi här, Karl."
+  ]
+}

@@ -1,0 +1,152 @@
+{
+  "backend": "Local EutherLink VoxCPM2",
+  "voices": "Synthetic Ebba, Hedvig, Karl and Censor references",
+  "normalization": "mono 48 kHz, highpass 90Hz, lowpass 7800Hz, -18 LUFS",
+  "qa": "CPU Whisper transcription pass; automated transcription is approximate, not a listening review",
+  "clips": [
+    {
+      "id": "rescue-brief",
+      "role": "ebba",
+      "text": "Kansliets beställning passar låset bakom Saltkällan. Karl, kontrollera mottagningsrummet. Jag håller en väg ut åt dig.",
+      "sha256": "426d219204d86e3e875dd042e207e5dd59116d33c970bbfe9fd8ec21236faf25"
+    },
+    {
+      "id": "rescue-entry",
+      "role": "hedvig",
+      "text": "Det här är Kungaminnets förhall. Gamla namn gav tillträde. Kansliet försökte skaffa dem genom de levande vittnena.",
+      "sha256": "d4bee232a18747c7b98ed850e417ae1a6255253d0085ea8100c68cb2034e8443"
+    },
+    {
+      "id": "rescue-writ",
+      "role": "hedvig",
+      "text": "Originalets sigill öppnar kontrollslussen. Lägg handlingen på läsbordet. Jag följer utslaget härifrån.",
+      "sha256": "87c5be03bed5642366a55ec85b3f8443187f9ea568b121943eff6030d96a2b61"
+    },
+    {
+      "id": "rescue-trap-karl",
+      "role": "karl",
+      "text": "Sigillet är godkänt. Vänta. Dörren stängs bakom mig. Ebba, låset tar mitt namn.",
+      "sha256": "cb53a519ddf71b7dedc6a6f4e84fca745bfd0b11385dba710702a64796da4a9e"
+    },
+    {
+      "id": "rescue-trap-hedvig",
+      "role": "hedvig",
+      "text": "Karl? Jag har tappat honom. Kontrollen håller kvar den som bär originalet. Det stod inte i mottagningsordern.",
+      "sha256": "6b8d7be01f34ddfad8698bb2f327a1bb495cfa4dd94214f813d6c30ae1b52fc0"
+    },
+    {
+      "id": "rescue-takeover",
+      "role": "ebba",
+      "text": "Märta, du har fartyget. Hedvig, följ mig på radion. Jag går ned själv.",
+      "sha256": "7b6cee262c09508f5730a8b7a44ecf7f08a55b2e1270da8e9a81abb391f7f195"
+    },
+    {
+      "id": "rescue-armory",
+      "role": "hedvig",
+      "text": "Din pistol och sabel ligger vid förbandskistan. Underhållsritningen visar en sidodörr i förhallen.",
+      "sha256": "14bb9212dc336ee1178ae1ced964b2d88199e118d810a7692097b0aa5bc9316a"
+    },
+    {
+      "id": "rescue-ready",
+      "role": "ebba",
+      "text": "Jag har utrustningen. Håll kanalen fri.",
+      "sha256": "802c616738f0cf073ebb25a806999b8f9cc124596e55838cbbc9a0adc0fe51bd"
+    },
+    {
+      "id": "rescue-service",
+      "role": "hedvig",
+      "text": "Karls namn håller huvudlåset slutet. Din väg går genom serviceporten. Dess mekanik känner ingen rang.",
+      "sha256": "2ea277a608ba2e4aa99e1c361f66973538645dc8a6057d8c9cfaa2efb6afcae4"
+    },
+    {
+      "id": "rescue-lever",
+      "role": "ebba",
+      "text": "Så. En dörr som går att öppna utan att lämna in sin själ.",
+      "sha256": "adba60fb43051af1e86bb10b32396e932818b3be75ff657b2d2dabf49b2c9100"
+    },
+    {
+      "id": "rescue-censor",
+      "role": "censor",
+      "text": "Originalets bärare är omhändertagen. Återkallelse medges endast av kansliets sigillmästare.",
+      "sha256": "6ba538b120f4c82021cb953174ef6c7e1b200e42b3b9ac47585ecee6b9916749"
+    },
+    {
+      "id": "rescue-aim",
+      "role": "hedvig",
+      "text": "Han måste sikta innan han skjuter. Bryt hans anfall med pistolen, eller ta skydd bakom pelarna.",
+      "sha256": "4c1202a11256158647f3060d26542df5f3c4fcff34c1fdf6f836b20bd24a1298"
+    },
+    {
+      "id": "rescue-second",
+      "role": "censor",
+      "text": "Ert tillträde återkallas. Förseglingen skall bestå.",
+      "sha256": "0d24eb15a7a0ce055d29e31a6dde5ae8f7ccee55d2fa19b6f9e3447666b5d7b3"
+    },
+    {
+      "id": "rescue-defeated",
+      "role": "ebba",
+      "text": "Nu har jag ditt sigill. Hedvig, säg hur jag öppnar låset.",
+      "sha256": "bfc89d9a38485fb8c49ec38f16454f2f704e9d3a269f0b047a01db057f86d232"
+    },
+    {
+      "id": "rescue-release",
+      "role": "hedvig",
+      "text": "Sätt sigillet i pulpeten. Vrid från kvarhållning till återkallelse. Det frigör Karl, men lämnar Kungaminnets innersta valv stängt.",
+      "sha256": "3bd39d6574a387aa279df8a6101bbe07068c3818f4705e2a08d7d3bc690a2759"
+    },
+    {
+      "id": "rescue-open",
+      "role": "ebba",
+      "text": "Karl. Om du hör mig, gå undan från dörren. Jag kommer in.",
+      "sha256": "6cc350134d44af526b62d9425ce095b972467b656c8bc8d0b9f2e563735fe971"
+    },
+    {
+      "id": "rescue-karl-found",
+      "role": "karl",
+      "text": "Jag hörde dig till slut. Du kom själv.",
+      "sha256": "d3e1e6c699678302bb260d8dd9e1a395def68c90e01f73de25d4f60c8f902b5e"
+    },
+    {
+      "id": "rescue-ebba-found",
+      "role": "ebba",
+      "text": "Ja. Jag tänker inte nöja mig med din röst i en radio.",
+      "sha256": "8bb40c047f92308c7b16befc666d00d84973338c9a83b1d930100919f7f8c52c"
+    },
+    {
+      "id": "rescue-karl-close",
+      "role": "karl",
+      "text": "Stanna här en stund. Bara du och jag.",
+      "sha256": "feb6b88b660aa1bda216b02f608a34dacd88494248c555a3ab2a41a15d478616"
+    },
+    {
+      "id": "rescue-ebba-close",
+      "role": "ebba",
+      "text": "En stund. Sedan går vi hem tillsammans.",
+      "sha256": "2f33885240e3fe2e86885cbb577a4c992618691eeb4d9d312266acb1acb0250f"
+    },
+    {
+      "id": "rescue-after-karl",
+      "role": "karl",
+      "text": "Du räddade mitt liv, Ebba.",
+      "sha256": "a9da2f9f537b2ed79e4abae6899f4804691c5880243d35b8f5faa1468969e16d"
+    },
+    {
+      "id": "rescue-after-ebba",
+      "role": "ebba",
+      "text": "Då får du vara rädd om det. Jag vill gärna träffa dig igen utan ett lås emellan.",
+      "sha256": "8aa915d7f555c7dd75ab6d4428f693c1921c3aaabc1e84c21403b00cc685cd7b"
+    },
+    {
+      "id": "rescue-debrief",
+      "role": "hedvig",
+      "text": "Båda är ombord. Förseglingen är bruten, och vi har kansliets sigill. Innersta valvet väntar. Det gör det även i morgon.",
+      "sha256": "22209c0a166f3ddd052da3346e3896457bfa3141e19bc6736cf79ee750cfdbab"
+    },
+    {
+      "id": "rescue-rest",
+      "role": "ebba",
+      "text": "I kväll stannar vi här, Karl.",
+      "sha256": "fe148f991749784d4a8da796de0fd8c35d33b63d6a27953c4fb8e2c391df6f1e"
+    }
+  ]
+}

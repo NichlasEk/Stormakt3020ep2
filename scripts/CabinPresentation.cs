@@ -14,7 +14,7 @@ public partial class Main
     private void AddCabinLayers(List<(float Depth,Action Draw)> layers)
     {
         if(PaintRoom!=Cabin.Room)return;
-        layers.Add((Cabin.Ebba.Y,()=>
+        if(!_game.IsEbba)layers.Add((Cabin.Ebba.Y,()=>
         {
             var at=G(Cabin.Ebba);
             DrawColoredPolygon(new[]{at+new Vector2(-24,-3),at+new Vector2(0,-10),at+new Vector2(27,0),at+new Vector2(0,10)},new Color(0,0,0,.30f));
@@ -32,7 +32,7 @@ public partial class Main
     }
     private bool DrawCabinPrompt()
     {
-        if(!_game.InCabin)return false;
+        if(!_game.InCabin)return false;if(DrawRescuePrompt())return true;
         bool Near(NVec p)=>NVec.Distance(_game.Player,p)<72&&_game.ClearPath(_game.Player,p);
         var c=_game.CabinState;
         string label=_game.WestState.Debriefed&&Near(Salt.Marta)?"E / B · Tala med Märta":Near(Cabin.Entry)?"E / B · Gå ut till landgången":Near(Cabin.Helm)?"E / B · Avsegla · "+(_game.ObservatoryState.Debriefed?(c.ReturnRoom==Gamla.Landing?"Instrumentgården":"Gamla Uppsala"):(c.ReturnRoom==Uppsala.Court?"bryggan":"Uppsala")):_game.WestState.ElinMet&&Near(West.Aboard)?"E / B · Tala med Elin":Near(Cabin.Rest)?c.Rested?"E / B · Förbanden":"E / B · Lägg om såren":Near(Cabin.Talk)?"E / B · "+(c.Conversation==0?"Visa Ebba ordern":c.Conversation==1?"Kartan, gjutformen och stjärnplåten":c.Conversation==2?"Tala om nästa steg":"Tala med Ebba"):"";

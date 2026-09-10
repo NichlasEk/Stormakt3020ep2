@@ -1,0 +1,10 @@
+{
+  "text": "Förseglingen är bruten, och vi har kansliets sigill.",
+  "prompt_text": "Jag heter Hedvig Rålamb. Mitt arbete är att läsa det som andra har slutat se. En sten kan bära ett namn i tusen år. Men någon måste stanna och lyssna till berättelsen.",
+  "voice_instruction": "A mature Swedish female historian around fifty-five, thoughtful low alto, slightly grainy warm voice, precise calm Swedish pronunciation, contemplative pacing, quiet wonder and resolve, distinctly older than the naval commander, no theatrical acting.",
+  "model_backend": "voxcpm2",
+  "language": "sv",
+  "output_format": "wav",
+  "normalize": false,
+  "seed": 30221301
+}

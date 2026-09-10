@@ -1,0 +1,26 @@
+[
+  {
+    "file": "/v1/audio?path=%2Fhome%2Fnichlas%2Fai%2Feutherstudio%2FACE-Step-1.5%2F.cache%2Facestep%2Ftmp%2Fapi_audio%2F3ba49f59-d200-31ad-9113-ae6d9047a06a.wav",
+    "wave": "",
+    "status": 1,
+    "create_time": 1789045878,
+    "env": "development",
+    "prompt": "Resolute Swedish admiral rescue mission, plucked cello pulse, agile chamber strings and soft frame drum with breathy wooden flute, courage and urgency without bombast, warm developing melody, dark baroque instrumental no vocals",
+    "lyrics": "[Instrumental]",
+    "metas": {
+      "bpm": 88,
+      "duration": 60.0,
+      "genres": "N/A",
+      "keyscale": "D minor",
+      "timesignature": "4/4",
+      "prompt": "Resolute Swedish admiral rescue mission, plucked cello pulse, agile chamber strings and soft frame drum with breathy wooden flute, courage and urgency without bombast, warm developing melody, dark baroque instrumental no vocals",
+      "lyrics": "[Instrumental]"
+    },
+    "generation_info": "**\ud83c\udfb5 Total generation time (1 song): 1.72s**\n- 1.72s per song\n- DiT phase (1 song): 1.72s",
+    "seed_value": "30221102",
+    "lm_model": "acestep-5Hz-lm-1.7B",
+    "dit_model": "acestep-v15-turbo",
+    "progress": 1.0,
+    "stage": "succeeded"
+  }
+]

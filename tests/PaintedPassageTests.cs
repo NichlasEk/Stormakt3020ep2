@@ -6,7 +6,7 @@ public static class PaintedPassageTests
     public static void Run(Action<bool,string> check)
     {
         int exercised=0;
-        foreach(var link in RoomLinks.All.Where(l=>!(l.Id.StartsWith("gamla-")||l.Id.StartsWith("salt-"))))foreach(bool back in new[]{false,true})
+        foreach(var link in RoomLinks.All.Where(l=>!(l.Id.StartsWith("gamla-")||(l.Id.StartsWith("salt-")||l.Id.StartsWith("rescue-")))))foreach(bool back in new[]{false,true})
         {
             var g=Combat.NewGamlaPreview(Order.Artillery);if(!RoomLinks.Open(g.Rooms!,link))continue;
             string from=back?link.B:link.A;typeof(Combat).GetMethod("EnterConnectedRoom",BindingFlags.NonPublic|BindingFlags.Instance)!.Invoke(g,new object[]{from});

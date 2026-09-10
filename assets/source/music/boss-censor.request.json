@@ -1,0 +1,21 @@
+{
+  "prompt": "Fast precise fencing and pistol boss battle, angular baroque string ostinato, low timpani, severe bass trombone answers and harpsichord, relentless bureaucratic menace, heroic female admiral, dynamic instrumental no vocals no rock no EDM",
+  "lyrics": "[Instrumental]",
+  "vocal_language": "unknown",
+  "audio_duration": 52.0,
+  "audio_format": "wav",
+  "task_type": "text2music",
+  "batch_size": 1,
+  "thinking": false,
+  "use_cot_caption": false,
+  "use_cot_language": false,
+  "use_cot_metas": false,
+  "use_format": false,
+  "bpm": 120,
+  "key_scale": "C minor",
+  "time_signature": "4/4",
+  "inference_steps": 8,
+  "guidance_scale": 7,
+  "use_random_seed": false,
+  "seed": 30221104
+}

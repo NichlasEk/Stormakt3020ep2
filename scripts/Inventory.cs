@@ -5,12 +5,15 @@ using System.Numerics;
 using System.Text.Json.Serialization;
 
 namespace Atland;
-public enum GearSlot { Saber, Hammer, Armor, Helmet, Sigil }
+public enum GearSlot { Saber, Hammer, Armor, Helmet, Sigil, Pistol }
 public sealed record ItemDefinition(string Id,string Name,GearSlot Slot,string Description,int Damage=0,int Armor=0,int Recovery=0);
 public static class Items
 {
     public const int BagCapacity=24,StashCapacity=60;
     public static readonly ItemDefinition[] All={
+        new("admiral-saber","Amiralens sabel",GearSlot.Saber,"Ebbas egen klinga. Tjänstestål med välanvänd egg.",Damage:4),
+        new("service-pistol","Tjänstepistol",GearSlot.Pistol,"Ett riktat skott bryter fiendens sikte. Kräver omladdning mellan skotten."),
+        new("admiral-coat","Amiralens fältrock",GearSlot.Armor,"Mörkblå vadmal, förstärkt för tjänst i land.",Armor:8),
         new("saber","Officerssabel",GearSlot.Saber,"Karls tjänstevapen. Välbalanserat stål från Ronneby."),
         new("hammer","Gruvhammare",GearSlot.Hammer,"Tungt järn för berg och envist motstånd."),
         new("coat","Sliten uniformsrock",GearSlot.Armor,"Blå vadmal. Bär spåren av landstigningen."),
@@ -28,7 +31,7 @@ public static class Items
     };
     public static ItemDefinition Get(string id)=>All.First(i=>i.Id==id);
     public static bool Known(string? id)=>All.Any(i=>i.Id==id);
-    public static string SlotName(GearSlot slot)=>slot switch {GearSlot.Saber=>"Sabel",GearSlot.Hammer=>"Hammare",GearSlot.Armor=>"Rustning",GearSlot.Helmet=>"Hjälm",_=>"Sigill"};
+    public static string SlotName(GearSlot slot)=>slot switch {GearSlot.Pistol=>"Pistol",GearSlot.Saber=>"Sabel",GearSlot.Hammer=>"Hammare",GearSlot.Armor=>"Rustning",GearSlot.Helmet=>"Hjälm",_=>"Sigill"};
 }
 public sealed class GearItem { public int Id;public string Definition="";[JsonIgnore] public ItemDefinition Data=>Items.Get(Definition); }
 public sealed class ItemDrop { public GearItem Item=new();public Vector2 Position;public Region Region;public int Stage=-1;public string Room=""; }
@@ -44,7 +47,7 @@ public sealed class InventoryState
     {
         if(Bag is null||Stash is null||Equipped is null||Drops is null||Bag.Count>Items.BagCapacity||Stash.Count>Items.StashCapacity||Equipped.Count>5||Drops.Count>500)
             throw new System.IO.InvalidDataException("Ogiltigt inventarium");
-        if(!Equipped.ContainsKey(GearSlot.Saber)||!Equipped.ContainsKey(GearSlot.Hammer)||Drops.Any(d=>d is null))throw new System.IO.InvalidDataException("Saknad utrustning");
+        if(!Equipped.ContainsKey(GearSlot.Saber)||(Equipped.ContainsKey(GearSlot.Hammer)==Equipped.ContainsKey(GearSlot.Pistol))||Drops.Any(d=>d is null))throw new System.IO.InvalidDataException("Saknad utrustning");
         var all=Bag.Concat(Stash).Concat(Equipped.Values).Concat(Drops.Select(d=>d.Item)).ToArray();
         if(all.Any(i=>i is null||i.Id<1||!Items.Known(i.Definition))||all.Select(i=>i.Id).Distinct().Count()!=all.Length||NextId<=all.Max(i=>i.Id)||NextId>1000000)
             throw new System.IO.InvalidDataException("Ogiltiga föremål");
@@ -55,24 +58,25 @@ public sealed class InventoryState
 public sealed partial class Combat
 {
     public InventoryState Inventory=new();
-    [JsonIgnore] public GearSlot ActiveWeaponSlot=>Weapon==Weapon.Saber?GearSlot.Saber:GearSlot.Hammer;
+    [JsonIgnore] public GearSlot ActiveWeaponSlot=>Weapon==Weapon.Pistol?GearSlot.Pistol:Weapon==Weapon.Saber?GearSlot.Saber:GearSlot.Hammer;
     [JsonIgnore] public string WeaponName=>Inventory.Equipped[ActiveWeaponSlot].Data.Name;
     [JsonIgnore] public float EquipmentArmor=>Math.Min(60,Inventory.Equipped.Values.Sum(i=>i.Data.Armor));
     [JsonIgnore] public float EquipmentRecovery=>Inventory.Equipped.Values.Sum(i=>i.Data.Recovery);
-    [JsonIgnore] public float AttackDamage=>(Weapon==Weapon.Saber?25:40)+Inventory.Equipped.Where(e=>e.Key==ActiveWeaponSlot||e.Key==GearSlot.Sigil).Sum(e=>e.Value.Data.Damage);
+    [JsonIgnore] public float AttackDamage=>(Weapon==Weapon.Pistol?48:Weapon==Weapon.Saber?25:40)+Inventory.Equipped.Where(e=>e.Key==ActiveWeaponSlot||e.Key==GearSlot.Sigil).Sum(e=>e.Value.Data.Damage);
     [JsonIgnore] public bool CanUseStash=>!Dead&&EncounterEnemies.All(e=>e.Dead)&&Shots.All(s=>s.Reflected)&&Hazards.All(h=>h.Friendly)&&AttackTime<=0&&DodgeTime<=0;
     [JsonIgnore] public IEnumerable<ItemDrop> LocalDrops=>Inventory.Drops.Where(d=>d.Region==Region&&d.Stage==CampaignStage&&(InConnectedWorld?d.Room!="":d.Room==(Rooms?.Current??"")));
     public string EquipItem(int id)
     {
         if(Dead||AttackTime>0||DodgeTime>0)return "Avsluta rörelsen innan du byter utrustning.";
         var item=Inventory.Bag.FirstOrDefault(i=>i.Id==id);if(item is null)return "Föremålet finns inte i väskan.";
+        if((IsEbba&&item.Data.Slot==GearSlot.Hammer)||(!IsEbba&&item.Data.Slot==GearSlot.Pistol))return "Vapnet tillhör den andra fältutrustningen.";
         int index=Inventory.Bag.IndexOf(item);var slot=item.Data.Slot;
         if(Inventory.Equipped.TryGetValue(slot,out var previous))Inventory.Bag[index]=previous;else Inventory.Bag.RemoveAt(index);
         Inventory.Equipped[slot]=item;return "";
     }
     public string UnequipItem(GearSlot slot)
     {
-        if(slot is GearSlot.Saber or GearSlot.Hammer)return "Byt vapen genom att utrusta ett annat i samma vapenslag.";
+        if(slot is GearSlot.Saber or GearSlot.Hammer or GearSlot.Pistol)return "Byt vapen genom att utrusta ett annat i samma vapenslag.";
         if(Dead||AttackTime>0||DodgeTime>0)return "Avsluta rörelsen först.";
         if(!Inventory.Equipped.TryGetValue(slot,out var item))return "Platsen är redan tom.";
         if(Inventory.Bag.Count>=Items.BagCapacity)return "Väskan är full.";

@@ -1,0 +1,10 @@
+{
+  "text": "Originalets bärare är omhändertagen.",
+  "prompt_text": "Jag förvaltar kansliets sigill. Ingen får återkalla en bekräftad order utan min underskrift. Lägg ned vapnet och invänta kontrollen.",
+  "voice_instruction": "Adult Swedish male royal official around sixty, precise resonant middle-low voice, stern controlled authority, clear natural Swedish, no monstrous effects and no comedy.",
+  "model_backend": "voxcpm2",
+  "language": "sv",
+  "output_format": "wav",
+  "normalize": false,
+  "seed": 30221300
+}

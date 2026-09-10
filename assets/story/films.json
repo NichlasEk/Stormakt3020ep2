@@ -65,5 +65,13 @@
     "duration": 8.041666666666666,
     "description": "Kopparringarna över det svarta vattnet. En första blick in i minnesverket.",
     "captions": []
+  },
+  {
+    "id": "rescue-reunion",
+    "title": "Bara du och jag",
+    "file": "res://assets/video/rescue-reunion-v1.ogv",
+    "duration": 8.041666666666666,
+    "description": "Ebba har fått ut Karl. De får en stund tillsammans innan de återvänder till fregatten.",
+    "captions": []
   }
 ]

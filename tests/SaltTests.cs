@@ -25,8 +25,8 @@ public static class SaltTests
             }
             try
             {
-                foreach(var id in Salt.Ids)g.Rooms!.Rooms.Remove(id);foreach(var l in RoomLinks.All.Where(l=>l.Id.StartsWith("salt-")))g.Rooms!.Doors.Remove(l.Id);g.Rooms!.LayoutVersion=14;g.Health=87;Save();
-                check(g.Rooms.LayoutVersion==15&&g.Rooms.Rooms.Count==37&&g.WestState.Debriefed&&g.Health==87,"Published west save migrates without resetting story or health");
+                foreach(var id in Salt.Ids.Concat(Rescue.Ids))g.Rooms!.Rooms.Remove(id);foreach(var l in RoomLinks.All.Where(l=>(l.Id.StartsWith("salt-")||l.Id.StartsWith("rescue-"))))g.Rooms!.Doors.Remove(l.Id);g.Rooms!.LayoutVersion=14;g.Health=87;Save();
+                check(g.Rooms.LayoutVersion==16&&g.Rooms.Rooms.Count==41&&g.WestState.Debriefed&&g.Health==87,"Published west save migrates without resetting story or health");
                 check(!RoomLinks.Open(g.Rooms,RoomLinks.All.Single(l=>l.Id=="salt-entry")),"Salt entry requires reunion");Use(Cabin.Talk);check(g.SaltState.Reunited&&g.Events.Any(e=>e.Text=="salt-reunion-marta"),"Marta and Elin reunite aboard");Save();
                 enter.Invoke(g,new object[]{West.Refuge});Cross("salt-entry");Fight();Use(Salt.Manifest);check(g.SaltState.ManifestRead,"Read cargo manifest");Cross("salt-stairs");Fight();Use(Salt.Wheel);check(g.SaltState.Drained,"Drain staircase");Cross("salt-register");Fight();Use(Salt.Cache);int potions=g.Potions;Use(Salt.Cache);check(g.Potions==potions,"Cache cannot duplicate medicine");Use(Salt.Ledger);check(g.SaltState.LedgerRead,"Read actual evidence");Cross("salt-spring");
                 var keeper=g.Enemies.Single(e=>e.Kind==EnemyKind.SaltWarden);keeper.Cooldown=4;

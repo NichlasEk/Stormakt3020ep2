@@ -1,0 +1,22 @@
+{
+  "id": "boss-censor",
+  "master": "assets/source/music/boss-censor.flac",
+  "file": "assets/audio/music/boss-censor.ogg",
+  "duration": 48.0,
+  "overlap_seconds": 2.0,
+  "filter": "[0:a]asplit=3[h][b][t];[h]atrim=0:2.0,asetpts=PTS-STARTPTS[head];[b]atrim=2.0:48.0,asetpts=PTS-STARTPTS[body];[t]atrim=48.0:50.0,asetpts=PTS-STARTPTS[tail];[tail][head]acrossfade=d=2.0:c1=tri:c2=tri[join];[body][join]concat=n=2:v=0:a=1,loudnorm=I=-22:TP=-3:LRA=8[out]",
+  "levels": {
+    "input_i": "-22.01",
+    "input_tp": "-8.02",
+    "input_lra": "3.20",
+    "input_thresh": "-32.02",
+    "output_i": "-21.65",
+    "output_tp": "-7.50",
+    "output_lra": "2.90",
+    "output_thresh": "-31.66",
+    "normalization_type": "dynamic",
+    "target_offset": "-0.35"
+  },
+  "sha256": "10116abe4d32dd25e8dfb3b4c12ff2d2beda321c074a0565c3c50c76de62a2dd",
+  "gain_correction_db": -1.2100000000000009
+}

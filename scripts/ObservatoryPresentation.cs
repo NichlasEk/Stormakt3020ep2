@@ -13,7 +13,7 @@ public partial class Main
     private bool _observatorySlot;
     private void StartObservatory(bool fresh=false)
     {
-        LoadWaterArt();_saltSlot=false;_westSlot=false;_gamlaSlot=false;_observatorySlot=true;_meridianSlot=_uppsalaSlot=_foundrySlot=_mineSlot=_regimentSlot=_doorSlot=_roomsSlot=_portSlot=_atlandSlot=false;
+        LoadWaterArt();_rescueSlot=false;_saltSlot=false;_westSlot=false;_gamlaSlot=false;_observatorySlot=true;_meridianSlot=_uppsalaSlot=_foundrySlot=_mineSlot=_regimentSlot=_doorSlot=_roomsSlot=_portSlot=_atlandSlot=false;
         _boatTime=_shipTime=0;_pendingStoryFilm="";_radioBreath=0;
         if(!fresh&&!_testMode&&System.IO.File.Exists(SavePath)){ResumeSave();return;}
         _game=Combat.NewObservatoryPreview(_order);ApplyDeveloperSettings();_camera=G(_game.Player)+new Vector2(0,-60);_particles.Clear();_floating.Clear();_radioQueue.Clear();_radio="";_radioTime=0;_sound.StopVoice();
