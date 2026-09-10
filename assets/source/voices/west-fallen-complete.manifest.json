@@ -1,0 +1,10 @@
+{
+  "parts": [
+    "west-fallen-sentence-0.wav",
+    "west-fallen-sentence-1.wav",
+    "west-fallen-sentence-2.wav"
+  ],
+  "sha256": "f92b1e00884997078832541bcc7f12a524e3637faa87de74c151b03e0a6a0a88",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

@@ -1,0 +1,10 @@
+{
+  "parts": [
+    "west-reinforce-sentence-0.wav",
+    "west-reinforce-sentence-1.wav",
+    "west-reinforce-sentence-2.wav"
+  ],
+  "sha256": "2b46f739b9af33d3ba837d8d627fe48c402e580e0a9a49df115f30d3a26fc34a",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

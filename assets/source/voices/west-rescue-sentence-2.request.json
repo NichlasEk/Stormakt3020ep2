@@ -1,0 +1,11 @@
+{
+  "text": "Vi ordnar resten ombord.",
+  "voice_instruction": "An adult Swedish female naval commander, low warm confident voice, crisp Swedish pronunciation, restrained urgency, intimate and natural, dry intelligence.",
+  "language": "sv",
+  "model_backend": "dots.tts-mf",
+  "output_format": "wav",
+  "normalize": false,
+  "seed": 30220814,
+  "prompt_text": "Karl, håll dig nära kajen. Flottan väntar ute i dimman. Jag vill ha alla tillbaka ombord innan gryningen. Vi har förlorat nog med folk för kungars gamla drömmar.",
+  "dots_num_steps": 16
+}

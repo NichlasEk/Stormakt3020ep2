@@ -19,7 +19,7 @@ public partial class Main
     }
     private void StartUppsala(bool fresh=false)
     {
-        LoadWaterArt();_gamlaSlot=false;_observatorySlot=false;_meridianSlot=false;_uppsalaSlot=true;_foundrySlot=_mineSlot=_regimentSlot=_doorSlot=_roomsSlot=_portSlot=_atlandSlot=false;_boatTime=_shipTime=0;_pendingStoryFilm="";_radioBreath=0;
+        LoadWaterArt();_westSlot=false;_gamlaSlot=false;_observatorySlot=false;_meridianSlot=false;_uppsalaSlot=true;_foundrySlot=_mineSlot=_regimentSlot=_doorSlot=_roomsSlot=_portSlot=_atlandSlot=false;_boatTime=_shipTime=0;_pendingStoryFilm="";_radioBreath=0;
         if(!fresh&&!_testMode&&System.IO.File.Exists(SavePath)){ResumeSave();return;}
         _game=Combat.NewUppsalaPreview(_order);ApplyDeveloperSettings();_particles.Clear();_floating.Clear();_radioQueue.Clear();_radio="";_radioTime=0;_sound.StopVoice();
         _bannerTime=_campaignTextTime=_revealTime=0;_camera=G(_game.Player)+new Vector2(0,-60);RememberRenderPositions();ChangeScreen(Screen.Game);Save();HandleCue(new("radio",_game.Player,"uppsala-ready"));

@@ -1,0 +1,9 @@
+{
+  "parts": [
+    "west-aboard-sentence-0.wav",
+    "west-aboard-sentence-1.wav"
+  ],
+  "sha256": "c64cd12dc70e02c0838b122887bde78487d89beac2a1ce0a4063545ab358ce1d",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

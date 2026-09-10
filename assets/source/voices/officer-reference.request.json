@@ -1,0 +1,9 @@
+{
+  "text": "Mönstringen pågår. Varje namn skall bekräftas innan porten öppnas. Stanna vid vågen och invänta er tur. Jag ansvarar för förrättningen.",
+  "voice_instruction": "Swedish male official age fifty five, stern dry baritone, measured formal authority, clear intelligible Swedish, no shouting or monstrous effects.",
+  "language": "sv",
+  "model_backend": "voxcpm2",
+  "output_format": "wav",
+  "normalize": false,
+  "seed": 30220932
+}

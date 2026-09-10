@@ -1,0 +1,10 @@
+{
+  "parts": [
+    "west-breath-sentence-0.wav",
+    "west-breath-sentence-1.wav",
+    "west-breath-sentence-2.wav"
+  ],
+  "sha256": "be906ec1cef81b944888024c1fe6fe5c205dfa55f803ed2a78a5e7c58793017b",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

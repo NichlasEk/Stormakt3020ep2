@@ -1,0 +1,9 @@
+{
+  "parts": [
+    "west-open-sentence-0.wav",
+    "west-open-sentence-1.wav"
+  ],
+  "sha256": "dda95f47afd2ef823d242bb08774b56608d3e44decf8df474776dacd88fb5d6a",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

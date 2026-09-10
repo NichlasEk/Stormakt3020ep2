@@ -1,0 +1,10 @@
+{
+  "parts": [
+    "west-brakes-sentence-0.wav",
+    "west-brakes-sentence-1.wav",
+    "west-brakes-sentence-2.wav"
+  ],
+  "sha256": "84b589fbfecd8b964040ab03e63e1fe8602cdaa652cf97871778d86cd2f86e87",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

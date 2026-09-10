@@ -1,0 +1,9 @@
+{
+  "parts": [
+    "west-officer-sentence-0.wav",
+    "west-officer-sentence-1.wav"
+  ],
+  "sha256": "cab5127899eca61cfd4b75c46fedfa0e25dd89191b009c55847f3fb2a820158f",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

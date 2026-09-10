@@ -1,0 +1,10 @@
+{
+  "parts": [
+    "west-elin-first-sentence-0.wav",
+    "west-elin-first-sentence-1.wav",
+    "west-elin-first-sentence-2.wav"
+  ],
+  "sha256": "95875abeb1d3a433fdbc87cb4f6024dee28a31c82536feb170e4d60a8d25ea6a",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

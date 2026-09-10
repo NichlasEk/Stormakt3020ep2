@@ -1,0 +1,11 @@
+{
+  "text": "Vakter. Återställ ordningen. Förrättningen skall slutföras.",
+  "voice_instruction": "Swedish male official age fifty five, stern dry baritone, measured formal authority, clear intelligible Swedish, no shouting or monstrous effects.",
+  "language": "sv",
+  "model_backend": "dots.tts-mf",
+  "output_format": "wav",
+  "normalize": false,
+  "seed": 30221032,
+  "prompt_text": "Mönstringen pågår. Varje namn skall bekräftas innan porten öppnas. Stanna vid vågen och invänta er tur. Jag ansvarar för förrättningen.",
+  "dots_num_steps": 4
+}

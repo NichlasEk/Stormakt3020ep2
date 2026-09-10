@@ -1,0 +1,70 @@
+{
+  "west-entry": [
+    "ebba",
+    "Kvittensen öppnar porten. Men håll värjan framme. Här verkar tillträde och välkomnande vara två skilda saker."
+  ],
+  "west-register": [
+    "ebba",
+    "Två bromsar håller vågen belastad. Lossa båda, så tappar förrättaren sitt skydd. Sedan griper bromsarna igen."
+  ],
+  "west-officer": [
+    "officer",
+    "Stanna på anvisad plats. Ingen lämnar vågen under pågående förrättning."
+  ],
+  "west-brakes": [
+    "ebba",
+    "Se på motvikterna. Han riktar dem mot dig. Flytta dig innan de slår ned."
+  ],
+  "west-open": [
+    "ebba",
+    "Vågen är avlastad. Nu, Karl."
+  ],
+  "west-reinforce": [
+    "officer",
+    "Vakter. Återställ ordningen. Förrättningen skall slutföras."
+  ],
+  "west-fallen": [
+    "ebba",
+    "Vågen står stilla. Porten bakom honom är fri. Kontrollera rummet."
+  ],
+  "west-breath": [
+    "elin",
+    "Är det någon där? Jag är kvar. Jag heter Elin Vinge."
+  ],
+  "west-record": [
+    "ebba",
+    "Elin blev kvarhållen. De andra skickades till Saltkällan. Någon ville att hon skulle intyga ett annat namn."
+  ],
+  "west-elin-first": [
+    "elin",
+    "Märta? Lever min syster? Jag trodde att hon också hade kommit hit."
+  ],
+  "west-elin-name": [
+    "elin",
+    "De bad mig skriva under ett namn som inte var mitt. Jag vägrade. Då blev jag kvar här."
+  ],
+  "west-elin-route": [
+    "elin",
+    "De andra gick ned mot Saltkällan. Jag hörde vatten bakom porten. Mer vet jag inte."
+  ],
+  "west-rescue": [
+    "ebba",
+    "Märta lever, Elin. Karl tar dig tillbaka till fregatten. Vi ordnar resten ombord."
+  ],
+  "west-elin-repeat": [
+    "elin",
+    "Jag är redo. Låt oss gå härifrån."
+  ],
+  "west-debrief": [
+    "ebba",
+    "Elin är ombord. Ett namn i en liggare har blivit en människa igen. Nu ser vi till att systrarna får träffas."
+  ],
+  "west-next": [
+    "ebba",
+    "Nästa spår är Saltkällan. Men först får Elin vila. Vi vet ännu inte varför de andra fick nya namn."
+  ],
+  "west-aboard": [
+    "elin",
+    "Säg till Märta att jag behöll mitt namn. Hon kommer att förstå."
+  ]
+}

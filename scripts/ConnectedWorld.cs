@@ -116,7 +116,7 @@ public sealed partial class Combat
     public void EnableConnectedWorld()
     {
         if(!InRooms||InDoorTrial||InConnectedWorld)return;
-        var r=Rooms!;foreach(var id in Regiment.Ids.Concat(Mine.Ids).Concat(Uppsala.Ids))r.Rooms.TryAdd(id,new());r.LayoutVersion=13;r.Connected=true;r.ConnectionRevision=ConnectedWorld.Revision;
+        var r=Rooms!;foreach(var id in Regiment.Ids.Concat(Mine.Ids).Concat(Uppsala.Ids))r.Rooms.TryAdd(id,new());r.LayoutVersion=14;r.Connected=true;r.ConnectionRevision=ConnectedWorld.Revision;
         foreach(var e in Enemies)e.HomeRoom=r.Current;
         foreach(var pair in r.Rooms)
         {
@@ -128,7 +128,7 @@ public sealed partial class Combat
         foreach(var l in RoomLinks.All)r.Doors[l.Id]=new(){Locked=!RoomLinks.Open(r,l),TargetOpen=RoomLinks.Open(r,l),Openness=RoomLinks.Open(r,l)?1:0};
         UpdateRoomSight(true);
     }
-    public static bool HasWorldDoor(RoomLink l)=>(l.Id.StartsWith("observatory-")&&l.Id!="observatory-machine")||l.Gate is PassageGate.Key or PassageGate.Shortcut or PassageGate.Archive or PassageGate.RootGate or PassageGate.RegimentExit or PassageGate.RegimentShortcut or PassageGate.MineShortcut or PassageGate.Meridian or PassageGate.GamlaLedger;
+    public static bool HasWorldDoor(RoomLink l)=>(l.Id.StartsWith("observatory-")&&l.Id!="observatory-machine")||l.Gate is PassageGate.Key or PassageGate.Shortcut or PassageGate.Archive or PassageGate.RootGate or PassageGate.RegimentExit or PassageGate.RegimentShortcut or PassageGate.MineShortcut or PassageGate.Meridian or PassageGate.GamlaLedger or PassageGate.WestAccess or PassageGate.WestRegister or PassageGate.WestRelease;
     private bool WorldGround(Vector2 world){foreach(var p in ConnectedWorld.FloorShapes)if(p.Contains(world))return true;return false;}
     [JsonIgnore] private int _solidStamp=int.MinValue;
     [JsonIgnore] private ConnectedWorld.Shape[] _worldSolids=Array.Empty<ConnectedWorld.Shape>();

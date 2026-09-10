@@ -1,0 +1,10 @@
+{
+  "parts": [
+    "west-rescue-sentence-0.wav",
+    "west-rescue-sentence-1.wav",
+    "west-rescue-sentence-2.wav"
+  ],
+  "sha256": "7ceb1e919f828e4eb2cf68cfdc82b53992c039e74da560709a4683326303c026",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

@@ -10,7 +10,7 @@ public static class CabinTests
         void Use(Vector2 at){g.Player=at;g.Step(default);g.Step(new(default,Vector2.UnitY,false,false,false,false,false,false,false,true));}
         try
         {
-            g.Rooms!.Rooms.Remove(Cabin.Room);foreach(var fresh in Observatory.Ids.Concat(Gamla.Ids))g.Rooms.Rooms.Remove(fresh);foreach(var fresh in RoomLinks.All.Where(l=>l.Id.StartsWith("observatory-")||l.Id.StartsWith("gamla-")))g.Rooms.Doors.Remove(fresh.Id);g.Rooms.LayoutVersion=10;Save();check(g.Rooms!.Rooms.Count==30&&g.Health==21&&g.MeridianState.OrderTaken,"Published Meridian endpoint migrates without resetting wounds or story");
+            g.Rooms!.Rooms.Remove(Cabin.Room);foreach(var fresh in Observatory.Ids.Concat(Gamla.Ids))g.Rooms.Rooms.Remove(fresh);foreach(var fresh in RoomLinks.All.Where(l=>l.Id.StartsWith("observatory-")||l.Id.StartsWith("gamla-")))g.Rooms.Doors.Remove(fresh.Id);g.Rooms.LayoutVersion=10;Save();check(g.Rooms!.Rooms.Count==33&&g.Health==21&&g.MeridianState.OrderTaken,"Published Meridian endpoint migrates without resetting wounds or story");
             g.Player=Uppsala.Ramp+new Vector2(200,0);check(!g.BoardCabin(),"No remote boarding");g.Player=Uppsala.Ramp;
             g.Hazards.Add(new(){Position=g.Player,Timer=1,Radius=50});check(!g.BoardCabin(),"Unsafe boarding blocked");g.Hazards.Clear();
             Use(Uppsala.Ramp);check(g.InCabin&&g.Events.Any(e=>e.Text=="cabin-welcome")&&g.Health==21,"Normal ramp interaction enters physical cabin with greeting");Save();

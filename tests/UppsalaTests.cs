@@ -14,7 +14,7 @@ public static class UppsalaTests
             void Use(Vector2 at){g.Player=at;g.Step(default);g.Step(new(default,Vector2.UnitY,false,false,false,false,false,false,false,true));}
             try
             {
-                foreach(var id in Uppsala.Ids)g.Rooms!.Rooms.Remove(id);g.Rooms!.Doors.Remove("uppsala-clock");g.Rooms.Doors.Remove("meridian-hall");foreach(var fresh in Observatory.Ids.Concat(Gamla.Ids))g.Rooms.Rooms.Remove(fresh);foreach(var fresh in RoomLinks.All.Where(l=>l.Id.StartsWith("observatory-")||l.Id.StartsWith("gamla-")))g.Rooms.Doors.Remove(fresh.Id);g.Rooms.LayoutVersion=8;g.Health=73;Save();check(g.Rooms!.LayoutVersion==13&&g.Rooms.Rooms.Count==30&&g.Health==73,"Published foundry save gains Uppsala without healing");
+                foreach(var id in Uppsala.Ids)g.Rooms!.Rooms.Remove(id);g.Rooms!.Doors.Remove("uppsala-clock");g.Rooms.Doors.Remove("meridian-hall");foreach(var fresh in Observatory.Ids.Concat(Gamla.Ids))g.Rooms.Rooms.Remove(fresh);foreach(var fresh in RoomLinks.All.Where(l=>l.Id.StartsWith("observatory-")||l.Id.StartsWith("gamla-")))g.Rooms.Doors.Remove(fresh.Id);g.Rooms.LayoutVersion=8;g.Health=73;Save();check(g.Rooms!.LayoutVersion==14&&g.Rooms.Rooms.Count==33&&g.Health==73,"Published foundry save gains Uppsala without healing");
                 g.FoundryState.PlateTaken=false;check(!g.FinishShipTravel(Uppsala.Court),"Plate required for flight");g.FoundryState.PlateTaken=true;
                 g.Player=Regiment.Boat;check(!g.FinishShipTravel(Uppsala.Court),"Cannot board from the wrong point");g.Player=Uppsala.Board;
                 check(g.RoomRadioRelevant("uppsala-arrival"),"Arrival radio survives region preparation");

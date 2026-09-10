@@ -1,6 +1,6 @@
 # 0.20 · Under kungshögarna och målade passager
 
-Första spelbara etappen i Gamla Uppsala omfattar uppställningsplatsen, stenpassagen och de överfördas väntrum. Säkra rummen, läs liggaren, tala två gånger med Nils Berg och återvänd ombord till Ebba. Västra vågen och Mönstringsförrättaren är nästa byggmål, inte en färdig boss bakom den stängda västra porten.
+Första spelbara etappen i Gamla Uppsala omfattar uppställningsplatsen, stenpassagen och de överfördas väntrum. Säkra rummen, läs liggaren, tala två gånger med Nils Berg och återvänd ombord till Ebba. Västra vågen och Mönstringsförrättaren fortsätter nu denna väg i [version 0.21](WESTERN-SCALE.md), efter avrapporteringen till Ebba.
 
 ## Fortsätta och provspela
 

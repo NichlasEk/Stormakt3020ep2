@@ -1,0 +1,10 @@
+{
+  "parts": [
+    "west-register-sentence-0.wav",
+    "west-register-sentence-1.wav",
+    "west-register-sentence-2.wav"
+  ],
+  "sha256": "e5e34b5123d673cf98d5af6216c4a19c2d4a585a1df8ce141c05b61ce70c57b8",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

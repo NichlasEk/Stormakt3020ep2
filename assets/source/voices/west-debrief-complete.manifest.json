@@ -1,0 +1,10 @@
+{
+  "parts": [
+    "west-debrief-sentence-0.wav",
+    "west-debrief-sentence-1.wav",
+    "west-debrief-sentence-2.wav"
+  ],
+  "sha256": "da6db1205b6020ae908da5ade30047ca9dcbe96ebe55d7b44e49860f18b95bdc",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

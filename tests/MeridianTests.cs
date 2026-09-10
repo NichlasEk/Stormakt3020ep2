@@ -19,7 +19,7 @@ public static class MeridianTests
             try
             {
                 g.Health=81;g.Rooms!.Rooms.Remove(Cabin.Room);g.Rooms.Rooms.Remove(Meridian.Clock);g.Rooms.Rooms.Remove(Meridian.Hall);g.Rooms.Doors.Remove("uppsala-clock");g.Rooms.Doors.Remove("meridian-hall");foreach(var fresh in Observatory.Ids.Concat(Gamla.Ids))g.Rooms.Rooms.Remove(fresh);foreach(var fresh in RoomLinks.All.Where(l=>l.Id.StartsWith("observatory-")||l.Id.StartsWith("gamla-")))g.Rooms.Doors.Remove(fresh.Id);g.Rooms.LayoutVersion=9;Save();
-                check(g.Rooms!.LayoutVersion==13&&g.Rooms.Rooms.Count==30&&g.Health==81&&g.UppsalaState.KeyTaken,"Published Uppsala save gains two unvisited rooms without losing progress");
+                check(g.Rooms!.LayoutVersion==14&&g.Rooms.Rooms.Count==33&&g.Health==81&&g.UppsalaState.KeyTaken,"Published Uppsala save gains two unvisited rooms without losing progress");
                 var link=RoomLinks.All.Single(l=>l.Id=="uppsala-clock");var route=ConnectedWorld.Route(link);
                 check(!g.ClearPath(route[0]-g.WorldOrigin,route[1]-g.WorldOrigin),"Court gate blocks before using date");
                 g.Inventory.Drops.Clear();Use(Meridian.CourtGate);check(g.MeridianState.CourtOpen,"Date opens existing painted gate");Walk("uppsala-clock");

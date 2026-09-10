@@ -26,7 +26,7 @@ public partial class Main
     private bool _meridianSlot;
     private void StartMeridian(bool fresh=false)
     {
-        LoadWaterArt();_gamlaSlot=false;_observatorySlot=false;_meridianSlot=true;_uppsalaSlot=false;_foundrySlot=_mineSlot=_regimentSlot=_doorSlot=_roomsSlot=_portSlot=_atlandSlot=false;
+        LoadWaterArt();_westSlot=false;_gamlaSlot=false;_observatorySlot=false;_meridianSlot=true;_uppsalaSlot=false;_foundrySlot=_mineSlot=_regimentSlot=_doorSlot=_roomsSlot=_portSlot=_atlandSlot=false;
         _boatTime=_shipTime=0;_pendingStoryFilm="";_radioBreath=0;
         if(!fresh&&!_testMode&&System.IO.File.Exists(SavePath)){ResumeSave();return;}
         _game=Combat.NewMeridianPreview(_order);ApplyDeveloperSettings();_camera=G(_game.Player)+new Vector2(0,-60);_particles.Clear();_floating.Clear();_radioQueue.Clear();_radio="";_radioTime=0;_sound.StopVoice();

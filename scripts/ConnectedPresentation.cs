@@ -62,7 +62,7 @@ public partial class Main
             var delta=G(ConnectedWorld.Origin(id)-_game.WorldOrigin);if(!WorldRectVisible(delta,new(1536,1024)))continue;
             _paintRoom=id;var local=new List<(float Depth,Action Draw)>();
             if(id is PortRooms.Pump or PortRooms.Cistern)AddWaterLayers(local);
-            AddOathLayers(local);AddArchiveLayers(local);AddRootwayLayers(local);AddRegimentLayers(local);AddMineLayers(local);AddFoundryLayers(local);AddUppsalaLayers(local);AddMeridianLayers(local);AddCabinLayers(local);AddObservatoryLayers(local);AddGamlaLayers(local);AddOlderArchLayers(local);AddPaintedArchLayers(local);
+            AddOathLayers(local);AddArchiveLayers(local);AddRootwayLayers(local);AddRegimentLayers(local);AddMineLayers(local);AddFoundryLayers(local);AddUppsalaLayers(local);AddMeridianLayers(local);AddCabinLayers(local);AddObservatoryLayers(local);AddGamlaLayers(local);AddWestLayers(local);AddOlderArchLayers(local);AddPaintedArchLayers(local);
             if(id==PortRooms.Lodge)
             {
                 local.Add((623,()=>PaintForeground(_lodgePassageArt!,new Vector2[]{new(677,513),new(720,490),new(722,466),new(753,450),new(812,454),new(874,477),new(882,572),new(791,621),new(677,566)})));
@@ -263,6 +263,7 @@ public partial class Main
                 if(!WorldRectVisible(G(shift),new(1536,1024)))continue;
                 var data=new byte[RoomSight.Count*4];var seen=_game.Rooms!.Rooms[id].Explored;
                 var feet=_game.Enemies.Where(e=>(!_game.PaintedRooms||e.HomeRoom==_game.Rooms!.Current)&&_game.CanSeeRoomPoint(e.Position)).Select(e=>e.Position-shift).Append(_game.Player-shift).ToArray();
+                if(id==West.Refuge&&_game.CanSeeRoomPoint(West.Talk+shift))feet=feet.Append(West.Elin).ToArray();
                 if(id==Gamla.Registry&&_game.CanSeeRoomPoint(Gamla.Talk+shift))feet=feet.Append(Gamla.Nils).ToArray();
                 if(id==Observatory.Quarters&&_game.CanSeeRoomPoint(Observatory.Talk+shift))feet=feet.Append(Observatory.Marta).ToArray();
                 for(int y=0;y<RoomSight.Rows;y++)for(int x=0;x<RoomSight.Columns;x++)

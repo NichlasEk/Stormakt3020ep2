@@ -1,0 +1,10 @@
+{
+  "parts": [
+    "west-next-sentence-0.wav",
+    "west-next-sentence-1.wav",
+    "west-next-sentence-2.wav"
+  ],
+  "sha256": "77f83ad46afd48c97e3bc71716147c781c0357daa2bda4dd902e67a961fc9f24",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

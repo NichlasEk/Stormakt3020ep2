@@ -1,0 +1,10 @@
+{
+  "parts": [
+    "west-record-sentence-0.wav",
+    "west-record-sentence-1.wav",
+    "west-record-sentence-2.wav"
+  ],
+  "sha256": "463a6dbf3a6c74495dbf7a244f12ab8bbfbe3cc205ef9c2903f2b1d407634c33",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

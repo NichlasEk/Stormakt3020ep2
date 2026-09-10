@@ -1,0 +1,10 @@
+{
+  "parts": [
+    "west-elin-route-sentence-0.wav",
+    "west-elin-route-sentence-1.wav",
+    "west-elin-route-sentence-2.wav"
+  ],
+  "sha256": "8b53e63bdcb547061cfa1cfb526c24e71ce03ff33dda92d67abec4aabc61fc40",
+  "backend": "dots.tts-mf",
+  "synthetic_reference": true
+}

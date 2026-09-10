@@ -1,0 +1,11 @@
+{
+  "text": "Ingen lämnar vågen under pågående förrättning.",
+  "voice_instruction": "Swedish male official age fifty five, stern dry baritone, measured formal authority, clear intelligible Swedish, no shouting or monstrous effects.",
+  "language": "sv",
+  "model_backend": "dots.tts-mf",
+  "output_format": "wav",
+  "normalize": false,
+  "seed": 30221144,
+  "prompt_text": "Mönstringen pågår. Varje namn skall bekräftas innan porten öppnas. Stanna vid vågen och invänta er tur. Jag ansvarar för förrättningen.",
+  "dots_num_steps": 16
+}

@@ -1,6 +1,6 @@
 # Stormakt 3020: Atlands arv — storyboard och dialog
 
-Arbetsversion 5 · 2026-09-09 · avstämd mot 0.20, första etappen i Gamla Uppsala.
+Arbetsversion 6 · 2026-09-10 · avstämd mot 0.21, Västra vågen.
 
 Detta är vår gemensamma berättelseöversikt. Läs scenkorten i ordning för handling, spelarens insats och vad publiken får veta. Replik-ID länkar tanken till det faktiska manuset; hela nuvarande JSON-manuset finns i dialogbilagan längst ned. Föreslagna repliker har egna arbetsnamn och får inte förväxlas med inspelat innehåll.
 
@@ -42,7 +42,7 @@ Huvudmenyns rumsexpedition börjar med intro och den dränkta förgården. Den �
 
 **Huvudrutt:** förgård → logement → pumphus → vittnesgalleri → edskammare → arkiv → rotväg → lund → regementets stig → sjukbarack → fanlund → mönstringsvall → brygga → **båt** → farled → gruvmynning → blåsbälgar → svalgång → gjuteri → återväg och **båt tillbaka** → **fregatten Karl CCLV** → Uppsalagården.
 
-Cisternen är en valfri utflykt med fynd och genväg. Andra återtågsvägar förändrar gångsträckan, inte berättelsens obligatoriska avslöjanden. Huvudrutten har nu 30 beständiga platser; intro och transportscener är inte ytterligare spelrum.
+Cisternen är en valfri utflykt med fynd och genväg. Andra återtågsvägar förändrar gångsträckan, inte berättelsens obligatoriska avslöjanden. Huvudrutten har nu 33 beständiga platser; intro och transportscener är inte ytterligare spelrum.
 
 ## P0 · Likvarvet, magasinet och stranden
 
@@ -382,7 +382,7 @@ Ebba märker att solen rört sig (`meridian-after`). Karl undersöker handlingen
 
 ## 17 · Under kungshögarna
 
-**Status:** spelbart i 0.20. Första etappen; Västra vågen och dess boss är ännu inte byggda.
+**Status:** spelbart i 0.20. Fortsatt med Västra vågen i scen 18, version 0.21.
 
 | Bild och spelarhandling | Vad vi får veta |
 | --- | --- |
@@ -396,6 +396,20 @@ Ebba märker att solen rört sig (`meridian-after`). Karl undersöker handlingen
 
 **Gestaltning:** tre målade rum, fysisk Nils och radioporträtt från samma figur, 13 nya repliker med Ebba och Nils. Gamla Uppsala får sin egen cirka åtta sekunder långa ankomstfilm. Den absurda förvaltningen bär humorn; människorna förblir allvarliga.
 
+## 18 · Västra vågen
+
+**Status:** spelbart i 0.21. Tre nya rum och ett konkret räddningsmål.
+
+**Bild och insats:** Karl återvänder efter avrapporteringen till Ebba. Nils kvittens öppnar väntrummets högra port. Kontrollgångens instruktion förklarar bromsarna. I vågsalen håller Mönstringsförrättaren vägen stängd; Karl lossar båda bromsarna, undviker markerade nedslag och angriper under avlastningen. Vid halva livet kommer två vakter. Efter segern går Karl genom porten bakom vågen.
+
+**Avslöjande:** Elin Vinge finns vid liv i rummet bakom vågen. Hon vägrade intyga ett främmande namn. De andra fördes till Saltkällan. Hon hörde vatten men såg inte vad som hände längre bort. Karl läser hennes handling och talar med henne innan återfärden.
+
+**Efterspel:** Elin kommer ombord på fregatten. Ebba ordnar vila och lovar att systrarna får träffas. Elin ber henne hälsa Märta att hon behöll sitt namn. Nästa spår är Saltkällan. Återföreningen med Märta och själva Saltkällan är ännu inte spelade scener.
+
+**Kanon:** Nils tidigare vittnesmål var sant men begränsat; först här vet expeditionen att Elin fortfarande lever. Inget avslöjande om vem som beställde namnbytena eller hur vågen fungerar bortom dess synliga mekanik. Förrättaren är en egen gestalt, inte Rotmarskalken. Hans repliker hävdar myndighet utan att förklara hela mysteriet.
+
+**Röster:** 17 nya repliker i `west-radio.json`. Elin och förrättaren har egna syntetiska röster och målade radioporträtt. Den fysiska Elin finns i räddningsrummet och ombord. Ingen separat följeslagaranimation genom korridorerna är införd.
+
 ## Nästa manuspass, före fler stora avslöjanden
 
 1. **Genomfört i 0.16.1:** uttrycklig död/vila-dialog, avskedsorder, film och stilla efterspel.
@@ -408,7 +422,7 @@ De nio replikerna i `continuity-radio.json` är införda och inspelade i detta p
 
 ## Dialogbilaga — befintliga JSON-manus, ordagrant
 
-Nedan följer den befintliga texten från samtliga fjorton berättelsefiler `*-radio.json` vid denna avstämning. Gruppordningen följer berättelsen; ordningen inom varje grupp är filens ordning, inte en garanti om uppspelning. Scenkorten ovan anger placering och alternativ. De äldsta grundreplikerna för Likvarvet ligger dessutom i `scripts/Main.cs`; denna bilaga gör inte anspråk på att ersätta hela den äldre prologens manus.
+Nedan följer den befintliga texten från samtliga femton berättelsefiler `*-radio.json` vid denna avstämning. Gruppordningen följer berättelsen; ordningen inom varje grupp är filens ordning, inte en garanti om uppspelning. Scenkorten ovan anger placering och alternativ. De äldsta grundreplikerna för Likvarvet ligger dessutom i `scripts/Main.cs`; denna bilaga gör inte anspråk på att ersätta hela den äldre prologens manus.
 
 <!-- DIALOGUE-SNAPSHOT -->
 
@@ -996,5 +1010,78 @@ Källa: [gamla-radio.json](../assets/story/gamla-radio.json).
 **`gamla-debrief` · Ebba Grip**
 
 > Elin levde vid överföringen. Det är vad vi vet. Jag behåller kvittensen. Nästa etapp är Västra vågen. Nu följer vi Nils vittnesmål.
+
+
+### 15 · Västra vågen
+
+Källa: [west-radio.json](../assets/story/west-radio.json).
+
+**`west-entry` · Ebba Grip**
+
+> Kvittensen öppnar porten. Men håll värjan framme. Här verkar tillträde och välkomnande vara två skilda saker.
+
+**`west-register` · Ebba Grip**
+
+> Två bromsar håller vågen belastad. Lossa båda, så tappar förrättaren sitt skydd. Sedan griper bromsarna igen.
+
+**`west-officer` · Mönstringsförrättaren**
+
+> Stanna på anvisad plats. Ingen lämnar vågen under pågående förrättning.
+
+**`west-brakes` · Ebba Grip**
+
+> Se på motvikterna. Han riktar dem mot dig. Flytta dig innan de slår ned.
+
+**`west-open` · Ebba Grip**
+
+> Vågen är avlastad. Nu, Karl.
+
+**`west-reinforce` · Mönstringsförrättaren**
+
+> Vakter. Återställ ordningen. Förrättningen skall slutföras.
+
+**`west-fallen` · Ebba Grip**
+
+> Vågen står stilla. Porten bakom honom är fri. Kontrollera rummet.
+
+**`west-breath` · Elin Vinge**
+
+> Är det någon där? Jag är kvar. Jag heter Elin Vinge.
+
+**`west-record` · Ebba Grip**
+
+> Elin blev kvarhållen. De andra skickades till Saltkällan. Någon ville att hon skulle intyga ett annat namn.
+
+**`west-elin-first` · Elin Vinge**
+
+> Märta? Lever min syster? Jag trodde att hon också hade kommit hit.
+
+**`west-elin-name` · Elin Vinge**
+
+> De bad mig skriva under ett namn som inte var mitt. Jag vägrade. Då blev jag kvar här.
+
+**`west-elin-route` · Elin Vinge**
+
+> De andra gick ned mot Saltkällan. Jag hörde vatten bakom porten. Mer vet jag inte.
+
+**`west-rescue` · Ebba Grip**
+
+> Märta lever, Elin. Karl tar dig tillbaka till fregatten. Vi ordnar resten ombord.
+
+**`west-elin-repeat` · Elin Vinge**
+
+> Jag är redo. Låt oss gå härifrån.
+
+**`west-debrief` · Ebba Grip**
+
+> Elin är ombord. Ett namn i en liggare har blivit en människa igen. Nu ser vi till att systrarna får träffas.
+
+**`west-next` · Ebba Grip**
+
+> Nästa spår är Saltkällan. Men först får Elin vila. Vi vet ännu inte varför de andra fick nya namn.
+
+**`west-aboard` · Elin Vinge**
+
+> Säg till Märta att jag behöll mitt namn. Hon kommer att förstå.
 
 <!-- END-DIALOGUE-SNAPSHOT -->

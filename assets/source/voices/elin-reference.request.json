@@ -1,0 +1,9 @@
+{
+  "text": "Jag heter Elin Vinge. Jag minns min syster och vägen hem. Jag tänker inte skriva under ett annat namn. Det här är mitt vittnesmål.",
+  "voice_instruction": "Adult Swedish woman age thirty, quiet clear natural Swedish voice, tired but resolute, warm medium register, no theatrical whisper.",
+  "language": "sv",
+  "model_backend": "voxcpm2",
+  "output_format": "wav",
+  "normalize": false,
+  "seed": 30220931
+}

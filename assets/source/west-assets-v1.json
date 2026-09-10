@@ -1,0 +1,94 @@
+{
+  "assets/art/room-gamla-west-control-v1.png": {
+    "bytes": 3088557,
+    "sha256": "6088472da72bf2b1270aa70543fc582e6e8f1d6b17531f92a4283a7e7649dee6"
+  },
+  "assets/art/room-gamla-west-hall-v1.png": {
+    "bytes": 2869621,
+    "sha256": "eb4359afa28fdc46bad325e4265d2aae430f4737d296f93ad3ff89d2dabca4ee"
+  },
+  "assets/art/room-gamla-west-refuge-v1.png": {
+    "bytes": 2955774,
+    "sha256": "196b1993dc7ac4041b4f1ae7861e175a60f90e2cb78dfdac354d1ecb5e4a9b8c"
+  },
+  "assets/art/muster-officer-v1.png": {
+    "bytes": 1638877,
+    "sha256": "a61d658141f324dd2fb870677e7c4f800f64c4e19eed7896bd904cc9dd7e6bc5"
+  },
+  "assets/art/elin-vinge-v1.png": {
+    "bytes": 1739097,
+    "sha256": "dc53d7ed19c9898c59f36160f1dbd9471a61a9a875328a784bda5a26bd6b3c5d"
+  },
+  "assets/art/room-gamla-registry-open-v1.png": {
+    "bytes": 2847733,
+    "sha256": "797b04b286d9599449ce3a3d6c618a51eaf336a4339a4369321ed1beda53fe53"
+  },
+  "assets/audio/voice-west-entry.ogg": {
+    "bytes": 75361,
+    "sha256": "a7a1c0db564523789393e08ad46db447e1a6734f063c24faa712e05b15b6747b"
+  },
+  "assets/audio/voice-west-register.ogg": {
+    "bytes": 77864,
+    "sha256": "dda368d408ee89af0634367e21a780e49c04a230c92735a72df19732f622961a"
+  },
+  "assets/audio/voice-west-brakes.ogg": {
+    "bytes": 54552,
+    "sha256": "f0e7aadf4b7dce3cc8883963b0127c5fea72eac32ebbc70acc948d70c4a7fe73"
+  },
+  "assets/audio/voice-west-open.ogg": {
+    "bytes": 37472,
+    "sha256": "6321a8e204e95114847f80c95a95a9ddff1caaf728d577f957b181b90259d8d2"
+  },
+  "assets/audio/voice-west-fallen.ogg": {
+    "bytes": 50720,
+    "sha256": "b3fec77a99723005886e2935883cb751aab4d1481ae2e38052a10c6b5877b1ff"
+  },
+  "assets/audio/voice-west-record.ogg": {
+    "bytes": 64441,
+    "sha256": "dd8a2821f415e2a88fc3dd3e84ed13942364d52d67562dc962778691db0a62a4"
+  },
+  "assets/audio/voice-west-rescue.ogg": {
+    "bytes": 65332,
+    "sha256": "7d0a4eb9dbd7c60449396a6382121886a754319ab9d127ed422608bcb24dad32"
+  },
+  "assets/audio/voice-west-debrief.ogg": {
+    "bytes": 71671,
+    "sha256": "232fd4e9163f139a0b53d9e2da1ffaedf6cf6cbe76f841048cb3847a941d8433"
+  },
+  "assets/audio/voice-west-next.ogg": {
+    "bytes": 71506,
+    "sha256": "beb0f401889448a3e0e81888af91ae5649c0a56c025f375ad119a170871bdce8"
+  },
+  "assets/audio/voice-west-breath.ogg": {
+    "bytes": 53521,
+    "sha256": "6b95c16c40ecf2e51746aef33e37b937ed249f30451e4acf7b6f25f9d25a2823"
+  },
+  "assets/audio/voice-west-elin-first.ogg": {
+    "bytes": 55875,
+    "sha256": "b69c6cccf1b20378e6331e0992b3652686d8169a56e2556a970829b2705c3b26"
+  },
+  "assets/audio/voice-west-elin-name.ogg": {
+    "bytes": 57377,
+    "sha256": "d766148f46d6f5d0992b931faed3ee1fc6aaa1d6d389b7ded1805d936983c8e1"
+  },
+  "assets/audio/voice-west-elin-route.ogg": {
+    "bytes": 77173,
+    "sha256": "bfbcd03865076e3716f0ffe34e07fbd39007938858442bda54788615963f915d"
+  },
+  "assets/audio/voice-west-elin-repeat.ogg": {
+    "bytes": 34428,
+    "sha256": "5d18f8b6fbc1b845cf4cd60322b78d94cb1c1a9ad168d348c9e4d0b4687d68c2"
+  },
+  "assets/audio/voice-west-aboard.ogg": {
+    "bytes": 35819,
+    "sha256": "73191d46233c64fcd3931da9edf22c7c8422ef635336f085c973b17a7c405ff6"
+  },
+  "assets/audio/voice-west-officer.ogg": {
+    "bytes": 60930,
+    "sha256": "a04dcf00970d228f9da3c3c0ea17725fd9be4226e7711259eedbf92a5aec1085"
+  },
+  "assets/audio/voice-west-reinforce.ogg": {
+    "bytes": 58353,
+    "sha256": "1668477ca2ecbda338c2558d6cdbf6bb33646f38c0cfdcd4e4e197bfbf271a28"
+  }
+}

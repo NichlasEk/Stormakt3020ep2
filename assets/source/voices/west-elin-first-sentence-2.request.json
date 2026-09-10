@@ -1,0 +1,11 @@
+{
+  "text": "Jag trodde att hon också hade kommit hit.",
+  "voice_instruction": "Adult Swedish woman age thirty, quiet clear natural Swedish voice, tired but resolute, warm medium register, no theatrical whisper.",
+  "language": "sv",
+  "model_backend": "dots.tts-mf",
+  "output_format": "wav",
+  "normalize": false,
+  "seed": 30221144,
+  "prompt_text": "Jag heter Elin Vinge. Jag minns min syster och vägen hem. Jag tänker inte skriva under ett annat namn. Det här är mitt vittnesmål.",
+  "dots_num_steps": 16
+}

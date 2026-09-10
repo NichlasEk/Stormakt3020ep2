@@ -1,5 +1,11 @@
 # Från arenor till expeditioner
 
+## 0.21 · Västra vågen
+
+Tre nya målade rum, Mönstringsförrättaren med bromsstrid, Elin Vinge och 17 nya röstklipp. Fortsätt genom väntrummets högra port efter avrapporteringen till Ebba. Separat prov: `./play.sh -- --west`. [Spelväg, assets och kontroller](WESTERN-SCALE.md).
+
+Nästa byggmål: Saltkällan och efterspel med systrarna. Totalt 33 beständiga platser.
+
 ## 0.20 · Under kungshögarna
 
 Första etappen i Gamla Uppsala är spelbar: tre målade rum, Nils Berg, 13 nya röstklipp, ankomstfilm och återkomst till Ebba. Efter observatoriets avrapportering använder du rodret ombord. Separat prov: `./play.sh -- --gamla`. Målade dörrövergångar med djupskalning ersätter de synliga broarna även i äldre rum. [Spelväg, omfattning och kontroller](GAMLA-UPPSALA.md).

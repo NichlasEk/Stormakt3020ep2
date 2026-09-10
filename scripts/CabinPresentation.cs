@@ -35,7 +35,7 @@ public partial class Main
         if(!_game.InCabin)return false;
         bool Near(NVec p)=>NVec.Distance(_game.Player,p)<72&&_game.ClearPath(_game.Player,p);
         var c=_game.CabinState;
-        string label=Near(Cabin.Entry)?"E / B · Gå ut till landgången":Near(Cabin.Helm)?"E / B · Avsegla · "+(_game.ObservatoryState.Debriefed?(c.ReturnRoom==Gamla.Landing?"Instrumentgården":"Gamla Uppsala"):(c.ReturnRoom==Uppsala.Court?"bryggan":"Uppsala")):Near(Cabin.Rest)?c.Rested?"E / B · Förbanden":"E / B · Lägg om såren":Near(Cabin.Talk)?"E / B · "+(c.Conversation==0?"Visa Ebba ordern":c.Conversation==1?"Kartan, gjutformen och stjärnplåten":c.Conversation==2?"Tala om nästa steg":"Tala med Ebba"):"";
+        string label=Near(Cabin.Entry)?"E / B · Gå ut till landgången":Near(Cabin.Helm)?"E / B · Avsegla · "+(_game.ObservatoryState.Debriefed?(c.ReturnRoom==Gamla.Landing?"Instrumentgården":"Gamla Uppsala"):(c.ReturnRoom==Uppsala.Court?"bryggan":"Uppsala")):_game.WestState.ElinMet&&Near(West.Aboard)?"E / B · Tala med Elin":Near(Cabin.Rest)?c.Rested?"E / B · Förbanden":"E / B · Lägg om såren":Near(Cabin.Talk)?"E / B · "+(c.Conversation==0?"Visa Ebba ordern":c.Conversation==1?"Kartan, gjutformen och stjärnplåten":c.Conversation==2?"Tala om nästa steg":"Tala med Ebba"):"";
         if(label!=""){Panel(new Rect2(285,430,710,47),.93f);Centered(label,640,459,16,Gold);}return true;
     }
 }
