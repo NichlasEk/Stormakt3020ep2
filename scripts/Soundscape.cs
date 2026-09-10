@@ -25,7 +25,6 @@ public partial class Soundscape : Node
     public bool Discovery;
     public bool Remembrance;
     public bool Cinematic;
-    public bool MusicPreview;
     public float Volume=.75f;
     public bool Speaking=>_voice.Playing;
     public override void _Ready()

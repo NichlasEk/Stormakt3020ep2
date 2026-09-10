@@ -17,6 +17,30 @@ public partial class Soundscape
     private readonly Dictionary<string,double> _scorePositions=new();
     private readonly Dictionary<string,AudioStreamOggVorbis> _scores=new();
     private int _scoreTarget;
+    private bool _musicPreview;
+    private string _gameScore="prologue-quay";
+    public bool MusicPreview
+    {
+        get=>_musicPreview;
+        set
+        {
+            if(value==_musicPreview)return;
+            if(value)_gameScore=RequestedScore;
+            StopScores(!_musicPreview);
+            _musicPreview=value;
+            RequestedScore=value?"":_gameScore;
+        }
+    }
+    private void StopScores(bool remember)
+    {
+        for(int i=0;i<2;i++)
+        {
+            if(remember&&_scorePlayers[i].Playing&&_scoreIds[i]!="")
+                _scorePositions[_scoreIds[i]]=_scorePlayers[i].GetPlaybackPosition();
+            _scorePlayers[i].Stop();_scorePlayers[i].VolumeDb=-80;
+            _scoreIds[i]="";_scoreGains[i]=0;
+        }
+    }
     public string RequestedScore{get;private set;}="prologue-quay";
     public string CurrentScore=>_scoreIds[_scoreTarget];
     public float ScorePeakDb=>Math.Max(_scorePlayers[0].VolumeDb,_scorePlayers[1].VolumeDb);
@@ -33,6 +57,9 @@ public partial class Soundscape
     }
     private void StepScores(float dt,float db)
     {
+        // Auditioning owns the mixer: no scene bed or overlapping preview tails.
+        if(MusicPreview&&CurrentScore!=RequestedScore)StopScores(false);
+        if(RequestedScore=="")return;
         if(CurrentScore!=RequestedScore)
         {
             int next=1-_scoreTarget;
@@ -41,7 +68,7 @@ public partial class Soundscape
             {
                 var p=_scorePlayers[next];if(p.Playing&&_scoreIds[next]!="")_scorePositions[_scoreIds[next]]=p.GetPlaybackPosition();
                 p.Stop();p.VolumeDb=-80;p.Stream=_scores[RequestedScore];_scoreIds[next]=RequestedScore;
-                p.Play((float)(_scorePositions.GetValueOrDefault(RequestedScore)%p.Stream.GetLength()));_scoreTarget=next;
+                p.Play(MusicPreview?0:(float)(_scorePositions.GetValueOrDefault(RequestedScore)%p.Stream.GetLength()));_scoreTarget=next;
             }
         }
         float duck=Speaking&&!_voice.StreamPaused?-19:Discovery?-13:-10;

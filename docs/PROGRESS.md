@@ -1,5 +1,9 @@
 # Checkpoint · Vägen under vattnet · 2026-09-06
 
+## 0.22.1 · Ren lyssning i musikbiblioteket
+
+Biblioteket tystar spelmusiken direkt och väntar på ett låtval. Byte av provspår stoppar föregående spår utan överlappning; när menyn stängs återupptas spelmusiken. Kontroller: 98 musiktester och native musikprov med alla 47 spår, inträde under aktiv övertoning, tyst inträde, återgång, volym och oförändrad kampanj.
+
 ## 0.22 · Egen musik genom expeditionen
 
 47 nya instrumentala spår: ett per rum, separata bossar, prolog, färder och avlösning. Automatisk övertoning och musikbibliotek i inställningarna. [Musik, kopplingar och kontroller](SOUNDTRACK.md).

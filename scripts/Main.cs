@@ -192,7 +192,7 @@ public partial class Main : Node2D
     }
     private void SelectMenu(int step){_menuKeyboard=true;_menuSelection=(_menuSelection+step+Math.Max(1,_buttons.Count))%Math.Max(1,_buttons.Count);}
     private void ActivateSelected(){if(_buttons.Count>0)Activate(_buttons[Math.Clamp(_menuSelection,0,_buttons.Count-1)].Id);}
-    private void ChangeScreen(Screen screen){_screen=screen;_menuSelection=0;ClearPresses();_sound.PauseVoice(screen is not (Screen.Game or Screen.Ending or Screen.Testimony or Screen.Archive));}
+    private void ChangeScreen(Screen screen){_screen=screen;_sound.MusicPreview=screen==Screen.Music;_menuSelection=0;ClearPresses();_sound.PauseVoice(screen is not (Screen.Game or Screen.Ending or Screen.Testimony or Screen.Archive));}
     private void Back()
     {
         if(_screen==Screen.Cinematic)FinishGateFilm();
@@ -222,7 +222,7 @@ public partial class Main : Node2D
             case "foundry-preview":StartFoundry();break;
             case "mine-preview":StartMine();break;
             case "regiment-preview":StartRegiment();break;
-            case "music-library":_musicPage=0;_previewScore=_sound.RequestedScore;ChangeScreen(Screen.Music);break;
+            case "music-library":_musicPage=0;_previewScore="";ChangeScreen(Screen.Music);break;
             case "music-prev":_musicPage--;break;
             case "music-next":_musicPage++;break;
             case "videos":_videoPage=0;ChangeScreen(Screen.Videos);break;
